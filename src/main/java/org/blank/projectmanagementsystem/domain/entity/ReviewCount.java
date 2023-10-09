@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 
+import java.io.Serializable;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-public class ReviewCount {
+public class ReviewCount implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;

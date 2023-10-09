@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -13,7 +15,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponsibleParty {
+public class ResponsibleParty implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;

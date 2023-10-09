@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.ArchitectureType;
 
+import java.io.Serializable;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -14,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Architecture {
+public class Architecture implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int id;
