@@ -1,0 +1,104 @@
+package org.blank.projectmanagementsystem.config;
+
+import lombok.RequiredArgsConstructor;
+import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.*;
+
+import javax.sql.DataSource;
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+    private final UserService userService;
+    private final String MY_KEY = "akatsuki-abcdEFGH1234-5678IJKLmnopqrstuvwxYZ";
+    private final DataSource dataSource;
+
+    @Bean
+    public SecurityFilterChain config(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request ->
+                        request
+                                .requestMatchers("/resources/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                )
+                .formLogin(
+                        (formLogin) -> formLogin
+                                .loginPage("/login")
+                                .loginProcessingUrl("/process-login")
+                                .successHandler((request, response, authentication) -> {
+                                    response.sendRedirect("/");
+                                })
+                                .permitAll()
+                )
+                .logout(
+                        (logout) -> logout
+                                .logoutUrl("/logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("JSESSIONID")
+                                .clearAuthentication(true)
+                                .logoutSuccessHandler((request, response, authentication) -> {
+                                    response.sendRedirect("/login");
+                                })
+                                .permitAll()
+                )
+                .rememberMe(remember -> remember
+                        .rememberMeParameter("remember-me")
+                        .rememberMeServices(rememberMeServices())
+                        .tokenValiditySeconds(60 * 60 * 24)//1 day
+                )
+                .build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService.userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        if (tokenRepository.getJdbcTemplate() == null) {
+            tokenRepository.setJdbcTemplate(new JdbcTemplate(dataSource));
+        }
+        tokenRepository.getJdbcTemplate().execute("CREATE TABLE IF NOT EXISTS persistent_logins (" +
+                "username VARCHAR(64) NOT NULL," +
+                "series VARCHAR(64) PRIMARY KEY," +
+                "token VARCHAR(64) NOT NULL," +
+                "last_used TIMESTAMP NOT NULL" +
+                ")");
+
+        return tokenRepository;
+    }
+
+    @Bean
+    public PersistentTokenBasedRememberMeServices rememberMeServices() {
+        return new PersistentTokenBasedRememberMeServices(
+                MY_KEY, userService.userDetailsService(), persistentTokenRepository()
+        );
+    }
+}
+

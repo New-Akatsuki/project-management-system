@@ -26,5 +26,5 @@ public class Architecture implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ArchitectureType Type;
+    private ArchitectureType type;
 }
