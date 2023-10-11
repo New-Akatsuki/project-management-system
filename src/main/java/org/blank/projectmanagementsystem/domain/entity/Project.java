@@ -45,6 +45,10 @@ public class Project implements Serializable {
     @JoinColumn(nullable = false)
     private User projectManager;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Department department;
+
     @OneToMany
     @JoinTable(
             name = "contract_member",  // Specify the name of the join table

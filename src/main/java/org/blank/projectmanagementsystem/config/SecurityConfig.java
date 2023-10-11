@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.config;
 
 import lombok.RequiredArgsConstructor;
+import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +23,7 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final String MY_KEY = "akatsuki-abcdEFGH1234-5678IJKLmnopqrstuvwxYZ";
     private final DataSource dataSource;
 
@@ -31,7 +34,15 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/resources/**")
+                                .requestMatchers(
+                                        "/resources/**",
+                                        "/js/**",
+                                        "/css/**",
+                                        "/images/**",
+                                        "/vendor/**",
+                                        "/fragments/**",
+                                        "/report-file/**"
+                                )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -65,9 +76,15 @@ public class SecurityConfig {
     }
 
     @Bean
+    public UserDetailsService userDetailsService(){
+        return username -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userService.userDetailsService());
+        provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
@@ -97,7 +114,7 @@ public class SecurityConfig {
     @Bean
     public PersistentTokenBasedRememberMeServices rememberMeServices() {
         return new PersistentTokenBasedRememberMeServices(
-                MY_KEY, userService.userDetailsService(), persistentTokenRepository()
+                MY_KEY, userDetailsService(), persistentTokenRepository()
         );
     }
 }
