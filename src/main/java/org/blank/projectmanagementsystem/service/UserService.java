@@ -6,7 +6,6 @@ import org.blank.projectmanagementsystem.domain.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {
-    UserDetailsService userDetailsService();
     User save(User user);
     void saveRole(Role role);
     void saveDepartment(Department department);
