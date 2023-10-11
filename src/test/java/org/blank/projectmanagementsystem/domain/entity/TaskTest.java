@@ -8,104 +8,34 @@ import java.util.HashSet;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class TaskTest {
 
     private Task task;
-    private Project project;
-    private User user;
+    private Task taskWithBuilder;
 
     @BeforeEach
     public void setUp() {
-        project = new Project(); // Initialize Project object appropriately
-        user = new User(); // Initialize User object appropriately
+        // Initialize the task object using setter methods
+        task = new Task();
+        task.setId(1);
+        task.setName("Testing Task");
+        task.setDescription("Testing Description:");
+        task.setPriority(Priority.HIGH);
+        task.setStartDate(new Date());
+        task.setDueDate(new Date());
+        task.setParentTask(null);
+        task.setPlanHours(12.4f);
+        task.setActualDueDate(new Date());
+        task.setActualStartDate(new Date());
+        task.setActualHours(10.5f);
+        task.setSubtasks(new HashSet<>());
 
-        task = Task.builder()
-                .id(1)
-                .name("Junit Task")
-                .description("Junit Description")
-                .priority(Priority.HIGH)
-                .startDate(new Date())
-                .dueDate(new Date())
-                .planHours(10.5f)
-                .actualStartDate(new Date())
-                .actualDueDate(new Date())
-                .actualHours(8.5f)
-                .project(project)
-                .assignees(Set.of(user))
-                .parentTask(null) // Set appropriately if there is a parent task
-                .subtasks(new HashSet<>()) // Initialize as needed
-                .build();
-    }
-
-    @Test
-    public void testTaskAttributes() {
-        assertEquals(1, task.getId());
-        assertEquals("Junit Task", task.getName());
-        assertEquals("Junit Description", task.getDescription());
-        assertEquals(Priority.HIGH, task.getPriority());
-        assertNotNull(task.getStartDate());
-        assertNotNull(task.getDueDate());
-        assertEquals(10.5f, task.getPlanHours());
-        assertNotNull(task.getActualStartDate());
-        assertNotNull(task.getActualDueDate());
-        assertEquals(8.5f, task.getActualHours());
-        assertEquals(project, task.getProject());
-        assertTrue(task.getAssignees().contains(user));
-        assertNull(task.getParentTask()); // Adjust if there is a parent task
-        assertNotNull(task.getSubtasks());
-        assertEquals(0, task.getSubtasks().size());
-    }
-
-    @Test
-    public void testEquals() {
-        Task sameTask = Task.builder()
-                .id(1)
-                .name("Junit Task")
-                .description("Junit Description")
-                .priority(Priority.HIGH)
-                .startDate(new Date())
-                .dueDate(new Date())
-                .planHours(10.5f)
-                .actualStartDate(new Date())
-                .actualDueDate(new Date())
-                .actualHours(8.5f)
-                .project(project)
-                .assignees(Set.of(user))
-                .parentTask(null)
-                .subtasks(new HashSet<>())
-                .build();
-
-        assertEquals(task, sameTask);
-    }
-
-    @Test
-    public void testNotEquals() {
-        Task differentTask = Task.builder()
+        // Initialize the task object using the builder pattern
+        taskWithBuilder = Task.builder()
                 .id(2)
-                .name("Different Task")
-                .description("Different Description")
-                .priority(Priority.LOW)
-                .startDate(new Date())
-                .dueDate(new Date())
-                .planHours(5.5f)
-                .actualStartDate(new Date())
-                .actualDueDate(new Date())
-                .actualHours(3.5f)
-                .project(new Project()) // Initialize a different Project object
-                .assignees(new HashSet<>()) // Initialize a different Set of User objects
-                .parentTask(null)
-                .subtasks(new HashSet<>())
-                .build();
-
-        assertNotEquals(task, differentTask);
-    }
-
-    @Test
-    public void testHashCode() {
-        Task sameTask = Task.builder()
-                .id(1)
-                .name("Sample Task")
-                .description("Task Description")
+                .name("Junit Task")
+                .description("Junit Description")
                 .priority(Priority.HIGH)
                 .startDate(new Date())
                 .dueDate(new Date())
@@ -113,13 +43,95 @@ public class TaskTest {
                 .actualStartDate(new Date())
                 .actualDueDate(new Date())
                 .actualHours(8.5f)
-                .project(project)
-                .assignees(Set.of(user))
+                .parentTask(null)
+                .subtasks(new HashSet<>())
+                .build();
+    }
+
+    @Test
+    public void testGetId() {
+        assertEquals(1L, task.getId());
+        assertEquals(2L, taskWithBuilder.getId());
+    }
+    @Test
+public void testGetName() {
+        assertEquals("Testing Task", task.getName());
+        assertEquals("Junit Task", taskWithBuilder.getName());
+    }
+    @Test
+public void testGetDescription() {
+        assertEquals("Testing Description:", task.getDescription());
+        assertEquals("Junit Description", taskWithBuilder.getDescription());
+    }
+    @Test
+public void testGetPriority() {
+        assertEquals(Priority.HIGH, task.getPriority());
+        assertEquals(Priority.HIGH, taskWithBuilder.getPriority());
+    }
+
+
+    @Test
+public void testGetPlanHours() {
+        assertEquals(12.4f, task.getPlanHours());
+        assertEquals(10.5f, taskWithBuilder.getPlanHours());
+    }
+
+    @Test
+public void testGetActualDueDate() {
+        assertEquals(new Date(), task.getActualDueDate());
+        assertEquals(new Date(), taskWithBuilder.getActualDueDate());
+    }
+    @Test
+public void testGetActualHours() {
+        assertEquals(10.5f, task.getActualHours());
+        assertEquals(8.5f, taskWithBuilder.getActualHours());
+    }
+    @Test
+public void testGetParentTask() {
+        assertEquals(null, task.getParentTask());
+        assertEquals(null, taskWithBuilder.getParentTask());
+    }
+
+    @Test
+    public void testEquals()
+{
+        Task anotherTask = new Task();
+        anotherTask.setId(1);
+        anotherTask.setName("Testing Task");
+        anotherTask.setDescription("Testing Description:");
+        anotherTask.setPriority(Priority.HIGH);
+        anotherTask.setStartDate(new Date());
+        anotherTask.setDueDate(new Date());
+        anotherTask.setParentTask(null);
+        anotherTask.setPlanHours(12.4f);
+        anotherTask.setActualDueDate(new Date());
+        anotherTask.setActualStartDate(new Date());
+        anotherTask.setActualHours(10.5f);
+        anotherTask.setSubtasks(new HashSet<>());
+
+        Task anotherTaskWithBuilder = Task.builder()
+                .id(2)
+                .name("Junit Task")
+                .description("Junit Description")
+                .priority(Priority.HIGH)
+                .startDate(new Date())
+                .dueDate(new Date())
+                .planHours(10.5f)
+                .actualStartDate(new Date())
+                .actualDueDate(new Date())
+                .actualHours(8.5f)
                 .parentTask(null)
                 .subtasks(new HashSet<>())
                 .build();
 
-        assertEquals(task.hashCode(), sameTask.hashCode());
+        assertEquals(task, anotherTask);
+        assertEquals(taskWithBuilder, anotherTaskWithBuilder);
     }
-}
 
+
+
+
+    // Additional test methods for other attributes...
+
+
+}

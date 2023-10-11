@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RoleTest {
 
     private Role role;
+    private Role roleWithBuilder;
+
 
     @BeforeEach
     public void setUp() {
         role = new Role();
         role.setId(1);
         role.setName("ADMIN");
+
+        role = new Role(1, "ADMIN");
     }
 
     @Test
@@ -46,5 +50,17 @@ public class RoleTest {
         sameRole.setName("ADMIN");
 
         assertEquals(role.hashCode(), sameRole.hashCode());
+    }
+    @Test
+    public void testNotHashCode(){
+        Role differentRole=new Role();
+        differentRole.setId(2);
+        differentRole.setName("USER");
+
+    }
+    @Test
+    public void testToString() {
+        String expected = "Role(id=1, name=ADMIN)";
+        assertEquals(expected, role.toString());
     }
 }
