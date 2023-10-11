@@ -70,6 +70,7 @@ public class ClientTest {
 
     @Test
     public void testNotEquals() {
+
         assertNotEquals(client, clientWithBuilder);
     }
 }
