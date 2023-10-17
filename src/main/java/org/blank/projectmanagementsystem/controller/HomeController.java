@@ -9,4 +9,22 @@ public class HomeController {
     public String index(){
         return "index";
     }
+
+    @GetMapping("/createproject")
+    public String CreateProject(){
+        return "createproject";
+    }
+
+    @GetMapping("/projectlist")
+    public String ProjectList(){
+        return "projectlist";
+    }
+
+    @GetMapping("/userlist")
+    public String UserList(){
+        return "admin";
+    }
+
+
+
 }
