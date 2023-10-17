@@ -22,7 +22,7 @@ public class HomeController {
 
     @GetMapping("/userlist")
     public String UserList(){
-        return "admin";
+        return "userlist";
     }
 
 
