@@ -14,4 +14,12 @@ public class HomeController {
     public String changepassword(){
         return "changepassword";
     }
+    @GetMapping("/defaultpassword")
+    public String defaultpassword(){
+        return "defaultpassword";
+    }
+    @GetMapping("developerpage")
+    public String developerpage(){
+        return "developerpage";
+    }
 }
