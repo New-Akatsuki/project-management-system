@@ -10,5 +10,8 @@ public class HomeController {
         return "index";
     }
 
-
+    @GetMapping("/task-board")
+    public String taskBoard(){
+        return "board";
+    }
 }
