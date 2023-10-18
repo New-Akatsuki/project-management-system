@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Include jQuery via CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include jQuery via CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Include jQuery UI via CDN -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/kanban.css">
+  <script type="text/javascript" src="/js/kanban.js"></script>
+</head>
+<body>
+<div class="m-3 p-3 border border-1">
+  <div id="kanban"></div>
+</div>
+
+
+<script>
+  $(document).ready(function () {
+    $('#kanban').kanban({
+      titles: ['Task', 'Estimate', 'Complete', 'Invoiced', 'Paid', 'Hello', 'World', 'Hi'],
+      colours: ['#00aaff', '#ff921d', '#00ff40', '#ffe54b', '#8454ff', "#00aaff", "#00aaff", "#00aaff"],
+      items: [
+        {
+          id: 1,
+          title: 'Test',
+          block: 'Task',
+          link: 'www.google.com',
+          link_text: 'TEST001',
+          footer: '<i class="ion-md-chatboxes"></i> 1 <div class="pull-right"><i class="ion-md-checkbox"></i> 1/4</div>'
+        },
+        {
+          id: 2,
+          title: 'Test 2',
+          block: 'Estimate',
+          footer: '<i class="ion-md-chatboxes"></i> 1 <div class="pull-right"><i class="ion-md-checkbox"></i> 1/4</div>'
+        },
+        {
+          id: 3,
+          title: 'Test 3',
+          block: 'Estimate',
+          footer: '<i class="ion-md-chatboxes"></i> 1 <div class="pull-right"><i class="ion-md-checkbox"></i> 1/4</div>'
+        },
+        {
+          id: 4,
+          title: 'Test 5',
+          block: 'Estimate',
+          footer: '<i class="ion-md-chatboxes"></i> 1 <div class="pull-right"><i class="ion-md-checkbox"></i> 1/4</div>'
+        },
+        {
+          id: 5,
+          title: 'Test 5',
+          block: 'Estimate',
+          footer: '<i class="ion-md-chatboxes"></i> 1 <div class="pull-right"><i class="ion-md-checkbox"></i> 1/4</div>'
+        },
+      ],
+      onChange: (e,ui)=>{
+        console.log("change event -> ",e)
+        console.log('change ui -> ',ui)
+      },
+      onReceive: (e,ui)=>{
+        console.log("re event -> ",e)
+        console.log('re ui -> ',ui)
+      }
+    });
+
+
+  });
+</script>
+</body>
+</html>
