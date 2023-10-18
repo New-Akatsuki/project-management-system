@@ -1287,3 +1287,29 @@ h6 {
 .float-in {
   animation: floatIn 2s linear 0s 1 normal forwards;
 }
+
+.custom-combobox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-combobox>input{
+  width: 100%;
+  border-radius: 5px;
+}
+
+.custom-combobox-toggle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-left: -1px;
+  padding: 0;
+}
+
+.custom-combobox-input {
+  margin: 0;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
