@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addSectionButton = document.getElementById('add-section-button');
     let currentSection = null;
     let currentTaskElement = null;
+    let isAddingSubtask = false;
 
     addSectionButton.addEventListener('click', () => {
         const sectionName = prompt('Enter section name:');
@@ -18,36 +19,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const taskName = document.getElementById('modal-task-name').value;
-        const dueDate = document.getElementById('modal-due-date').value;
-        const description = document.getElementById('modal-description').value;
+        if (isAddingSubtask) {
+            const subtaskName = document.getElementById('subtask-name').value;
+            const subtaskDueDate = document.getElementById('subtask-due-date').value;
+            const subtaskDescription = document.getElementById('subtask-description').value;
 
-        if (taskName && dueDate && description) {
-            if (currentSection) {
-                if (currentTaskElement) {
-                    const subtask = createTask(taskName, dueDate, description, true);
-                    const subtasksContainer = currentTaskElement.querySelector('.subtasks');
-                    if (subtasksContainer) {
-                        subtasksContainer.appendChild(subtask);
-                    } else {
-                        console.log("Error: subtasksContainer is null.");
-                    }
-                } else {
-                    const task = createTask(taskName, dueDate, description, false);
-                    currentSection.querySelector('.tasks').appendChild(task);
+            if (subtaskName && subtaskDueDate && subtaskDescription) {
+                const subtask = createTask(subtaskName, subtaskDueDate, subtaskDescription, true);
+                const subtasksContainer = currentTaskElement.querySelector('.subtasks');
+                if (subtasksContainer) {
+                    subtasksContainer.appendChild(subtask);
                 }
             }
-            document.getElementById('modal-task-name').value = '';
-            document.getElementById('modal-due-date').value = '';
-            document.getElementById('modal-description').value = '';
+        } else {
+            const taskName = document.getElementById('modal-task-name').value;
+            const dueDate = document.getElementById('modal-due-date').value;
+            const description = document.getElementById('modal-description').value;
 
-            modal.hide();
+            if (taskName && dueDate && description) {
+                if (currentSection) {
+                    if (currentTaskElement) {
+                        // Update main task logic here
+                    } else {
+                        const task = createTask(taskName, dueDate, description, false);
+                        currentSection.querySelector('.tasks').appendChild(task);
+                    }
+                }
+            }
         }
+
+        document.getElementById('modal-task-name').value = '';
+        document.getElementById('modal-due-date').value = '';
+        document.getElementById('modal-description').value = '';
+
+        modal.hide();
+        subtaskModal.hide();
+        isAddingSubtask = false;
     });
 
     board.addEventListener('click', (e) => {
         if (currentTaskElement) {
-            // Clear the inputs if a task or subtask is already displayed
             document.getElementById('modal-task-name').value = '';
             document.getElementById('modal-due-date').value = '';
             document.getElementById('modal-description').value = '';
@@ -58,9 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSection = taskElement.closest('.section');
             displayTaskDetails(taskElement);
 
-            // Check if it's a main task (not a subtask)
             if (!taskElement.classList.contains('subtask')) {
-                // Log subtasks if available
                 const subtasks = taskElement.querySelectorAll('.subtask');
                 if (subtasks.length > 0) {
                     console.log("Subtasks for the selected main task:");
