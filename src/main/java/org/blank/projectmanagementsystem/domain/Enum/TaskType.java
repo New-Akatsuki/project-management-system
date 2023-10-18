@@ -1,5 +1,5 @@
 package org.blank.projectmanagementsystem.domain.Enum;
 
 public enum TaskType {
-    TASK, MILESTONE, PHASE
+    TASK, MILESTONE, PROJECT
 }

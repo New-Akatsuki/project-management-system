@@ -10,5 +10,9 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/gantt")
+    public String gantt(){
+        return "gantt-chart";
+    }
 
 }
