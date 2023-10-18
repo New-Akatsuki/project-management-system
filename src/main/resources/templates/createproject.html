@@ -259,37 +259,37 @@
                                             <div class="row">
 
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="bg">Name </label>
-                                                        <input type="text" class="form-control" id="bg" name="background"
-                                                               required>
+                                                    <div class="form-floating">
+                                                        <label for="bg">Background</label>
+                                                        <textarea class="form-control" placeholder="Background" id="bg"  name="bg"  required></textarea>
                                                         <div class="invalid-feedback" id="bg_error">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label for="name">Name </label>
+                                                        <input type="text" class="form-control" id="name" name="name"
+                                                               required minlength="3" maxlength="25">
+                                                        <div class="invalid-feedback" id="name_error">
                                                         </div>
                                                     </div>
                                                 </div>
 
 
                                                 <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Objective</label>
-                                                        <input type="text" class="form-control" name="lname"
-                                                               placeholder="Last Name"/>
+                                                    <div class="form-floating">
+                                                        <label for="obj">Objective </label>
+                                                        <textarea class="form-control" placeholder="Objective" id="obj"  name="obj" style="height: 80px;" required></textarea>
+                                                            <div class="invalid-feedback" id="obj_error">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">System Outline </label>
-                                                        <input type="text" class="form-control" name="phno"
-                                                               placeholder="Contact No."/>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Architecture Outline </label>
-                                                        <input type="text" class="form-control" name="phno_2"
-                                                               placeholder="Alternate Contact No."/>
-                                                    </div>
-                                                </div>
+
+
+
                                             </div>
                                         </div>
                                         <button type="button" name="next"
@@ -404,6 +404,7 @@
         //check name input
         checkInputValidation("name", "Name", 3, 25);
         checkInputValidation("bg","Background",10);
+        checkInputValidation("obj","Objective",10);
         //form validate
         formValidate("form-wizard1")
 
