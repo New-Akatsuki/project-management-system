@@ -22,4 +22,13 @@ public class HomeController {
     public String developerpage(){
         return "developerpage";
     }
+    @GetMapping("example")
+    public String example(){
+        return "example";
+    }
+    @GetMapping("validate")
+    public String validate(){return "validate";}
+    @GetMapping("createproject")
+    public String createproject(){return "createproject";}
+
 }
