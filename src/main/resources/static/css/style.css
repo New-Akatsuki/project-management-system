@@ -1287,3 +1287,8 @@ h6 {
 .float-in {
   animation: floatIn 2s linear 0s 1 normal forwards;
 }
+
+.form-control{
+  border: 1px solid #bad1e5 !important;
+  border-radius: 5px!important;
+}

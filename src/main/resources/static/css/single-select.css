@@ -1,0 +1,128 @@
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+::selection {
+    color: #fff;
+    background: #4285f4;
+}
+
+.s-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.flex-1{
+    flex: 1;
+}
+.select-btn, .s-li {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.select-btn {
+    background: #fff;
+    border-radius: 7px;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.select-btn i {
+    font-size: 20px; /* Adjusted font size */
+    transition: transform 0.3s linear;
+}
+
+.s-wrapper.active .select-btn i {
+    transform: rotate(-180deg);
+}
+
+.s-content {
+    display: none;
+    padding: 10px; /* Adjusted padding */
+    margin-top: 10px; /* Adjusted margin-top */
+    background: #fff;
+    border-radius: 7px;
+
+}
+
+.s-wrapper.active .s-content {
+    display: block;
+}
+
+.s-content .search {
+    position: relative;
+}
+
+.search i {
+    top: 50%;
+    left: 8px; /* Adjusted left position */
+    color: #999;
+    font-size: 16px; /* Adjusted font size */
+    pointer-events: none;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
+.search input {
+    height: 30px; /* Adjusted height */
+    width: 100%;
+    outline: none;
+    font-size: 14px; /* Adjusted font size */
+    border-radius: 5px;
+    /*padding: 0 15px 0 28px; !* Adjusted padding *!*/
+    border: 1px solid #B3B3B3;
+    padding-left: 27px;
+}
+
+.search input:focus {
+    padding-left: 27px; /* Adjusted padding */
+    border: 1px solid #4285f4; /* Adjusted border */
+}
+
+.search input::placeholder {
+    color: #bfbfbf;
+}
+
+.s-content .options {
+    margin-top: 5px; /* Adjusted margin-top */
+    max-height: 150px; /* Adjusted max-height */
+    overflow-y: auto;
+    padding-right: 7px;
+}
+
+.options::-webkit-scrollbar {
+    width: 7px;
+}
+
+.options::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+.options::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 25px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+}
+
+.options li {
+    height: 30px; /* Adjusted height */
+    padding: 0 8px; /* Adjusted padding */
+    font-size: 14px; /* Adjusted font size */
+}
+
+.options li:hover,
+li.selected {
+    border-radius: 5px;
+    background: #f2f2f2;
+}
+

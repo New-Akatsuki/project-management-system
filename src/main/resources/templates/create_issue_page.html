@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+
+    <link href="/css/single-select.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- Template Main CSS File -->
+
+
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <style>
+        .card-container {
+            margin: 20px; /* Adjust the margin value as needed */
+        }
+
+        /* Adjusting the width of the editor container */
+        .ql-container {
+            width: 100%; /* Set the desired width percentage or any other value */
+            margin: 0;
+            border-radius: 0 0 5px 5px;
+            overflow: hidden;
+        }
+
+        .round-full-border {
+            border: 1px solid #bad1e5 !important;
+            border-radius: 5px;
+        }
+
+        /*.ql-editor{*/
+        /*    border: 1px solid #9a9a9a;*/
+        /*    border-radius: 5px;*/
+        /*}*/
+
+        .ql-toolbar {
+            border-radius: 5px 5px 0 0;
+            width: 100%; /* Set the desired width percentage or any other value */
+            margin: 0;
+            display: none;
+        }
+
+    </style>
+
+    <link href="/css/style.css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
+            <li class="breadcrumb-item active">Create Issue</li>
+        </ol>
+    </nav>
+    <!-- End Page Title -->
+    <div class="card">
+        <div class="card-container">
+
+            <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
+            <br>
+            <div th:name="issue_title" th:id="issue_title"></div>
+            <div th:name="issue_content" th:id="issue_content"></div>
+            <form th:action="@{/save}" method="post" th:object="${model}">
+                <div class="container d-flex flex-column flex-md-row gap-2">
+                    <div class="flex-1">
+                        <div>
+                            <label for="issue_id">Issue Id</label>
+                            <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id"/>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div>
+                            <label>Title</label>
+                            <input class="form-control" th:type="text" th:name="title" th:id="title"/>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div>
+                            <label>Date</label>
+                            <input class="form-control" th:type="text" th:name="date" th:id="datepicker1"/>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <!--combobox start-->
+
+                <div class="container d-flex flex-column flex-md-row gap-2">
+                    <div class="flex-1">
+                        <div>
+                            <label for="issue_category">Category</label>
+                        </div>
+                        <div>
+                            <select id="issue_category" th:name="issue_category" multiple>
+                                <option value="communication">Communication</option>
+                                <option value="programming">Programming</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex-1">
+                        <div>
+                            <label for="issue_place">Issue Place</label>
+                        </div>
+                        <div id="issue_place" class="w-100"></div>
+                    </div>
+
+                    <div class="flex-1">
+                        <div>
+                            <label for="issue_pic">Issue PIC</label>
+                        </div>
+                        <div id="issue_pic"></div>
+                    </div>
+                </div>
+                <br>
+
+                <!-- combo-box end -->
+
+<div class="container">
+                <div>
+                    <label for="content">Content</label>
+                </div>
+                <div id="content"></div>
+                <br>
+                <div>
+                    <label for="res-party">Responsible Party</label>
+                </div>
+                <div id="res-party"></div>
+                <br>
+                <div>
+                    <label for="dir-cause">Direct Cause</label>
+                </div>
+                <div id="dir-cause"></div>
+                <br>
+                <div>
+                    <label for="root-cause">Root Cause</label>
+                </div>
+                <div id="root-cause"></div>
+                <br>
+                <input type="hidden" name="content" id="contentInput">
+                <input type="hidden" name="res_party" id="resPartyInput">
+                <input type="hidden" name="dir_cause" id="dirCauseInput">
+                <input type="hidden" name="root_cause" id="rootCauseInput">
+                <div>
+                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                    <button class="btn btn-danger">Cancel</button>
+                </div>
+</div>
+            </form>
+        </div>
+    </div>
+    <!-- End Card -->
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+<!-- Jquery for combo box -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script th:src="@{/js/single-select.js}"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+<script>
+    let quillContent = new Quill("#content", aa);
+    let quillResParty = new Quill("#res-party", aa);
+    let quillDirCause = new Quill("#dir-cause", aa);
+    let quillRootCause = new Quill("#root-cause", aa);
+
+    // Function to update hidden input fields with Quill content
+    function updateHiddenInputs() {
+        document.getElementById('contentInput').value = quillContent.root.innerHTML;
+        document.getElementById('resPartyInput').value = quillResParty.root.innerHTML;
+        document.getElementById('dirCauseInput').value = quillDirCause.root.innerHTML;
+        document.getElementById('rootCauseInput').value = quillRootCause.root.innerHTML;
+    }
+
+    function toggleToolbar(index, editor_id) {
+        const containers = document.querySelectorAll('.ql-container');
+        const toolbars = document.querySelectorAll('.ql-toolbar');
+        const textEditorContainer = document.getElementById(editor_id);
+
+        const showToolbar = () => {
+            toolbars[index].style.display = 'block';
+            toolbars[index].style.border = '1px solid #ccc';
+            containers[index].classList.remove('round-full-border');
+        };
+
+        const hideToolbar = () => {
+            toolbars[index].style.display = 'none';
+            containers[index].classList.add('round-full-border');
+        };
+
+        const hidePreviousToolbars = () => {
+            toolbars.forEach((toolbar, i) => {
+                if (i !== index) {
+                    toolbar.style.display = 'none';
+                    containers[i].classList.add('round-full-border');
+                }
+            });
+        };
+
+        textEditorContainer.addEventListener('click', (event) => {
+            console.log('clicked text editor');
+            hidePreviousToolbars();
+            showToolbar();
+            event.stopPropagation(); // Prevent the event from reaching the document click handler immediately
+        });
+
+        document.addEventListener('click', (event) => {
+            // Check if the clicked element is outside the text editor and toolbar
+            if (!textEditorContainer.contains(event.target) && !toolbars[index].contains(event.target)) {
+                hideToolbar();
+            }
+        });
+
+        // Update hidden inputs or perform other actions when clicking inside the text editor
+        document.addEventListener('click', updateHiddenInputs);
+
+        // If you want to stop propagation when clicking inside the toolbar
+        toolbars[index].addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    }
+
+
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'content');
+        toggleToolbar(1, 'res-party');
+        toggleToolbar(2, 'dir-cause');
+        toggleToolbar(3, 'root-cause');
+
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $("#datepicker1").datepicker({
+            dateFormat: "dd/mm/yy",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+        })
+    });
+</script>
+<script>
+    new MultiSelectTag('issue_category')
+</script>
+<script>
+    const data1 = ['mgmg', 'aungaung', 'tuntun']
+    const data2 = ['ayeaye', 'myamya', 'hlahla']
+    const id1 = init("issue_place")
+    const id2 = init("issue_pic")
+    console.log(id1, id2)
+    const issue_place_wrapperUpdateName = singleSelect(id1, data1);
+    const issue_pic_wrapperUpdateName = singleSelect(id2, data2);
+</script>
+</body>
+</html>

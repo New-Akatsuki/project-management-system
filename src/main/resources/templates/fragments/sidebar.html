@@ -69,6 +69,7 @@
                         <i class="bi bi-circle"></i><span>Courses List</span>
                     </a>
                 </li>
+
             </ul>
         </li>
         <!-- End Course Nav-->
@@ -102,34 +103,73 @@
         </li>
         <!-- End Student Nav-->
 
+<!--        <li class="nav-item">-->
+<!--            <a-->
+<!--                    class="nav-link collapsed"-->
+<!--                    data-bs-target="#users-nav"-->
+<!--                    data-bs-toggle="collapse"-->
+<!--                    href="#"-->
+<!--            >-->
+<!--                <i class="bi bi-person-video3"></i><span>Users</span-->
+<!--            ><i class="bi bi-chevron-down ms-auto"></i>-->
+<!--            </a>-->
+<!--            <ul-->
+<!--                    id="users-nav"-->
+<!--                    class="nav-content collapse"-->
+<!--                    data-bs-parent="#sidebar-nav"-->
+<!--            >-->
+<!--                <li>-->
+<!--                    <a th:href="@{/user/add}">-->
+<!--                        <i class="bi bi-circle"></i><span>Add User</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a th:href="@{/user/list}">-->
+<!--                        <i class="bi bi-circle"></i><span>Users List</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </li>-->
+<!--        &lt;!&ndash; End User Nav&ndash;&gt;-->
+
         <li class="nav-item">
             <a
                     class="nav-link collapsed"
-                    data-bs-target="#users-nav"
+                    data-bs-target="#issue-nav"
                     data-bs-toggle="collapse"
                     href="#"
             >
-                <i class="bi bi-person-video3"></i><span>Users</span
+                <i class="bi-person-video3"></i><span>Issue</span
             ><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul
-                    id="users-nav"
+                    id="issue-nav"
                     class="nav-content collapse"
                     data-bs-parent="#sidebar-nav"
             >
                 <li>
-                    <a th:href="@{/user/add}">
-                        <i class="bi bi-circle"></i><span>Add User</span>
+                    <a th:href="@{/issue1}">
+                        <i class="bi bi-circle"></i><span>Issue Page</span>
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/user/list}">
-                        <i class="bi bi-circle"></i><span>Users List</span>
+                    <a th:href="@{/issue2}">
+                        <i class="bi bi-circle"></i><span>Create Issue Page</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/issue3}">
+                        <i class="bi bi-circle"></i><span>Solve Issue Page</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/display_issue}">
+                        <i class="bi bi-circle"></i><span>Display Issue</span>
                     </a>
                 </li>
             </ul>
         </li>
-        <!-- End Student Nav-->
+        <!-- End User Nav-->
     </ul>
 </aside>
 <!-- End Sidebar-->
