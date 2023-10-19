@@ -1,45 +1,54 @@
-function checkInputValidation(element_id, element_name, min_length) {
+function checkInputValidation(element_id, element_name,pattern, min_length ) {
     const nameInput = document.getElementById(element_id);
     const msg_div = document.getElementById(`${element_id}_error`);
 
-    const newPasswordInput = document.getElementById("newPassword");
-    const retypePasswordInput = document.getElementById("retypePassword");
 
-    const newPasswordError = document.getElementById("newPassword_error");
-    const retypePasswordError = document.getElementById("retypePassword_error");
+    if (!element_id) {
+        return;
+    }
 
-    const PasswordInput = document.getElementById("password");
-    const passwordError = document.getElementById("password_error");
+    nameInput.addEventListener("blur", function () {
+        if (pattern) {
+            if (!nameInput.validity.valid) {
+                if (!nameInput.value.match(pattern)) {
+                    nameInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
+                    nameInput.classList.add("is-invalid");
+                    msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
 
 
-    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
+                }
 
-
-    newPasswordInput.addEventListener("input", function () {
-        if (!newPasswordInput.value.match(pattern)) {
-            newPasswordInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
-            newPasswordInput.classList.add("is-invalid");
-            newPassword_error.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
+            }
         } else {
-            newPasswordInput.setCustomValidity("");
-            newPasswordInput.classList.remove("is-invalid");
-            newPasswordInput.classList.add("is-valid");
-            newPassword_error.textContent = "";
+            if (!nameInput.validity.valid) {
+                if (nameInput.validity.valueMissing) {
+                    nameInput.setCustomValidity(`${element_name || ""} is required.`);
+                } else if (nameInput.validity.patternMismatch) {
+                    nameInput.setCustomValidity(`Please enter valid ${element_name || ""}`)
+                } else if (nameInput.validity.tooShort) {
+                    nameInput.setCustomValidity(`${element_name} must be at least ${min_length || 0} characters.`);
+                }
+                nameInput.classList.add("is-invalid");
+                msg_div.innerText = nameInput.validationMessage;
+            }
         }
     });
 
-    nameInput.addEventListener("blur", function () {
-        if (!nameInput.validity.valid) {
-            if (nameInput.validity.valueMissing) {
-                nameInput.setCustomValidity(`${element_name||""} is required.`);
-            }else if(nameInput.validity.patternMismatch){
-                nameInput.setCustomValidity(`Please enter valid ${element_name||""}`)
-            } else if (nameInput.validity.tooShort) {
-                nameInput.setCustomValidity(`${element_name} must be at least ${min_length||0} characters.`);
-            }
+
+    nameInput.addEventListener("input", function () {
+        nameInput.setCustomValidity(""); // Clear custom validation message
+        if (nameInput.validity.valid) {
+            nameInput.classList.remove("is-invalid");
+        } else if (!nameInput.value.match(email_pattern)) {
+            nameInput.setCustomValidity(`Invalid ${element_name}. Must contain @ .`);
             nameInput.classList.add("is-invalid");
-            msg_div.innerText = nameInput.validationMessage;
+            msg_div.textContent = `Invalid ${element_name}. Must contain.`;
+        } else {
+            nameInput.setCustomValidity("");
+            nameInput.classList.remove("is-invalid");
+            nameInput.classList.add("is-valid");
+            msg_div.textContent = "";
         }
     });
 
@@ -47,47 +56,63 @@ function checkInputValidation(element_id, element_name, min_length) {
         nameInput.setCustomValidity(""); // Clear custom validation message
         if (nameInput.validity.valid) {
             nameInput.classList.remove("is-invalid");
-        }else{
+        } else if (!nameInput.value.match(password_pattern)) {
+            nameInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
+            nameInput.classList.add("is-invalid");
+            msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
+        } else {
+            nameInput.setCustomValidity("");
+            nameInput.classList.remove("is-invalid");
             nameInput.classList.add("is-valid");
+            msg_div.textContent = "";
         }
     });
 
 
-    retypePasswordInput.addEventListener("input", function () {
-        if (newPasswordInput.value !== retypePasswordInput.value) {
-            retypePasswordInput.setCustomValidity("Passwords do not match.");
-            retypePasswordInput.classList.add("is-invalid");
-            retypePasswordError.textContent = "Passwords do not match.";
-        } else {
-            retypePasswordInput.setCustomValidity("");
-            retypePasswordInput.classList.remove("is-invalid");
-            retypePasswordError.textContent = "";
-        }
-    });
+    return {
+        element: nameInput,
+        msg: msg_div,
+    };
 
 
-    PasswordInput.addEventListener("input", function () {
-        if (!PasswordInput.value.match(pattern)) {
-            PasswordInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
-            PasswordInput.classList.add("is-invalid");
-            password_error.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
-        } else {
-            PasswordInput.setCustomValidity("");
-            PasswordInput.classList.remove("is-invalid");
-            PasswordInput.classList.add("is-valid");
-            password_error.textContent = "";
-        }
-    });
-}
+    function checkPasswordsMatch(passwordElement, confirmPassElement) {
+        confirmPassElement.element.addEventListener("input", function () {
+            if (passwordElement.element.value !== confirmPassElement.element.value) {
+                confirmPassElement.element.setCustomValidity("Passwords do not match.");
+                confirmPassElement.element.classList.add("is-invalid");
+                confirmPassElement.msg.textContent = "Passwords do not match.";
+            } else {
+                confirmPassElement.element.setCustomValidity("");
+                confirmPassElement.element.classList.remove("is-invalid");
+                confirmPassElement.msg.textContent = "";
+            }
+        });
+        passwordElement.element.addEventListener("input", function () {
+            if (confirmPassElement.element.value !== "") {
+                if (passwordElement.element.value !== confirmPassElement.element.value) {
+                    confirmPassElement.element.setCustomValidity("Passwords do not match.");
+                    confirmPassElement.element.classList.add("is-invalid");
+                    confirmPassElement.msg.textContent = "Passwords do not match.";
+                } else {
+                    confirmPassElement.element.setCustomValidity("");
+                    confirmPassElement.element.classList.remove("is-invalid");
+                    confirmPassElement.msg.textContent = "";
+                }
+            }
+        });
 
-function formValidate(form_id){
-    const nameForm = document.getElementById(form_id);
 
-    nameForm.addEventListener("submit", function (event) {
-        if (!nameForm.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        nameForm.classList.add("was-validated");
-    });
+    }
+
+    function formValidate(form_id) {
+        const nameForm = document.getElementById(form_id);
+
+        nameForm.addEventListener("submit", function (event) {
+            if (!nameForm.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            nameForm.classList.add("was-validated");
+        });
+    }
 }

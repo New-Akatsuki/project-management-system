@@ -10,6 +10,8 @@ public class HomeController {
         return "index";
     }
 
+
+
     @GetMapping("/changepassword")
     public String changepassword(){
         return "changepassword";
