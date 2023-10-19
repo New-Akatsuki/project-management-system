@@ -1,6 +1,9 @@
 function checkInputValidation(element_id, element_name,pattern, min_length ) {
     const nameInput = document.getElementById(element_id);
     const msg_div = document.getElementById(`${element_id}_error`);
+    const patternMismatchMsg = element_id === "email" ? "Please enter a valid email address." : `Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`;
+
+
 
 
     if (!element_id) {
@@ -11,11 +14,9 @@ function checkInputValidation(element_id, element_name,pattern, min_length ) {
         if (pattern) {
             if (!nameInput.validity.valid) {
                 if (!nameInput.value.match(pattern)) {
-                    nameInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
+                    nameInput.setCustomValidity(patternMismatchMsg);
                     nameInput.classList.add("is-invalid");
-                    msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
-
-
+                    msg_div.textContent = patternMismatchMsg;
 
                 }
 
@@ -35,28 +36,11 @@ function checkInputValidation(element_id, element_name,pattern, min_length ) {
         }
     });
 
-
     nameInput.addEventListener("input", function () {
         nameInput.setCustomValidity(""); // Clear custom validation message
         if (nameInput.validity.valid) {
             nameInput.classList.remove("is-invalid");
-        } else if (!nameInput.value.match(email_pattern)) {
-            nameInput.setCustomValidity(`Invalid ${element_name}. Must contain @ .`);
-            nameInput.classList.add("is-invalid");
-            msg_div.textContent = `Invalid ${element_name}. Must contain.`;
-        } else {
-            nameInput.setCustomValidity("");
-            nameInput.classList.remove("is-invalid");
-            nameInput.classList.add("is-valid");
-            msg_div.textContent = "";
-        }
-    });
-
-    nameInput.addEventListener("input", function () {
-        nameInput.setCustomValidity(""); // Clear custom validation message
-        if (nameInput.validity.valid) {
-            nameInput.classList.remove("is-invalid");
-        } else if (!nameInput.value.match(password_pattern)) {
+        } else if (!nameInput.value.match(pattern)) {
             nameInput.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
             nameInput.classList.add("is-invalid");
             msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
@@ -100,8 +84,6 @@ function checkInputValidation(element_id, element_name,pattern, min_length ) {
                 }
             }
         });
-
-
     }
 
     function formValidate(form_id) {
