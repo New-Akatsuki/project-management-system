@@ -26,6 +26,13 @@ function singleSelect(id, input_data){
         selectBtn.firstElementChild.innerText = selectedLi.innerText;
     }
 
+    window.addEventListener('click', (e) => {
+        if (!selectBtn.contains(e.target)){
+            wrapper.classList.remove('active')
+        }
+    });
+
+
     searchInp.addEventListener("keyup", () => {
         let arr = [];
         let searchWord = searchInp.value.toLowerCase();
@@ -52,7 +59,7 @@ function init(id){
         <span>Select</span>
         <i class="uil uil-angle-down"></i>
         </div>
-        <div class="s-content">
+        <div class="container s-content">
         <div class="search d-flex gap-2">
             <i class="uil uil-search"></i>
             <input spellcheck="false" type="text" placeholder="Search">

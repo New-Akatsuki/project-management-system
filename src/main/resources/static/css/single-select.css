@@ -16,6 +16,7 @@
 .s-wrapper {
     border: 1px solid #ccc;
     border-radius: 5px;
+    position: relative;
 }
 .flex-1{
     flex: 1;
@@ -45,10 +46,14 @@
 .s-content {
     display: none;
     padding: 10px; /* Adjusted padding */
-    margin-top: 10px; /* Adjusted margin-top */
     background: #fff;
-    border-radius: 7px;
-
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    border: 1px solid #ccc;
+}
+.s-content>*{
+    z-index: 1;
 }
 
 .s-wrapper.active .s-content {
@@ -93,7 +98,7 @@
     margin-top: 5px; /* Adjusted margin-top */
     max-height: 150px; /* Adjusted max-height */
     overflow-y: auto;
-    padding-right: 7px;
+    padding-left: 19px!important;
 }
 
 .options::-webkit-scrollbar {
