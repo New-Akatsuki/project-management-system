@@ -7,8 +7,6 @@
     <title>Dashboard - NiceAdmin Bootstrap Template</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-
-
     <link href="/css/single-select.css" rel="stylesheet"/>
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -30,45 +28,14 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- Template Main CSS File -->
-    
-<!--    multi-select css link-->
+    <!--    multi-select css link-->
     <link rel="stylesheet" href="/css/multi-selection.css">
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <style>
-        .card-container {
-            margin: 20px; /* Adjust the margin value as needed */
-        }
-
-        /* Adjusting the width of the editor container */
-        .ql-container {
-            width: 100%; /* Set the desired width percentage or any other value */
-            margin: 0;
-            border-radius: 0 0 5px 5px;
-            overflow: hidden;
-        }
-
-        .round-full-border {
-            border: 1px solid #bad1e5 !important;
-            border-radius: 5px;
-        }
-
-        /*.ql-editor{*/
-        /*    border: 1px solid #9a9a9a;*/
-        /*    border-radius: 5px;*/
-        /*}*/
-
-        .ql-toolbar {
-            border-radius: 5px 5px 0 0;
-            width: 100%; /* Set the desired width percentage or any other value */
-            margin: 0;
-            display: none;
-        }
-
-    </style>
 
     <link href="/css/style.css" rel="stylesheet"/>
 
@@ -89,8 +56,10 @@
         </ol>
     </nav>
     <!-- End Page Title -->
-    <div class="card">
-        <div class="card-container">
+    <div class="card" style="border-radius: 10px;">
+        <div class="card-body" style="padding: 20px;">
+            <div class="container">
+
 
             <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
             <br>
@@ -101,19 +70,19 @@
                     <div class="flex-1">
                         <div>
                             <label for="issue_id">Issue Id</label>
-                            <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id"/>
+                            <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id" th:required="true"/>
                         </div>
                     </div>
                     <div class="flex-1">
                         <div>
                             <label>Title</label>
-                            <input class="form-control" th:type="text" th:name="title" th:id="title"/>
+                            <input class="form-control" th:type="text" th:name="title" th:id="title" th:required="true"/>
                         </div>
                     </div>
                     <div class="flex-1">
                         <div>
                             <label>Date</label>
-                            <input class="form-control" th:type="text" th:name="date" th:id="datepicker1"/>
+                            <input class="form-control" th:type="text" th:name="date" th:id="datepicker1" th:required="true"/>
                         </div>
                     </div>
                 </div>
@@ -151,38 +120,38 @@
 
                 <!-- combo-box end -->
 
-<div class="container">
-                <div>
-                    <label for="content">Content</label>
+                <div class="container">
+                    <div>
+                        <label for="content">Content</label>
+                    </div>
+                    <div id="content"></div>
+                    <br>
+                    <div>
+                        <label for="res-party">Responsible Party</label>
+                    </div>
+                    <div id="res-party"></div>
+                    <br>
+                    <div>
+                        <label for="dir-cause">Direct Cause</label>
+                    </div>
+                    <div id="dir-cause"></div>
+                    <br>
+                    <div>
+                        <label for="root-cause">Root Cause</label>
+                    </div>
+                    <div id="root-cause"></div>
+                    <br>
+                    <input type="hidden" name="content" id="contentInput">
+                    <input type="hidden" name="res_party" id="resPartyInput">
+                    <input type="hidden" name="dir_cause" id="dirCauseInput">
+                    <input type="hidden" name="root_cause" id="rootCauseInput">
                 </div>
-                <div id="content"></div>
-                <br>
-                <div>
-                    <label for="res-party">Responsible Party</label>
+                <div style="text-align:right;">
+                    <a th:href="@{/display_issue}" class="btn btn-primary">Create</a>
                 </div>
-                <div id="res-party"></div>
-                <br>
-                <div>
-                    <label for="dir-cause">Direct Cause</label>
-                </div>
-                <div id="dir-cause"></div>
-                <br>
-                <div>
-                    <label for="root-cause">Root Cause</label>
-                </div>
-                <div id="root-cause"></div>
-                <br>
-                <input type="hidden" name="content" id="contentInput">
-                <input type="hidden" name="res_party" id="resPartyInput">
-                <input type="hidden" name="dir_cause" id="dirCauseInput">
-                <input type="hidden" name="root_cause" id="rootCauseInput">
-                <div>
-                    <button type="submit" class="btn btn-primary">Solve Issue</button>
-                    <button class="btn btn-danger">Cancel</button>
-                </div>
-</div>
             </form>
         </div>
+    </div>
     </div>
     <!-- End Card -->
 </main>
@@ -198,6 +167,7 @@
 <script src="/js/main.js"></script>
 <script th:src="@{/js/single-select.js}"></script>
 <script th:src="@{/js/text-editor.js}"></script>
+
 <script>
     let quillContent = new Quill("#content", aa);
     let quillResParty = new Quill("#res-party", aa);
@@ -212,53 +182,7 @@
         document.getElementById('rootCauseInput').value = quillRootCause.root.innerHTML;
     }
 
-    function toggleToolbar(index, editor_id) {
-        const containers = document.querySelectorAll('.ql-container');
-        const toolbars = document.querySelectorAll('.ql-toolbar');
-        const textEditorContainer = document.getElementById(editor_id);
 
-        const showToolbar = () => {
-            toolbars[index].style.display = 'block';
-            toolbars[index].style.border = '1px solid #ccc';
-            containers[index].classList.remove('round-full-border');
-        };
-
-        const hideToolbar = () => {
-            toolbars[index].style.display = 'none';
-            containers[index].classList.add('round-full-border');
-        };
-
-        const hidePreviousToolbars = () => {
-            toolbars.forEach((toolbar, i) => {
-                if (i !== index) {
-                    toolbar.style.display = 'none';
-                    containers[i].classList.add('round-full-border');
-                }
-            });
-        };
-
-        textEditorContainer.addEventListener('click', (event) => {
-            console.log('clicked text editor');
-            hidePreviousToolbars();
-            showToolbar();
-            event.stopPropagation(); // Prevent the event from reaching the document click handler immediately
-        });
-
-        document.addEventListener('click', (event) => {
-            // Check if the clicked element is outside the text editor and toolbar
-            if (!textEditorContainer.contains(event.target) && !toolbars[index].contains(event.target)) {
-                hideToolbar();
-            }
-        });
-
-        // Update hidden inputs or perform other actions when clicking inside the text editor
-        document.addEventListener('click', updateHiddenInputs);
-
-        // If you want to stop propagation when clicking inside the toolbar
-        toolbars[index].addEventListener('click', (event) => {
-            event.stopPropagation();
-        });
-    }
 
 
     //document element ready
@@ -297,6 +221,5 @@
     const issue_place_wrapperUpdateName = singleSelect(id1, data1);
     const issue_pic_wrapperUpdateName = singleSelect(id2, data2);
 </script>
-
 </body>
 </html>

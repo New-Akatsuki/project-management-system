@@ -39,10 +39,11 @@
         <li class="nav-item">
             <a class="nav-link" th:href="@{/}">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>Home</span>
             </a>
         </li>
         <!-- End Dashboard Nav -->
+
 
         <li class="nav-item">
             <a
@@ -51,7 +52,7 @@
                     data-bs-toggle="collapse"
                     href="#"
             >
-                <i class="bi bi-journals"></i><span>Courses</span
+                <i class="bi bi-journals"></i><span>Project</span
             ><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul
@@ -60,77 +61,75 @@
                     data-bs-parent="#sidebar-nav"
             >
                 <li>
-                    <a th:href="@{/course/add}">
-                        <i class="bi bi-circle"></i><span>Add Course</span>
+                    <a th:href="@{/createproject}">
+                        <i class="bi bi-circle"></i><span>Add Project</span>
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/course/list}">
-                        <i class="bi bi-circle"></i><span>Courses List</span>
+                    <a th:href="@{/projectlist}">
+                        <i class="bi bi-circle"></i><span>Project List</span>
                     </a>
                 </li>
-
             </ul>
         </li>
         <!-- End Course Nav-->
 
+
         <li class="nav-item">
             <a
                     class="nav-link collapsed"
-                    data-bs-target="#students-nav"
+                    data-bs-target="#users-nav"
                     data-bs-toggle="collapse"
                     href="#"
             >
-                <i class="bi bi-person-vcard"></i><span>Students</span
+                <i class="bi bi-person-video3"></i><span>Users</span
             ><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul
-                    id="students-nav"
+                    id="users-nav"
                     class="nav-content collapse"
                     data-bs-parent="#sidebar-nav"
             >
                 <li>
-                    <a th:href="@{/student/add}">
-                        <i class="bi bi-circle"></i><span>Add Student</span>
+                    <a th:href="@{/user/add}">
+                        <i class="bi bi-circle"></i><span>Add User</span>
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/student/list}">
-                        <i class="bi bi-circle"></i><span>Students List</span>
+                    <a th:href="@{/userlist}">
+                        <i class="bi bi-circle"></i><span>Users List</span>
                     </a>
                 </li>
             </ul>
         </li>
-        <!-- End Student Nav-->
+        <!-- End User Nav-->
 
-<!--        <li class="nav-item">-->
-<!--            <a-->
-<!--                    class="nav-link collapsed"-->
-<!--                    data-bs-target="#users-nav"-->
-<!--                    data-bs-toggle="collapse"-->
-<!--                    href="#"-->
-<!--            >-->
-<!--                <i class="bi bi-person-video3"></i><span>Users</span-->
-<!--            ><i class="bi bi-chevron-down ms-auto"></i>-->
-<!--            </a>-->
-<!--            <ul-->
-<!--                    id="users-nav"-->
-<!--                    class="nav-content collapse"-->
-<!--                    data-bs-parent="#sidebar-nav"-->
-<!--            >-->
-<!--                <li>-->
-<!--                    <a th:href="@{/user/add}">-->
-<!--                        <i class="bi bi-circle"></i><span>Add User</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a th:href="@{/user/list}">-->
-<!--                        <i class="bi bi-circle"></i><span>Users List</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </li>-->
-<!--        &lt;!&ndash; End User Nav&ndash;&gt;-->
+
+        <li class="nav-item">
+            <a
+                    class="nav-link collapsed"
+                    data-bs-target="#report-nav"
+                    data-bs-toggle="collapse"
+                    href="#"
+            >
+                <i class="bi bi-receipt"></i><span>Report</span
+            ><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul
+                    id="report-nav"
+                    class="nav-content collapse"
+                    data-bs-parent="#sidebar-nav"
+            >
+
+                <li>
+                    <a th:href="@{/user/list}">
+                        <i class="bi bi-circle"></i><span>Report List</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- End Report Nav-->
+
 
         <li class="nav-item">
             <a
@@ -139,7 +138,7 @@
                     data-bs-toggle="collapse"
                     href="#"
             >
-                <i class="bi-person-video3"></i><span>Issue</span
+                <i class="bi bi-info-circle"></i><span>Issues</span
             ><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul
@@ -147,29 +146,21 @@
                     class="nav-content collapse"
                     data-bs-parent="#sidebar-nav"
             >
+
                 <li>
                     <a th:href="@{/issue1}">
-                        <i class="bi bi-circle"></i><span>Issue Page</span>
+                        <i class="bi bi-circle"></i><span>Issues List</span>
                     </a>
-                </li>
-                <li>
                     <a th:href="@{/issue2}">
-                        <i class="bi bi-circle"></i><span>Create Issue Page</span>
+                        <i class="bi bi-circle"></i><span>Create Issue</span>
                     </a>
-                </li>
-                <li>
-                    <a th:href="@{/issue3}">
-                        <i class="bi bi-circle"></i><span>Solve Issue Page</span>
-                    </a>
-                </li>
-                <li>
                     <a th:href="@{/display_issue}">
                         <i class="bi bi-circle"></i><span>Display Issue</span>
                     </a>
                 </li>
             </ul>
         </li>
-        <!-- End User Nav-->
+        <!-- End Student Nav-->
     </ul>
 </aside>
 <!-- End Sidebar-->

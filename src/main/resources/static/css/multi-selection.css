@@ -41,7 +41,7 @@
     flex:1;
     background: transparent;
     border-radius: 0.25rem;
-    padding: 0.45rem;
+    padding: 20px;
     margin-top: 10px;
     margin-inline: 10px;
     color: #2d3748;
@@ -145,9 +145,14 @@
     display: none;
 }
 
-.mult-select-tag .shadow  {
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+.mult-select-tag.shadow {
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 }
+
 
 .mult-select-tag .rounded {
     border-radius: .375rem;
