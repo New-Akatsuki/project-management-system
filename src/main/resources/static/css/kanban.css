@@ -11,56 +11,20 @@
     clear: both;
     overflow-x: auto;
 }
-.cd_kanban_board > .cd_kanban_board_titles{
-    margin:0px;
-    padding:0px;
-    display: flex;
-    clear: both;
-}
-.cd_kanban_board > .cd_kanban_board_titles:after{
-    content: '';
-    display: block;
-    clear: both;
-}
-.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title{
-    margin:0 10px 0 0;
-    padding: 1rem;
-    color: #FFF;
-    position: relative;
-    flex: 1;
-}
-.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:before{
-    width: 80%;
-    height: 100%;
-    background: #343a40;
-    display: block;
-    clear: both;
-    position: absolute;
-    top:0px;
-    left:0px;
-    content: "";
-}
-.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title p{
-    position: relative;
-    z-index: 10;
-    margin: 0px;
-}
-.cd_kanban_board > .cd_kanban_board_titles .cd_kanban_board_title:last-child{
-    margin: 0px;
-}
+
 .cd_kanban_board > .cd_kanban_board_blocks{
-    margin:0px;
-    padding:0px;
-    display: flex;
-    clear: both;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 400px));
+    grid-template-rows: 100%;
+    gap: 15px;
+    padding: 0 15px;
 }
 .cd_kanban_board > .cd_kanban_board_blocks:after{
     content: '';
     display: block;
     clear: both;
 }
-.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block{
-    height: 70%;
+.cd_kanban_board > .cd_kanban_board_blocks .kb-section{
     margin:10px 10px 10px 0;
     padding: 1rem;
     flex: 1;
@@ -95,7 +59,7 @@
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_title{
     margin: 0 0 0.25rem;
     padding: 0 0 0 20px;
-    background: url("/images/dragger.png") 0px 0px no-repeat;
+    background: url("/static/images/dragger.png") 0px 0px no-repeat;
     font-size: 1rem !important;
     line-height: 1rem;
     font-weight: bold;
@@ -118,10 +82,234 @@
     border-top: 1px solid #c0c2cd;
 }
 
-.card-width{
-    min-width: 300px;
-    overflow-x: scroll;
+
+
+/*
+    ---------------------------
+    kanban board
+    ---------------------------
+*/
+
+.kb-section{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-.card-height{
+
+.kb-section-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #c0c2cd;
+}
+
+.kb-section-header-name{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.kb-section-header-btn {
+    border: 1px solid black;
+    border-radius: 30%;
+    background: black;
+    color: white;
+}
+
+.kb-section-body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5rem;
+    margin-top: 20px;
+}
+
+.kb-task {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px dashed #000;
+}
+
+/* Styles for the task body layout */
+.kb-task-body-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+/* Styles for the task body layout 2 (containing due date and subtask) */
+.kb-task-body-layout2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 10px 0px;
+}
+
+/* Styles for the task name */
+.kb-task-name-layout {
+    flex: 1;
+    margin-right: 10px; /* Add some spacing between the name and status */
+}
+
+/* Styles for the task name text */
+.kb-task-name {
+    font-weight: bold;
+}
+
+/* Styles for the status layout (icon) */
+.kb-task-status-layout {
+    /* Add any additional styles for the status icon here */
+}
+
+/* Styles for the due date and subtask layout */
+.kb-task-due-date-layout,
+.kb-task-subtask-layout {
+    display: flex;
+    align-items: center;
+}
+
+/* Styles for the due date text */
+.kb-task-due-date {
+    margin-right: 10px; /* Add spacing between due date and subtask */
+}
+
+
+/* CSS for subtask layout */
+
+/*.kb-task.active .kb-subtask-body {*/
+/*    display: block;*/
+/*}*/
+
+.kb-subtask-body {
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+.kb-subtask-name {
+    font-weight: bold;
+}
+.kb-subtask-status-layout,
+.kb-subtask-name-layout,
+.kb-subtask-due-date-layout {
+    display: inline-block;
+    margin-right: 10px;
+}
+/* Move subtask due date to the right corner */
+.kb-subtask-due-date-layout {
+    margin-right: 0;
+    padding-left: 130px;
+}
+
+
+
+/* Modal Styles */
+
+
+.modal-content {
+    border-radius: 10px; /* Rounded corners for the modal */
     height: 100%;
+    overflow-y: auto;
 }
+
+.modal-header {
+    background-color: #343a40; /* Change the header background color */
+    color: white; /* Text color in the header */
+    border: none; /* Remove the header border */
+}
+
+.modal.right .modal-dialog {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off the screen to the right */
+    bottom: 0;
+    margin: 0;
+    width: 50%; /* Adjust the width to your preference */
+    max-width: 100%;
+    transition: right 0.3s ease; /* Add a transition for sliding in */
+}
+
+.modal.right .modal-dialog .modal-body {
+    max-height: 97vh; /* Set a maximum height with respect to the viewport height */
+    overflow-y: auto; /* Add a vertical scrollbar if needed */
+}
+
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.right.show .modal-dialog {
+    right: 0; /* Slide in from the right when modal is shown */
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* Label Styles */
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Button Styles */
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+}
+.modal-footer .btn-primary {
+    background-color: #007bff; /
+}
+
+.close {
+    color: #fff;
+    font-size: 25px;
+}
+
+.modal-body {
+    overflow-y: auto;
+}
+
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100% - 60px);
+}
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        max-width: 600px;
+    }
+}
+
+
+

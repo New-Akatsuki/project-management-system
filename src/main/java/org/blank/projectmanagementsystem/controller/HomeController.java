@@ -14,4 +14,11 @@ public class HomeController {
     public String taskBoard(){
         return "board";
     }
+
+    @GetMapping("/kan-ban")
+    public String kabBan(){
+        return "test";
+    }
+
+
 }
