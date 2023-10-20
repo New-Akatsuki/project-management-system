@@ -680,7 +680,7 @@ h6 {
   font-size: 15px;
   font-weight: 600;
   color: #4154f1;
-  transition: 0.3;
+  transition: 0.3s;
   background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
@@ -1287,3 +1287,48 @@ h6 {
 .float-in {
   animation: floatIn 2s linear 0s 1 normal forwards;
 }
+
+.mult-select-tag .rounded{
+  border-radius: 5px!important;
+}
+
+.icon-add-btn{
+  background: dodgerblue;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+.icon-add-btn:hover{
+  cursor: pointer;
+  background: #1f79d2;
+  color: white;
+}
+
+.custom-combobox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-combobox>input{
+  width: 100%;
+  border-radius: 5px;
+}
+
+.custom-combobox-toggle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin-left: -1px;
+  padding: 0;
+}
+
+.custom-combobox-input {
+  margin: 0;
+  padding-top: 2px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+
+

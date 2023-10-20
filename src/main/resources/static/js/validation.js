@@ -3,9 +3,6 @@ function checkInputValidation(element_id, element_name,pattern, min_length ) {
     const msg_div = document.getElementById(`${element_id}_error`);
     const patternMismatchMsg = element_id === "email" ? "Please enter a valid email address." : `Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`;
 
-
-
-
     if (!element_id) {
         return;
     }
@@ -51,7 +48,6 @@ function checkInputValidation(element_id, element_name,pattern, min_length ) {
             msg_div.textContent = "";
         }
     });
-
 
     return {
         element: nameInput,
