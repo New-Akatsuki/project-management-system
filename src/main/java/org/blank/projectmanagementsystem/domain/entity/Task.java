@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 import org.blank.projectmanagementsystem.domain.Enum.TaskType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,12 +26,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, length = 25)
     private String name;
 
-    @Column(nullable = true, length = 500)
+    @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
@@ -42,13 +45,13 @@ public class Task implements Serializable {
     private Date dueDate;
 
     @Column(nullable = false)
-    private float planHours;
+    private Float planHours;
 
     @Column(nullable = true)
     private Date actualDueDate;
 
     @Column(nullable = true)
-    private float actualHours;
+    private Float actualHours;
 
     @Column(nullable = false)
     private boolean status = false;
@@ -62,7 +65,7 @@ public class Task implements Serializable {
     private TaskType type = TaskType.TASK;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private Project project;
 
     @ManyToMany
@@ -74,5 +77,6 @@ public class Task implements Serializable {
     private Set<User> assignees;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task parentTask;
 }

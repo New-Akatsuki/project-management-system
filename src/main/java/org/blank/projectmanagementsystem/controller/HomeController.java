@@ -33,6 +33,10 @@ public class HomeController {
         return "test";
     }
 
+    @GetMapping("/gantt")
+    public String gantt(){
+        return "gantt-chart";
+    }
 
     @GetMapping("/display_issue")
     public String issue_display(){
