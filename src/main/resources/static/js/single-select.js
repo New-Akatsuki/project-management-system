@@ -4,10 +4,6 @@ function singleSelect(id, input_data){
         searchInp = wrapper.querySelector(`#${id} input`),
         options = wrapper.querySelector(`#${id} .options`);
     const data = Array.isArray(input_data) ? input_data : [input_data];
-    console.log(wrapper)
-    console.log(selectBtn)
-    console.log(searchInp)
-    console.log(options)
     addCountry(options);
 
     function addCountry(selectedItem) {
@@ -50,13 +46,13 @@ function singleSelect(id, input_data){
     return updateName;
 }
 
-function init(id){
+function init(id,placeholder){
     const container = document.getElementById(id);
 
     let item = `
-        <div id="${id}_wrapper" class="s-wrapper col-12">
-        <div class="select-btn col-12">
-        <span>Select</span>
+        <div id="${id}_wrapper" class="s-wrapper form-control">
+        <div class="select-btn">
+        <span class="p-0 m-0">${placeholder||'Select '+id}</span>
         <i class="uil uil-angle-down"></i>
         </div>
         <div class="container s-content">

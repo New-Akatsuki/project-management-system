@@ -35,6 +35,16 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
                 drawer.classList.add('hidden')
             }
         })
+        inputContainer.addEventListener('click', () => {
+            if(drawer.classList.contains('hidden')) {
+                initOptions()
+                enableItemSelection()
+                drawer.classList.remove('hidden')
+                input.focus()
+            }else{
+                drawer.classList.add('hidden')
+            }
+        })
 
 
         input.addEventListener('keyup', (e) => {
@@ -95,6 +105,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
 
         inputBody = document.createElement('inputBody')
         inputBody.classList.add('input-body')
+        inputBody.innerHTML =``;
         inputBody.append(input)
 
         body.append(inputContainer)

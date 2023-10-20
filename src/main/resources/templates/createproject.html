@@ -8,12 +8,7 @@
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
     <!-- Bootstrap CSS for modal box -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap JS and Popper.js for Modal Box -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
     <!-- Google Fonts -->
@@ -24,7 +19,11 @@
     />
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 
     <link
             th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
@@ -67,30 +66,6 @@
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
 
-    <style>
-        #datepicker1,
-        #datepicker {
-            display: inline-block;
-            padding: 14px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        #datepicker2,
-        #datepicker {
-            display: inline-block;
-            padding: 14px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-
-    </style>
-
 </head>
 
 <body>
@@ -124,7 +99,7 @@
                         </div>
                         <div class="card-body">
 
-                            <form id="form-wizard1" class="mt-3 text-centerneeds-validation" novalidate>
+                            <form id="form-wizard1" class="mt-3 text-center needs-validation" novalidate>
                                 <ul id="top-tab-list" class="p-0 row list-inline">
                                     <li class="mb-2 col-lg-3 col-md-6 text-start active" id="account">
                                         <a href="">
@@ -213,8 +188,8 @@
                                             <div class="col-md-6">
 
                                                 <div class="form-group">
-                                                    <label for="name">Name </label>
-                                                    <input type="text" class="form-control" id="name" name="name"
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter project name"
                                                            required minlength="3" maxlength="25">
                                                     <div class="invalid-feedback" id="name_error">
                                                     </div>
@@ -223,8 +198,9 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="form-label">Start Date *</label>
-                                                    <input type="text" id="datepicker1" placeholder="Start date"/>
+                                                    <label for="start-date" class="form-label d-block">Start Date</label>
+                                                    <input class="datepicker-style form-control" type="text" id="start-date" placeholder="Enter start date"/>
+                                                    <div class="invalid-feedback" id="start-date_error"></div>
                                                 </div>
                                             </div>
 
@@ -239,8 +215,9 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="form-label">End Date *</label>
-                                                    <input type="text" id="datepicker2" placeholder="End date"/>
+                                                    <label for="end-date" class="form-label d-block">End Date</label>
+                                                    <input class="datepicker-style form-control" type="text" id="end-date" placeholder="Enter end date"/>
+                                                    <div class="invalid-feedback" id="end-date_error"></div>
                                                 </div>
                                             </div>
 
@@ -277,9 +254,9 @@
                                             </div>
 
                                             <div>
-                                                <label for="so">System Outline</label>
+                                                <label for="so" class="form-label">System Outline</label>
 
-                                                <div class="d-flex gap-2 align-items-center">
+                                                <div class="d-flex gap-2">
                                                     <select class="form-control" name="so" id="so" multiple required>
                                                         <option value="1">Afghanistan</option>
                                                         <option value="2">Australia</option>
@@ -296,9 +273,8 @@
                                             </div>
 
                                             <div>
-                                                <label for="so">Architecture Outline</label>
-
-                                                <div class="d-flex gap-2 align-items-center">
+                                                <label for="ao" class="form-label">Architecture Outline</label>
+                                                <div class="d-flex gap-2">
                                                     <select class="form-control" name="ao" id="ao" multiple required>
                                                         <option value="1">Afghanistan</option>
                                                         <option value="2">Australia</option>
@@ -309,8 +285,6 @@
                                                         <a id="addArchitectureOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addArchitectureOutlineModal">
                                                             <i class='bx bx-plus m-0 p-0'></i>
                                                         </a>
-
-                                                    </a>
                                                 </div>
                                                 <div class="invalid-feedback" id="ao_error"></div>
                                             </div>
@@ -338,7 +312,7 @@
                                         </div>
                                         <div class="d-grid grid-cols--1 grid-cols--md-2 gap-2">
                                             <div>
-                                                <label for="member">Add Member</label>
+                                                <label for="member" class="form-label">Add Member</label>
 
                                                 <div class="d-flex gap-2 align-items-center">
                                                     <select class="form-control" name="member" id="member" multiple
@@ -355,7 +329,7 @@
 
 
                                             <div>
-                                                <label for="member">Add FOC Member</label>
+                                                <label for="focmember" class="form-label">Add FOC Member</label>
 
                                                 <div class="d-flex gap-2 align-items-center">
                                                     <select class="form-control" name="member" id="focmember" multiple
@@ -371,11 +345,8 @@
                                                 <div class="invalid-feedback" id="focmember_error"></div>
                                             </div>
                                             <div>
-                                                <div>
-                                                    <label for="client">Client</label>
-                                                </div>
-
-                                                <div class="d-flex align-items-center gap-2">
+                                                <label for="client" class="form-label">Client</label>
+                                                <div class="d-flex gap-2">
                                                     <div id="client" class="w-100"></div>
                                                     <a id="addClientButton" class="icon-add-btn" data-toggle="modal" data-target="#addMemberModal">
                                                         <i class='bx bx-plus m-0 p-0'></i>
@@ -384,9 +355,8 @@
                                             </div>
 
                                             <div>
-                                                <label for="so">Deliverables</label>
-
-                                                <div class="d-flex gap-2 align-items-center">
+                                                <label for="deli" class="form-label">Deliverables</label>
+                                                <div class="d-flex gap-2">
                                                     <select class="form-control" name="ao" id="deli" multiple required>
                                                         <option value="1">Afghanistan</option>
                                                         <option value="2">Australia</option>
@@ -590,7 +560,6 @@
 
 <!-- Template Main JS File -->
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{js/combobox.js}"></script>
 <script th:src="@{/js/form-wizard.js}"></script>
 <script th:src="@{/js/validation.js}"></script>
 <script th:src="@{/js/single-select.js}"></script>
@@ -606,26 +575,29 @@
 </script>
 <script>
     $(document).ready(function () {
-        $("#datepicker1").datepicker({
-            dateFormat: "dd/mm/yy",
+        $("#start-date").datepicker({
+            dateFormat: "yy-mm-dd",
             showOtherMonths: true,
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
+            onSelect: (dateText, inst)=>$('#start-date').val(dateText).trigger('change'),
         });
 
-        $("#datepicker2").datepicker({
-            dateFormat: "dd/mm/yy",
+        $("#end-date").datepicker({
+            dateFormat: "yy-mm-dd",
             showOtherMonths: true,
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
+            onSelect: (dateText, inst)=>$('#end-date').val(dateText).trigger('change'),
         });
 
         //check name input
-        checkInputValidation("name", "Name", 3, 25);
-        checkInputValidation("bg", "Background", 10);
-        checkInputValidation("obj", "Objective", 10);
+        checkInputValidation("name", "Name",null, 3);
+        checkInputValidation("bg", "Background",null, 10);
+        checkInputValidation("obj", "Objective",null, 10);
+        checkDatesValidation("start-date","end-date");
         //form validate
         formValidate("form-wizard1")
 

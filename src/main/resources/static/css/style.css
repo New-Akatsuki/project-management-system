@@ -1297,11 +1297,12 @@ h6 {
 }
 
 .icon-add-btn{
+  height: 41px;
   background: dodgerblue;
   border-radius: 5px;
   color: white;
   text-decoration: none;
-  padding: 10px 20px;
+  padding-inline: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1310,6 +1311,14 @@ h6 {
   cursor: pointer;
   background: #1f79d2;
   color: white;
+}
+
+.datepicker-style{
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 
