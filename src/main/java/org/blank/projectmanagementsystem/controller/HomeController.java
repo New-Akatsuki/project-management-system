@@ -24,10 +24,6 @@ public class HomeController {
         return "create_issue_page";
     }
 
-    @GetMapping("/issue3")
-    public String issue3(){
-        return "pic_issue_page";
-    }
 
     @GetMapping("/display_issue")
     public String issue_display(){

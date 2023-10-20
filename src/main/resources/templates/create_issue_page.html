@@ -28,7 +28,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- Template Main CSS File -->
-    <!--    multi-select css link-->
+    <!-- multi-select css link -->
     <link rel="stylesheet" href="/css/multi-selection.css">
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -38,13 +38,26 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
 
     <link href="/css/style.css" rel="stylesheet"/>
+<style>
+    .error-message {
+        color: red;
+    }
 
+    #submitButton:disabled {
+        background-color: gray;
+    }
+
+    #submitButton:enabled {
+        background-color: green;
+        color: white;
+    }
+</style>
 </head>
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <!-- Start #main -->
 <main id="main" class="main">
@@ -59,99 +72,103 @@
     <div class="card" style="border-radius: 10px;">
         <div class="card-body" style="padding: 20px;">
             <div class="container">
-
-
-            <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
-            <br>
-            <div th:name="issue_title" th:id="issue_title"></div>
-            <div th:name="issue_content" th:id="issue_content"></div>
-            <form th:action="@{/save}" method="post" th:object="${model}">
-                <div class="container d-flex flex-column flex-md-row gap-2">
-                    <div class="flex-1">
-                        <div>
-                            <label for="issue_id">Issue Id</label>
-                            <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id" th:required="true"/>
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <div>
-                            <label>Title</label>
-                            <input class="form-control" th:type="text" th:name="title" th:id="title" th:required="true"/>
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <div>
-                            <label>Date</label>
-                            <input class="form-control" th:type="text" th:name="date" th:id="datepicker1" th:required="true"/>
-                        </div>
-                    </div>
-                </div>
+                <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
                 <br>
-                <!--combobox start-->
-
-                <div class="container d-flex flex-column flex-md-row gap-2">
-                    <div class="flex-1">
-                        <div>
-                            <label for="issue_category">Category</label>
+                <div th:name="issue_title" th:id="issue_title"></div>
+                <div th:name="issue_content" th:id="issue_content"></div>
+                <form th:action="@{/save}" method="post" th:object="${model}" id="create-issue">
+                    <div class="container d-flex flex-column flex-md-row gap-2">
+                        <div class="flex-1">
+                            <div>
+                                <label for="issue_id">Issue Id</label>
+                                <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id"
+                                       th:required="true"/>
+                                <div id="issue_id_error" class="error-message"></div>
+                            </div>
                         </div>
-                        <div>
-                            <select id="issue_category" th:name="issue_category" multiple>
-                                <option value="communication">Communication</option>
-                                <option value="programming">Programming</option>
-                            </select>
+                        <div class="flex-1">
+                            <div>
+                                <label>Title</label>
+                                <input class="form-control" th:type="text" th:name="issue_title" th:id="title"
+                                       th:required="true"/>
+                                <div id="title_error" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div>
+                                <label>Date</label>
+                                <input class="form-control" th:type="text" th:name="date" th:id="date"
+                                       th:required="true"/>
+                                <div id="date_error" class="error-message"></div>
+                            </div>
                         </div>
                     </div>
+                    <br>
+                    <!--combobox start-->
 
-                    <div class="flex-1">
-                        <div>
-                            <label for="issue_place">Issue Place</label>
+                    <div class="container d-flex flex-column flex-md-row gap-2">
+                        <div class="flex-1">
+                            <div>
+                                <label for="issue_category">Category</label>
+                            </div>
+                            <div>
+                                <select id="issue_category" th:name="issue_category" multiple th:required="true">
+                                    <option value="communication">Communication</option>
+                                    <option value="programming">Programming</option>
+                                </select>
+                            </div>
                         </div>
-                        <div id="issue_place" class="w-100"></div>
-                    </div>
 
-                    <div class="flex-1">
-                        <div>
-                            <label for="issue_pic">Issue PIC</label>
+                        <div class="flex-1">
+                            <div>
+                                <label for="issue_place">Issue Place</label>
+                            </div>
+                            <div id="issue_place" class="w-100"></div>
                         </div>
-                        <div id="issue_pic"></div>
-                    </div>
-                </div>
-                <br>
 
-                <!-- combo-box end -->
+                        <div class="flex-1">
+                            <div>
+                                <label for="issue_pic">Issue PIC</label>
+                            </div>
+                            <div id="issue_pic"></div>
+                        </div>
+                    </div>
+                    <br>
 
-                <div class="container">
-                    <div>
-                        <label for="content">Content</label>
+                    <!-- combo-box end -->
+
+                    <div class="container">
+                        <div>
+                            <label for="content">Content</label>
+                        </div>
+                        <div id="content"></div>
+                        <br>
+                        <div>
+                            <label for="res-party">Responsible Party</label>
+                        </div>
+                        <div id="res-party"></div>
+                        <br>
+                        <div>
+                            <label for="dir-cause">Direct Cause</label>
+                        </div>
+                        <div id="dir-cause"></div>
+                        <br>
+                        <div>
+                            <label for="root-cause">Root Cause</label>
+                        </div>
+                        <div id="root-cause"></div>
+                        <br>
+                        <input type="hidden" name="content" id="contentInput">
+                        <input type="hidden" name="res_party" id="resPartyInput">
+                        <input type="hidden" name="dir_cause" id="dirCauseInput">
+                        <input type="hidden" name="root_cause" id="rootCauseInput">
                     </div>
-                    <div id="content"></div>
-                    <br>
-                    <div>
-                        <label for="res-party">Responsible Party</label>
+                    <div style="text-align:right;">
+                        <input type="submit" id="submitButton" value="Submit" disabled>
                     </div>
-                    <div id="res-party"></div>
-                    <br>
-                    <div>
-                        <label for="dir-cause">Direct Cause</label>
-                    </div>
-                    <div id="dir-cause"></div>
-                    <br>
-                    <div>
-                        <label for="root-cause">Root Cause</label>
-                    </div>
-                    <div id="root-cause"></div>
-                    <br>
-                    <input type="hidden" name="content" id="contentInput">
-                    <input type="hidden" name="res_party" id="resPartyInput">
-                    <input type="hidden" name="dir_cause" id="dirCauseInput">
-                    <input type="hidden" name="root_cause" id="rootCauseInput">
-                </div>
-                <div style="text-align:right;">
-                    <a th:href="@{/display_issue}" class="btn btn-primary">Create</a>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
     </div>
     <!-- End Card -->
 </main>
@@ -167,6 +184,7 @@
 <script src="/js/main.js"></script>
 <script th:src="@{/js/single-select.js}"></script>
 <script th:src="@{/js/text-editor.js}"></script>
+<script th:src="@{/js/issue-create-validation.js}"></script>
 
 <script>
     let quillContent = new Quill("#content", aa);
@@ -181,8 +199,6 @@
         document.getElementById('dirCauseInput').value = quillDirCause.root.innerHTML;
         document.getElementById('rootCauseInput').value = quillRootCause.root.innerHTML;
     }
-
-
 
 
     //document element ready
@@ -200,7 +216,7 @@
 </script>
 <script>
     $(document).ready(function () {
-        $("#datepicker1").datepicker({
+        $("#date").datepicker({
             dateFormat: "dd/mm/yy",
             showOtherMonths: true,
             selectOtherMonths: true,
