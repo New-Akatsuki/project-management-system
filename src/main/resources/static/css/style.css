@@ -1298,6 +1298,9 @@ h6 {
   color: white;
   text-decoration: none;
   padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .icon-add-btn:hover{
   cursor: pointer;

@@ -8,10 +8,10 @@
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS for modal box -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap JS and Popper.js -->
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -48,9 +48,10 @@
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
     <!-- Single Select -->
-    <link rel="stylesheet" href="/css/singleselect.css">
+    <link rel="stylesheet" href="/css/single-select.css">
 
-
+<!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
 
     <!-- Custom Css -->
@@ -63,9 +64,7 @@
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
     <!--    selectbox-->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
-
+    <link rel="stylesheet" href="/css/multiple-select.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
 
@@ -223,25 +222,6 @@
                                                 </div>
                                             </div>
 
-                                            <!--                                                <div class="col-md-6">-->
-
-                                            <!--                                                    <div class="form-group">-->
-                                            <!--                                                        <label for="email">Email </label>-->
-                                            <!--                                                        <input type="email" class="form-control" id="email" name="email" required>-->
-                                            <!--                                                        <div class="invalid-feedback" id="email_error">-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
-                                            <!--                                                <div class="col-md-6">-->
-
-                                            <!--                                                    <div class="form-group">-->
-                                            <!--                                                        <label for="password">Password </label>-->
-                                            <!--                                                        <input type="password" class="form-control" id="password" name="password"-->
-                                            <!--                                                               required minlength="3" maxlength="6">-->
-                                            <!--                                                        <div class="invalid-feedback" id="password_error">-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -254,8 +234,9 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label  class="form-label" for="department">Department</label>
+                                                    <div id="department" class="w-100"></div>
                                                 </div>
-                                                <div id="department" class="w-100"></div>
+
                                             </div>
 
 
@@ -299,32 +280,43 @@
                                             </div>
 
 
-
                                             <div>
                                                 <label for="so">System Outline</label>
-                                                <select class="form-control" name="so" id="so" multiple required>
-                                                    <option value="1">Afghanistan</option>
-                                                    <option value="2">Australia</option>
-                                                    <option value="3">Germany</option>
-                                                    <option value="4">Canada</option>
-                                                    <option value="5">Russia</option>
-                                                </select>
-                                                <div class="invalid-feedback" id="so_error">
+
+                                                <div class="d-flex gap-2 align-items-center">
+                                                    <select class="form-control" name="so" id="so" multiple required>
+                                                        <option value="1">Afghanistan</option>
+                                                        <option value="2">Australia</option>
+                                                        <option value="3">Germany</option>
+                                                        <option value="4">Canada</option>
+                                                        <option value="5">Russia</option>
+                                                    </select>
+                                                    <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+
                                                 </div>
+                                                <div class="invalid-feedback" id="so_error"></div>
                                             </div>
 
                                             <div>
-                                                <label for="ao">Architecture Outline</label>
-                                                <select class="form-control" name="ao" id="ao" multiple required>
-                                                    <option value="1">Afghanistan</option>
-                                                    <option value="2">Australia</option>
-                                                    <option value="3">Germany</option>
-                                                    <option value="4">Canada</option>
-                                                    <option value="5">Russia</option>
-                                                </select>
-                                                <div class="invalid-feedback" id="ao_error">
-                                                </div>
+                                                <label for="so">Architecture Outline</label>
 
+                                                <div class="d-flex gap-2 align-items-center">
+                                                    <select class="form-control" name="ao" id="ao" multiple required>
+                                                        <option value="1">Afghanistan</option>
+                                                        <option value="2">Australia</option>
+                                                        <option value="3">Germany</option>
+                                                        <option value="4">Canada</option>
+                                                        <option value="5">Russia</option>
+                                                    </select>
+                                                        <a id="addArchitectureOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addArchitectureOutlineModal">
+                                                            <i class='bx bx-plus m-0 p-0'></i>
+                                                        </a>
+
+                                                    </a>
+                                                </div>
+                                                <div class="invalid-feedback" id="ao_error"></div>
                                             </div>
                                             <div></div>
                                             <div>
@@ -361,10 +353,7 @@
                                                         <option value="4">Olivia</option>
                                                         <option value="5">Martin</option>
                                                     </select>
-                                                    <a id="addMemberButton" class="icon-add-btn"
-                                                       data-toggle="modal" data-target="#addMemberModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
+
                                                 </div>
                                                 <div class="invalid-feedback" id="member_error"></div>
                                             </div>
@@ -382,22 +371,45 @@
                                                         <option value="4">Olivia</option>
                                                         <option value="5">Martin</option>
                                                     </select>
-                                                    <a id="addfocMemberButton" class="icon-add-btn"
-                                                       data-toggle="modal" data-target="#addMemberModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
+
                                                 </div>
                                                 <div class="invalid-feedback" id="focmember_error"></div>
                                             </div>
-
                                             <div>
                                                 <div>
-                                                    <label for="issue_place">Client</label>
+                                                    <label for="client">Client</label>
                                                 </div>
-                                                <div id="issue_place" class="w-100"></div>
+
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div id="client" class="w-100"></div>
+                                                    <a id="addClientButton" class="icon-add-btn" data-toggle="modal" data-target="#addMemberModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+                                                </div>
                                             </div>
 
-                                            <div></div>
+                                            <div>
+                                                <label for="so">Deliverables</label>
+
+                                                <div class="d-flex gap-2 align-items-center">
+                                                    <select class="form-control" name="ao" id="deli" multiple required>
+                                                        <option value="1">Afghanistan</option>
+                                                        <option value="2">Australia</option>
+                                                        <option value="3">Germany</option>
+                                                        <option value="4">Canada</option>
+                                                        <option value="5">Russia</option>
+                                                    </select>
+                                                    <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+
+
+                                                    </a>
+                                                </div>
+                                                <div class="invalid-feedback" id="deli_error"></div>
+                                            </div>
+
+
                                             <div></div>
 
 
@@ -417,41 +429,7 @@
                                     </div>
 
                                     <!-- Bootstrap Modal -->
-                                    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addMemberModalLabel">Add New Client</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <!-- Add your form fields for adding a new member here -->
-<!--                                                    <form>-->
-<!--                                                        <div class="form-group">-->
-<!--                                                            <label for="clientName">Client Name</label>-->
-<!--                                                            <input type="text" class="form-control" id="clientName" placeholder="Enter client name">-->
-<!--                                                        </div>-->
-<!--                                                        <div class="form-group">-->
-<!--                                                            <label for="clientEmail">Email</label>-->
-<!--                                                            <input type="email" class="form-control" id="clientEmail" placeholder="Enter email">-->
-<!--                                                        </div>-->
-<!--                                                        <div class="form-group">-->
-<!--                                                            <label for="clientPhoneNumber">Phone Number</label>-->
-<!--                                                            <input type="tel" class="form-control" id="clientPhoneNumber" placeholder="Enter phone number">-->
-<!--                                                        </div>-->
-<!--                                                    </form>-->
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </fieldset>
+                                      </fieldset>
                                 <fieldset>
                                     <div class="form-card">
                                         <div class="row">
@@ -492,6 +470,120 @@
     <!-- End Main Content-->
 </main>
 <!-- End #main -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMemberModalLabel">Add New Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label for="clientName">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" placeholder="Enter client name">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" placeholder="Enter phone number">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSystemOutlineModalLabel">Add New System Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="systemOutlineName">Name</label>
+                        <input type="text" class="form-control" id="systemOutlineName" placeholder="Enter New System Outline">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addArchitectureOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addArchitectureOutlineModalLabel">Add New Architecture Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="architectureOutlineName">Name</label>
+                        <input type="text" class="form-control" id="architectureOutlineName" placeholder="Enter architecture outline name">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog" aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="deliverablesName">Deliverable Method</label>
+                        <input type="text" class="form-control" id="deliverablesName" placeholder="Enter new deliverables method">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -508,14 +600,15 @@
 <script th:src="@{js/combobox.js}"></script>
 <script th:src="@{/js/form-wizard.js}"></script>
 <script th:src="@{/js/validation.js}"></script>
-<script th:src="@{/js/singleselect.js}"></script>
+<script th:src="@{/js/single-select.js}"></script>
 <!--selectbox-->
-<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+<script src="/js/multi-select.js"></script>
 <script>
     new MultiSelectTag('so')
     new MultiSelectTag('ao')
     new MultiSelectTag('member')
-    new MultiSelectTag('focmember')// id
+    new MultiSelectTag('focmember')
+    new MultiSelectTag('deli')// id
 </script>
 <script>
     $(document).ready(function () {
@@ -549,11 +642,9 @@
 <!--Single Select-->
 <script>
     const data1 = ['mgmg', 'aungaung', 'tuntun']
-    const id1 = init("issue_place")
-    const issue_place_wrapperUpdateName = singleSelect(id1, data1);
-</script>
+    const id1 = init("client")
+    const client_wrapperUpdateName = singleSelect(id1, data1);
 
-<script>
     const data2 = ['ACE', 'DAT', 'Ace Plus']
     const id2 = init("department")
     const department_wrapperUpdateName = singleSelect(id2, data2);

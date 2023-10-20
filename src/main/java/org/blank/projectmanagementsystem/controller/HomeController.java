@@ -25,6 +25,11 @@ public class HomeController {
         return "userlist";
     }
 
+    @GetMapping("/projectdetail")
+    public String ProjectDetail(){
+        return "projectdetail";
+    }
+
 
 
 }
