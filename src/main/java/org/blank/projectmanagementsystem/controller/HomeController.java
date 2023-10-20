@@ -12,7 +12,6 @@ public class HomeController {
     public String index(){
         return "index";
     }
-
     @GetMapping("/issue1")
     public String issue1(){
         return "issue_page";
@@ -35,4 +34,61 @@ public class HomeController {
         System.out.println(model);
         return "issue_display_page";
     }
+    @GetMapping("/createproject")
+    public String CreateProject(){
+        return "createproject";
+    }
+
+    @GetMapping("/projectlist")
+    public String ProjectList(){
+        return "projectlist";
+    }
+
+    @GetMapping("/userlist")
+    public String UserList(){
+        return "userlist";
+    }
+
+    @GetMapping("/projectdetail")
+    public String ProjectDetail(){
+        return "projectdetail";
+    }
+
+    @GetMapping("/userview")
+    public String userview(){
+        return "userview";
+
+    }
+    @GetMapping("/adduser")
+    public String adduser(){
+        return "adduser";
+
+    }
+    @GetMapping("/userprofile")
+    public String userprofile(){
+        return "userprofile";
+
+    }
+
+    @GetMapping("/createproject")
+    public String createproject(){
+        return "createproject";
+
+    }
+
+    @GetMapping("/changepassword")
+    public String changepassword(){
+        return "changepassword";
+    }
+    @GetMapping("/defaultpassword")
+    public String defaultpassword(){
+        return "defaultpassword";
+    }
+    @GetMapping("developerpage")
+    public String developerpage(){
+        return "developerpage";
+    }
+
+    @GetMapping("validate")
+    public String validate(){return "validate";}
 }

@@ -680,7 +680,7 @@ h6 {
   font-size: 15px;
   font-weight: 600;
   color: #4154f1;
-  transition: 0.3;
+  transition: 0.3s;
   background: #f6f9ff;
   padding: 10px 15px;
   border-radius: 4px;
@@ -1292,3 +1292,24 @@ h6 {
   border: 1px solid #bad1e5 !important;
   border-radius: 5px!important;
 }
+.mult-select-tag .rounded{
+  border-radius: 5px!important;
+}
+
+.icon-add-btn{
+  background: dodgerblue;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon-add-btn:hover{
+  cursor: pointer;
+  background: #1f79d2;
+  color: white;
+}
+
+

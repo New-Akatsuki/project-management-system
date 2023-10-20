@@ -27,7 +27,6 @@ public class TaskTest {
         task.setParentTask(null);
         task.setPlanHours(12.4f);
         task.setActualDueDate(new Date());
-        task.setActualStartDate(new Date());
         task.setActualHours(10.5f);
         task.setSubtasks(new HashSet<>());
 
@@ -40,7 +39,6 @@ public class TaskTest {
                 .startDate(new Date())
                 .dueDate(new Date())
                 .planHours(10.5f)
-                .actualStartDate(new Date())
                 .actualDueDate(new Date())
                 .actualHours(8.5f)
                 .parentTask(null)
@@ -105,7 +103,6 @@ public void testGetParentTask() {
         anotherTask.setParentTask(null);
         anotherTask.setPlanHours(12.4f);
         anotherTask.setActualDueDate(new Date());
-        anotherTask.setActualStartDate(new Date());
         anotherTask.setActualHours(10.5f);
         anotherTask.setSubtasks(new HashSet<>());
 
@@ -117,7 +114,6 @@ public void testGetParentTask() {
                 .startDate(new Date())
                 .dueDate(new Date())
                 .planHours(10.5f)
-                .actualStartDate(new Date())
                 .actualDueDate(new Date())
                 .actualHours(8.5f)
                 .parentTask(null)
