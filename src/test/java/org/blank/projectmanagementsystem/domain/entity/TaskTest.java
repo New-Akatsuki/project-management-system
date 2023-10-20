@@ -28,7 +28,7 @@ public class TaskTest {
         task.setPlanHours(12.4f);
         task.setActualDueDate(new Date());
         task.setActualHours(10.5f);
-        task.setSubtasks(new HashSet<>());
+//        task.setSubtasks(new HashSet<>());
 
         // Initialize the task object using the builder pattern
         taskWithBuilder = Task.builder()
@@ -42,7 +42,7 @@ public class TaskTest {
                 .actualDueDate(new Date())
                 .actualHours(8.5f)
                 .parentTask(null)
-                .subtasks(new HashSet<>())
+//                .subtasks(new HashSet<>())
                 .build();
     }
 
@@ -104,7 +104,7 @@ public void testGetParentTask() {
         anotherTask.setPlanHours(12.4f);
         anotherTask.setActualDueDate(new Date());
         anotherTask.setActualHours(10.5f);
-        anotherTask.setSubtasks(new HashSet<>());
+//        anotherTask.setSubtasks(new HashSet<>());
 
         Task anotherTaskWithBuilder = Task.builder()
                 .id(2)
@@ -117,7 +117,7 @@ public void testGetParentTask() {
                 .actualDueDate(new Date())
                 .actualHours(8.5f)
                 .parentTask(null)
-                .subtasks(new HashSet<>())
+//                .subtasks(new HashSet<>())
                 .build();
 
         assertEquals(task, anotherTask);

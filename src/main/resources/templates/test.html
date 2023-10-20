@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Include jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include jQuery via CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include jQuery UI via CDN -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/kanban.css">
+    <script type="text/javascript" src="/js/kanban.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+<div class="m-3 p-3 border border-1">
+    <div id="kanban"> </div>
+</div>
+
+<div class="modal right fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="task-form">
+
+            <div class="modal-content">
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+                <div class="modal-body">
+                    <label for="task-name">Enter Task Name : </label>
+                    <input type="text" id="task-name" placeholder="Name" required>
+                    <label for="task-description">Enter Description : </label>
+                    <textarea id="task-description" placeholder="Description"></textarea>
+                    <label for="task-priority">Select Your Priority : </label>
+                    <select id="task-priority">
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    <label for="task-start-date">Enter Start Date : </label>
+                    <input type="date" id="task-start-date" placeholder="Start Date" required>
+                    <label for="task-end-date">Enter End Date : </label>
+                    <input type="date" id="task-end-date" placeholder="End Date" required>
+                    <label for="task-actual-due-date">Enter Actual Due Date : </label>
+                    <input type="date" id="task-actual-due-date" placeholder="Actual Due Date" required>
+                    <label for="task-plan-hours">Enter Plan Hours : </label>
+                    <input type="number" id="task-plan-hours" placeholder="Plan Hours" required>
+                    <label for="task-actual-hours">Enter Actual Hours : </label>
+                    <input type="number" id="task-actual-hours" placeholder="Actual Hours" required>
+                    <label for="task-status">Status</label>
+                    <input type="checkbox" id="task-status">
+                    <label for="task-assignees">Assignees</label>
+                    <select id="task-assignees">
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                    <label for="task-type">Group</label>
+                    <select id="task-type">
+                        <option value="task">Task</option>
+                        <option value="project">Project</option>
+                        <option value="milestone">Milestone</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#kanban').kanban({
+            phase: [
+                {id: 1, name: 'Backlog'},
+                {id: 2, name: 'To Do'},
+                {id: 3, name: 'In Progress'},
+                {id: 4, name: 'Done'},
+
+            ],
+            tasks: [
+                {
+                    id: 1,
+                    name: 'Task 1',
+                    description: 'This is task 1',
+                    priority: 'high',
+                    start_date: '2021-01-01',
+                    end_date: '2021-01-02',
+                    actual_due_date: '2021-01-02',
+                    plan_hours: 2,
+                    actual_hours: 1,
+                    status: 0,
+                    group: 'A',
+                    type: 'task',
+                    phase: 1,
+                    parent: null,
+                    assignees: [],
+                },
+                {
+                    id: 2,
+                    name: 'Task 2',
+                    description: 'This is task 1',
+                    priority: 'high',
+                    start_date: '2021-01-01',
+                    end_date: '2021-01-02',
+                    actual_due_date: '2021-01-02',
+                    plan_hours: 2,
+                    actual_hours: 1,
+                    status: 0,
+                    group: 'A',
+                    type: 'project',
+                    phase: 2,
+                    parent: null,
+                    assignees: [],
+                },
+                {
+                    id: 3,
+                    name: 'Task 3',
+                    description: 'This is task 1',
+                    priority: 'high',
+                    start_date: '2021-01-01',
+                    end_date: '2021-01-02',
+                    actual_due_date: '2021-01-02',
+                    plan_hours: 2,
+                    actual_hours: 1,
+                    status: 0,
+                    group: 'A',
+                    type: 'project',
+                    phase: 3,
+                    parent: null,
+                    assignees: [],
+                },
+
+                {
+                    id: 4,
+                    name: 'Task 4',
+                    description: 'This is task 1',
+                    priority: 'high',
+                    start_date: '2021-01-01',
+                    end_date: '2021-01-02',
+                    actual_due_date: '2021-01-02',
+                    plan_hours: 2,
+                    actual_hours: 1,
+                    status: 0,
+                    group: 'A',
+                    type: 'task',
+                    phase: 4,
+                    parent: 1,
+                    assignees: [],
+                },
+
+                {
+                    id: 5,
+                    name: 'Task 5',
+                    description: 'This is task 1',
+                    priority: 'high',
+                    start_date: '2021-01-01',
+                    end_date: '2021-01-02',
+                    actual_due_date: '2021-01-02',
+                    plan_hours: 2,
+                    actual_hours: 1,
+                    status: 0,
+                    group: 'A',
+                    type: 'task',
+                    phase: 4,
+                    parent: null,
+                    assignees: [],
+                },
+            ],
+            onChange: (e, ui) => {
+                console.log("change event -> ", e)
+                console.log('change ui -> ', ui)
+            },
+            onReceive: (e, ui) => {
+                console.log("re event -> ", e)
+                console.log('re ui -> ', ui)
+            }
+        });
+
+
+    });
+</script>
+
+</body>
+</html>

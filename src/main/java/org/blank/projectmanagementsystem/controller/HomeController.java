@@ -23,6 +23,16 @@ public class HomeController {
         return "create_issue_page";
     }
 
+    @GetMapping("/task-board")
+    public String taskBoard(){
+        return "board";
+    }
+
+    @GetMapping("/kan-ban")
+    public String kabBan(){
+        return "test";
+    }
+
 
     @GetMapping("/display_issue")
     public String issue_display(){

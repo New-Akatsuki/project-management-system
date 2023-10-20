@@ -75,7 +75,4 @@ public class Task implements Serializable {
 
     @ManyToOne
     private Task parentTask;
-
-    @OneToMany(mappedBy = "parentTask")
-    private Set<Task> subtasks;
 }
