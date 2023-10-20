@@ -175,15 +175,8 @@
 
 /* Styles for the due date text */
 .kb-task-due-date {
-    margin-right: 10px; /* Add spacing between due date and subtask */
+    margin-right: 10px;
 }
-
-
-/* CSS for subtask layout */
-
-/*.kb-task.active .kb-subtask-body {*/
-/*    display: block;*/
-/*}*/
 
 .kb-subtask-body {
     justify-content: space-between;
@@ -207,7 +200,7 @@
 /* Move subtask due date to the right corner */
 .kb-subtask-due-date-layout {
     margin-right: 0;
-    padding-left: 130px;
+    padding-left: 150px;
 }
 
 

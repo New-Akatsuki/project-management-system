@@ -117,9 +117,10 @@
                                 <span class="kb-task-subtask"><i class="ri-git-merge-line"></i></span>
                             </div>
                             </div>
-                        </div>
                             <div>
-                        </div>
+                               <div class="kb-task-subtasks">
+                            </div>        
+                       
                     </div>
             `;
                 $this.find(`#${item.phase}`).append(task_container);
@@ -151,7 +152,7 @@
                     
                 `;
 
-                $this.find(`#${item.parent}`).append(sub_task_container);
+                $this.find(`#${item.parent} .kb-task-subtasks`).append(sub_task_container);
             });
         }
 
