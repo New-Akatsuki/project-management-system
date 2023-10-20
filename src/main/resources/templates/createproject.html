@@ -7,7 +7,6 @@
     <link th:href="@{/images/DAT.png}" rel="icon">
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-
     <!-- Bootstrap CSS for modal box -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
@@ -96,8 +95,8 @@
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
     <!-- Breadcrumb part-->
@@ -222,7 +221,6 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Start Date *</label>
@@ -236,7 +234,6 @@
                                                     <label  class="form-label" for="department">Department</label>
                                                     <div id="department" class="w-100"></div>
                                                 </div>
-
                                             </div>
 
 
@@ -278,7 +275,6 @@
                                                 <div class="invalid-feedback" id="obj_error">
                                                 </div>
                                             </div>
-
 
                                             <div>
                                                 <label for="so">System Outline</label>
@@ -353,7 +349,6 @@
                                                         <option value="4">Olivia</option>
                                                         <option value="5">Martin</option>
                                                     </select>
-
                                                 </div>
                                                 <div class="invalid-feedback" id="member_error"></div>
                                             </div>
@@ -409,7 +404,6 @@
                                                 <div class="invalid-feedback" id="deli_error"></div>
                                             </div>
 
-
                                             <div></div>
 
 
@@ -429,6 +423,7 @@
                                     </div>
 
                                     <!-- Bootstrap Modal -->
+
                                       </fieldset>
                                 <fieldset>
                                     <div class="form-card">
@@ -583,8 +578,6 @@
 </div>
 
 
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
@@ -603,6 +596,7 @@
 <script th:src="@{/js/single-select.js}"></script>
 <!--selectbox-->
 <script src="/js/multi-select.js"></script>
+
 <script>
     new MultiSelectTag('so')
     new MultiSelectTag('ao')
@@ -648,6 +642,7 @@
     const data2 = ['ACE', 'DAT', 'Ace Plus']
     const id2 = init("department")
     const department_wrapperUpdateName = singleSelect(id2, data2);
+
 </script>
 
 </body>

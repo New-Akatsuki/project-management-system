@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">Example</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+
+
+                <div class="card mb-3">
+
+                    <div class="card-body">
+
+                        <div class="pt-4 pb-2">
+                            <h5 class="card-title text-center pb-0 fs-4">Change Default Password</h5>
+
+                        </div>
+
+                        <form class="row g-3 needs-validation" novalidate>
+
+
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" name="email" class="form-control" id="email" required
+                                       onBlur="validateEmail(this.value, 'emailError');" onFocus="clearError('emailError');">
+                                <div class="invalid-feedback" id="emailError">Invalid email address! Must contain letter, symbol,
+                                    number, and end with '@gmail.com'.
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="phoneNumber" class="form-label">Phone Number</label>
+                                <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" required
+                                       onblur="validatePhoneNumber(this.value, 'phoneError');" onfocus="clearError('phoneError');">
+                                <div class="invalid-feedback" id="phoneError">Invalid phone number! Must contain 11 digits and start with 09.</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" name="name" class="form-control" id="name" required
+                                       onblur="validateName(this.value, 'nameError');" onfocus="clearError('nameError');">
+                                <div class="invalid-feedback" id="nameError">Invalid name! Name must contain only letters and spaces.</div>
+                            </div>
+
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="validateForm()">Save</button>
+                                <button type="button" class="btn btn-primary">Cancel</button>
+                            </div>
+                            <div>
+                                <p>*Note: You must change the default password to activate your account</p>
+                            </div>
+                        </form>
+
+                        <script>
+
+                            function validateForm() {
+                                var newPassword = document.getElementById("yourPassword").value;
+                                var confirmPassword = document.getElementById("newPassword").value;
+
+                                var isPasswordValid = validatePassword(newPassword, 'passwordError');
+                                var isConfirmPasswordValid = validateConfirmPassword(confirmPassword, 'confirmPasswordError');
+
+                                if (isPasswordValid && isConfirmPasswordValid) {
+                                    // Form is valid, you can proceed with form submission or other actions
+                                    alert("Form submitted successfully!");
+                                } else {
+                                    // Form validation failed
+                                    alert("Form validation failed. Please check your inputs.");
+                                }
+                            }
+
+
+
+
+                            function validatePhoneNumber(phoneNumber, errorId) {
+                                var phoneError = document.getElementById(errorId);
+
+                                    if (phoneNumber.length < 8) {
+                                    phoneError.textContent = "Invalid phone number! Must contain at least 8 digits.";
+                                    phoneError.style.display = "block";
+                                    return false;
+                                } else {
+                                    phoneError.style.display = "none";
+                                    return true;
+                                }
+                            }
+
+                            function clearError(errorId) {
+                                var errorElement = document.getElementById(errorId);
+                                errorElement.style.display = "none";
+                            }
+
+                            document.getElementById("submitBtn").addEventListener("click", function() {
+                                var phoneNumber = document.getElementById("phoneNumber").value;
+                                var phoneError = document.getElementById("phoneError");
+
+                                var isValidPhoneNumber = validatePhoneNumber(phoneNumber, "phoneError");
+
+                                if (isValidPhoneNumber) {
+                                    // Valid phone number, you can proceed with form submission or other actions
+                                    alert("Form submitted successfully!");
+                                } else {
+                                    // Invalid phone number, you can handle the error here or show a message to the user
+                                    alert("Invalid phone number! Must contain 8 digits.");
+                                }
+                            });
+
+
+
+                            function validateName(name, errorId) {
+                                var nameError = document.getElementById(errorId);
+
+
+                                if (name.trim() === "") {
+                                    nameError.textContent = "Name is required";
+                                    nameError.style.display = "block";
+                                    return false;
+                                }
+                                if (name.trim().length < 3) {
+                                    nameError.textContent = "Name must contain at least 3 letters";
+                                    nameError.style.display = "block";
+                                    return false;
+                                }
+                                if (name.trim().length > 25) {
+                                    nameError.textContent = "Name must contain at most 25 letters";
+                                    nameError.style.display = "block";
+                                    return false;
+                                }
+
+                                if(!/^[a-zA-Z ]+$/.test(name)){
+                                    nameError.textContent = "Name must contain only letters and spaces";
+                                    nameError.style.display = "block";
+                                    return false;
+                                }
+
+                                nameError.style.display = "none";
+                                return true;
+                            }
+
+                            function clearError(errorId) {
+                                var errorElement = document.getElementById(errorId);
+                                errorElement.style.display = "none";
+                            }
+
+
+                            document.getElementById("submitBtn").addEventListener("click", function() {
+                                var name = document.getElementById("name").value;
+                                var nameError = document.getElementById("nameError");
+
+                                var isValidName = validateName(name, "nameError");
+
+                                if (isValidName) {
+                                    // Valid name, you can proceed with form submission or other actions
+                                    alert("Form submitted successfully!");
+                                } else {
+                                    // Invalid name, you can handle the error here or show a message to the user
+                                    alert("Invalid name! Please provide a valid name with only letters.");
+                                }
+                            });
+
+                            function validateEmail(email, errorId) {
+                                var emailError = document.getElementById(errorId);
+
+                                // Regular expressions for letter, symbol, number, and ending with '@gmail.com'
+                                var letterRegex = /[a-zA-Z]/;
+                                var symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+                                var numberRegex = /[0-9]/;
+                                var gmailRegex = /@gmail\.com$/;
+
+                                if (!letterRegex.test(email) || !symbolRegex.test(email) || !numberRegex.test(email) || !gmailRegex.test(email)) {
+                                    emailError.style.display = "block";
+                                } else {
+                                    emailError.style.display = "none";
+                                }
+                            }
+
+                            function clearError(errorId) {
+                                var errorElement = document.getElementById(errorId);
+                                errorElement.style.display = "none";
+                            }
+
+                            document.getElementById("submitBtn").addEventListener("click", function() {
+                                var email = document.getElementById("email").value;
+                                var emailError = document.getElementById("emailError");
+
+                                var letterRegex = /[a-zA-Z]/;
+                                var symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+                                var numberRegex = /[0-9]/;
+                                var gmailRegex = /@gmail\.com$/;
+
+                                if (!letterRegex.test(email) || !symbolRegex.test(email) || !numberRegex.test(email) || !gmailRegex.test(email)) {
+                                    emailError.textContent = "Invalid email address! Must contain letter, symbol, number, and end with '@gmail.com'.";
+                                    emailError.style.display = "block";
+                                } else {
+                                    emailError.style.display = "none";
+                                    // Valid email, you can proceed with form submission or other actions
+                                    alert("Form submitted successfully!");
+                                }
+                            });
+
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End #main -->
+
+    <!-- Vendor JS Files -->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="/js/main.js"></script>
+
+
+</body>
+</html>

@@ -30,6 +30,41 @@ public class HomeController {
         return "projectdetail";
     }
 
+    @GetMapping("/userview")
+    public String userview(){
+        return "userview";
 
+    }
+    @GetMapping("/adduser")
+    public String adduser(){
+        return "adduser";
 
+    }
+    @GetMapping("/userprofile")
+    public String userprofile(){
+        return "userprofile";
+
+    }
+
+    @GetMapping("/createproject")
+    public String createproject(){
+        return "createproject";
+
+    }
+
+    @GetMapping("/changepassword")
+    public String changepassword(){
+        return "changepassword";
+    }
+    @GetMapping("/defaultpassword")
+    public String defaultpassword(){
+        return "defaultpassword";
+    }
+    @GetMapping("developerpage")
+    public String developerpage(){
+        return "developerpage";
+    }
+
+    @GetMapping("validate")
+    public String validate(){return "validate";}
 }
