@@ -83,13 +83,6 @@ public class HomeController {
         return "userprofile";
 
     }
-
-    @GetMapping("/createproject")
-    public String createproject(){
-        return "createproject";
-
-    }
-
     @GetMapping("/changepassword")
     public String changepassword(){
         return "changepassword";

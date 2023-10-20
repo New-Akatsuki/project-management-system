@@ -1,200 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>DIR-ACE TECHNOLOGY</title>
-    <!-- Favicons -->
-    <link th:href="@{/images/DAT.png}" rel="icon">
-    <meta content="" name="description"/>
-    <meta content="" name="keywords"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>LOG IN</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.gstatic.com" rel="preconnect" />
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"
     />
 
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
     <link
             th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
             rel="stylesheet"
     />
-    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
-    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
-
-    <!-- Hope Ui Design System Css -->
-    <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
-    <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="/css/libs.min.css">
-
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-
-
-    <!-- Customizer Css -->
-    <link rel="stylesheet" href="/css/customizer.min.css">
-
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="/css/rtl.min.css">
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
 
     <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
-
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
-            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <style>
-        #datepicker1,
-        #datepicker {
-            display: inline-block;
-            padding: 14px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        #datepicker2,
-        #datepicker {
-            display: inline-block;
-            padding: 14px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-
+    <link href="/css/style.css" rel="stylesheet" />
 </head>
-
 <body>
-<!-- ======= Header ======= -->
-
-
-<main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-
-    </div>
-    <!-- End Page Title -->
-
-    <div style="height: 70px;"></div>
-    <!-- Main Content -->
-
-    <div class="container-fluid content-inner mt-n5 py-0">
-        <div>
-            <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-
-                        </div>
-                        <div class="card-body">
-
-                            <form id="form-wizard1" class="row g-3 needs-validation" novalidate>
-
-
-
-                                <div class="form-card text-start">
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <h3 class="mb-4">Login Page:</h3>
-                                        </div>
-
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="email">Email</label>
-                                                <input type="text" class="form-control" id="email" name="email" required minlength="8">
-                                                <div class="invalid-feedback" id="email_error"></div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="newPassword">Password </label>
-                                                <input type="password" class="form-control" id="newPassword" name="newPassword"
-                                                       required minlength="8">
-                                                <div class="invalid-feedback" id="newPassword_error">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div>
-                                        <button type="button" class="btn btn-primary" id="submitButton">Save</button>
-                                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
+<div class="container-fluid">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="col-10 col-sm-8 col-md-6 col-lg-4 rounded p-4 m-auto">
+            <h1 class="display-6 text-center">Sign In</h1>
+            <form id="my_form" th:action="@{/process-login}" method="post">
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        [[${session['SPRING_SECURITY_LAST_EXCEPTION'].message}]]
                     </div>
                 </div>
-            </div>
+
+                <div class="form-floating has-validation mb-3">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Email"/>
+                    <label id="username-label" for="username" class="form-label d-flex align-items-center">
+                        <i class="bx bx-envelope me-2"></i>Email
+                    </label>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
+                            <label id="password-label" for="password" class="form-label d-flex align-items-center">
+                                <i class="bx bx-lock-alt me-2"></i>Password
+                            </label>
+                        </div>
+                        <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                            <i id="passwordIcon" class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" name="remember-me" id="remember-me">
+                        <label class="form-check-label" for="remember-me">Remember me</label>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mx-auto">
+                    <button type="submit" class="btn col-md-4 btn-lg btn-primary d-flex justify-content-center align-items-center fw-bold">
+                        Sign In</button>
+                </div>
+            </form>
         </div>
-
-
-
-        <!-- End Main Content-->
-</main>
-<!-- End #main -->
-
+    </div>
+</div>
 <!-- Vendor JS Files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Template Main JS File -->
-<script th:src="@{/js/main.js}"></script>
-
-<script th:src="@{/js/form-wizard.js}"></script>
-<script th:src="@{/js/validation.js}"></script>
-
+<script src="/js/main.js"></script>
 <script>
-    $(document).ready(function () {
-        $("#datepicker1").datepicker({
-            dateFormat: "dd/mm/yy",
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            changeMonth: true,
-            changeYear: true,
-        });
 
-        $("#datepicker2").datepicker({
-            dateFormat: "dd/mm/yy",
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            changeMonth: true,
-            changeYear: true,
-        });
+    // Password toggle logic
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('password');
+    const passwordIcon = document.getElementById('passwordIcon');
 
-        //check name input
-
-
-
-        // Usage
-        const email_pattern = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
-        const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-        checkInputValidation("email","Email",email_pattern);
-        const newPass = checkInputValidation("newPassword", "New Password", password_pattern);
-
-        // Usage
-
-        // Initialize form validation
-        formValidate("form-wizard1");
-
+    passwordToggle.addEventListener('click', function () {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('bi-eye-slash');
+            passwordIcon.classList.add('bi-eye');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('bi-eye');
+            passwordIcon.classList.add('bi-eye-slash');
+        }
     });
+    $(document).ready(function() {
+        //form validation: if username and password are empty, show error message and disable submit btn, else submit form
+        $("#my_form").validate({
+            rules: {
+                username: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true,
+                    minlength: 4
+                }
+            },
+            messages: {
+                username: {
+                    required: "Please enter your email address",
+                    email: "Please enter a valid email address"
+                },
+                password: {
+                    required: "Please enter your password",
+                    minlength: "Your password must be at least 4 characters long"
+                }
+            },
+            //error message placement
+            errorPlacement: function(error, element) {
+                if (element.attr("name") === "username") {
+                    error.insertAfter("#username-label");
+                } else if (element.attr("name") === "password") {
+                    error.insertAfter("#password-label");
+                } else {
+                    error.insertAfter(element);
+                }
+                    },
 
+            focus: function(element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            highlight: function(element) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            },
+            //if form is invalid, disable submit btn
+            invalidHandler: function(event, validator) {
+                $("#submit").prop('disabled', true);
+            },
+            //if form is valid, enable submit btn
+            submitHandler: function(form) {
+                $("#submit").prop('disabled', false);
+                form.submit();
+            }
+
+        });
+    });
 </script>
 </body>
 </html>
