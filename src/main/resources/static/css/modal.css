@@ -1,0 +1,50 @@
+#css
+#modal-form label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#modal-form input, #modal-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#modal-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: 130px;
+    transition: background-color 0.2s;
+}
+
+/* Styles for the modal */
+/* Styles for the modal to slide in from the right */
+.modal.right .modal-dialog {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off the screen to the right */
+    bottom: 0;
+    margin: 0;
+    width: 50%; /* Adjust the width to your preference */
+    max-width: 100%;
+    transition: right 0.3s ease; /* Add a transition for sliding in */
+}
+
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.right.show .modal-dialog {
+    right: 0; /* Slide in from the right when modal is shown */
+}
