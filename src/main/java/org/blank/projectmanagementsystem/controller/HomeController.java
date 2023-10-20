@@ -24,6 +24,4 @@ public class HomeController {
 
     @GetMapping("validate")
     public String validate(){return "validate";}
-
-
 }

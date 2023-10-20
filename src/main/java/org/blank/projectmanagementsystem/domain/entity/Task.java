@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
+import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
+import org.blank.projectmanagementsystem.domain.Enum.TaskType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +33,7 @@ public class Task implements Serializable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Priority priority= Priority.MEDIUM;
 
     @Column(nullable = false)
     private Date startDate;
@@ -43,13 +45,21 @@ public class Task implements Serializable {
     private float planHours;
 
     @Column(nullable = true)
-    private Date actualStartDate;
-
-    @Column(nullable = true)
     private Date actualDueDate;
 
     @Column(nullable = true)
     private float actualHours;
+
+    @Column(nullable = false)
+    private boolean status = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_group")
+    TaskGroup group = TaskGroup.A;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_type")
+    private TaskType type = TaskType.TASK;
 
     @ManyToOne
     @JoinColumn(nullable = false)
