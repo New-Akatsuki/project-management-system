@@ -17,9 +17,10 @@
 
   <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 
-  <!-- Favicons -->
-  <link th:href="@{/images/favicon.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="apple-touch-icon">
+
 
   <link
           th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
@@ -37,95 +38,31 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
-<main id="main" class="main">
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- End Page Title -->
-
-  <section class="section dashboard">
-    <div class="row">
-      <!-- Left side columns -->
-      <div class="col-lg-12">
-        <div class="row">
-          <!-- Sales Card -->
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-              <div class="card-body">
-                <h5 class="card-title">Students</h5>
-
-                <div class="d-flex align-items-center">
-                  <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-person"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6 th:text="3"></h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Sales Card -->
-
-          <!-- Revenue Card -->
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card revenue-card">
-              <div class="card-body">
-                <h5 class="card-title">Courses</h5>
-
-                <div class="d-flex align-items-center">
-                  <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-book"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6 th:text="2"></h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Revenue Card -->
-
-          <!-- Customers Card -->
-          <div class="col-xxl-4 col-xl-12">
-            <div class="card info-card customers-card">
-              <div class="card-body">
-                <h5 class="card-title">Teachers</h5>
-
-                <div class="d-flex align-items-center">
-                  <div
-                          class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-people"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6 th:text="1"></h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End Customers Card -->
-        </div>
+    <main id="main" class="main">
+      <!-- Breadcrumb part-->
+      <div class="pagetitle">
+        <h1>Create New User</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">user-management</a></li>
+            <li class="breadcrumb-item active">save</li>
+          </ol>
+        </nav>
       </div>
-      <!-- End Left side columns -->
-    </div>
-  </section>
-</main>
+      <!-- End Page Title -->
 
-<!-- Vendor JS Files -->
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Template Main JS File -->
-<script src="/js/main.js"></script>
-</body>
+      <!-- Main Content -->
+
+        <!-- End Main Content-->
+    </main>
+    <!-- End #main -->
+
+    <!-- Vendor JS Files -->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/js/main.js"></script>
+
+  </body>
+
 </html>

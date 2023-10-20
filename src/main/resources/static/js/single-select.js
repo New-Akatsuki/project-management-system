@@ -27,7 +27,7 @@ function singleSelect(id, input_data){
     }
 
     window.addEventListener('click', (e) => {
-        if (!selectBtn.contains(e.target)){
+        if (!selectBtn.contains(e.target)&&!searchInp.contains(e.target)){
             wrapper.classList.remove('active')
         }
     });
