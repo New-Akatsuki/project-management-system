@@ -71,7 +71,6 @@
     margin: 0 0 10px;
     display: block;
     clear: both;
-    border: 1px dashed #000;
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_footer{
@@ -127,11 +126,15 @@
 }
 
 .kb-task {
-    margin: 10px;
-    padding: 10px;
+    height: 120px;
+    margin: 0 10px;
+    padding: 10px 20px;
     background-color: #fff;
-    border: 1px dashed #000;
-    transition: all 0.3s ease-out;
+    transition: height 0.3s ease-out;
+}
+
+.subtask-date-font-size{
+    font-size: 12px;
 }
 
 /* Styles for the task body layout */
@@ -181,13 +184,14 @@
 
 .kb-subtask-body {
     width: 100%;
+    height: 46px;
     display: flex;
     justify-content: space-between;
     gap: 5px;
     align-items: center;
     padding-block: 10px;
     padding-inline: 5px;
-    border-bottom: 1px solid #ccc;
+    border-block: 1px solid #e5e5e5;
 }
 .justify-self-end{
     justify-self: end;
@@ -326,9 +330,12 @@ input[type="checkbox"] {
     min-height: calc(100% - 60px);
 }
 .subtask-block{
-    transition: transform 0.3s ease;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    animation: floatOutSubtask 0.3s ease-in-out;
 }
 .hide {
+    opacity: 0;
     display: none;
 }
 .show {
@@ -340,8 +347,28 @@ input[type="checkbox"] {
 .toggle-subtask-icon {
     transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
 }
+.toggle-subtask-icon:hover {
+    cursor: pointer;
+    background: #ccc;
+}
 
-
-
-
-
+@keyframes floatOutSubtask {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

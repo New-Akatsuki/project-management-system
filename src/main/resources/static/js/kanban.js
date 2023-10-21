@@ -1,9 +1,6 @@
 (function ($) {
 
     $.fn.kanban = function (options) {
-
-
-
         var $this = $(this);
 
         var settings = $.extend({
@@ -79,12 +76,12 @@
         function build_section() {
             settings.phase.forEach((item, index, array) => {
                 const section_container = `
-                    <div id="${item.id}" class="${classes.kb_section_class}">
+                    <div id="${item.id}-phase" class="${classes.kb_section_class}">
                         <div class="kb-section-header">
                             <span class="kb-section-header-name">${item.name}</span>
                             <button class="kb-section-header-btn" data-bs-toggle="modal" id="${item.id}-btn" data-bs-target="#exampleModal">+</button>
                         </div>
-                        <div id="${item.id}" class="kb-section-body"></div>
+                        <div id="${item.id}-phase-body" class="kb-section-body"></div>
                     </div>
                 `;
                 $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
@@ -93,7 +90,7 @@
 
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
-                console.log(item)
+                const height = settings.tasks.filter(data => data.parent===item.id).length * 50;
                 const task_container = `
                     <div id="${item.id}" class="kb-task mb-2">
                         <div class="kb-task-body">
@@ -107,7 +104,7 @@
                             </div>
                             <div class="kb-task-body-layout2">
                                 <div class="kb-task-due-date-layout">
-                                    <span class="kb-task-due-date">${item.end_date}</span>
+                                    <span class="kb-task-due-date subtask-date-font-size">Due date : ${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
                                 </div>
                                 <div class="kb-task-subtask-layout">
                                     <span id="${item.id}-toggle-subtask-btn" class="toggle-subtask-icon toggle-subtask-icon-active"><i class="ri-git-merge-line"></i></span>
@@ -117,16 +114,21 @@
                         </div>        
                     </div>
             `;
-                $this.find(`#${item.phase}`).append(task_container);
+                //insert task into phase body
+                $this.find(`#${item.phase}-phase-body`).append(task_container);
+
+                //toggle subtask
+                const task = document.getElementById(`${item.id}`);
                 const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
                 subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
+                    //for animation
+                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+120}px`;
                     subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                 });
             });
         }
-
         function build_subtask() {
             settings.tasks.filter(data => data.parent!==null).forEach((item, index, array) => {
                 item.phase = settings.tasks.filter(data => data.id===item.parent)[0].phase;
@@ -136,7 +138,10 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
                                 </span>
                                 <span class="kb-subtask-name flex-6">${item.name}</span>
-                                <span class="kb-subtask-due-date flex-3 text-end">${item.end_date}</span>    
+                                <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
+                                    <span style="font-size: 9px">Due date</span>
+                                    <span>${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                </span>    
                         </div>
                     </div>
                     
