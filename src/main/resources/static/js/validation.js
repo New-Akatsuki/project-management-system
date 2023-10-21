@@ -6,11 +6,10 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
     if (!element_id) {
         return;
     }
-    let patternInvalidate = !nameInput.value.match(pattern);
 
     nameInput.addEventListener("blur", function () {
         if (pattern) {
-            if (patternInvalidate) {
+            if (!nameInput.value.match(pattern)) {
                 if (!nameInput.value.match(pattern)) {
                     nameInput.setCustomValidity(patternMismatchMsg);
                     nameInput.classList.add("is-invalid");
@@ -40,7 +39,7 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
     nameInput.addEventListener("input", function () {
         nameInput.setCustomValidity(""); // Clear custom validation message
         if (pattern){
-            if (patternInvalidate) {
+            if (!nameInput.value.match(pattern)) {
                 showPatternInvalidMsg(nameInput,msg_div,element_name);
             }else {
                 nameInput.setCustomValidity("");
@@ -58,10 +57,7 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
                 msg_div.textContent = "";
             }
         }
-
-
     });
-
     return {
         element: nameInput,
         msg: msg_div,
