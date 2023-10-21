@@ -9,7 +9,7 @@ function singleSelect(id, input_data){
     function addCountry(selectedItem) {
         options.innerHTML = "";
         data.forEach(item => {
-            let isSelected = item == selectedItem ? "selected" : "";
+            let isSelected = item === selectedItem ? "selected" : "";
             let li = `<li onclick="${id}UpdateName(this)" class="s-li ${isSelected}">${item}</li>`;
             options.insertAdjacentHTML("beforeend", li);
         });
@@ -35,7 +35,7 @@ function singleSelect(id, input_data){
         arr = data.filter(data => {
             return data.toLowerCase().startsWith(searchWord);
         }).map(data => {
-            let isSelected = data == selectBtn.firstElementChild.innerText ? "selected" : "";
+            let isSelected = data === selectBtn.firstElementChild.innerText ? "selected" : "";
             return `<li onclick="${id}UpdateName(this)" class="s-li ${isSelected}">${data}</li>`;
         }).join("");
         options.innerHTML = arr ? arr : `<p style="margin-top: 10px;"></p>`;
@@ -48,11 +48,10 @@ function singleSelect(id, input_data){
 
 function init(id,placeholder){
     const container = document.getElementById(id);
-
-    let item = `
+    container.innerHTML = `
         <div id="${id}_wrapper" class="s-wrapper form-control">
         <div class="select-btn">
-        <span class="p-0 m-0">${placeholder||'Select '+id}</span>
+        <span class="p-0 m-0">${placeholder || 'Select ' + id}</span>
         <i class="uil uil-angle-down"></i>
         </div>
         <div class="container s-content">
@@ -64,6 +63,5 @@ function init(id,placeholder){
         </div>
         </div>
     `;
-    container.innerHTML = item;
     return `${id}_wrapper`;
 }

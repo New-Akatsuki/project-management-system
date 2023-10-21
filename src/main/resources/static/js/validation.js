@@ -10,11 +10,16 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
 
     nameInput.addEventListener("blur", function () {
         if (pattern) {
-            if (!nameInput.validity.valid) {
+            if (patternInvalidate) {
                 if (!nameInput.value.match(pattern)) {
                     nameInput.setCustomValidity(patternMismatchMsg);
                     nameInput.classList.add("is-invalid");
                     msg_div.textContent = patternMismatchMsg;
+                }else {
+                    nameInput.setCustomValidity("");
+                    nameInput.classList.remove("is-invalid");
+                    nameInput.classList.add("is-valid");
+                    msg_div.textContent = "";
                 }
             }
         } else {
