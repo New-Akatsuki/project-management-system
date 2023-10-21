@@ -59,19 +59,19 @@
     <form id="user-form" action="#" method="POST" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" name="name" required>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
         <div id="name_error" class="invalid-feedback"></div>
       </div>
 
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" name="username"  minlength="3" maxlength="25" required>
+        <input type="text" class="form-control" id="username" name="username"  minlength="3" maxlength="25" placeholder="Enter your username" required>
         <div id="username_error" class="invalid-feedback"></div>
       </div>
 
       <div class="mb-3">
         <label for="role" class="form-label">Role</label>
-        <select class="form-select" id="role" name="role" required>
+        <select class="form-select"  id="role" name="role" required>
           <option value="PMO">PMO</option>
           <option value="SDQC">SDQC</option>
           <option value="DH">DH</option>
