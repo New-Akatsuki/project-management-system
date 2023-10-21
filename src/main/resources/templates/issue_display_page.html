@@ -78,11 +78,6 @@
             border-radius: 5px;
         }
 
-        /*.ql-editor{*/
-        /*    border: 1px solid #9a9a9a;*/
-        /*    border-radius: 5px;*/
-        /*}*/
-
         .ql-toolbar {
             border-radius: 5px 5px 0 0;
             width: 100%; /* Set the desired width percentage or any other value */
@@ -175,34 +170,6 @@
                     <div class="container" style="padding: 25px;">
                         <div><h2><i class="bi bi-lightbulb"></i> Solve Issue</h2></div><br>
                         <form>
-                            <!--combobox start-->
-                            <div>
-                                <label for="multiple">Procedure</label>
-                            </div>
-                            <div>
-                                <select id="multiple" multiple>
-                                    <option value="Ultrasound Knee Right">Ultrasound Knee Right</option>
-                                    <option value="Ultrasound Knee Left">Ultrasound Knee Left</option>
-                                    <option value="Ultrasound Forearm/Elbow Right">Ultrasound Forearm/ Elbow Right
-                                    </option>
-                                    <option value="Ultrasound Forearm/Elbow Left">Ultrasound Forearm/Elbow Left</option>
-                                    <option value="MRI Knee Right">MRI Knee Right</option>
-                                    <option value="MRI Knee Left">MRI Knee Left</option>
-                                    <option value="MRI Forearm/Elbow Right">MRI Forearm/Elbow Right</option>
-                                    <option value="MRI Forearm/Elbow Left">MRI Forearm/Elbow Left</option>
-                                    <option value="CT Knee Right">CT Knee Right</option>
-                                    <option value="CT Knee Left">CT Knee Left</option>
-                                    <option value="CT Forearm/Elbow Right">CT Forearm/Elbow Right</option>
-                                    <option value="CT Forearm/Elbow Left">CT Forearm/Elbow Left</option>
-                                </select>
-                            </div>
-                            <!-- combo-box end -->
-                            <br>
-                            <div>
-                                <label for="solution">Solution</label>
-                            </div>
-                            <div id="solution"></div>
-                            <br>
                             <div>
                                 <label for="co-action">Corrective Action</label>
                             </div>
@@ -217,9 +184,11 @@
                                 <label for="impact">Impact</label>
                             </div>
                             <div>
-                                <input id="impact" th:name="impact" type="text" class="form-control"/>
+                                <input id="impact" name="impact" type="text" class="form-control"/>
                             </div>
                             <br>
+                            <input type="hidden" name="correctiveAction" id="co-actionInput">
+                            <input type="hidden" name="preventiveAction" id="pre-actionInput">
                             <div class="button-div">
                                 <button type="submit" class="btn btn-primary">Solve Issue</button>
                                 <button class="btn btn-danger">Cancel</button>
@@ -271,10 +240,13 @@
 <script th:src="@{/js/text-editor.js}"></script>
 
 <script>
-    let quill = new Quill("#solution", aa)
-    let quill1 = new Quill("#co-action", aa)
-    let quill2 = new Quill("#pre-action", aa)
+    let coAction = new Quill("#co-action", aa)
+    let preAction = new Quill("#pre-action", aa)
 
+    function updateHiddenInputs() {
+        document.getElementById('co_actionInput').value = coAction.root.innerHTML;
+        document.getElementById('pre-actionInput').value = preAction.root.innerHTML;
+    }
     function toggleToolbar(index, editor_id) {
         const container = document.querySelectorAll('.ql-container');
         const toolbar = document.querySelectorAll('.ql-toolbar');
@@ -305,9 +277,8 @@
         containers.forEach(item => {
             item.classList.add('round-full-border');
         });
-        toggleToolbar(0, 'solution');
-        toggleToolbar(1, 'co-action');
-        toggleToolbar(2, 'pre-action');
+        toggleToolbar(0, 'co-action');
+        toggleToolbar(1, 'pre-action');
     })
 </script>
 <script>

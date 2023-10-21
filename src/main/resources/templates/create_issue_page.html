@@ -81,24 +81,24 @@
                         <div class="flex-1">
                             <div>
                                 <label for="issue_id">Issue Id</label>
-                                <input class="form-control" th:type="text" th:name="issue_id" th:id="issue_id"
-                                       th:required="true"/>
+                                <input class="form-control" type="text" name="id" id="issue_id"
+                                       required="true"/>
                                 <div id="issue_id_error" class="error-message"></div>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div>
-                                <label>Title</label>
-                                <input class="form-control" th:type="text" th:name="issue_title" th:id="title"
-                                       th:required="true"/>
+                                <label for="title">Title</label>
+                                <input class="form-control" type="text" name="title" id="title"
+                                       required="true"/>
                                 <div id="title_error" class="error-message"></div>
                             </div>
                         </div>
                         <div class="flex-1">
                             <div>
-                                <label>Date</label>
-                                <input class="form-control" th:type="text" th:name="date" th:id="date"
-                                       th:required="true"/>
+                                <label for="date">Date</label>
+                                <input class="form-control" type="text" name="createdAt" id="date"
+                                       required="true"/>
                                 <div id="date_error" class="error-message"></div>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                                 <label for="issue_category">Category</label>
                             </div>
                             <div>
-                                <select id="issue_category" th:name="issue_category" multiple th:required="true">
+                                <select id="issue_category" name="issue_category" multiple required="true">
                                     <option value="communication">Communication</option>
                                     <option value="programming">Programming</option>
                                 </select>
@@ -159,8 +159,8 @@
                         <div id="root-cause"></div>
                         <br>
                         <input type="hidden" name="content" id="contentInput">
-                        <input type="hidden" name="res_party" id="resPartyInput">
-                        <input type="hidden" name="dir_cause" id="dirCauseInput">
+                        <input type="hidden" name="responsibleParty" id="resPartyInput">
+                        <input type="hidden" name="direct_cause" id="dirCauseInput">
                         <input type="hidden" name="root_cause" id="rootCauseInput">
                     </div>
                     <div style="text-align:right;">
