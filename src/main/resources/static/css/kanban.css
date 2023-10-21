@@ -131,6 +131,7 @@
     padding: 10px;
     background-color: #fff;
     border: 1px dashed #000;
+    transition: all 0.3s ease-out;
 }
 
 /* Styles for the task body layout */
@@ -138,7 +139,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 /* Styles for the task body layout 2 (containing due date and subtask) */
@@ -147,7 +148,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
-    padding: 10px 0px;
+    padding: 10px 0;
 }
 
 /* Styles for the task name */
@@ -179,33 +180,60 @@
 }
 
 .kb-subtask-body {
+    width: 100%;
+    display: flex;
     justify-content: space-between;
+    gap: 5px;
     align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    display: none;
+    padding-block: 10px;
+    padding-inline: 5px;
+    border-bottom: 1px solid #ccc;
+}
+.justify-self-end{
+    justify-self: end;
+}
+.flex-3{
+    flex: 3;
+}
+.flex-6{
+    flex: 6;
 }
 .kb-subtask-name {
     font-weight: bold;
 }
-.kb-subtask-status-layout,
-.kb-subtask-name-layout,
-.kb-subtask-due-date-layout {
-    display: inline-block;
-    margin-right: 10px;
+
+.kb-subtask-name-layout {
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-right: 80px;
 }
-/* Move subtask due date to the right corner */
+
+/* Styles for the subtask due date */
 .kb-subtask-due-date-layout {
-    margin-right: 0;
-    padding-left: 150px;
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-left: 10px; /* Add some padding to separate it from the name */
+}
+
+.kb-subtask-body-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 
 
 /* Modal Styles */
+
+.datepicker-style{
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
 
 .modal-content {
@@ -297,12 +325,23 @@ input[type="checkbox"] {
     justify-content: center;
     min-height: calc(100% - 60px);
 }
-
-@media (min-width: 992px) {
-    .modal-dialog {
-        max-width: 600px;
-    }
+.subtask-block{
+    transition: transform 0.3s ease;
 }
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+.toggle-subtask-icon-active {
+    transform: rotate(-90deg);
+}
+.toggle-subtask-icon {
+    transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
+}
+
+
 
 
 

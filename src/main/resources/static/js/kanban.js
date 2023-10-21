@@ -91,10 +91,6 @@
             });
         }
 
-
-
-
-
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
                 console.log(item)
@@ -110,49 +106,46 @@
                                 </div>
                             </div>
                             <div class="kb-task-body-layout2">
-                            <div class="kb-task-due-date-layout">
-                                <span class="kb-task-due-date">${item.end_date}</span>
+                                <div class="kb-task-due-date-layout">
+                                    <span class="kb-task-due-date">${item.end_date}</span>
+                                </div>
+                                <div class="kb-task-subtask-layout">
+                                    <span id="${item.id}-toggle-subtask-btn" class="toggle-subtask-icon toggle-subtask-icon-active"><i class="ri-git-merge-line"></i></span>
+                                </div>
                             </div>
-                            <div class="kb-task-subtask-layout">
-                                <span class="kb-task-subtask"><i class="ri-git-merge-line"></i></span>
-                            </div>
-                            </div>
-                            <div>
-                               <div class="kb-task-subtasks">
-                            </div>        
-                       
+                            <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
+                        </div>        
                     </div>
             `;
                 $this.find(`#${item.phase}`).append(task_container);
-                const subtaskIcon = $this.find(`#${item.id} .kb-task-subtask`);
-                subtaskIcon.click(function () {
-                    const subtaskInfo = $this.find(`#${item.id} .kb-subtask-body`);
-                    subtaskInfo.toggle();
+                const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
+                subtaskIcon.addEventListener('click', () => {
+                    const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
+                    subtaskBlock.classList.toggle('hide');
+                    subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                 });
             });
         }
 
         function build_subtask() {
             settings.tasks.filter(data => data.parent!==null).forEach((item, index, array) => {
-                console.log(item)
+                item.phase = settings.tasks.filter(data => data.id===item.parent)[0].phase;
                 const sub_task_container = `
-                    <div class="kb-subtask-body">
-                        <div class="kb-subtask-body-layout">
-                        <div class="kb-subtask-status-layout">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+                    <div id="${item.id}" class="kb-subtask-body">
+                                <span class="flex-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M9.999 13.587 7.7 11.292l-1.412 1.416 3.713 3.705 6.706-6.706-1.414-1.414z"></path></svg>
+                                </span>
+                                <span class="kb-subtask-name flex-6">${item.name}</span>
+                                <span class="kb-subtask-due-date flex-3 text-end">${item.end_date}</span>    
                         </div>
-                        <div class="kb-subtask-name-layout">
-                         <span class="kb-subtask-name">${item.name}</span>
-                        </div>
-                         <div class="kb-subtask-due-date-layout">
-                         <span class="kb-subtask-due-date">${item.end_date}</span>
-                         </div>             
-                         </div>
-                        </div>
+                    </div>
                     
                 `;
-
-                $this.find(`#${item.parent} .kb-task-subtasks`).append(sub_task_container);
+                if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
+                {
+                    console.log(`${item.parent}-subtask-block`)
+                    $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
+                }
             });
         }
 
