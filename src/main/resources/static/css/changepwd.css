@@ -243,6 +243,7 @@ h6 {
 
 .card-body {
     padding: 0 20px 20px 20px;
+
 }
 
 .card-img-overlay {
@@ -421,7 +422,8 @@ h6 {
 }
 
 .main-bg{
-    background: #f6f9ff;
+    background: lightblue;
+    align-items: center;
 }
 
 .header .search-form input {
@@ -495,6 +497,10 @@ h6 {
 
 .header-nav .notifications {
     inset: 8px -15px auto auto !important;
+}
+
+.small-text {
+    font-size: 16px; /* Adjust the font size as needed */
 }
 
 .header-nav .notifications .notification-item {
@@ -1285,55 +1291,22 @@ h6 {
         animation-timing-function: ease-out;
         opacity: 1;
         transform: translateY(0px);
-    }
-}
+    }}
 
-.float-in {
-    animation: floatIn 2s linear 0s 1 normal forwards;
-}
 
-.mult-select-tag .rounded{
-    border-radius: 5px!important;
-}
 
-.icon-add-btn{
-    background: dodgerblue;
-    border-radius: 5px;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-}
-.icon-add-btn:hover{
-    cursor: pointer;
-    background: #1f79d2;
-    color: white;
-}
 
-.custom-combobox {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
 
-.custom-combobox>input{
-    width: 100%;
-    border-radius: 5px;
-}
 
-.custom-combobox-toggle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-left: -1px;
-    padding: 0;
-}
 
-.custom-combobox-input {
-    margin: 0;
-    padding-top: 2px;
-    padding-bottom: 5px;
-    padding-right: 5px;
-}
+
+
+
+
+
+
+
+
 
 
 
