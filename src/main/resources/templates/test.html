@@ -36,26 +36,36 @@
             <div class="modal-content">
 
                 <div class="modal-body">
+                    <div class="task-body-text-layout">
                     <label for="task-name">Enter Task Name : </label>
                     <input type="text" id="task-name" placeholder="Name" class="form-control-lg" required>
-                    <label for="task-description">Enter Description : </label>
-                    <textarea id="task-description" placeholder="Description" class="form-control-lg"></textarea>
+                        <label for="task-description">Enter Description : </label>
+                        <textarea id="task-description" placeholder="Description" class="form-control-lg"></textarea>
+                    </div>
+                    <div class="task-body-project-expected-date">
+                        <label for="task-start-date">Enter Start Date : </label>
+                        <input type="date" id="task-start-date" placeholder="Start Date" class="form-control-lg" required>
+                        <label for="task-end-date">Enter End Date : </label>
+                        <input type="date" id="task-end-date" placeholder="End Date" class="form-control-lg" required>
+                        <label for="task-plan-hours">Enter Plan Hours : </label>
+                        <input type="number" id="task-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>
+
+                    </div>
+
+                    <div class="task-body-project-actual-date">
+                        <label for="task-actual-due-date">Enter Actual Due Date : </label>
+                        <input type="date" id="task-actual-due-date" placeholder="Actual Due Date" class="form-control-lg" required>
+                        <label for="task-actual-hours">Enter Actual Hours : </label>
+                        <input type="number" id="task-actual-hours" placeholder="Actual Hours" class="form-control-lg" required>
+                    </div>
+
+                    <div class="task-body-footer">
                     <label for="task-priority">Select Your Priority : </label>
                     <select id="task-priority">
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </select>
-                    <label for="task-start-date">Enter Start Date : </label>
-                    <input type="date" id="task-start-date" placeholder="Start Date" class="form-control-lg" required>
-                    <label for="task-end-date">Enter End Date : </label>
-                    <input type="date" id="task-end-date" placeholder="End Date" class="form-control-lg" required>
-                    <label for="task-actual-due-date">Enter Actual Due Date : </label>
-                    <input type="date" id="task-actual-due-date" placeholder="Actual Due Date" class="form-control-lg" required>
-                    <label for="task-plan-hours">Enter Plan Hours : </label>
-                    <input type="number" id="task-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>
-                    <label for="task-actual-hours">Enter Actual Hours : </label>
-                    <input type="number" id="task-actual-hours" placeholder="Actual Hours" class="form-control-lg" required>
                     <label for="task-status">Status</label>
                     <input type="checkbox" id="task-status" class="form-control-lg">
                     <label for="task-type">Group</label>
@@ -70,6 +80,7 @@
                         <option value="project">Project</option>
                         <option value="milestone">Milestone</option>
                     </select>
+                </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

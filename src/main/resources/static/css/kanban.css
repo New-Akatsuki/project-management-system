@@ -281,6 +281,40 @@
     padding: 20px;
 }
 
+/*modal design spec*/
+
+.task-body-project-expected-date {
+    display: flex;
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+
+.task-body-project-actual-date{
+    display: flex;
+    padding: 0 15px;
+    align-items: center;
+    gap: 10px;
+    margin: 0 10px;
+}
+.task-body-footer {
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+    margin: 0 10px;
+    gap: 10px;
+}
+
+.task-body-project-expected-date label,
+.task-body-project-actual-date label,
+.task-body-footer label {
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+
 /* Label Styles */
 label {
     font-weight: bold;
