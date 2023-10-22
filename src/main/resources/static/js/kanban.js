@@ -88,6 +88,8 @@
             });
         }
 
+
+
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
                 const height = settings.tasks.filter(data => data.parent===item.id).length * 50;
@@ -154,9 +156,37 @@
             });
         }
 
-        function create_task() {
-            //Todo:: create task
+        function saveTask() {
+            var task = {
+                name: $('#task-name').val(),
+                description: $('#task-description').val(),
+                priority: $('#task-priority').val(),
+                start_date: $('#task-start-date').val(),
+                end_date: $('#task-end-date').val(),
+                plan_hours: $('#task-plan-hours').val(),
+                actual_hours: $('#task-actual-hours').val(),
+                actual_due_date: $('#task-actual-due-date').val(),
+                status: $('#task-status').is(':checked'),
+                group: $('#task-type').val(),
+                type: $('#task-assignees').val(),
+                // Add any other fields as needed
+            };
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/api/tasks/task-added', // Update the URL to match your endpoint
+                data: JSON.stringify(task),
+                success: function (data) {
+                    $('#exampleModal').modal('hide'); // Close the modal
+                    alert(data); // Display a success message or handle the response
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
         }
+
         function update_task(){
             //Todo:: update task
         }
