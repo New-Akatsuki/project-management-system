@@ -1,4 +1,4 @@
-function singleSelect(id, input_data){
+function singleSelect(id, input_data) {
     const wrapper = document.getElementById(id),
         selectBtn = wrapper.querySelector(`#${id} .select-btn`),
         searchInp = wrapper.querySelector(`#${id} input`),
@@ -23,7 +23,7 @@ function singleSelect(id, input_data){
     }
 
     window.addEventListener('click', (e) => {
-        if (!selectBtn.contains(e.target)&&!searchInp.contains(e.target)){
+        if (!selectBtn.contains(e.target) && !searchInp.contains(e.target)) {
             wrapper.classList.remove('active')
         }
     });
@@ -46,12 +46,12 @@ function singleSelect(id, input_data){
     return updateName;
 }
 
-function init(id,placeholder){
+function init(id, placeholder) {
     const container = document.getElementById(id);
     container.innerHTML = `
         <div id="${id}_wrapper" class="s-wrapper form-control">
         <div class="select-btn">
-        <span class="p-0 m-0">${placeholder || 'Select ' + id}</span>
+        <span class="p-0 m-0">${placeholder || 'Select'}</span>
         <i class="uil uil-angle-down"></i>
         </div>
         <div class="container s-content">
