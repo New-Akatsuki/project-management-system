@@ -14,6 +14,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     let input = null
     let button = null
     let drawer = null
+    let optionContainer = null
     let ul = null
     let domParser = new DOMParser()
     init()
@@ -101,11 +102,12 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         // input
         input = document.createElement('input')
         input.classList.add('input')
-        input.placeholder = `${customs.placeholder || 'Search...'}`
+        input.placeholder = `${customs.placeholder || 'Search'}`
 
         inputBody = document.createElement('inputBody')
         inputBody.classList.add('input-body')
         inputBody.innerHTML =``;
+        inputBody.innerHTML = `<i class="uil uil-search"></i>`;
         inputBody.append(input)
 
         body.append(inputContainer)
@@ -129,6 +131,8 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
 
         drawer = document.createElement('div');
         drawer.classList.add(...['drawer', 'hidden'])
+        optionContainer = document.createElement('div')
+        optionContainer.classList.add('option-container')
         if(customs.shadow) {
             drawer.classList.add('shadow')
         }
@@ -137,8 +141,8 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         }
         drawer.append(inputBody)
         ul = document.createElement('ul');
-
-        drawer.appendChild(ul)
+        optionContainer.appendChild(ul)
+        drawer.appendChild(optionContainer)
 
         customSelectContainer.appendChild(wrapper)
         customSelectContainer.appendChild(drawer)
