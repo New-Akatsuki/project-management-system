@@ -1291,9 +1291,7 @@ h6 {
 .form-control{
   border: 1px solid #bad1e5 !important;
   border-radius: 5px!important;
-}
-.mult-select-tag .rounded{
-  border-radius: 5px!important;
+  height: 100%;
 }
 
 .icon-add-btn{
@@ -1319,6 +1317,9 @@ h6 {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+.justify-self-stretch{
+  justify-self: stretch;
 }
 
 

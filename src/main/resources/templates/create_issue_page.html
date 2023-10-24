@@ -7,6 +7,14 @@
     <title>Dashboard - NiceAdmin Bootstrap Template</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
+
+      <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and Popper.js for Modal Box End -->
+
     <link href="/css/single-select.css" rel="stylesheet"/>
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -30,6 +38,8 @@
     <!-- Template Main CSS File -->
     <!-- multi-select css link -->
     <link rel="stylesheet" href="/css/multiple-select.css">
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
@@ -38,20 +48,6 @@
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
 
     <link href="/css/style.css" rel="stylesheet"/>
-<style>
-    .error-message {
-        color: red;
-    }
-
-    #submitButton:disabled {
-        background-color: gray;
-    }
-
-    #submitButton:enabled {
-        background-color: green;
-        color: white;
-    }
-</style>
 </head>
 
 <body>
@@ -77,94 +73,63 @@
                 <div th:name="issue_title" th:id="issue_title"></div>
                 <div th:name="issue_content" th:id="issue_content"></div>
                 <form th:action="@{/save}" method="post" th:object="${model}" id="create-issue">
-                    <div class="container d-flex flex-column flex-md-row gap-2">
-                        <div class="flex-1">
-                            <div>
-                                <label for="issue_id">Issue Id</label>
-                                <input class="form-control" type="text" name="id" id="issue_id"
-                                       required="true"/>
-                                <div id="issue_id_error" class="error-message"></div>
-                            </div>
+                    <div class="container d-flex flex-column gap-2">
+                        <div>
+                            <label for="title" class="form-label">Title</label>
+                            <input class="form-control" type="text" name="title" id="title" placeholder="Enter issue title"
+                                   required/>
+                            <div id="title_error" class="invalid-feedback"></div>
                         </div>
-                        <div class="flex-1">
-                            <div>
-                                <label for="title">Title</label>
-                                <input class="form-control" type="text" name="title" id="title"
-                                       required="true"/>
-                                <div id="title_error" class="error-message"></div>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <div>
-                                <label for="date">Date</label>
-                                <input class="form-control" type="text" name="createdAt" id="date"
-                                       required="true"/>
-                                <div id="date_error" class="error-message"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <!--combobox start-->
-
-                    <div class="container d-flex flex-column flex-md-row gap-2">
-                        <div class="flex-1">
-                            <div>
-                                <label for="issue_category">Category</label>
-                            </div>
-                            <div>
-                                <select id="issue_category" name="issue_category" multiple required="true">
+                        <div class="d-flex flex-column flex-md-row align-items-md-stretch gap-2">
+                            <div class="flex-1">
+                                <label for="issue_category" class="form-label">Category</label>
+                                <select id="issue_category" name="issue_category" multiple required>
                                     <option value="communication">Communication</option>
                                     <option value="programming">Programming</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="flex-1">
-                            <div>
-                                <label for="issue_place">Issue Place</label>
+                            <div class="flex-1 d-flex flex-column">
+                                <label for="issue_place" class="form-label">Issue Place</label>
+                                <div id="issue_place" class="w-100"></div>
                             </div>
-                            <div id="issue_place" class="w-100" name="issue_place"></div>
-                        </div>
 
-                        <div class="flex-1">
-                            <div>
-                                <label for="issue_pic">Issue PIC</label>
+                            <div class="flex-1">
+                                <label for="issue_pic" class="form-label">Issue PIC</label>
+                                <div id="issue_pic" class="w-100"></div>
                             </div>
-                            <div id="issue_pic" name="pic"></div>
                         </div>
-                    </div>
-                    <br>
 
-                    <!-- combo-box end -->
+                        <div>
+                            <label for="content" class="form-label">Content</label>
+                            <div id="content"></div>
+                        </div>
 
-                    <div class="container">
                         <div>
-                            <label for="content">Content</label>
+                            <label for="res-party" class="form-label">Responsible Party</label>
+                            <div id="res-party"></div>
                         </div>
-                        <div id="content"></div>
-                        <br>
+
                         <div>
-                            <label for="res-party">Responsible Party</label>
+                            <label for="dir-cause" class="form-label">Direct Cause</label>
+                            <div id="dir-cause"></div>
                         </div>
-                        <div id="res-party"></div>
-                        <br>
-                        <div>
-                            <label for="dir-cause">Direct Cause</label>
-                        </div>
-                        <div id="dir-cause"></div>
-                        <br>
+
                         <div>
                             <label for="root-cause">Root Cause</label>
+                            <div id="root-cause"></div>
                         </div>
-                        <div id="root-cause"></div>
-                        <br>
+
+                        <!--  Hidden Items    -->
                         <input type="hidden" name="content" id="contentInput">
                         <input type="hidden" name="responsibleParty" id="resPartyInput">
                         <input type="hidden" name="direct_cause" id="dirCauseInput">
                         <input type="hidden" name="root_cause" id="rootCauseInput">
-                    </div>
-                    <div style="text-align:right;">
-                        <input type="submit" id="submitButton" value="Submit" disabled>
+                        <!-- Hidden Items End -->
+
+                        <div class="align-self-end">
+                            <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -173,6 +138,33 @@
     <!-- End Card -->
 </main>
 <!-- End #main -->
+<!--Modal Section-->
+<div class="modal fade" id="addIssuePlaceModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addArchitectureOutlineModalLabel">Add New Architecture Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="architectureOutlineName">Name</label>
+                        <input type="text" class="form-control" id="architectureOutlineName" placeholder="Enter architecture outline name">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" onclick="addNewOption()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal Section End-->
 
 <!-- Vendor JS Files -->
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -229,12 +221,14 @@
     new MultiSelectTag('issue_category')
 </script>
 <script>
-    const data1 = ['mgmg', 'aungaung', 'tuntun']
+    const data1 = ['server 1', '1 server', 'a server 2']
     const data2 = ['ayeaye', 'myamya', 'hlahla']
-    const id1 = init("issue_place")
-    const id2 = init("issue_pic")
+    const id1 = init("issue_place", 'Enter issue place')
+    const id2 = init("issue_pic", 'Select issue PIC')
     console.log(id1, id2)
-    const issue_place_wrapperUpdateName = singleSelect(id1, data1);
+    const issue_place_wrapperUpdateName = singleSelect(id1, data1,
+        {btn_id:'addIssuePlace',modal_id: "addIssuePlaceModal",btn_name: 'Add new place'}
+    );
     const issue_pic_wrapperUpdateName = singleSelect(id2, data2);
 </script>
 </body>

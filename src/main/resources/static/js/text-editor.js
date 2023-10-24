@@ -25,6 +25,7 @@ let aa = {
     theme: "snow"
 }
 
+
 function toggleToolbar(index, editor_id) {
     const containers = document.querySelectorAll('.ql-container');
     const toolbars = document.querySelectorAll('.ql-toolbar');
@@ -51,13 +52,11 @@ function toggleToolbar(index, editor_id) {
     };
 
     textEditorContainer.addEventListener('click', (event) => {
-        console.log('clicked text editor');
         hidePreviousToolbars();
         showToolbar();
         event.stopPropagation(); // Prevent the event from reaching the document click handler immediately
     });
-
-    document.addEventListener('click', (event) => {
+    window.addEventListener('click', (event) => {
         // Check if the clicked element is outside the text editor and toolbar
         if (!textEditorContainer.contains(event.target) && !toolbars[index].contains(event.target)) {
             hideToolbar();
@@ -65,7 +64,7 @@ function toggleToolbar(index, editor_id) {
     });
 
     // Update hidden inputs or perform other actions when clicking inside the text editor
-    document.addEventListener('click', updateHiddenInputs);
+    // document.addEventListener('click', updateHiddenInputs);
 
     // If you want to stop propagation when clicking inside the toolbar
     toolbars[index].addEventListener('click', (event) => {

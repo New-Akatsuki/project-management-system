@@ -15,15 +15,23 @@
     border-radius: 5px;
 }
 
-/*.ql-editor{*/
-/*    border: 1px solid #9a9a9a;*/
-/*    border-radius: 5px;*/
-/*}*/
-
 .ql-toolbar {
     border-radius: 5px 5px 0 0;
     width: 100%; /* Set the desired width percentage or any other value */
     margin: 0;
     display: none;
+    animation: floatInToolbar 0.5s ease-in-out;
 }
+
+@keyframes floatInToolbar {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
