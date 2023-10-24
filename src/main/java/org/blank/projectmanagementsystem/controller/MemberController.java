@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,29 @@ public class MemberController {
         log.info("========================================================");
         log.info("default password: {}", defaultPasswordFormInput);
         log.info("========================================================\n");
+
         return "redirect:/";
+    }
+
+    @GetMapping("/change-password")
+    public ModelAndView changePassword() {
+        return new ModelAndView("change-password", "changePasswordFormInput", new ChangePasswordFormInput());
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@ModelAttribute ChangePasswordFormInput changePasswordFormInput) {
+        log.info("========================================================");
+        log.info("change password: {}", changePasswordFormInput);
+        log.info("========================================================\n");
+
+        userService.changePassword(changePasswordFormInput.getCurrentPassword(), changePasswordFormInput.getNewPassword());
+
+        return "redirect:/";
+    }
+    @GetMapping("/task-name")
+    public String taskname() {
+        return "task-name";
+
     }
 
 
