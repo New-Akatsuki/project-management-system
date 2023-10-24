@@ -11,4 +11,9 @@ public class HomeController {
     public String index(){
         return "index";
     }
+
+    @GetMapping("/kan-ban")
+    public String kanBanView() {
+        return "test";
+    }
 }
