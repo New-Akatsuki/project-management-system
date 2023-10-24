@@ -282,8 +282,23 @@
 }
 
 /*modal design spec*/
+#exampleModalLabel{
+    padding: 0 15px;
+    margin: 0 10px;
+    gap: 1.5rem;
+    align-items: center;
+}
 
-.task-body-project-expected-date {
+.task-body-text-layout{
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+.task-body-project-expected-date,
+.task-body-project-actual-date,
+.task-body-footer,
+.task-body-assignees-layout{
     display: flex;
     padding: 0 15px;
     align-items: center;
@@ -291,24 +306,11 @@
     margin: 0 10px;
 }
 
-.task-body-project-actual-date{
-    display: flex;
-    padding: 0 15px;
-    align-items: center;
-    gap: 10px;
-    margin: 0 10px;
-}
-.task-body-footer {
-    display: flex;
-    align-items: center;
-    padding: 3px 10px;
-    margin: 0 10px;
-    gap: 10px;
-}
 
 .task-body-project-expected-date label,
 .task-body-project-actual-date label,
-.task-body-footer label {
+.task-body-footer label,
+.task-body-assignees-layout label{
     white-space: nowrap; /* Prevent text from wrapping to the next line */
     margin: 10px 0;
     padding: 10px 0;

@@ -61,7 +61,7 @@ public class Task implements Serializable {
     TaskGroup group = TaskGroup.A;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "task_type")
+    @Column(name = "task_type", nullable = false)
     private TaskType type = TaskType.TASK;
 
     @ManyToOne

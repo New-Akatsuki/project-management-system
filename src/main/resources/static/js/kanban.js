@@ -71,6 +71,7 @@
             build_section();
             build_tasks();
             build_subtask();
+            enableDragAndDrop();
         }
 
         function build_section() {
@@ -156,36 +157,6 @@
             });
         }
 
-        function saveTask() {
-            var task = {
-                name: $('#task-name').val(),
-                description: $('#task-description').val(),
-                priority: $('#task-priority').val(),
-                start_date: $('#task-start-date').val(),
-                end_date: $('#task-end-date').val(),
-                plan_hours: $('#task-plan-hours').val(),
-                actual_hours: $('#task-actual-hours').val(),
-                actual_due_date: $('#task-actual-due-date').val(),
-                status: $('#task-status').is(':checked'),
-                group: $('#task-type').val(),
-                type: $('#task-assignees').val(),
-                // Add any other fields as needed
-            };
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: '/api/tasks/task-added', // Update the URL to match your endpoint
-                data: JSON.stringify(task),
-                success: function (data) {
-                    $('#exampleModal').modal('hide'); // Close the modal
-                    alert(data); // Display a success message or handle the response
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
-        }
 
         function update_task(){
             //Todo:: update task
@@ -215,13 +186,93 @@
 
         }
 
+        function enableDragAndDrop() {
+            $('.' + classes.kb_section_class).sortable({
+                connectWith: '.' + classes.kb_section_class,
+                placeholder: 'ui-state-highlight',
+                items: '.' + classes.kb_task_class,
+                start: function (e, ui) {
+                    ui.item.data('originalSection', ui.item.closest('.' + classes.kb_section_class));
+                },
+                update: function (e, ui) {
+                    const task = ui.item;
+                    const originalSection = ui.item.data('originalSection');
+                    const newSection = task.closest('.' + classes.kb_section_class);
+
+                    const taskId = task.attr('id');
+                    const originalSectionId = originalSection.attr('id');
+                    const newSectionId = newSection.attr('id');
+
+                    // Call your custom change and receive functions here
+                    settings.onChange({
+                        task,
+                        originalSection,
+                        newSection,
+                        taskId,
+                        originalSectionId,
+                        newSectionId
+                    });
+                    settings.onReceive({
+                        task,
+                        originalSection,
+                        newSection,
+                        taskId,
+                        originalSectionId,
+                        newSectionId
+                    });
+                },
+            }).disableSelection();
+        }
+
+
+        kanban_render();
 
 
 
-        build_kanban();
+        // build_kanban();
 
 
 
     }
 
 }(jQuery));
+
+function saveTask() {
+    let task = {
+        id: null,
+        name: $('#task-name').val(),
+        description: $('#task-description').val(),
+        priority: $('#task-priority').val(),
+        start_date: $('#task-start-date').val(),
+        end_date: $('#task-end-date').val(),
+        actual_due_date: $('#task-actual-due-date').val(),
+        duration: null,
+        plan_hours: $('#task-plan-hours').val(),
+        actual_hours: $('#task-actual-hours').val(),
+        process:null,
+        status: $('#task-status').is(':checked'),
+        parent: null,
+        group: $('#task-type').val(),
+        type: $('#task-assignees').val(),
+        assignees: null,
+        subtasks:null,
+        open:false// Add the type field
+        // Add any other fields as needed
+    };
+    console.log(task)
+    $.ajax({
+        url: '/api/tasks',
+        method: 'POST',
+        data: JSON.stringify(task),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#exampleModal').modal('hide'); // Close the modal
+            alert(data); // Display a success message or handle the response
+        },
+        error: function (error) {
+            $('#exampleModal').modal('hide');
+           alert(error);
+        }
+    });
+}
