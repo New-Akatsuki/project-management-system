@@ -72,7 +72,7 @@ public class HomeController {
         return "userview";
 
     }
-    @GetMapping("/adduser")
+    @GetMapping("/user/add")
     public String adduser(){
         return "adduser";
 
