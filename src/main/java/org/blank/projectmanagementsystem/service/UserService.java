@@ -9,5 +9,5 @@ public interface UserService {
     User save(User user);
     void saveRole(Role role);
     void saveDepartment(Department department);
-
+    void changeDefaultPassword(String password);
 }

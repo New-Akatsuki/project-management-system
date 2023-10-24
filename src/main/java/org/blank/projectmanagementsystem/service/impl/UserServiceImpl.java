@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         departmentRepository.save(department);
     }
 
+    @Override
+    public void changeDefaultPassword(String password) {
+
+    }
+
 }
