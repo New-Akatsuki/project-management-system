@@ -44,9 +44,9 @@
                 </div>
 
                 <div class="form-floating has-validation mb-3">
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Email"/>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"/>
                     <label id="username-label" for="username" class="form-label d-flex align-items-center">
-                        <i class="bx bx-envelope me-2"></i>Email
+                        <i class="bx bx-envelope me-2"></i>Username or Email
                     </label>
                 </div>
                 <div class="mb-3">
@@ -99,61 +99,6 @@
             passwordIcon.classList.remove('bi-eye');
             passwordIcon.classList.add('bi-eye-slash');
         }
-    });
-    $(document).ready(function() {
-        //form validation: if username and password are empty, show error message and disable submit btn, else submit form
-        $("#my_form").validate({
-            rules: {
-                username: {
-                    required: true,
-                    email: true
-                },
-                password: {
-                    required: true,
-                    minlength: 4
-                }
-            },
-            messages: {
-                username: {
-                    required: "Please enter your email address",
-                    email: "Please enter a valid email address"
-                },
-                password: {
-                    required: "Please enter your password",
-                    minlength: "Your password must be at least 4 characters long"
-                }
-            },
-            //error message placement
-            errorPlacement: function(error, element) {
-                if (element.attr("name") === "username") {
-                    error.insertAfter("#username-label");
-                } else if (element.attr("name") === "password") {
-                    error.insertAfter("#password-label");
-                } else {
-                    error.insertAfter(element);
-                }
-                    },
-
-            focus: function(element) {
-                $(element).addClass("is-invalid").removeClass("is-valid");
-            },
-            highlight: function(element) {
-                $(element).addClass("is-invalid").removeClass("is-valid");
-            },
-            unhighlight: function(element) {
-                $(element).addClass("is-valid").removeClass("is-invalid");
-            },
-            //if form is invalid, disable submit btn
-            invalidHandler: function(event, validator) {
-                $("#submit").prop('disabled', true);
-            },
-            //if form is valid, enable submit btn
-            submitHandler: function(form) {
-                $("#submit").prop('disabled', false);
-                form.submit();
-            }
-
-        });
     });
 </script>
 </body>
