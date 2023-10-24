@@ -71,7 +71,6 @@
     margin: 0 0 10px;
     display: block;
     clear: both;
-    border: 1px dashed #000;
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_footer{
@@ -127,10 +126,15 @@
 }
 
 .kb-task {
-    margin: 10px;
-    padding: 10px;
+    height: 120px;
+    margin: 0 10px;
+    padding: 10px 20px;
     background-color: #fff;
-    border: 1px dashed #000;
+    transition: height 0.3s ease-out;
+}
+
+.subtask-date-font-size{
+    font-size: 12px;
 }
 
 /* Styles for the task body layout */
@@ -138,7 +142,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 /* Styles for the task body layout 2 (containing due date and subtask) */
@@ -147,7 +151,7 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
-    padding: 10px 0px;
+    padding: 10px 0;
 }
 
 /* Styles for the task name */
@@ -179,33 +183,61 @@
 }
 
 .kb-subtask-body {
+    width: 100%;
+    height: 46px;
+    display: flex;
     justify-content: space-between;
+    gap: 5px;
     align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    display: none;
+    padding-block: 10px;
+    padding-inline: 5px;
+    border-block: 1px solid #e5e5e5;
+}
+.justify-self-end{
+    justify-self: end;
+}
+.flex-3{
+    flex: 3;
+}
+.flex-6{
+    flex: 6;
 }
 .kb-subtask-name {
     font-weight: bold;
 }
-.kb-subtask-status-layout,
-.kb-subtask-name-layout,
-.kb-subtask-due-date-layout {
-    display: inline-block;
-    margin-right: 10px;
+
+.kb-subtask-name-layout {
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-right: 80px;
 }
-/* Move subtask due date to the right corner */
+
+/* Styles for the subtask due date */
 .kb-subtask-due-date-layout {
-    margin-right: 0;
-    padding-left: 150px;
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-left: 10px; /* Add some padding to separate it from the name */
+}
+
+.kb-subtask-body-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 
 
 /* Modal Styles */
+
+.datepicker-style{
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
 
 .modal-content {
@@ -248,6 +280,42 @@
 .modal-body {
     padding: 20px;
 }
+
+/*modal design spec*/
+#exampleModalLabel{
+    padding: 0 15px;
+    margin: 0 10px;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.task-body-text-layout{
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+.task-body-project-expected-date,
+.task-body-project-actual-date,
+.task-body-footer,
+.task-body-assignees-layout{
+    display: flex;
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+
+
+.task-body-project-expected-date label,
+.task-body-project-actual-date label,
+.task-body-footer label,
+.task-body-assignees-layout label{
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
 
 /* Label Styles */
 label {
@@ -297,12 +365,46 @@ input[type="checkbox"] {
     justify-content: center;
     min-height: calc(100% - 60px);
 }
-
-@media (min-width: 992px) {
-    .modal-dialog {
-        max-width: 600px;
-    }
+.subtask-block{
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    animation: floatOutSubtask 0.3s ease-in-out;
+}
+.hide {
+    opacity: 0;
+    display: none;
+}
+.show {
+    display: block;
+}
+.toggle-subtask-icon-active {
+    transform: rotate(-90deg);
+}
+.toggle-subtask-icon {
+    transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
+}
+.toggle-subtask-icon:hover {
+    cursor: pointer;
+    background: #ccc;
 }
 
-
-
+@keyframes floatOutSubtask {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

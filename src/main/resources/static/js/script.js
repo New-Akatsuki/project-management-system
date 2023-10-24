@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         section.innerHTML = `
             <div class="section-header">
                 <p class="section-name">${sectionName}</p>
-                <span id="add-task-button" class="add-task-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">+</span>
+                <span id="add-task-button" class="add-tas k-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">+</span>
             </div>
             <div class="tasks"></div>
         `;
