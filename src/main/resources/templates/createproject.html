@@ -8,7 +8,12 @@
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
     <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
     <!-- Google Fonts -->
@@ -19,11 +24,7 @@
     />
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Bootstrap JS and Popper.js for Modal Box -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 
     <link
             th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
@@ -48,7 +49,7 @@
     <!-- Single Select -->
     <link rel="stylesheet" href="/css/single-select.css">
 
-<!--    icon-->
+    <!--    icon-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
 
@@ -65,6 +66,7 @@
     <link rel="stylesheet" href="/css/multiple-select.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
+
 
 </head>
 
@@ -89,12 +91,12 @@
     <div style="height: 70px;"></div>
     <!-- Main Content -->
 
-    <div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div class="container-fluid content-inner mt-n5 py-0">
         <div>
             <div class="row">
                 <div class="col-sm-12 col-lg-12">
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between">                        </div>
+                        <div class="card-header d-flex justify-content-between"></div>
                         <div class="card-body">
                             <form id="form-wizard1" class="mt-3 text-center needs-validation" novalidate>
                                 <ul id="top-tab-list" class="p-0 row list-inline">
@@ -173,10 +175,10 @@
                                 <fieldset>
                                     <div class="form-card text-start">
                                         <div class="row">
-                                            <div class="col-7">
+                                            <div class="col-6">
                                                 <h3 class="mb-4">Project Information:</h3>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-6">
                                                 <h2 class="steps">Step 1 - 4</h2>
                                             </div>
                                         </div>
@@ -217,8 +219,6 @@
                                                     <div class="invalid-feedback" id="end-date_error"></div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                     </div>
                                     <button type="button" name="next"
@@ -264,7 +264,6 @@
                                                     <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
                                                         <i class='bx bx-plus m-0 p-0'></i>
                                                     </a>
-
                                                 </div>
                                                 <div class="invalid-feedback" id="so_error"></div>
                                             </div>
@@ -364,9 +363,6 @@
                                                     <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
                                                         <i class='bx bx-plus m-0 p-0'></i>
                                                     </a>
-
-
-                                                    </a>
                                                 </div>
                                                 <div class="invalid-feedback" id="deli_error"></div>
                                             </div>
@@ -395,10 +391,10 @@
                                 <fieldset>
                                     <div class="form-card">
                                         <div class="row">
-                                            <div class="col-7">
+                                            <div class="col-6">
                                                 <h3 class="mb-4 text-left">Finish:</h3>
                                             </div>
-                                            <div class="col-5">
+                                            <div class="col-6">
                                                 <h2 class="steps">Step 4 - 4</h2>
                                             </div>
                                         </div>
@@ -432,6 +428,7 @@
     <!-- End Main Content-->
 </main>
 <!-- End #main -->
+<!--Modal Section-->
 <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

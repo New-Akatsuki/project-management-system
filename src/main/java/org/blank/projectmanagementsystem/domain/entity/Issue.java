@@ -63,4 +63,8 @@ public class Issue implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User pic;
 }
