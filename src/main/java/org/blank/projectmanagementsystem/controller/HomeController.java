@@ -13,13 +13,13 @@ public class HomeController {
     }
     @GetMapping("/issue1")
     public String issue1(){
-        return "issue_page";
+        return "issue-page";
     }
 
     @GetMapping("/issue2")
     public String issue2(Model model){
         model.addAttribute("model", new TestEntityClass());
-        return "create_issue_page";
+        return "create-issue-page";
     }
 
     @GetMapping("/task-board")
@@ -39,60 +39,60 @@ public class HomeController {
 
     @GetMapping("/display_issue")
     public String issue_display(){
-        return "issue_display_page";
+        return "issue-display-page";
     }
 
     @PostMapping("/save")
     public String save(@ModelAttribute("model")TestEntityClass model){
         System.out.println(model);
-        return "issue_display_page";
+        return "issue-display-page";
     }
     @GetMapping("/createproject")
     public String CreateProject(){
-        return "createproject";
+        return "create-project";
     }
 
     @GetMapping("/projectlist")
     public String ProjectList(){
-        return "projectlist";
+        return "project-list";
     }
 
     @GetMapping("/userlist")
     public String UserList(){
-        return "userlist";
+        return "user-list";
     }
 
     @GetMapping("/projectdetail")
     public String ProjectDetail(){
-        return "projectdetail";
+        return "project-detail";
     }
 
     @GetMapping("/userview")
     public String userview(){
-        return "userview";
+        return "user-view";
 
     }
     @GetMapping("/user/add")
     public String adduser(){
-        return "adduser";
+        return "add-user";
 
     }
     @GetMapping("/userprofile")
     public String userprofile(){
-        return "userprofile";
+        return "user-profile";
 
     }
     @GetMapping("/changepassword")
     public String changepassword(){
-        return "changepassword";
+        return "change-password";
     }
     @GetMapping("/defaultpassword")
     public String defaultpassword(){
-        return "defaultpassword";
+        return "default-password";
     }
     @GetMapping("developerpage")
     public String developerpage(){
-        return "developerpage";
+        return "developer-page";
     }
 
 }
