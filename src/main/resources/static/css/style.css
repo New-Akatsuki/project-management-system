@@ -1327,5 +1327,31 @@ h6 {
 .justify-self-stretch{
   justify-self: stretch;
 }
+.text-justify{
+  text-align: justify;
+}
 
+.border-start-1{
+  border-left: 1px solid #ccc;
+}
 
+.bg-gray-color{
+    background-color: #ccc;
+}
+
+.flex-4{
+  flex:4;
+}
+.flex-5{
+  flex: 5;
+}
+.flex-6{
+  flex: 6;
+}
+.flex-7{
+  flex: 7;
+}
+
+.border-block-1{
+  border-block-color: #3577ff !important;
+}
