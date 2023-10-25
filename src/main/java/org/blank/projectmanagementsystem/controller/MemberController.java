@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class MemberController {
         log.info("========================================================\n");
         return "redirect:/";
     }
+
+
 
 
 }
