@@ -37,25 +37,13 @@ public class ProjectManagementSystemApplication {
             var user1 = userService.save(
                     User.builder()
                             .name("John")
-                            .username("john@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
+                            .username("khun@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
                             .role(admin)
                             .department(department2)
                             .active(true)
                             .build()
             );
-
-            var user2 = userService.save(
-                    User.builder()
-                            .name("mike")
-                            .username("mike@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
-                            .role(user)
-                            .department(department)
-                            .active(true)
-                            .build()
-            );
-
         };
     }
 }
