@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,13 @@ public class MemberController {
     @GetMapping("/task-name")
     public String taskname() {
         return "task-name";
-
+    }
+    @PostMapping("/task-name")
+    public String taskname(@ModelAttribute TaskFormInput taskFormInput){
+        log.info("================================================");
+        log.info("task name: {}", taskFormInput);
+        log.info("================================================\n");
+        return "redirect:/";
     }
 
 

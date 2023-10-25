@@ -70,14 +70,9 @@ function showPatternInvalidMsg(element,msg_div,element_name) {
     msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
 }
 
-function checkPasswordsMatch(currentPasswordElement, passwordElement, confirmPassElement) {
+function checkPasswordsMatch(passwordElement, confirmPassElement) {
     confirmPassElement.element.addEventListener("input", function () {
-        if (currentPasswordElement.element.value === passwordElement.element.value) {
-            confirmPassElement.element.setCustomValidity("New password cannot be the same as the current password.");
-            confirmPassElement.element.classList.add("is-invalid");
-            confirmPassElement.msg.textContent = "New password cannot be the same as the current password.";
-        }
-        else if (passwordElement.element.value !== confirmPassElement.element.value) {
+       if (passwordElement.element.value !== confirmPassElement.element.value) {
             confirmPassElement.element.setCustomValidity("Passwords do not match.");
             confirmPassElement.element.classList.add("is-invalid");
             confirmPassElement.msg.textContent = "Passwords do not match.";
@@ -88,12 +83,8 @@ function checkPasswordsMatch(currentPasswordElement, passwordElement, confirmPas
         }
     });
     passwordElement.element.addEventListener("input", function () {
-        if (currentPasswordElement.element.value === passwordElement.element.value) {
-            confirmPassElement.element.setCustomValidity("New password cannot be the same as the current password.");
-            confirmPassElement.element.classList.add("is-invalid");
-            confirmPassElement.msg.textContent = "New password cannot be the same as the current password.";
-        }
-        else if (confirmPassElement.element.value !== "") {
+
+        if (confirmPassElement.element.value !== "") {
             if (passwordElement.element.value !== confirmPassElement.element.value) {
                 confirmPassElement.element.setCustomValidity("Passwords do not match.");
                 confirmPassElement.element.classList.add("is-invalid");
