@@ -1,9 +1,9 @@
 (function ($) {
 
     $.fn.kanban = function (options) {
-        var $this = $(this);
+        let $this = $(this);
 
-        var settings = $.extend({
+        let settings = $.extend({
             phase: [],
             tasks: [],
             onChange: function (e, ui) {
@@ -12,7 +12,7 @@
             }
         }, options)
 
-        var classes = {
+        let classes = {
             kanban_board_class: "cd_kanban_board",
             kanban_board_titles_class: "cd_kanban_board_titles",
             kanban_board_title_class: "cd_kanban_board_title",
@@ -55,19 +55,20 @@
 
         $this.on('click', '.' + classes.kb_section_header_btn_class, function (e) {
             e.preventDefault();
-            var modalId = $(this).data('bs-target'); // Get the modal target ID
-            var $modal = $(modalId);
+            let modalId = $(this).data('bs-target'); // Get the modal target ID
+            let $modal = $(modalId);
 
             if ($modal.length) {
                 $modal.addClass('show'); // Add the 'show' class to trigger the animation
             }
         });
 
+
+
         function build_kanban() {
 
             $this.addClass(classes.kanban_board_class);
             $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
-
             build_section();
             build_tasks();
             build_subtask();
@@ -120,10 +121,28 @@
                 //insert task into phase body
                 $this.find(`#${item.phase}-phase-body`).append(task_container);
 
+
+
                 //toggle subtask
                 const task = document.getElementById(`${item.id}`);
-                const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
-                subtaskIcon.addEventListener('click', () => {
+
+                $(`#${item.id} .kb-task-body-layout`).on('click', () => {
+                    //show modal
+                    $('#exampleModal').modal('show');
+
+                    $('#task-name').val(item.name);
+                    $('#task-description').val(item.description);
+                    $('#task-priority').val(item.priority);
+                    $('#task-start-date').val(item.start_date);
+                    $('#task-end-date').val(item.end_date);
+                    $('#task-plan-hours').val(item.plan_hours);
+                    $('#task-group').val(item.group);
+                    $('#task-type').val(item.type);
+                });
+
+
+                    const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
+                    subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
@@ -149,12 +168,34 @@
                     </div>
                     
                 `;
-                if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
-                {
-                    console.log(`${item.parent}-subtask-block`)
-                    $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
-                }
+
+
+                $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
+
+                // Add a click event handler to each subtask
+                const subtask = document.getElementById(`${item.id}`);
+                subtask.addEventListener('click', () => {
+                    // Show the modal and populate it with subtask data
+                    $('#exampleModal').modal('show');
+
+                    // Populate the modal fields with subtask data
+                    $('#task-name').val(item.name);
+                    $('#task-description').val(item.description);
+                    $('#task-priority').val(item.priority);
+                    $('#task-start-date').val(item.start_date);
+                    $('#task-end-date').val(item.end_date);
+                    $('#task-plan-hours').val(item.plan_hours);
+                    $('#task-group').val(item.group);
+                    $('#task-type').val(item.type);
+                });
             });
+
+            //     if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
+            //     {
+            //         console.log(`${item.parent}-subtask-block`)
+            //         $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
+            //     }
+            // });
         }
 
 
@@ -169,22 +210,6 @@
             build_kanban();
         }
 
-        function build_blocks() {
-            settings.titles.forEach(function (item, index, array) {
-                var item = '<div class="card-width card-height ' + classes.kanban_board_block_class + '" data-block="' + item + '"></div>';
-                $this.find('.' + classes.kanban_board_blocks_class).append(item);
-            });
-            $("." + classes.kanban_board_block_class).sortable({
-                connectWith: "." + classes.kanban_board_block_class,
-                containment: "." + classes.kanban_board_blocks_class,
-                placeholder: classes.kanban_board_item_placeholder_class,
-                scroll: true,
-                cursor: "move",
-                change: settings.onChange,
-                receive: settings.onReceive,
-            }).disableSelection();
-
-        }
 
         function enableDragAndDrop() {
             $('.' + classes.kb_section_class).sortable({
@@ -229,8 +254,6 @@
 
 
 
-        // build_kanban();
-
 
 
     }
@@ -239,22 +262,22 @@
 
 function saveTask() {
     let task = {
-        id: null,
+        id: 10,
         name: $('#task-name').val(),
         description: $('#task-description').val(),
         priority: $('#task-priority').val(),
         start_date: $('#task-start-date').val(),
         end_date: $('#task-end-date').val(),
-        actual_due_date: $('#task-actual-due-date').val(),
+        actual_due_date: null,
         duration: null,
         plan_hours: $('#task-plan-hours').val(),
-        actual_hours: $('#task-actual-hours').val(),
+        actual_hours: null,
         process:null,
-        status: $('#task-status').is(':checked'),
+        status: 0,
         parent: null,
-        group: $('#task-type').val(),
-        type: $('#task-assignees').val(),
-        assignees: null,
+        group:$('#task-group').val(),
+        type: $('#task-type').val(),
+        assignees:[],
         subtasks:null,
         open:false// Add the type field
         // Add any other fields as needed
@@ -264,15 +287,18 @@ function saveTask() {
         url: '/api/tasks',
         method: 'POST',
         data: JSON.stringify(task),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         success: function (data) {
             $('#exampleModal').modal('hide'); // Close the modal
-            alert(data); // Display a success message or handle the response
+            alert(data); // Display a success message
         },
-        error: function (error) {
-            $('#exampleModal').modal('hide');
-           alert(error);
+        error: function (xhr, status, error) {
+            // Handle the error, e.g., display it in a console or an alert
+            console.error(xhr.responseText);
+            alert('Error: ' + error);
         }
     });
+
+
 }

@@ -37,6 +37,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskViewObject createTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
+        if (taskFormInput.getParent() == null) {
+            task.setParentTask(null);
+        } else {
+            task.setParentTask(taskRepository.findById(taskFormInput.getParent()).orElse(null));
+        }
         //add parent task if exist
         var taskParent = taskRepository.findById(taskFormInput.getParent());
         taskParent.ifPresent(task::setParentTask);

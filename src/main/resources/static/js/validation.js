@@ -72,7 +72,7 @@ function showPatternInvalidMsg(element,msg_div,element_name) {
 
 function checkPasswordsMatch(passwordElement, confirmPassElement) {
     confirmPassElement.element.addEventListener("input", function () {
-        if (passwordElement.element.value !== confirmPassElement.element.value) {
+       if (passwordElement.element.value !== confirmPassElement.element.value) {
             confirmPassElement.element.setCustomValidity("Passwords do not match.");
             confirmPassElement.element.classList.add("is-invalid");
             confirmPassElement.msg.textContent = "Passwords do not match.";
@@ -83,6 +83,7 @@ function checkPasswordsMatch(passwordElement, confirmPassElement) {
         }
     });
     passwordElement.element.addEventListener("input", function () {
+
         if (confirmPassElement.element.value !== "") {
             if (passwordElement.element.value !== confirmPassElement.element.value) {
                 confirmPassElement.element.setCustomValidity("Passwords do not match.");

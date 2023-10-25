@@ -10,4 +10,6 @@ public interface UserService {
     void saveRole(Role role);
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
+    void changePassword(String currentPassword, String newPassword);
+
 }
