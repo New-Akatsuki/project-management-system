@@ -6,6 +6,8 @@ import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInpu
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,6 +60,8 @@ public class MemberController {
         log.info("================================================");
         log.info("task name: {}", taskFormInput);
         log.info("================================================\n");
+
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         return "redirect:/";
     }
 
