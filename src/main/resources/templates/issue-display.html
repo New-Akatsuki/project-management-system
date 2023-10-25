@@ -141,8 +141,8 @@
                                 <input id="impact" name="impact" type="text" class="form-control"/>
                             </div>
                             <br>
-                            <input type="hidden" name="correctiveAction" id="co-actionInput">
-                            <input type="hidden" name="preventiveAction" id="pre-actionInput">
+                            <input type="hidden" name="coAction" id="co-actionInput">
+                            <input type="hidden" name="preAction" id="pre-actionInput">
                             <div class="button-div">
                                 <button type="submit" class="btn btn-primary">Solve Issue</button>
                                 <button class="btn btn-danger">Cancel</button>
@@ -219,6 +219,12 @@
     //         }
     //     });
     // }
+
+    // Function to update hidden input fields with Quill content
+    document.getElementById('create-issue').addEventListener('submit', function (e) {
+        document.getElementById('contentInput').value = quillContent.root.innerHTML;
+        document.getElementById('resPartyInput').value = quillResParty.root.innerHTML;
+    });
 
     //document element ready
     document.addEventListener('DOMContentLoaded', function () {

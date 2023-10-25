@@ -70,20 +70,18 @@
             <div class="container">
                 <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
                 <br>
-                <div th:name="issue_title" th:id="issue_title"></div>
-                <div th:name="issue_content" th:id="issue_content"></div>
-                <form th:action="@{/save}" method="post" th:object="${model}" id="create-issue">
+                <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}" id="create-issue">
                     <div class="container d-flex flex-column gap-2">
                         <div>
                             <label for="title" class="form-label">Title</label>
                             <input class="form-control" type="text" name="title" id="title" placeholder="Enter issue title"
-                                   required/>
+                                   />
                             <div id="title_error" class="invalid-feedback"></div>
                         </div>
                         <div class="d-flex flex-column flex-md-row align-items-md-stretch gap-2">
                             <div class="flex-1">
                                 <label for="issue_category" class="form-label">Category</label>
-                                <select id="issue_category" name="issue_category" multiple required>
+                                <select id="issue_category" name="category" multiple >
                                     <option value="communication">Communication</option>
                                     <option value="programming">Programming</option>
                                 </select>
@@ -91,12 +89,20 @@
 
                             <div class="flex-1 d-flex flex-column">
                                 <label for="issue_place" class="form-label">Issue Place</label>
-                                <div id="issue_place" class="w-100"></div>
+<!--                                <div id="issue_place" class="w-100"></div>-->
+                                <select id="issue_place" name="place" required>
+                                    <option value="server 1">Server 1</option>
+                                    <option value="server 2">Server 2</option>
+                                </select>
                             </div>
 
-                            <div class="flex-1">
+                            <div class="flex-1 d-flex flex-column">
                                 <label for="issue_pic" class="form-label">Issue PIC</label>
-                                <div id="issue_pic" class="w-100"></div>
+<!--                                <div id="issue_pic" class="w-100"></div>-->
+                                <select id="issue_pic" name="pic" required>
+                                    <option value="John">John</option>
+                                    <option value="Matt">Matt</option>
+                                </select>
                             </div>
                         </div>
 
@@ -122,9 +128,9 @@
 
                         <!--  Hidden Items    -->
                         <input type="hidden" name="content" id="contentInput">
-                        <input type="hidden" name="responsibleParty" id="resPartyInput">
-                        <input type="hidden" name="direct_cause" id="dirCauseInput">
-                        <input type="hidden" name="root_cause" id="rootCauseInput">
+                        <input type="hidden" name="resParty" id="resPartyInput">
+                        <input type="hidden" name="dirCause" id="dirCauseInput">
+                        <input type="hidden" name="rootCause" id="rootCauseInput">
                         <!-- Hidden Items End -->
 
                         <div class="align-self-end">
@@ -174,7 +180,7 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<script th:src="@{/js/single-select.js}"></script>
+<!--<script th:src="@{/js/single-select.js}"></script>-->
 <script th:src="@{/js/text-editor.js}"></script>
 <script th:src="@{/js/issue-create-validation.js}"></script>
 
@@ -184,13 +190,34 @@
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
 
-    // Function to update hidden input fields with Quill content
-    function updateHiddenInputs() {
-        document.getElementById('contentInput').value = quillContent.root.innerHTML;
-        document.getElementById('resPartyInput').value = quillResParty.root.innerHTML;
-        document.getElementById('dirCauseInput').value = quillDirCause.root.innerHTML;
-        document.getElementById('rootCauseInput').value = quillRootCause.root.innerHTML;
+    document.getElementById('create-issue').addEventListener('submit', function (e) {
+        // Get the Quill content
+        var quillContentHTML = quillContent.root.innerHTML;
+        var quillResPartyHTML = quillResParty.root.innerHTML;
+        var quillDirCauseHTML = quillDirCause.root.innerHTML;
+        var quillRootCauseHTML = quillRootCause.root.innerHTML;
+
+        // Validation check
+        if (!isValidQuillContent(quillContentHTML) || !isValidQuillContent(quillResPartyHTML) ||
+            !isValidQuillContent(quillDirCauseHTML) || !isValidQuillContent(quillRootCauseHTML)) {
+            // If validation fails, prevent the form submission
+            e.preventDefault();
+            alert("Quill content cannot be empty.");
+        } else {
+            // Update hidden input fields
+            document.getElementById('contentInput').value = quillContentHTML;
+            document.getElementById('resPartyInput').value = quillResPartyHTML;
+            document.getElementById('dirCauseInput').value = quillDirCauseHTML;
+            document.getElementById('rootCauseInput').value = quillRootCauseHTML;
+        }
+    });
+
+    // Function to check if Quill content is valid
+    function isValidQuillContent(html) {
+        // You can modify this condition based on your specific validation requirements
+        return html.trim() !== '' && html.trim() !== '<p><br></p>';
     }
+
 
 
     //document element ready
@@ -203,7 +230,6 @@
         toggleToolbar(1, 'res-party');
         toggleToolbar(2, 'dir-cause');
         toggleToolbar(3, 'root-cause');
-
     })
 </script>
 <script>
@@ -220,16 +246,16 @@
 <script>
     new MultiSelectTag('issue_category')
 </script>
-<script>
-    const data1 = ['server 1', '1 server', 'a server 2']
-    const data2 = ['ayeaye', 'myamya', 'hlahla']
-    const id1 = init("issue_place", 'Enter issue place')
-    const id2 = init("issue_pic", 'Select issue PIC')
-    console.log(id1, id2)
-    const issue_place_wrapperUpdateName = singleSelect(id1, data1,
-        {btn_id:'addIssuePlace',modal_id: "addIssuePlaceModal",btn_name: 'Add new place'}
-    );
-    const issue_pic_wrapperUpdateName = singleSelect(id2, data2);
-</script>
+<!--<script>-->
+<!--    const data1 = ['server 1', '1 server', 'a server 2']-->
+<!--    const data2 = ['ayeaye', 'myamya', 'hlahla']-->
+<!--    const id1 = init("issue_place", 'Enter issue place')-->
+<!--    const id2 = init("issue_pic", 'Select issue PIC')-->
+<!--    console.log(id1, id2)-->
+<!--    const issue_place_wrapperUpdateName = singleSelect(id1, data1,-->
+<!--        {btn_id:'addIssuePlace',modal_id: "addIssuePlaceModal",btn_name: 'Add new place'}-->
+<!--    );-->
+<!--    const issue_pic_wrapperUpdateName = singleSelect(id2, data2);-->
+<!--</script>-->
 </body>
 </html>

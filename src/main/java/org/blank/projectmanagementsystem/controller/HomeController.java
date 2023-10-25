@@ -11,4 +11,9 @@ public class HomeController {
     public String index(){
         return "index";
     }
+
+    @GetMapping("/task-view")
+    public String task(){
+        return "task-view";
+    }
 }

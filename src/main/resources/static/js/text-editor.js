@@ -14,8 +14,8 @@ let toolbaroptions = [
     [{color: []}, {background: []}],
     //adding code snippet or blockquote
     ["code-block", "blockquote"],
-    //adding image, link, video, or formula
-    ["image", "link"]
+    //image
+    ["image"]
 ]
 
 let aa = {
