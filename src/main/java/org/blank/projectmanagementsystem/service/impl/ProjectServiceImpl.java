@@ -6,9 +6,7 @@ import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
-import org.blank.projectmanagementsystem.repository.ClientRepository;
-import org.blank.projectmanagementsystem.repository.ProjectRepository;
-import org.blank.projectmanagementsystem.repository.UserRepository;
+import org.blank.projectmanagementsystem.repository.*;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +25,9 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
+    private final SystemOutlineRepository systemOutlineRepository;
+    private final ArchitectureRepository architectureRepository;
+    private final DeliverableRepository deliverableRepository;
 
 
     private final ProjectMapper projectMapper = new ProjectMapper();
@@ -60,22 +61,35 @@ public class ProjectServiceImpl implements ProjectService {
         List<Integer> systemOutlineIDs = projectFormInput.getSystemOutlines();
         List<SystemOutline> systemOutlines = new ArrayList<>();
         if(systemOutlineIDs!=null && systemOutlineIDs.size() > 0){
-//            systemOutlines = systemOutlineIDs.stream().map(id0-> )
+            systemOutlines = systemOutlineIDs.stream().map(id-> systemOutlineRepository.findById(id)
+                    .orElse(null)).toList();
         }
 
-        //Todo:: get Architecture outlines
-        //Todo:: get Deliverables
-
-
+        //get Architecture outlines
+        List<Integer> architectureIds = projectFormInput.getArchitectureOutlines();
+        List<Architecture> architectures = new ArrayList<>();
+        if(architectureIds!=null && architectureIds.size() > 0){
+            architectures = architectureIds.stream().map(id-> architectureRepository.findById(id)
+                    .orElse(null)).toList();
+        }
+        //get Deliverables
+        List<Integer> deliverablesIds = projectFormInput.getDeliverables();
+        List<Deliverable> deliverables = new ArrayList<>();
+        if(deliverablesIds!=null && deliverablesIds.size() > 0){
+            deliverables = deliverablesIds.stream().map(id-> deliverableRepository.findById(id)
+                    .orElse(null)).toList();
+        }
 
         Project project = projectMapper.mapToProject(projectFormInput);
         //set project manager to project
         project.setProjectManager(projectManager);
         //set client to project
         project.setClient(client);
-
-        //Todo:: set Data to project
-
+        project.getContractMembers().addAll(contractMembers);
+        project.getFocMembers().addAll(focMembers);
+        project.getArchitectures().addAll(architectures);
+        project.getSystemOutlines().addAll(systemOutlines);
+        project.getDeliverables().addAll(deliverables);
         project.setDepartment(projectManager.getDepartment());
 
         return projectRepository.save(project);
