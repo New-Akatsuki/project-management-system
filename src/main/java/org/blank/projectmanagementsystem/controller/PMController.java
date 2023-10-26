@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,29 +25,30 @@ public class PMController {
         return "project-list";
     }
     @GetMapping("/project-detail")
-    public String projectdetal() {
+    public String projectdetail() {
         return "project-detail";
-
-    @GetMapping("/adduser")
+    }
+    @GetMapping("/add-user")
     public ModelAndView addUser() {
         return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
     }
-    @PostMapping("/adduser")
+    @PostMapping("/add-user")
     public String addUser(@ModelAttribute AddUserFormInput addUserFormInput){
         return "redirect:/";
+    }
+
+    @GetMapping("/edit-user")
+    public ModelAndView editUser(){
+        return new ModelAndView("edit-user","editUserFormInput",new EditUserFormInput());
 
     }
-    @GetMapping("/userlist")
-    public String userList(){
-        return "user-list";
+
+    @PostMapping("/edit-user")
+    public String editUser(@ModelAttribute EditUserFormInput editUserFormInput){
+        return "/user-list";
+
+
     }
-    @GetMapping("/userprofile")
-    public ModelAndView  userprofile(){
-        return new ModelAndView("user_profile","addUserFormInput",new AddUserFormInput());
-    }
-    @PostMapping("/userprofile")
-    public String userprofile(@ModelAttribute AddUserFormInput addUserFormInput){
-        return "user-list";
-    }
+
 
 }
