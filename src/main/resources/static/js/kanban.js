@@ -64,7 +64,6 @@
         });
 
 
-
         function build_kanban() {
 
             $this.addClass(classes.kanban_board_class);
@@ -90,8 +89,6 @@
             });
         }
 
-
-
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
                 const height = settings.tasks.filter(data => data.parent===item.id).length * 50;
@@ -115,7 +112,10 @@
                                 </div>
                             </div>
                             <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
-                        </div>        
+                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Add SubTask</button>
+    
+                        </div>   
+                             
                     </div>
             `;
                 //insert task into phase body
@@ -146,8 +146,11 @@
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
-                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+120}px`;
+                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+220}px`;
                     subtaskIcon.classList.toggle('toggle-subtask-icon-active');
+
+                    const addSubTaskButton = document.getElementById(`${item.id}-add-subtask-btn`);
+                    addSubTaskButton.style.display = subtaskBlock.classList.contains('hide') ? 'none' : 'block';
                 });
             });
         }
@@ -163,10 +166,8 @@
                                 <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
                                     <span style="font-size: 9px">Due date</span>
                                     <span>${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
-                                </span>    
-                        </div>
-                    </div>
-                    
+                                </span>                                                             
+                        </div>                   
                 `;
 
 
@@ -189,13 +190,6 @@
                     $('#task-type').val(item.type);
                 });
             });
-
-            //     if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
-            //     {
-            //         console.log(`${item.parent}-subtask-block`)
-            //         $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
-            //     }
-            // });
         }
 
 
@@ -252,8 +246,18 @@
 
         kanban_render();
 
-
-
+        // $.ajax({
+        //     url: '/kanban-data',
+        //     method: 'GET',
+        //     success:function (data) {
+        //         console.log('data', data);
+        //
+        //
+        //
+        //     }
+        //
+        // }
+        // )
 
 
     }
@@ -262,7 +266,7 @@
 
 function saveTask() {
     let task = {
-        id: 10,
+        id: $('#task-id').val(),
         name: $('#task-name').val(),
         description: $('#task-description').val(),
         priority: $('#task-priority').val(),
@@ -272,16 +276,15 @@ function saveTask() {
         duration: null,
         plan_hours: $('#task-plan-hours').val(),
         actual_hours: null,
-        process:null,
+        // process: null,
         status: 0,
         parent: null,
-        group:$('#task-group').val(),
+        group: $('#task-group').val(),
         type: $('#task-type').val(),
-        assignees:[],
-        subtasks:null,
-        open:false// Add the type field
-        // Add any other fields as needed
-    };
+        assignees: [],
+        subtasks: null,
+        phase: 1,
+    }
     console.log(task)
     $.ajax({
         url: '/api/tasks',

@@ -181,6 +181,12 @@
     align-items: center;
 }
 
+.add-subtask-btn {
+    display: none;
+    margin-top: 30px;
+    margin-left: 70px;
+}
+
 /* Styles for the due date text */
 .kb-task-due-date {
     margin-right: 10px;
@@ -320,6 +326,7 @@
     padding: 10px 0;
 }
 
+/*SubTask modal*/
 
 /* Label Styles */
 label {
