@@ -35,8 +35,7 @@ public class User implements Serializable,UserDetails {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @ManyToOne
@@ -53,7 +52,7 @@ public class User implements Serializable,UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

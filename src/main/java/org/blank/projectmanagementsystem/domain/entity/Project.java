@@ -33,7 +33,7 @@ public class Project implements Serializable {
     private String objective;
 
     @Column(nullable = false)
-    private float duration;
+    private String duration;
 
     @Column(nullable = false)
     private Date startDate;
@@ -55,7 +55,7 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "contract_member_id", nullable = false)  // Column in the join table for Architecture
     )
-    private Set<User> contractMember;
+    private Set<User> contractMembers;
 
     @OneToMany
     @JoinTable(
@@ -63,7 +63,7 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "foc_member_id")  // Column in the join table for Architecture
     )
-    private Set<User> focMember;
+    private Set<User> focMembers;
 
 
     @ManyToMany

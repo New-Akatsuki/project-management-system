@@ -10,15 +10,6 @@ import java.io.Serializable;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Role implements Serializable {
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Integer id;
-
-    @Column(nullable = false,unique = true,length = 25)
-    private String name;
+public enum Role {
+    PMO,SDQC,DH,PM,MEMBER
 }
