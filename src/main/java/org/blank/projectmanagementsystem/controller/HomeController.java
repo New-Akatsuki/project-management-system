@@ -22,9 +22,9 @@ public class HomeController {
         return "create-project";
     }
 
-    @GetMapping("/user/add")
-    public String userAddView(){
-        return "add-user";
+    @GetMapping("/user-list")
+    public String userListView(){
+        return "user-list";
     }
 
     @GetMapping("/userProfile")
