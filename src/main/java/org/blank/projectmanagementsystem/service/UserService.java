@@ -7,4 +7,6 @@ public interface UserService {
     User save(User user);
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
+    void changePassword(String currentPassword, String newPassword);
+
 }
