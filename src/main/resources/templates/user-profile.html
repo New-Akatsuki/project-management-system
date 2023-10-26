@@ -57,7 +57,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">user-profile</li>
+                <li class="breadcrumb-item active">User-Profile</li>
             </ol>
         </nav>
     </div>
@@ -95,6 +95,10 @@
                 </div>
             </form>
         </div>
+    </div>
+    <input type="radio" class="tabs__radio" name="user-profile" id="edit">
+    <label for ="edit" class="tabs__label">Edit</label>
+    <div class="tabs__content">
     </div>
     <input type="radio" class="tabs__radio" name="user-profile" id="change-password">
     <label for ="change-password" class="tabs__label">Change Password</label>
@@ -176,6 +180,7 @@
         </div>
     </div>
 </div>
+</main>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Template Main JS File -->
@@ -253,6 +258,4 @@
     </script>
 
 </body>
-
-
 </html>

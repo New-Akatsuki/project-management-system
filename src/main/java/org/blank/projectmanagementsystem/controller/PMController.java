@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
@@ -20,14 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/pm")
 public class PMController {
     private final UserService userService;
-
     @GetMapping("/project-list")
-    public String projectlist() {
+    public String ProjectList() {
         return "project-list";
-    }
-    @GetMapping("/project-detail")
-    public String projectdetail() {
-        return "project-detail";
     }
     @GetMapping("/add-user")
     public ModelAndView addUser() {
@@ -47,20 +43,23 @@ public class PMController {
     @PostMapping("/edit-user")
     public String editUser(@ModelAttribute EditUserFormInput editUserFormInput){
         return "/user-list";
-
-
     }
-
 
     @GetMapping("/project-detail")
     public String ProjectDetail(){
         return "project-detail";
     }
 
-    @GetMapping("/project-list")
-    public String ProjectList(){
-        return "project-list";
+    @GetMapping("/create-project")
+    public String CreateProject(){
+        return "create-project";
     }
+
+    @GetMapping("/edit-project")
+    public String EditProject(){
+        return "edit-project";
+    }
+
 
     @GetMapping("/contract-info")
     public String ContractInfo(){

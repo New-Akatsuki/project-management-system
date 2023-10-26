@@ -17,10 +17,6 @@ public class HomeController {
         return "test";
     }
 
-    @GetMapping("/createproject")
-    public String creatProjectView(){
-        return "create-project";
-    }
 
     @GetMapping("/user-list")
     public String userListView(){
@@ -35,5 +31,15 @@ public class HomeController {
     @GetMapping("/issues")
     public String issuesView(){
         return "issue-page";
+    }
+
+    @GetMapping("/create-issue-page")
+    public String issuessdfView(){
+        return "create-issue-page";
+    }
+
+    @GetMapping("/issue-display-page")
+    public String issuessdsdffView(){
+        return "issue-display-page";
     }
 }
