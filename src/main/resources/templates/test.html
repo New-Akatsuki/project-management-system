@@ -111,16 +111,12 @@
                                 </div>
                             </div>
                             <div class="task-body-assignees-layout">
-                                <div class="input-group">
-                                    <label for="task-assignees" class="form-label">Assignees :</label>
-                                    <select id="task-assignees"  required>
-                                        <option th:each=" user : ${users}"
-                                                th:value="${user.id}"
-                                        th:text="${user.name}">
-                                        </option>
-                                    </select>
-                                </div>
+                            <div class="input-group">
+                                <label for="task-assignees" class="form-label" >Assignees :</label>
+                                <select id="task-assignees"  required>
 
+                                </select>
+                            </div>
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -265,6 +265,7 @@
 }(jQuery));
 
 function saveTask() {
+    // Create a task object with user IDs included
     let task = {
         id: $('#task-id').val(),
         name: $('#task-name').val(),
@@ -281,11 +282,16 @@ function saveTask() {
         parent: null,
         group: $('#task-group').val(),
         type: $('#task-type').val(),
-        assignees: [],
+        assignees: [], // Initialize an empty array for user IDs
         subtasks: null,
         phase: 1,
-    }
-    console.log(task)
+    };
+
+    // Get the selected user IDs from the assignees select box
+    $('#task-assignees option:selected').each(function () {
+        task.assignees.push($(this).val());
+    });
+
     $.ajax({
         url: '/api/tasks',
         method: 'POST',
@@ -293,15 +299,39 @@ function saveTask() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            $('#exampleModal').modal('hide'); // Close the modal
-            alert(data); // Display a success message
+            // Handle the success response
+            // Close the modal and display a success message
+            $('#exampleModal').modal('hide');
+            alert('Task saved successfully');
         },
         error: function (xhr, status, error) {
-            // Handle the error, e.g., display it in a console or an alert
+            // Handle errors, e.g., display them in the console or an alert
             console.error(xhr.responseText);
             alert('Error: ' + error);
         }
     });
-
-
 }
+
+
+$(document).ready(function () {
+    // Make an AJAX request to fetch users
+    $.ajax({
+        url: '/api/users',
+        method: 'GET',
+        success: function (data) {
+            // Handle the retrieved user data
+            // You can populate your select box with this data
+            const assigneesSelect = $('#task-assignees');
+            assigneesSelect.empty(); // Clear existing options
+
+            data.forEach(function (user) {
+                assigneesSelect.append(new Option(user.name, user.id));
+            });
+        },
+        error: function (xhr, status, error) {
+            // Handle errors, e.g., display them in the console
+            console.error(xhr.responseText);
+        }
+    });
+});
+
