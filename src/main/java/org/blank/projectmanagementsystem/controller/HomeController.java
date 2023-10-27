@@ -27,18 +27,32 @@ public class HomeController {
         return "test";
     }
 
-    @GetMapping("/createproject")
-    public String creatProjectView(){
-        return "create-project";
+    @GetMapping("/user-list")
+    public String userListView(){
+        return "user-list";
     }
 
+    @GetMapping("/userProfile")
+    public String userProfileView(){
+        return "user-profile";
+    }
+  
     @GetMapping("/issues")
     public String issuesView(){
         return "issue-page";
     }
-
+  
     @GetMapping("/department")
     public String departmentView(){
         return "department";
+    }
+    @GetMapping("/create-issue-page")
+    public String issuessdfView(){
+        return "create-issue-page";
+    }
+
+    @GetMapping("/issue-display-page")
+    public String issuessdsdffView(){
+        return "issue-display-page";
     }
 }

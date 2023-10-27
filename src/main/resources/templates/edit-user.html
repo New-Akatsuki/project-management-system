@@ -52,7 +52,7 @@
     <!-- End Page Title -->
     <div class="container">
         <h1>Edit User</h1>
-        <form action="@{/pm/edit_user}" th:object="${addUserFormInput}" method="POST">
+        <form action=""  method="POST">
             <div class="row">
                 <div class="col-md-8">
                     <!-- User Information -->
@@ -73,7 +73,7 @@
                 <label for="department" class="form-label">Department</label>
                 <div class="d-flex align-items-center gap-2">
                     <!-- Display the existing department value -->
-                    <input type="text" class="form-control" id="department" name="department" th:value="${addUserFormInput.department}">
+                    <input type="text" class="form-control" id="department" name="department" >
                     <a id="changeDepartmentButton" class="icon-edit-btn" data-toggle="modal" data-target="#changeDepartmentModal">
                         <i class='bx bx-edit bx-sm m-1 p-1'></i>
                     </a>
@@ -85,7 +85,7 @@
                 <label for="role" class="form-label">Role</label>
                 <div class="d-flex align-items-center gap-2">
                     <!-- Display the existing role value -->
-                    <input type="text" class="form-control" id="role" name="role" th:value="${addUserFormInput.role}">
+                    <input type="text" class="form-control" id="role" name="role" >
                     <a id="changeRoleButton" class="icon-edit-btn" data-toggle="modal" data-target="#changeRoleModal">
                         <i class='bx bx-edit bx-sm m-1 p-1'></i>
                     </a>

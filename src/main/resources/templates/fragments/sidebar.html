@@ -43,7 +43,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/createproject}">
+                <a class="nav-link" th:href="@{/pm/department}">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Department</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/project-list}">
                     <i class="bi bi-journals"></i>
                     <span>Projects</span>
                 </a>
@@ -57,9 +63,16 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/pm/adduser}">
+                <a class="nav-link" th:href="@{/pm/user-list}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/contract-info}">
+                    <i class="bi bi-info-square-fill"></i>
+                    <span>Contract Info</span>
                 </a>
             </li>
 
@@ -91,15 +104,8 @@
 
     <!-- Vendor JS Files -->
 
-
-
-
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
-
-
-
-
 
     </body>
     </html>
