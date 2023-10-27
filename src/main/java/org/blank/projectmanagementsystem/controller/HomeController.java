@@ -16,4 +16,9 @@ public class HomeController {
     public String task(){
         return "task-view";
     }
+
+    @GetMapping("/project-view")
+    public String project(){
+        return "project-view";
+    }
 }

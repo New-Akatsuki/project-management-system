@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="/css/quilltext.css">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    
+
     <style>
         .card-container {
             margin: 20px; /* Adjust the margin value as needed */
@@ -194,38 +194,6 @@
 <script>
     let coAction = new Quill("#co-action", aa)
     let preAction = new Quill("#pre-action", aa)
-
-    // function updateHiddenInputs() {
-    //     document.getElementById('co_actionInput').value = coAction.root.innerHTML;
-    //     document.getElementById('pre-actionInput').value = preAction.root.innerHTML;
-    // }
-    // function toggleToolbar(index, editor_id) {
-    //     const container = document.querySelectorAll('.ql-container');
-    //     const toolbar = document.querySelectorAll('.ql-toolbar');
-    //     const textEditorContainer = document.getElementById(editor_id);
-    //
-    //     textEditorContainer.addEventListener('click', () => {
-    //         toolbar[index].style.display = 'block';
-    //         toolbar[index].style.border = '1px solid #ccc';
-    //         container[index].classList.remove('round-full-border');
-    //         // toolbar.style.background = 'white'
-    //     });
-    //
-    //     document.addEventListener('click', (event) => {
-    //         // Check if the clicked element is outside the text editor
-    //         if (!textEditorContainer.contains(event.target)) {
-    //             toolbar[index].style.display = 'none';
-    //             container[index].classList.add('round-full-border');
-    //         }
-    //     });
-    // }
-
-    // Function to update hidden input fields with Quill content
-    document.getElementById('create-issue').addEventListener('submit', function (e) {
-        document.getElementById('contentInput').value = quillContent.root.innerHTML;
-        document.getElementById('resPartyInput').value = quillResParty.root.innerHTML;
-    });
-
     //document element ready
     document.addEventListener('DOMContentLoaded', function () {
         const containers = document.querySelectorAll('.ql-container');
