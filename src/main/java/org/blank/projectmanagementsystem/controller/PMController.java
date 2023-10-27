@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/pm")
 public class PMController {
     private final UserService userService;
+
     @GetMapping("/project-list")
     public String ProjectList() {
         return "project-list";
@@ -30,76 +31,72 @@ public class PMController {
     public String projectdetal() {
         return "project-detail";
     }
-        @GetMapping("/adduser")
-        public ModelAndView addUser () {
-            return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
-        }
-        @PostMapping("/adduser")
-        public String addUser (@ModelAttribute AddUserFormInput addUserFormInput){
-            return "redirect:/";
 
-        }
-        @GetMapping("/userlist")
-        public String userList () {
-            return "user-list";
-        }
-        @GetMapping("/userprofile")
-        public ModelAndView userprofile () {
-            return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
-        }
-        @PostMapping("/userprofile")
-        public String userprofile (@ModelAttribute AddUserFormInput addUserFormInput){
-            return "user-list";
-        }
+    @GetMapping("/userlist")
+    public String userList() {
+        return "user-list";
+    }
+
+    @GetMapping("/userprofile")
+    public ModelAndView userprofile() {
+        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
+    }
+
+    @PostMapping("/userprofile")
+    public String userprofile(@ModelAttribute AddUserFormInput addUserFormInput) {
+        return "user-list";
+    }
 
     @GetMapping("/add-user")
     public ModelAndView addUser() {
         return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
     }
+
     @PostMapping("/add-user")
-    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput){
+    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
         return "redirect:/";
     }
 
     @GetMapping("/edit-user")
-    public ModelAndView editUser(){
-        return new ModelAndView("edit-user","editUserFormInput",new EditUserFormInput());
+    public ModelAndView editUser() {
+        return new ModelAndView("edit-user", "editUserFormInput", new EditUserFormInput());
 
     }
 
     @PostMapping("/edit-user")
-    public String editUser(@ModelAttribute EditUserFormInput editUserFormInput){
+    public String editUser(@ModelAttribute EditUserFormInput editUserFormInput) {
         return "/user-list";
     }
 
     @GetMapping("/project-detail")
-    public String ProjectDetail(){
+    public String ProjectDetail() {
         return "project-detail";
     }
 
     @GetMapping("/create-project")
-    public String CreateProject(){
+    public String CreateProject() {
         return "create-project";
     }
 
     @GetMapping("/edit-project")
-    public String EditProject(){
+    public String EditProject() {
         return "edit-project";
     }
 
 
     @GetMapping("/contract-info")
-    public String ContractInfo(){
+    public String ContractInfo() {
         return "contract-info";
     }
 
     @GetMapping("/department")
-    public String Department(){
+    public String Department() {
         return "department";
     }
 
     @GetMapping("/user-list")
-    public String UserList(){
+    public String UserList() {
         return "user-list";
     }
+}
 

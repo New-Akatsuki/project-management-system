@@ -28,9 +28,9 @@ public class HomeController {
     }
 
     @GetMapping("/project-view")
-    public String project(){
+    public String project() {
         return "project-view";
-      
+    }
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
         return "test";
