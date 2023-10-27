@@ -35,7 +35,7 @@ public class PMController {
 
     @GetMapping("/user-profile")
     public ModelAndView userprofile() {
-        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
+        return new ModelAndView("user-new-profile", "addUserFormInput", new AddUserFormInput());
     }
 
     @PostMapping("/user-profile")
@@ -64,14 +64,14 @@ public class PMController {
         return "/user-list";
     }
 
-    @GetMapping("/project-detail")
+    @GetMapping("/project-details-info")
     public String ProjectDetail() {
-        return "project-detail";
+        return "project-details-info";
     }
 
     @GetMapping("/create-project")
     public String CreateProject() {
-        return "create-project";
+        return "create-new-project";
     }
 
     @GetMapping("/edit-project")

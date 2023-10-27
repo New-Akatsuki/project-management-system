@@ -62,6 +62,6 @@ public class HomeController {
 
     @GetMapping("/issue-display-page")
     public String issuessdsdffView(){
-        return "issue-display-page";
+        return "issue-display";
     }
 }

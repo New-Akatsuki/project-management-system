@@ -1,10 +1,469 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>DIR-ACE TECHNOLOGY</title>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Single Select -->
+    <link rel="stylesheet" href="/css/single-select.css">
+
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!--    selectbox-->
+    <link rel="stylesheet" href="/css/multiple-select.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+
 </head>
+
 <body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">edit-project</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+
+    <div class="container-fluid content-inner mt-4 py-0">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-card text-start">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
+                                <div class="card-header d-flex justify-content-between">
+                                    <div class="display-6 fs-4">
+                                        Edit Project
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border-radius: 10px;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter project name"
+                                   required minlength="3" maxlength="25">
+                            <div class="invalid-feedback" id="name_error">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="start-date" class="form-label d-block">Start Date</label>
+                            <input class="datepicker-style form-control" type="text" id="start-date" placeholder="Enter start date"/>
+                            <div class="invalid-feedback" id="start-date_error"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  class="form-label" for="department">Department</label>
+                            <div id="department" class="w-100"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="end-date" class="form-label d-block">End Date</label>
+                            <input class="datepicker-style form-control" type="text" id="end-date" placeholder="Enter end date"/>
+                            <div class="invalid-feedback" id="end-date_error"></div>
+                        </div>
+                    </div>
+
+                    <div class ="col-md-6">
+                        <label for="member" class="form-label">Add Member</label>
+
+                        <div class="d-flex gap-2 align-items-center">
+                            <select class="form-control" name="member" id="member" multiple
+                                    required>
+                                <option value="1">Sar Sar</option>
+                                <option value="2">ADar Dar</option>
+                                <option value="3">SAndy</option>
+                                <option value="4">Olivia</option>
+                                <option value="5">Martin</option>
+                            </select>
+                        </div>
+                        <div class="invalid-feedback" id="member_error"></div>
+                    </div>
+
+
+                    <div class ="col-md-6">
+                        <label for="focmember" class="form-label">Add FOC Member</label>
+
+                        <div class="d-flex gap-2 align-items-center">
+                            <select class="form-control" name="member" id="focmember" multiple
+                                    required>
+                                <option value="1">Sar Sar</option>
+                                <option value="2">ADar Dar</option>
+                                <option value="3">SAndy</option>
+                                <option value="4">Olivia</option>
+                                <option value="5">Martin</option>
+                            </select>
+
+                        </div>
+                        <div class="invalid-feedback" id="focmember_error"></div>
+                    </div>
+
+
+                    <div class ="col-md-6">
+                        <label for="so" class="form-label">System Outline</label>
+                        <div class="d-flex gap-2">
+                            <select class="form-control" name="so" id="so" multiple required>
+                                <option value="1">Afghanistan</option>
+                                <option value="2">Australia</option>
+                                <option value="3">Germany</option>
+                                <option value="4">Canada</option>
+                                <option value="5">Russia</option>
+                            </select>
+                            <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
+                                <i class='bx bx-plus m-0 p-0'></i>
+                            </a>
+                        </div>
+                        <div class="invalid-feedback" id="so_error"></div>
+                    </div>
+
+                    <div class ="col-md-6">
+                        <label for="ao" class="form-label">Architecture Outline</label>
+                        <div class="d-flex gap-2">
+                            <select class="form-control" name="ao" id="ao" multiple required>
+                                <option value="1">Afghanistan</option>
+                                <option value="2">Australia</option>
+                                <option value="3">Germany</option>
+                                <option value="4">Canada</option>
+                                <option value="5">Russia</option>
+                            </select>
+                            <a id="addArchitectureOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addArchitectureOutlineModal">
+                                <i class='bx bx-plus m-0 p-0'></i>
+                            </a>
+                        </div>
+                        <div class="invalid-feedback" id="ao_error"></div>
+                    </div>
+
+
+                    <div class ="col-md-6">
+                        <label for="client" class="form-label">Client</label>
+                        <div class="d-flex gap-2">
+                            <div id="client" class="w-100"></div>
+                            <a id="addClientButton" class="icon-add-btn" data-toggle="modal" data-target="#addMemberModal">
+                                <i class='bx bx-plus m-0 p-0'></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class ="col-md-6">
+                        <label for="deli" class="form-label">Deliverables</label>
+                        <div class="d-flex gap-2">
+                            <select class="form-control" name="ao" id="deli" multiple required>
+                                <option value="1">Afghanistan</option>
+                                <option value="2">Australia</option>
+                                <option value="3">Germany</option>
+                                <option value="4">Canada</option>
+                                <option value="5">Russia</option>
+                            </select>
+                            <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
+                                <i class='bx bx-plus m-0 p-0'></i>
+                            </a>
+                        </div>
+                        <div class="invalid-feedback" id="deli_error"></div>
+                    </div>
+                    <br>
+
+                    <div class= "col-md-6">
+                        <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Objective" id="obj"
+                                                          name="obj" required></textarea>
+                            <label for="obj">Objective </label>
+                            <div class="invalid-feedback" id="obj_error">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Background" id="bg"
+                                                          name="bg" required></textarea>
+                            <label for="bg">Background</label>
+                            <div class="invalid-feedback" id="bg_error">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="button-div">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button class="btn btn-danger">Cancel</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- End Main Content-->
+</main>
+<!-- End #main -->
+
+
+<!--Modal Section-->
+<div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMemberModalLabel">Add New Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label for="clientName">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" placeholder="Enter client name">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" placeholder="Enter phone number">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSystemOutlineModalLabel">Add New System Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="systemOutlineName">Name</label>
+                        <input type="text" class="form-control" id="systemOutlineName" placeholder="Enter New System Outline">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addArchitectureOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addArchitectureOutlineModalLabel">Add New Architecture Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="architectureOutlineName">Name</label>
+                        <input type="text" class="form-control" id="architectureOutlineName" placeholder="Enter architecture outline name">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog" aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="deliverablesName">Deliverable Method</label>
+                        <input type="text" class="form-control" id="deliverablesName" placeholder="Enter new deliverables method">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
+<script th:src="@{/js/single-select.js}"></script>
+<!--selectbox-->
+<script src="/js/multi-select.js"></script>
+
+<script>
+    new MultiSelectTag('so')
+    new MultiSelectTag('ao')
+    new MultiSelectTag('member')
+    new MultiSelectTag('focmember')
+    new MultiSelectTag('deli')// id
+</script>
+<script>
+    $(document).ready(function () {
+        $("#start-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst)=>$('#start-date').val(dateText).trigger('change'),
+        });
+
+        $("#end-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst)=>$('#end-date').val(dateText).trigger('change'),
+        });
+
+        //check name input
+        checkInputValidation("name", "Name",null, 3);
+        checkInputValidation("bg", "Background",null, 10);
+        checkInputValidation("obj", "Objective",null, 10);
+        checkDatesValidation("start-date","end-date");
+        //form validate
+        formValidate("form-wizard1")
+
+    });
+
+</script>
+
+<!--Single Select-->
+<script>
+    const data1 = ['mgmg', 'aungaung', 'tuntun']
+    const id1 = init("client")
+    const client_wrapperUpdateName = singleSelect(id1, data1);
+
+    const data2 = ['ACE', 'DAT', 'Ace Plus']
+    const id2 = init("department")
+    const department_wrapperUpdateName = singleSelect(id2, data2);
+
+</script>
 
 </body>
 </html>
