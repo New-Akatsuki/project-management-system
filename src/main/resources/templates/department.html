@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet" />
+  <!-- Library / Plugin Css Build -->
+  <link rel="stylesheet" href="/css/libs.min.css">
+
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+  <!-- Dark Css -->
+  <link rel="stylesheet" href="/css/dark.min.css">
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- Modal Css -->
+  <link rel="stylesheet" href="/css/modal.css">
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+
+  <!-- Bootstrap CSS for modal box -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+  <!-- Breadcrumb part-->
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">Department</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Main Content -->
+
+  <div class="container-fluid content-inner mt-4 py-0">
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+              <fieldset>
+                <div class="form-card text-start">
+
+                  <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                          <div class="display-6 fs-4">
+                            Department
+                          </div>
+                          <a id="addDepartmentButton" class="icon-add-btn" data-toggle="modal" data-target="#addDepartmentModal">
+                            <i class='bx bx-plus m-0 p-0'></i>
+                          </a>
+                        </div>
+
+                        <div class="card-body">
+                          <table class="table table-hover">
+                            <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>Development</td>
+                              <td> <a id="openEditClientModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#editClientModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a></td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Marketing</td>
+                              <td><a id="editDepartmentButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#departmentModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a>
+                              </td>
+
+                            </tr>
+
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- End Main Content-->
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--Modal box-->
+
+
+<!--Add department-->
+<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Add your form fields for adding a new member here -->
+        <form>
+          <div class="form-group">
+            <label for="departmentName">Department Name</label>
+            <input type="text" class="form-control" id="departmentName" placeholder="Enter department name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- edit "Department" Modal -->
+<div class="modal  fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="department-modal-form" class="modal-content">
+      <div class="modal-header">
+        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>                                </svg>
+
+        <h1 class="modal-title fs-5" id="departmentModalLabel">Edit Department</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="department-name">Department Name:</label>
+        <input type="text" id="department-name" class="form-control" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-department-button" class="btn btn-danger">Delete</button>
+
+        <button type="submit" id="department-modal-save-button" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

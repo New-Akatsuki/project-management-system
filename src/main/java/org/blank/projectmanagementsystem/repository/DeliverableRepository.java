@@ -10,8 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface DeliverableRepository extends JpaRepository<Deliverable, Integer> {
       Deliverable findByName(String name);
 
-
-
-
-
 }

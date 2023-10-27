@@ -9,12 +9,4 @@ import java.util.Optional;
 @Repository
 public interface ArchitectureRepository extends JpaRepository<Architecture, Integer>{
     Optional<Architecture> findByName(String name);
-
-
-
-
-
-
-
-
 }

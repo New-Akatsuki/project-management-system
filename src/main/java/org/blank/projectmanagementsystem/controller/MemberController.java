@@ -3,7 +3,12 @@ package org.blank.projectmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
+
+import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.IssueSolveFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContext;
@@ -66,5 +71,24 @@ public class MemberController {
     }
 
 
+
+
+    @GetMapping("/create-issue")
+    public ModelAndView createIssue(){
+        return new ModelAndView("issue-create", "issueCreateFormInput", new IssueCreateFormInput());
+    }
+
+    @PostMapping("/create-issue")
+    public String createIssue(@ModelAttribute IssueCreateFormInput issueCreateFormInput){
+        log.info("========================================================");
+        log.info("issue: {}", issueCreateFormInput);
+        log.info("========================================================\n");
+        return "redirect:/";
+    }
+
+    @GetMapping("/display-issue")
+    public ModelAndView displayIssue(){
+        return new ModelAndView("issue-display", "IssueSolveFormInput", new IssueSolveFormInput());
+    }
 
 }

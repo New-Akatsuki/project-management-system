@@ -25,86 +25,154 @@
 
 
 <div class="m-3 p-3 border border-1">
-    <div id="kanban"> </div>
+    <div id="kanban">
+        <button type="submit" id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
+            Add Phase +
+        </button>
+         </div>
 </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">    Task</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="task-body-text-layout">
-                            <div class="input-group">
-                                <label for="task-name" class="form-label">Enter Task Name:</label>
-                                <input type="text" id="task-name" placeholder="Name" class="form-control-lg" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="task-description" class="form-label">Enter Description:</label>
-                                <textarea id="task-description" placeholder="Description" class="form-control-lg"></textarea>
-                            </div>
-                        </div>
-                        <div class="task-body-project-expected-date">
-                            <div class="input-group">
-                                <label for="task-start-date" class="form-label d-block">Enter Start Date:</label>
-                                <input type="text" id="task-start-date" placeholder="Start Date" class="form-control-lg" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="task-end-date" class="form-label d-block">Enter End Date:</label>
-                                <input type="text" id="task-end-date" placeholder="End Date" class="form-control-lg" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="task-plan-hours" class="form-label">Enter Plan Hours:</label>
-                                <input type="number" id="task-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>
-                            </div>
-                        </div>
-                        <div class="task-body-footer">
-                            <div class="input-group">
-                                <label for="task-priority" class="form-label">Select Your Priority:</label>
-                                <select id="task-priority" required>
-                                    <option value="high">High</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="low">Low</option>
-                                </select>
-                            </div>
-                            <div class="input-group">
-                                <label for="task-group" class="form-label">Group:</label>
-                                <select id="task-group" required>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                </select>
-                            </div>
-                            <div class="input-group">
-                                <label for="task-type" class="form-label">Type:</label>
-                                <select id="task-type" required>
-                                    <option value="task">Task</option>
-                                    <option value="project">Project</option>
-                                    <option value="milestone">Milestone</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="task-body-assignees-layout">
-                        <div class="input-group">
-                            <label for="task-assignees" class="form-label" >Assignees :</label>
-                            <select id="task-assignees" required>
-                                <option value="user1">User 1 </option>
-                                <option value="user2">User 2 </option>
-                                <option value="user3">User 3 </option>
-                            </select>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" onclick="saveTask()" class="btn btn-primary" id="save-changes">Save changes</button>
-                    </div>
-                </div>
-            </form>
+
+<div class="modal fade" id="addPhaseModal" tabindex="-1" aria-labelledby="addPhaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addPhaseModalLabel">Add Phase</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="phaseName">Phase Name:</label>
+                <input type="text" id="phaseName" class="form-control" placeholder="Enter Phase Name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="savePhaseButton">Save Phase</button>
+            </div>
         </div>
     </div>
+</div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">    Task</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="task-body-text-layout">
+                                <div class="input-group">
+                                    <label for="task-name" class="form-label">Enter Task Name:</label>
+                                    <input type="text" id="task-name" placeholder="Name" class="form-control-lg" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="task-description" class="form-label">Enter Description:</label>
+                                    <textarea id="task-description" placeholder="Description" class="form-control-lg"></textarea>
+                                </div>
+                            </div>
+                            <div class="task-body-project-expected-date">
+                                <div class="input-group">
+                                    <label for="task-start-date" class="form-label d-block">Enter Start Date:</label>
+                                    <input type="text" id="task-start-date" placeholder="Start Date" class="form-control-lg" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="task-end-date" class="form-label d-block">Enter End Date:</label>
+                                    <input type="text" id="task-end-date" placeholder="End Date" class="form-control-lg" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="task-plan-hours" class="form-label">Enter Plan Hours:</label>
+                                    <input type="number" id="task-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>
+                                </div>
+                            </div>
+                            <div class="task-body-footer">
+                                <div class="input-group">
+                                    <label for="task-priority" class="form-label">Select Your Priority:</label>
+                                    <select id="task-priority" required>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="task-group" class="form-label">Group:</label>
+                                    <select id="task-group" required>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="task-type" class="form-label">Type:</label>
+                                    <select id="task-type" required>
+                                        <option value="task">Task</option>
+                                        <option value="project">Project</option>
+                                        <option value="milestone">Milestone</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="task-body-assignees-layout">
+                            <div class="input-group">
+                                <label for="task-assignees" class="form-label" >Assignees :</label>
+                                <select id="task-assignees"  required>
+
+                                </select>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" onclick="saveTask()" class="btn btn-primary" id="save-changes">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+<!--<div class="modal fade" id="addSubtaskModal" tabindex="-1" role="dialog" aria-labelledby="addSubtaskLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--        <form>-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h1 class="modal-title fs-5" id="addSubtaskLabel">Add SubTask</h1>-->
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    &lt;!&ndash; Modify the subtask input fields as needed &ndash;&gt;-->
+<!--                    <div class="subtask-body-text-layout">-->
+<!--                        <div class="input-group">-->
+<!--                            <label for="subtask-name" class="form-label">Enter SubTask Name:</label>-->
+<!--                            <input type="text" id="subtask-name" placeholder="Name" class="form-control-lg" required>-->
+<!--                        </div>-->
+<!--                        <div class="input-group">-->
+<!--                            <label for="subtask-description" class="form-label">Enter Description:</label>-->
+<!--                            <textarea id="subtask-description" placeholder="Description" class="form-control-lg"></textarea>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="subtask-body-project-expected-date">-->
+<!--                        <div class="input-group">-->
+<!--                            <label for="subtask-start-date" class="form-label d-block">Enter Start Date:</label>-->
+<!--                            <input type="text" id="subtask-start-date" placeholder="Start Date" class="form-control-lg" required>-->
+<!--                        </div>-->
+<!--                        <div class="input-group">-->
+<!--                            <label for="subtask-end-date" class="form-label d-block">Enter End Date:</label>-->
+<!--                            <input type="text" id="subtask-end-date" placeholder="End Date" class="form-control-lg" required>-->
+<!--                        </div>-->
+<!--                        <div class="input-group">-->
+<!--                            <label for="subtask-plan-hours" class="form-label">Enter Plan Hours:</label>-->
+<!--                            <input type="number" id="subtask-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                    <button type="button"  class="btn btn-primary" id="save-subtask-changes">Save Subtask</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
@@ -154,7 +222,7 @@
                     type: 'task',
                     phase: 2,
                     parent: 2,
-                    assignees: [],
+                    assignees: [1],
                 },
                 {
                     id: 2,
@@ -171,7 +239,7 @@
                     type: 'project',
                     phase: 1,
                     parent: null,
-                    assignees: [],
+                    assignees: [1],
                 },
                 {
                     id: 3,
@@ -188,7 +256,7 @@
                     type: 'project',
                     phase: 3,
                     parent: null,
-                    assignees: [],
+                    assignees: [1],
                 },
 
                 {
@@ -206,7 +274,7 @@
                     type: 'task',
                     phase: 1,
                     parent: 2,
-                    assignees: [],
+                    assignees: [1],
                 },
 
                 {
@@ -224,7 +292,7 @@
                     type: 'task',
                     phase: 4,
                     parent: null,
-                    assignees: [],
+                    assignees: [1],
                 },
             ],
             onChange: (e, ui) => {

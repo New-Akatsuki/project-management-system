@@ -1,4 +1,5 @@
 package org.blank.projectmanagementsystem.repository;
+
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 import org.springframework.data.jpa.repository.JpaRepository;
