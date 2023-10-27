@@ -31,8 +31,9 @@ public class KanBanController {
 
     @GetMapping("/api/users") // New endpoint to fetch users
     public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getAllUser();
-        return ResponseEntity.ok(users);
+//        List<User> users = userService.getAllUser();
+//        return ResponseEntity.ok(users);
+        return null;
     }
 
     @PostMapping("/api/tasks")

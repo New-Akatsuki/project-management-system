@@ -27,22 +27,18 @@ public class PMController {
         return "project-list";
     }
 
-    @GetMapping("/project-detail")
-    public String projectdetal() {
-        return "project-detail";
-    }
 
-    @GetMapping("/userlist")
+    @GetMapping("/user-list")
     public String userList() {
         return "user-list";
     }
 
-    @GetMapping("/userprofile")
+    @GetMapping("/user-profile")
     public ModelAndView userprofile() {
         return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
     }
 
-    @PostMapping("/userprofile")
+    @PostMapping("/user-profile")
     public String userprofile(@ModelAttribute AddUserFormInput addUserFormInput) {
         return "user-list";
     }
@@ -92,11 +88,6 @@ public class PMController {
     @GetMapping("/department")
     public String Department() {
         return "department";
-    }
-
-    @GetMapping("/user-list")
-    public String UserList() {
-        return "user-list";
     }
 }
 
