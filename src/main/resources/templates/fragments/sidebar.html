@@ -1,180 +1,112 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <title>Side Bar</title>
-    <meta content="" name="description"/>
-    <meta content="" name="keywords"/>
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet"
-    />
+      <title>Side Bar</title>
+      <meta content="" name="description"/>
+      <meta content="" name="keywords"/>
 
-    <!-- Template Main JS File -->
-    <link th:href="@{vendor/bootstrap/js/bootstrap.bundle.min.js}" rel="stylesheet"/>
+      <!-- Google Fonts -->
+      <link href="https://fonts.gstatic.com" rel="preconnect"/>
+      <link
+              href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet"
+      />
 
-    <!-- Favicons -->
-    <link th:href="@{images/favicon.png}" rel="icon">
-    <link th:href="@{images/apple-touch-icon.png}" rel="apple-touch-icon">
+      <!-- Template Main JS File -->
+      <link th:href="@{vendor/bootstrap/js/bootstrap.bundle.min.js}" rel="stylesheet"/>
 
-    <link
-            th:href="@{vendor/bootstrap-icons/bootstrap-icons.css}"
-            rel="stylesheet"
-    />
-    <link th:href="@{vendor/boxicons/css/boxicons.min.css}" rel="stylesheet"/>
-    <link th:href="@{vendor/remixicon/remixicon.css}" rel="stylesheet"/>
+      <!-- Favicons -->
+      <link th:href="@{images/favicon.png}" rel="icon">
+      <link th:href="@{images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-    <!-- Template Main CSS File -->
-    <link th:href="@{css/style.css}" rel="stylesheet"/>
-</head>
-<body>
-<!-- ======= Sidebar ======= -->
-<aside th:fragment="sidebar" id="sidebar" class="sidebar">
-    <ul class="sidebar-nav" id="sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/}">
-                <i class="bi bi-grid"></i>
-                <span>Home</span>
-            </a>
-        </li>
-        <!-- End Dashboard Nav -->
+      <link
+              th:href="@{vendor/bootstrap-icons/bootstrap-icons.css}"
+              rel="stylesheet"
+      />
+      <link th:href="@{vendor/boxicons/css/boxicons.min.css}" rel="stylesheet"/>
+      <link th:href="@{vendor/remixicon/remixicon.css}" rel="stylesheet"/>
+
+      <!-- Template Main CSS File -->
+      <link th:href="@{css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+    <!-- ======= Sidebar ======= -->
+    <aside th:fragment="sidebar" id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">
+                    <i class="bi bi-grid"></i>
+                    <span>DashBoard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/department}">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Department</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/project-list}">
+                    <i class="bi bi-journals"></i>
+                    <span>Projects</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/issues}">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Issues</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/user-list}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>User Management</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/contract-info}">
+                    <i class="bi bi-info-square-fill"></i>
+                    <span>Contract Info</span>
+                </a>
+            </li>
 
 
-        <li class="nav-item">
-            <a
-                    class="nav-link collapsed"
-                    data-bs-target="#courses-nav"
-                    data-bs-toggle="collapse"
-                    href="#"
-            >
-                <i class="bi bi-journals"></i><span>Project</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul
-                    id="courses-nav"
-                    class="nav-content collapse"
-                    data-bs-parent="#sidebar-nav"
-            >
-                <li>
-                    <a th:href="@{/createproject}">
-                        <i class="bi bi-circle"></i><span>Add Project</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/projectlist}">
-                        <i class="bi bi-circle"></i><span>Project List</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/project-view}">
-                        <i class="bi bi-circle"></i><span>Project View</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/task-view}">
-                        <i class="bi bi-circle"></i><span>Task View</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End Course Nav-->
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/pm/userprofile}">
+                    <i class="bi bi-person"></i>
+                    <span>User Profile</span>
+                </a>
+            </li>
+        </ul>
 
-        <li class="nav-item">
-            <a
-                    class="nav-link collapsed"
-                    data-bs-target="#users-nav"
-                    data-bs-toggle="collapse"
-                    href="#"
-            >
-                <i class="bi bi-person-video3"></i><span>Users</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul
-                    id="users-nav"
-                    class="nav-content collapse"
-                    data-bs-parent="#sidebar-nav"
-            >
-                <li>
-                    <a th:href="@{/user/add}">
-                        <i class="bi bi-circle"></i><span>Add User</span>
-                    </a>
-                </li>
-                <li>
-                    <a th:href="@{/userlist}">
-                        <i class="bi bi-circle"></i><span>Users List</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End User Nav-->
+        <script>
+            const activePage = window.location.pathname;
+            console.log(activePage);
+            const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+            navLinks.forEach(link => {
+                if (link.href.includes(`${activePage}`)) {
+                    link.classList.add("active");
+                } else {
+                    link.classList.remove("active");
+                }
+            });
+        </script>
 
-        <li class="nav-item">
-            <a
-                    class="nav-link collapsed"
-                    data-bs-target="#report-nav"
-                    data-bs-toggle="collapse"
-                    href="#"
-            >
-                <i class="bi bi-receipt"></i><span>Report</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul
-                    id="report-nav"
-                    class="nav-content collapse"
-                    data-bs-parent="#sidebar-nav"
-            >
+    </aside>
+    <!-- End Sidebar-->
 
-                <li>
-                    <a th:href="@{/user/list}">
-                        <i class="bi bi-circle"></i><span>Report List</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- End Report Nav-->
 
-        <li class="nav-item">
-            <a
-                    class="nav-link collapsed"
-                    data-bs-target="#issue-nav"
-                    data-bs-toggle="collapse"
-                    href="#"
-            >
-                <i class="bi bi-info-circle"></i><span>Issues</span
-            ><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul
-                    id="issue-nav"
-                    class="nav-content collapse"
-                    data-bs-parent="#sidebar-nav"
-            >
+    <!-- Vendor JS Files -->
 
-                <li>
-                    <a th:href="@{/issue1}">
-                        <i class="bi bi-circle"></i><span>Issues List</span>
-                    </a>
-                    <a th:href="@{/member/create-issue}">
-                        <i class="bi bi-circle"></i><span>Create Issue</span>
-                    </a>
-                    <a th:href="@{/member/display-issue}">
-                        <i class="bi bi-circle"></i><span>Display Issue</span>
-                    </a>
-                </li>
-            </ul>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
 
-        </li>
-
-    </ul>
-    <!-- End Student Nav-->
-</aside>
-<!-- End Sidebar-->
-<!-- Vendor JS Files -->
-<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/main.js}"></script>
-</body>
-</html>
+    </body>
+    </html>

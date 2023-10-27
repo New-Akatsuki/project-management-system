@@ -1,9 +1,9 @@
 (function ($) {
 
     $.fn.kanban = function (options) {
-        var $this = $(this);
+        let $this = $(this);
 
-        var settings = $.extend({
+        let settings = $.extend({
             phase: [],
             tasks: [],
             onChange: function (e, ui) {
@@ -12,7 +12,7 @@
             }
         }, options)
 
-        var classes = {
+        let classes = {
             kanban_board_class: "cd_kanban_board",
             kanban_board_titles_class: "cd_kanban_board_titles",
             kanban_board_title_class: "cd_kanban_board_title",
@@ -55,19 +55,19 @@
 
         $this.on('click', '.' + classes.kb_section_header_btn_class, function (e) {
             e.preventDefault();
-            var modalId = $(this).data('bs-target'); // Get the modal target ID
-            var $modal = $(modalId);
+            let modalId = $(this).data('bs-target'); // Get the modal target ID
+            let $modal = $(modalId);
 
             if ($modal.length) {
                 $modal.addClass('show'); // Add the 'show' class to trigger the animation
             }
         });
 
+
         function build_kanban() {
 
             $this.addClass(classes.kanban_board_class);
             $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
-
             build_section();
             build_tasks();
             build_subtask();
@@ -88,8 +88,6 @@
                 $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
             });
         }
-
-
 
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
@@ -114,21 +112,45 @@
                                 </div>
                             </div>
                             <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
-                        </div>        
+                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Add SubTask</button>
+    
+                        </div>   
+                             
                     </div>
             `;
                 //insert task into phase body
                 $this.find(`#${item.phase}-phase-body`).append(task_container);
 
+
+
                 //toggle subtask
                 const task = document.getElementById(`${item.id}`);
-                const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
-                subtaskIcon.addEventListener('click', () => {
+
+                $(`#${item.id} .kb-task-body-layout`).on('click', () => {
+                    //show modal
+                    $('#exampleModal').modal('show');
+
+                    $('#task-name').val(item.name);
+                    $('#task-description').val(item.description);
+                    $('#task-priority').val(item.priority);
+                    $('#task-start-date').val(item.start_date);
+                    $('#task-end-date').val(item.end_date);
+                    $('#task-plan-hours').val(item.plan_hours);
+                    $('#task-group').val(item.group);
+                    $('#task-type').val(item.type);
+                });
+
+
+                    const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
+                    subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
-                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+120}px`;
+                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+220}px`;
                     subtaskIcon.classList.toggle('toggle-subtask-icon-active');
+
+                    const addSubTaskButton = document.getElementById(`${item.id}-add-subtask-btn`);
+                    addSubTaskButton.style.display = subtaskBlock.classList.contains('hide') ? 'none' : 'block';
                 });
             });
         }
@@ -144,16 +166,29 @@
                                 <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
                                     <span style="font-size: 9px">Due date</span>
                                     <span>${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
-                                </span>    
-                        </div>
-                    </div>
-                    
+                                </span>                                                             
+                        </div>                   
                 `;
-                if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
-                {
-                    console.log(`${item.parent}-subtask-block`)
-                    $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
-                }
+
+
+                $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
+
+                // Add a click event handler to each subtask
+                const subtask = document.getElementById(`${item.id}`);
+                subtask.addEventListener('click', () => {
+                    // Show the modal and populate it with subtask data
+                    $('#exampleModal').modal('show');
+
+                    // Populate the modal fields with subtask data
+                    $('#task-name').val(item.name);
+                    $('#task-description').val(item.description);
+                    $('#task-priority').val(item.priority);
+                    $('#task-start-date').val(item.start_date);
+                    $('#task-end-date').val(item.end_date);
+                    $('#task-plan-hours').val(item.plan_hours);
+                    $('#task-group').val(item.group);
+                    $('#task-type').val(item.type);
+                });
             });
         }
 
@@ -169,22 +204,6 @@
             build_kanban();
         }
 
-        function build_blocks() {
-            settings.titles.forEach(function (item, index, array) {
-                var item = '<div class="card-width card-height ' + classes.kanban_board_block_class + '" data-block="' + item + '"></div>';
-                $this.find('.' + classes.kanban_board_blocks_class).append(item);
-            });
-            $("." + classes.kanban_board_block_class).sortable({
-                connectWith: "." + classes.kanban_board_block_class,
-                containment: "." + classes.kanban_board_blocks_class,
-                placeholder: classes.kanban_board_item_placeholder_class,
-                scroll: true,
-                cursor: "move",
-                change: settings.onChange,
-                receive: settings.onReceive,
-            }).disableSelection();
-
-        }
 
         function enableDragAndDrop() {
             $('.' + classes.kb_section_class).sortable({
@@ -227,10 +246,18 @@
 
         kanban_render();
 
-
-
-        // build_kanban();
-
+        // $.ajax({
+        //     url: '/kanban-data',
+        //     method: 'GET',
+        //     success:function (data) {
+        //         console.log('data', data);
+        //
+        //
+        //
+        //     }
+        //
+        // }
+        // )
 
 
     }
@@ -238,41 +265,73 @@
 }(jQuery));
 
 function saveTask() {
+    // Create a task object with user IDs included
     let task = {
-        id: null,
+        id: $('#task-id').val(),
         name: $('#task-name').val(),
         description: $('#task-description').val(),
         priority: $('#task-priority').val(),
         start_date: $('#task-start-date').val(),
         end_date: $('#task-end-date').val(),
-        actual_due_date: $('#task-actual-due-date').val(),
+        actual_due_date: null,
         duration: null,
         plan_hours: $('#task-plan-hours').val(),
-        actual_hours: $('#task-actual-hours').val(),
-        process:null,
-        status: $('#task-status').is(':checked'),
+        actual_hours: null,
+        // process: null,
+        status: 0,
         parent: null,
-        group: $('#task-type').val(),
-        type: $('#task-assignees').val(),
-        assignees: null,
-        subtasks:null,
-        open:false// Add the type field
-        // Add any other fields as needed
+        group: $('#task-group').val(),
+        type: $('#task-type').val(),
+        assignees: [], // Initialize an empty array for user IDs
+        subtasks: null,
+        phase: 1,
     };
-    console.log(task)
+
+    // Get the selected user IDs from the assignees select box
+    $('#task-assignees option:selected').each(function () {
+        task.assignees.push($(this).val());
+    });
+
     $.ajax({
         url: '/api/tasks',
         method: 'POST',
         data: JSON.stringify(task),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
         success: function (data) {
-            $('#exampleModal').modal('hide'); // Close the modal
-            alert(data); // Display a success message or handle the response
-        },
-        error: function (error) {
+            // Handle the success response
+            // Close the modal and display a success message
             $('#exampleModal').modal('hide');
-           alert(error);
+            alert('Task saved successfully');
+        },
+        error: function (xhr, status, error) {
+            // Handle errors, e.g., display them in the console or an alert
+            console.error(xhr.responseText);
+            alert('Error: ' + error);
         }
     });
 }
+
+
+$(document).ready(function () {
+    // Make an AJAX request to fetch users
+    $.ajax({
+        url: '/api/users',
+        method: 'GET',
+        success: function (data) {
+            // Handle the retrieved user data
+            // You can populate your select box with this data
+            const assigneesSelect = $('#task-assignees');
+            assigneesSelect.empty(); // Clear existing options
+
+            data.forEach(function (user) {
+                assigneesSelect.append(new Option(user.name, user.id));
+            });
+        },
+        error: function (xhr, status, error) {
+            // Handle errors, e.g., display them in the console
+            console.error(xhr.responseText);
+        }
+    });
+});
+
