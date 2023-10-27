@@ -79,4 +79,6 @@ public class Task implements Serializable {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Task parentTask;
+
+
 }
