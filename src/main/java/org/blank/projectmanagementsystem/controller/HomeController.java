@@ -24,8 +24,6 @@ public class HomeController {
 
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
-        List<User> users =userService.getAllUser();
-        model.addAttribute("users", users);
         return "test";
     }
 
