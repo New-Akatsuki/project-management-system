@@ -22,6 +22,15 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/task-view")
+    public String task(){
+        return "task-view";
+    }
+
+    @GetMapping("/project-view")
+    public String project(){
+        return "project-view";
+      
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
         return "test";

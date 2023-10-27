@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <style>
+        .card-container {
+            margin: 20px; /* Adjust the margin value as needed */
+        }
+
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            font-family: sans-serif;
+        }
+
+        .tabs__label {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        .tabs__radio {
+            display: none;
+        }
+
+        .tabs__content {
+            order: 1;
+            line-height: 1.5;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .tabs__radio:checked + .tabs__label {
+            /*font-weight: bold;*/
+            color: #1DA1F2;
+            border-bottom: 2px solid #1DA1F2;
+        }
+
+        .tabs__radio:checked + .tabs__label + .tabs__content {
+            display: initial;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Project</a></li>
+                <li class="breadcrumb-item active">Tasks</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <div class="card">
+        <div class="card-container">
+            <h3><i class='bx bx-task'></i> Task Page</h3>
+        </div>
+        <div class="container">
+            <div class="tabs">
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+                <label for="tab1" class="tabs__label">Upcoming</label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Pending Task Cards -->
+                    <div id="pendingContainer" class="row"></div>
+                </div>
+
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+                <label for="tab2" class="tabs__label">Overdue</label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Overdue Task Cards -->
+                    <div id="overdueContainer" class="row"></div>
+                </div>
+
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab3">
+                <label for="tab3" class="tabs__label">Completed</label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Completed Task Cards -->
+                    <div id="completedContainer" class="row"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal Form -->
+    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskModalLabel">Task Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- End #main -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<!-- Custom JavaScript -->
+<script>
+    // Dummy data (replace this with your logic to fetch data from the database)
+    const taskDataFromDatabase = [
+        {id: 1, title: 'Task 1', description: 'Description 1', state: 'pending'},
+        {id: 4, title: 'Task 4', description: 'Description 4', state: 'pending'},
+        {id: 2, title: 'Task 2', description: 'Description 2', state: 'overdue'},
+        {id: 3, title: 'Task 3', description: 'Description 3', state: 'completed'},
+        // Add more data as needed
+    ];
+
+    // Function to create a task card
+    function createTaskCard(task) {
+        const card = document.createElement('div');
+        card.classList.add('card', 'clickable', 'mb-3','col-md-12'); // Added 'mb-3' for bottom margin
+        card.style.width = '35rem';
+        card.innerHTML = `
+        <div class="card-body">
+          <h6 class="card-title">${task.title}</h6>
+          <i class="card-text">${task.description}</i>
+        </div>
+      `;
+        card.addEventListener('click', () => {
+            populateModal(task);
+            $('#taskModal').modal('show');
+        });
+        return card;
+    }
+
+    // Function to populate modal with task details
+    function populateModal(task) {
+        const modalTitle = document.getElementById('taskModalLabel');
+        const modalBody = document.querySelector('#taskModal .modal-body');
+
+        modalTitle.innerText = task.title;
+
+        // Clear previous content
+        modalBody.innerHTML = '';
+
+        // Add task details to modal body
+        const detailsList = document.createElement('ul');
+        detailsList.innerHTML = `
+        <li>Description: ${task.description}</li>
+        <li>State: ${task.state}</li>
+        <!-- Add more details as needed -->
+      `;
+        modalBody.appendChild(detailsList);
+    }
+
+    // Populate task cards for each state
+    const pendingContainer = document.getElementById('pendingContainer');
+    const overdueContainer = document.getElementById('overdueContainer');
+    const completedContainer = document.getElementById('completedContainer');
+
+    taskDataFromDatabase.forEach(task => {
+        const taskCard = createTaskCard(task);
+        switch (task.state) {
+            case 'pending':
+                pendingContainer.appendChild(taskCard);
+                break;
+            case 'overdue':
+                overdueContainer.appendChild(taskCard);
+                break;
+            case 'completed':
+                completedContainer.appendChild(taskCard);
+                break;
+        }
+    });
+</script>
+</body>
+</html>
