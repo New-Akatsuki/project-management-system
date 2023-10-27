@@ -22,11 +22,6 @@ public class ProjectManagementSystemApplication {
     @Bean
     CommandLineRunner runner(UserService userService, PasswordEncoder passwordEncoder) {
         return args -> {
-            //create role and department
-            Role admin = new Role(null, "ADMIN");
-            Role user = new Role(null, "USER");
-            userService.saveRole(admin);
-            userService.saveRole(user);
 
             Department department = new Department(null, "IT", true);
             Department department2 = new Department(null, "HR", true);
@@ -37,13 +32,25 @@ public class ProjectManagementSystemApplication {
             var user1 = userService.save(
                     User.builder()
                             .name("John")
-                            .username("khun@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(admin)
+                            .username("john@gmail.com")
+                            .password(passwordEncoder.encode("1234"))
+                            .role(Role.PM)
                             .department(department2)
                             .active(true)
                             .build()
             );
+
+            var user2 = userService.save(
+                    User.builder()
+                            .name("mike")
+                            .username("mike@gmail.com")
+                            .password(passwordEncoder.encode("1234"))
+                            .role(Role.DH)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
         };
     }
 }
