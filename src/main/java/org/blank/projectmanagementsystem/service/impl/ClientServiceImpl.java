@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Client;
 import org.blank.projectmanagementsystem.repository.ClientRepository;
 import org.blank.projectmanagementsystem.service.ClientService;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,5 +37,20 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Optional<Optional<Client>> findByPhoneNumber(String phoneNumber) {
         return Optional.ofNullable(clientRepository.findByPhoneNumber(phoneNumber));
+    }
+
+    @Override
+    public List<Client> findAll() {
+        return null;
+    }
+
+    @Override
+    public Client findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
+
     }
 }

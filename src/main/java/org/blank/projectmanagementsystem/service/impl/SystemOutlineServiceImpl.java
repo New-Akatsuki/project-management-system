@@ -1,20 +1,18 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.transaction.annotation.Transactional;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
 import org.blank.projectmanagementsystem.service.SystemOutlineService;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
-public class SystemOutlineServiceImpl implements SystemOutlineService{
+public class SystemOutlineServiceImpl implements SystemOutlineService {
 
     private final SystemOutlineRepository systemOutlineRepository;
 
@@ -24,21 +22,31 @@ public class SystemOutlineServiceImpl implements SystemOutlineService{
     }
 
     @Override
-    public void saveName(String name) {
+    public SystemOutline saveName(String name) {
         SystemOutline systemOutline = new SystemOutline();
         systemOutline.setName(name);
         systemOutlineRepository.save(systemOutline);
+        return systemOutline;
+
     }
+
     @Override
     public void updateSystemOutline(SystemOutline systemOutline) {
         systemOutlineRepository.save(systemOutline);
     }
+
     @Override
-    public void deleteSystemOutline() {
-        systemOutlineRepository.deleteAll();
+    public SystemOutline findById(Integer id) {
+        return systemOutlineRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public void delete(Integer id) {
+        systemOutlineRepository.deleteById(id);
+    }
 
-
-
+    @Override
+    public List<SystemOutline> getAllSystemOutlines() {
+        return systemOutlineRepository.findAll();
+    }
 }

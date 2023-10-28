@@ -22,7 +22,6 @@ public class GanttController {
         List<TaskViewObject> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
-
     //for add Task
     @PostMapping("/add-task")
     public ResponseEntity<TaskViewObject> addTask(@RequestBody TaskFormInput task) {

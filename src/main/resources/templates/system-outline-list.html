@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add System Outline</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Your custom stylesheets go here -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<div class="container mt-5">
+    <div class="card-body">
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addSystemOutlineModal">
+            Add System Outline
+        </button>
+        <fieldset>
+            <legend>System Outlines</legend>
+        </fieldset>
+
+        <!-- System Outline Table -->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Populate system outlines using Thymeleaf loop -->
+            <tr th:each="systemOutline : ${systemOutlines}">
+                <td th:text="${systemOutline.id}"></td>
+                <td th:text="${systemOutline.name}"></td>
+                <td>
+                    <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                    <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/delete'}" class="btn btn-sm btn-danger mx-2">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <fieldset>
+            <legend>Deliverables</legend>
+        </fieldset>
+
+        <!-- Deliverables Table -->
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Populate deliverables using Thymeleaf loop -->
+            <tr th:each="deliverable : ${deliverables}">
+                <td th:text="${deliverable.id}"></td>
+                <td th:text="${deliverable.name}"></td>
+                <td th:text="${deliverable.description}"></td>
+                <td>
+                    <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                    <a th:href="@{'/deliverable/' + ${deliverable.id} + '/delete'}" class="btn btn-sm btn-danger mx-2">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your form for adding a new system outline here -->
+                <!-- Example form fields: -->
+                <form th:action="@{/systemOutline/save}" method="post">
+                    <div class="form-group">
+                        <label for="outlineName" class="form-label">System Outline Name</label>
+                        <input type="text" class="form-control" id="outlineName" name="name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Outline</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/script.js"></script>
+<!-- Additional custom scripts go here -->
+
+</body>
+
+</html>

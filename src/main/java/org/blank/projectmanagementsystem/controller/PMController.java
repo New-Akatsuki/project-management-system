@@ -71,6 +71,7 @@ public class PMController {
 
     @GetMapping("/create-project")
     public String CreateProject() {
+
         return "create-project";
     }
 
@@ -89,5 +90,7 @@ public class PMController {
     public String Department() {
         return "department";
     }
+
+
 }
 
