@@ -36,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
         String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User projectManager = userRepository.findByUsername(pmUsername).orElseThrow();
+        User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
         Client client = clientRepository.findById(projectFormInput.getClient()).orElseThrow();
@@ -101,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
 //                .stream().map(GrantedAuthority::getAuthority).findFirst().orElse("");
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsernameOrEmail(username,username).orElseThrow();
 
         return switch (user.getRole()) {
             case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();

@@ -1,22 +1,23 @@
 package org.blank.projectmanagementsystem;
 
 import org.blank.projectmanagementsystem.domain.entity.Department;
-import org.blank.projectmanagementsystem.domain.entity.Role;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.User;
-import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.DispatcherServlet;
 
 @SpringBootApplication
 public class ProjectManagementSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectManagementSystemApplication.class, args);
+        var ctx = SpringApplication.run(ProjectManagementSystemApplication.class, args);
+        DispatcherServlet dispatcherServlet = (DispatcherServlet)ctx.getBean("dispatcherServlet");
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
     }
 
     @Bean
@@ -29,24 +30,61 @@ public class ProjectManagementSystemApplication {
             userService.saveDepartment(department2);
 
             // save demo data after start
-            var user1 = userService.save(
+            var pmo = userService.save(
                     User.builder()
-                            .name("John")
-                            .username("john@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
+                            .name("Project Manager Officer")
+                            .username("pmo")
+                            .email("pmo@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.PMO)
+                            .department(department2)
+                            .active(true)
+                            .build()
+            );
+
+            var dh = userService.save(
+                    User.builder()
+                            .name("Department Head")
+                            .username("dh")
+                            .email("dh@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.DH)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
+            var pm = userService.save(
+                    User.builder()
+                            .name("Project Manager")
+                            .username("pm")
+                            .email("pm@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.PM)
                             .department(department2)
                             .active(true)
                             .build()
             );
 
-            var user2 = userService.save(
+            var sdqc = userService.save(
                     User.builder()
-                            .name("mike")
-                            .username("mike@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
-                            .role(Role.DH)
-                            .department(department)
+                            .name("Software Developer Quality Control")
+                            .username("sdqc")
+                            .email("sdqc@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.SDQC)
+                            .department(department2)
+                            .active(true)
+                            .build()
+            );
+            var member = userService.save(
+                    User.builder()
+                            .name("Member")
+                            .username("member")
+                            .email("member@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.MEMBER)
+                            .department(department2)
                             .active(true)
                             .build()
             );

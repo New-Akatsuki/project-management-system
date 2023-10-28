@@ -5,18 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 
 @Entity
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Phase {
+public class Amount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private DevelopmentPhase name;
 
+    @Column(nullable = false)
+    private int amount;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Project project;
 }

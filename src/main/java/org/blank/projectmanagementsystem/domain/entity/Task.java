@@ -68,6 +68,10 @@ public class Task implements Serializable {
     @JoinColumn(nullable = true)
     private Project project;
 
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Phase phase;
+
     @ManyToMany
     @JoinTable(
             name = "task_assignee",  // Specify the name of the join table

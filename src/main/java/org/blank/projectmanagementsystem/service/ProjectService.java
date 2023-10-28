@@ -1,7 +1,6 @@
 package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.entity.Project;
-import org.blank.projectmanagementsystem.domain.entity.Role;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 

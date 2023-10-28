@@ -28,4 +28,8 @@ public class AuthController {
         return new ModelAndView("redirect:/");
     }
 
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied";
+    }
 }

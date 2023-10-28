@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserRepository userRepository;
@@ -69,6 +71,9 @@ public class SecurityConfig {
                                 })
                                 .permitAll()
                 )
+                .exceptionHandling(
+                        (exceptionHandling) -> exceptionHandling
+                                .accessDeniedPage("/access-denied"))
                 .rememberMe(remember -> remember
                         .rememberMeParameter("remember-me")
                         .rememberMeServices(rememberMeServices())
@@ -79,7 +84,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username -> userRepository.findByUsername(username)
+        return username -> userRepository.findByUsernameOrEmail(username, username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
