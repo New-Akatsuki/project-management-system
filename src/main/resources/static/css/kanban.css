@@ -326,6 +326,13 @@
     padding: 10px 0;
 }
 
+/* offcanvas*/
+
+.offcanvas{
+    --bs-offcanvas-width: 600px!important;
+}
+
+
 /*SubTask modal*/
 
 /* Label Styles */

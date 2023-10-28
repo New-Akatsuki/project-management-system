@@ -80,5 +80,9 @@ public class Task implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Task parentTask;
 
+    @ManyToOne
+    @JoinColumn(name = "phase_id") // Define the foreign key column
+    private Phase phase;
+
 
 }

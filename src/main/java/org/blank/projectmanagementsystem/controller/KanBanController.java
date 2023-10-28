@@ -2,9 +2,11 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.blank.projectmanagementsystem.service.PhaseService;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +24,24 @@ public class KanBanController {
 
     private final TaskService taskService;
     private final UserService userService;
+    private final PhaseService phaseService;
 
-//    @GetMapping("/kanban-data")
-//    public ResponseEntity<List<TaskViewObject>> getKanBanData() {
-//        List<TaskViewObject> tasks = taskService.getAllTasks();
-//        return ResponseEntity.ok(tasks);
-//    }
+    @GetMapping("/api/phases")
+    public ResponseEntity<List<Phase>> getPhase() {
+        List<Phase> phase = phaseService.getAllPhase();
+        return ResponseEntity.ok(phase);
+    }
+
+    @GetMapping("/api/all-tasks")
+    public ResponseEntity<List<TaskViewObject>> getFakeGanttData() {
+        List<TaskViewObject> tasks = taskService.getAllTasks();
+        return ResponseEntity.ok(tasks);
+    }
 
     @GetMapping("/api/users") // New endpoint to fetch users
     public ResponseEntity<List<User>> getUsers() {
-//        List<User> users = userService.getAllUser();
-//        return ResponseEntity.ok(users);
-        return null;
+        List<User> users = userService.getAllUser();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/api/tasks")

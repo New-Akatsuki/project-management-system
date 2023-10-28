@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -19,6 +21,7 @@ public class Phase {
     @Column(nullable = false, length = 25)
     private String name;
 
-
+    @OneToMany(mappedBy = "phase")
+    private List<Task> tasks;
 
 }

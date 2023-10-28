@@ -68,26 +68,64 @@
 
             $this.addClass(classes.kanban_board_class);
             $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
-            build_section();
+            // build_section();
             build_tasks();
             build_subtask();
             enableDragAndDrop();
         }
 
-        function build_section() {
-            settings.phase.forEach((item, index, array) => {
-                const section_container = `
-                    <div id="${item.id}-phase" class="${classes.kb_section_class}">
-                        <div class="kb-section-header">
-                            <span class="kb-section-header-name">${item.name}</span>
-                            <button class="kb-section-header-btn" data-bs-toggle="modal" id="${item.id}-btn" data-bs-target="#exampleModal">+</button>
-                        </div>
-                        <div id="${item.id}-phase-body" class="kb-section-body"></div>
+        $(document).ready(function () {
+            // Define the build_section function before using it
+            function build_section(data) {
+                data.forEach(function (phase) {
+                    const section_container = `
+                <div id="${phase.id}-phase" class="${classes.kb_section_class}">
+                    <div class="kb-section-header">
+                        <span class="kb-section-header-name">${phase.name}</span>
+                        <button class="kb-section-header-btn" data-bs-toggle="modal" id="${phase.id}-btn" data-bs-target="#exampleModal">+</button>
                     </div>
-                `;
-                $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
+                    <div id="${phase.id}-phase-body" class="kb-section-body"></div>
+                </div>
+            `;
+                    $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
+                });
+            }
+
+            $.ajax({
+                url: '/api/users',
+                method: 'GET',
+                success: function (data) {
+                    const assigneesSelect = $('#task-assignees');
+                    assigneesSelect.empty();
+                    data.forEach(function (user) {
+                        assigneesSelect.append(new Option(user.name, user.id));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
             });
-        }
+
+            $.ajax({
+                url: '/api/phases',
+                method: 'GET',
+                success: function (data) {
+                    const phaseSelect = $('#task-phase');
+                    phaseSelect.empty();
+                    data.forEach(function (phase) {
+                        phaseSelect.append(new Option(phase.name, phase.id));
+                    });
+
+                    build_section(data);
+                    build_kanban();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+        });
+
 
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
@@ -127,21 +165,25 @@
                 const task = document.getElementById(`${item.id}`);
 
                 $(`#${item.id} .kb-task-body-layout`).on('click', () => {
-                    //show modal
-                    $('#exampleModal').modal('show');
+                    // Populate the offcanvas body with task data
+                    $('#task-details .task-name').html(item.name);
+                    $('#task-details .task-description').html(item.description);
+                    $('#task-details .task-priority').html(item.priority);
+                    $('#task-details .task-start-date').html(item.start_date);
+                    $('#task-details .task-end-date').html(item.end_date);
+                    $('#task-details .task-plan-hours').html(item.plan_hours);
+                    $('#task-details .task-group').html(item.group);
+                    $('#task-details .task-type').html(item.type);
+                    $('#task-details .task-assignees').html(item.assignees);
 
-                    $('#task-name').val(item.name);
-                    $('#task-description').val(item.description);
-                    $('#task-priority').val(item.priority);
-                    $('#task-start-date').val(item.start_date);
-                    $('#task-end-date').val(item.end_date);
-                    $('#task-plan-hours').val(item.plan_hours);
-                    $('#task-group').val(item.group);
-                    $('#task-type').val(item.type);
+
+                    // Show the offcanvas
+                    $('#offcanvasRight').offcanvas('show');
                 });
 
 
-                    const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
+
+                const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
                     subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
@@ -176,18 +218,19 @@
                 // Add a click event handler to each subtask
                 const subtask = document.getElementById(`${item.id}`);
                 subtask.addEventListener('click', () => {
-                    // Show the modal and populate it with subtask data
-                    $('#exampleModal').modal('show');
+                    // Populate the offcanvas body with subtask data
+                    $('#task-details .task-name').html(item.name);
+                    $('#task-details .task-description').html(item.description);
+                    $('#task-details .task-priority').html(item.priority);
+                    $('#task-details .task-start-date').html(item.start_date);
+                    $('#task-details .task-end-date').html(item.end_date);
+                    $('#task-details .task-plan-hours').html(item.plan_hours);
+                    $('#task-details .task-group').html(item.group);
+                    $('#task-details .task-type').html(item.type);
+                    $('#task-details .task-assignees').html(item.assignees);
 
-                    // Populate the modal fields with subtask data
-                    $('#task-name').val(item.name);
-                    $('#task-description').val(item.description);
-                    $('#task-priority').val(item.priority);
-                    $('#task-start-date').val(item.start_date);
-                    $('#task-end-date').val(item.end_date);
-                    $('#task-plan-hours').val(item.plan_hours);
-                    $('#task-group').val(item.group);
-                    $('#task-type').val(item.type);
+                    // Show the offcanvas
+                    $('#offcanvasRight').offcanvas('show');
                 });
             });
         }
@@ -246,18 +289,6 @@
 
         kanban_render();
 
-        // $.ajax({
-        //     url: '/kanban-data',
-        //     method: 'GET',
-        //     success:function (data) {
-        //         console.log('data', data);
-        //
-        //
-        //
-        //     }
-        //
-        // }
-        // )
 
 
     }
@@ -299,39 +330,14 @@ function saveTask() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            // Handle the success response
-            // Close the modal and display a success message
             $('#exampleModal').modal('hide');
             alert('Task saved successfully');
         },
         error: function (xhr, status, error) {
-            // Handle errors, e.g., display them in the console or an alert
             console.error(xhr.responseText);
             alert('Error: ' + error);
         }
     });
 }
 
-
-$(document).ready(function () {
-    // Make an AJAX request to fetch users
-    $.ajax({
-        url: '/api/users',
-        method: 'GET',
-        success: function (data) {
-            // Handle the retrieved user data
-            // You can populate your select box with this data
-            const assigneesSelect = $('#task-assignees');
-            assigneesSelect.empty(); // Clear existing options
-
-            data.forEach(function (user) {
-                assigneesSelect.append(new Option(user.name, user.id));
-            });
-        },
-        error: function (xhr, status, error) {
-            // Handle errors, e.g., display them in the console
-            console.error(xhr.responseText);
-        }
-    });
-});
 

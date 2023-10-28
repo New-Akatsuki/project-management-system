@@ -129,51 +129,56 @@
         </div>
 
 
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="task-details">
+        <div>
+        <label class="task-label">Name:</label>
+        <span class="task-value task-name"></span>
+        </div>
+        <div>
 
-<!--<div class="modal fade" id="addSubtaskModal" tabindex="-1" role="dialog" aria-labelledby="addSubtaskLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <form>-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
-<!--                    <h1 class="modal-title fs-5" id="addSubtaskLabel">Add SubTask</h1>-->
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    &lt;!&ndash; Modify the subtask input fields as needed &ndash;&gt;-->
-<!--                    <div class="subtask-body-text-layout">-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="subtask-name" class="form-label">Enter SubTask Name:</label>-->
-<!--                            <input type="text" id="subtask-name" placeholder="Name" class="form-control-lg" required>-->
-<!--                        </div>-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="subtask-description" class="form-label">Enter Description:</label>-->
-<!--                            <textarea id="subtask-description" placeholder="Description" class="form-control-lg"></textarea>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="subtask-body-project-expected-date">-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="subtask-start-date" class="form-label d-block">Enter Start Date:</label>-->
-<!--                            <input type="text" id="subtask-start-date" placeholder="Start Date" class="form-control-lg" required>-->
-<!--                        </div>-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="subtask-end-date" class="form-label d-block">Enter End Date:</label>-->
-<!--                            <input type="text" id="subtask-end-date" placeholder="End Date" class="form-control-lg" required>-->
-<!--                        </div>-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="subtask-plan-hours" class="form-label">Enter Plan Hours:</label>-->
-<!--                            <input type="number" id="subtask-plan-hours" placeholder="Plan Hours" class="form-control-lg" required>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                    <button type="button"  class="btn btn-primary" id="save-subtask-changes">Save Subtask</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
+        <label class="task-label">Description:</label>
+        <span class="task-value task-description"></span>
+        </div>
+        <div>
 
+        <label class="task-label">Priority:</label>
+        <span class="task-value task-priority"></span>
+        </div>
+        <div>
+
+        <label class="task-label">Start Date:</label>
+        <span class="task-value task-start-date"></span>
+</div>
+        <div>
+
+        <label class="task-label">End Date:</label>
+        <span class="task-value task-end-date"></span>
+        </div>
+        <div>
+        <label class="task-label">Plan Hours:</label>
+        <span class="task-value task-plan-hours"></span>
+        </div>
+        <div>
+        <label class="task-label">Group:</label>
+        <span class="task-value task-group"></span>
+        </div>
+        <div>
+        <label class="task-label">Type:</label>
+        <span class="task-value task-type"></span>
+        </div>
+        <div>
+        <label class="task-label">Assignees:</label>
+        <span class="task-value task-assignees"></span>
+        </div>
+
+    </div>
+
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script th:src="@{/js/single-select.js}"></script>
@@ -198,112 +203,108 @@
 
 <script>
     $(document).ready(function () {
+
         $('#kanban').kanban({
-            phase: [
-                {id: 1, name: 'Backlog'},
-                {id: 2, name: 'To Do'},
-                {id: 3, name: 'In Progress'},
-                {id: 4, name: 'Done'},
 
-            ],
-            tasks: [
-                {
-                    id: 1,
-                    name: 'Task 1',
-                    description: 'This is task 1',
-                    priority: 'high',
-                    start_date: '2021-01-01',
-                    end_date: '2021-01-02',
-                    actual_due_date: '2021-01-02',
-                    plan_hours: 2,
-                    actual_hours: 1,
-                    status: 0,
-                    group: 'A',
-                    type: 'task',
-                    phase: 2,
-                    parent: 2,
-                    assignees: [1],
-                },
-                {
-                    id: 2,
-                    name: 'Task 2',
-                    description: 'This is task 2',
-                    priority: 'high',
-                    start_date: '2021-01-01',
-                    end_date: '2021-01-02',
-                    actual_due_date: '2021-01-02',
-                    plan_hours: 2,
-                    actual_hours: 1,
-                    status: 0,
-                    group: 'A',
-                    type: 'project',
-                    phase: 1,
-                    parent: null,
-                    assignees: [1],
-                },
-                {
-                    id: 3,
-                    name: 'Task 3',
-                    description: 'This is task 3',
-                    priority: 'l ow',
-                    start_date: '2021-01-01',
-                    end_date: '2021-01-02',
-                    actual_due_date: '2021-01-02',
-                    plan_hours: 2,
-                    actual_hours: 1,
-                    status: 0,
-                    group: 'A',
-                    type: 'project',
-                    phase: 3,
-                    parent: null,
-                    assignees: [1],
-                },
-
-                {
-                    id: 4,
-                    name: 'Task 4',
-                    description: 'This is task 4',
-                    priority: 'high',
-                    start_date: '2021-01-01',
-                    end_date: '2021-01-02',
-                    actual_due_date: '2021-01-02',
-                    plan_hours: 2,
-                    actual_hours: 1,
-                    status: 0,
-                    group: 'A',
-                    type: 'task',
-                    phase: 1,
-                    parent: 2,
-                    assignees: [1],
-                },
-
-                {
-                    id: 5,
-                    name: 'Task 5',
-                    description: 'This is task 5',
-                    priority: 'medium',
-                    start_date: '2021-01-01',
-                    end_date: '2021-01-02',
-                    actual_due_date: '2021-01-02',
-                    plan_hours: 2,
-                    actual_hours: 1,
-                    status: 0,
-                    group: 'A',
-                    type: 'task',
-                    phase: 4,
-                    parent: null,
-                    assignees: [1],
-                },
-            ],
-            onChange: (e, ui) => {
-                console.log("change event -> ", e)
-                console.log('change ui -> ', ui)
-            },
-            onReceive: (e, ui) => {
-                console.log("re event -> ", e)
-                console.log('re ui -> ', ui)
-            }
-        });
+           phase :[],
+        //     tasks: [
+        //         {
+        //             id: 1,
+        //             name: 'Task 1',
+        //             description: 'This is task 1',
+        //             priority: 'high',
+        //             start_date: '2021-01-01',
+        //             end_date: '2021-01-02',
+        //             actual_due_date: '2021-01-02',
+        //             plan_hours: 2,
+        //             actual_hours: 1,
+        //             status: 0,
+        //             group: 'A',
+        //             type: 'task',
+        //             phase: 2,
+        //             parent: 2,
+        //             assignees: [1],
+        //         },
+        //         {
+        //             id: 2,
+        //             name: 'Task 2',
+        //             description: 'This is task 2',
+        //             priority: 'high',
+        //             start_date: '2021-01-01',
+        //             end_date: '2021-01-02',
+        //             actual_due_date: '2021-01-02',
+        //             plan_hours: 2,
+        //             actual_hours: 1,
+        //             status: 0,
+        //             group: 'A',
+        //             type: 'project',
+        //             phase: 1,
+        //             parent: null,
+        //             assignees: [1],
+        //         },
+        //         {
+        //             id: 3,
+        //             name: 'Task 3',
+        //             description: 'This is task 3',
+        //             priority: 'l ow',
+        //             start_date: '2021-01-01',
+        //             end_date: '2021-01-02',
+        //             actual_due_date: '2021-01-02',
+        //             plan_hours: 2,
+        //             actual_hours: 1,
+        //             status: 0,
+        //             group: 'A',
+        //             type: 'project',
+        //             phase: 3,
+        //             parent: null,
+        //             assignees: [1],
+        //         },
+        //
+        //         {
+        //             id: 4,
+        //             name: 'Task 4',
+        //             description: 'This is task 4',
+        //             priority: 'high',
+        //             start_date: '2021-01-01',
+        //             end_date: '2021-01-02',
+        //             actual_due_date: '2021-01-02',
+        //             plan_hours: 2,
+        //             actual_hours: 1,
+        //             status: 0,
+        //             group: 'A',
+        //             type: 'task',
+        //             phase: 1,
+        //             parent: 2,
+        //             assignees: [1],
+        //         },
+        //
+        //         {
+        //             id: 5,
+        //             name: 'Task 5',
+        //             description: 'This is task 5',
+        //             priority: 'medium',
+        //             start_date: '2021-01-01',
+        //             end_date: '2021-01-02',
+        //             actual_due_date: '2021-01-02',
+        //             plan_hours: 2,
+        //             actual_hours: 1,
+        //             status: 0,
+        //             group: 'A',
+        //             type: 'task',
+        //             phase: 4,
+        //             parent: null,
+        //             assignees: [1],
+        //         },
+        //     ],
+        //     onChange: (e, ui) => {
+        //         console.log("change event -> ", e)
+        //         console.log('change ui -> ', ui)
+        //     },
+        //     onReceive: (e, ui) => {
+        //         console.log("re event -> ", e)
+        //         console.log('re ui -> ', ui)
+        //     }
+         });
 
 
     });
