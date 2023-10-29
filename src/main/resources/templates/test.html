@@ -26,7 +26,7 @@
 
 <div class="m-3 p-3 border border-1">
     <div id="kanban">
-        <button type="submit" id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
+        <button type="button"  id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
             Add Phase +
         </button>
          </div>
@@ -45,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="savePhaseButton">Save Phase</button>
+                <button type="button" onclick="addPhase()" class="btn btn-primary" id="savePhaseButton">Save Phase</button>
             </div>
         </div>
     </div>
@@ -203,111 +203,11 @@
 
 <script>
     $(document).ready(function () {
-
         $('#kanban').kanban({
-
-           phase :[],
-        //     tasks: [
-        //         {
-        //             id: 1,
-        //             name: 'Task 1',
-        //             description: 'This is task 1',
-        //             priority: 'high',
-        //             start_date: '2021-01-01',
-        //             end_date: '2021-01-02',
-        //             actual_due_date: '2021-01-02',
-        //             plan_hours: 2,
-        //             actual_hours: 1,
-        //             status: 0,
-        //             group: 'A',
-        //             type: 'task',
-        //             phase: 2,
-        //             parent: 2,
-        //             assignees: [1],
-        //         },
-        //         {
-        //             id: 2,
-        //             name: 'Task 2',
-        //             description: 'This is task 2',
-        //             priority: 'high',
-        //             start_date: '2021-01-01',
-        //             end_date: '2021-01-02',
-        //             actual_due_date: '2021-01-02',
-        //             plan_hours: 2,
-        //             actual_hours: 1,
-        //             status: 0,
-        //             group: 'A',
-        //             type: 'project',
-        //             phase: 1,
-        //             parent: null,
-        //             assignees: [1],
-        //         },
-        //         {
-        //             id: 3,
-        //             name: 'Task 3',
-        //             description: 'This is task 3',
-        //             priority: 'l ow',
-        //             start_date: '2021-01-01',
-        //             end_date: '2021-01-02',
-        //             actual_due_date: '2021-01-02',
-        //             plan_hours: 2,
-        //             actual_hours: 1,
-        //             status: 0,
-        //             group: 'A',
-        //             type: 'project',
-        //             phase: 3,
-        //             parent: null,
-        //             assignees: [1],
-        //         },
-        //
-        //         {
-        //             id: 4,
-        //             name: 'Task 4',
-        //             description: 'This is task 4',
-        //             priority: 'high',
-        //             start_date: '2021-01-01',
-        //             end_date: '2021-01-02',
-        //             actual_due_date: '2021-01-02',
-        //             plan_hours: 2,
-        //             actual_hours: 1,
-        //             status: 0,
-        //             group: 'A',
-        //             type: 'task',
-        //             phase: 1,
-        //             parent: 2,
-        //             assignees: [1],
-        //         },
-        //
-        //         {
-        //             id: 5,
-        //             name: 'Task 5',
-        //             description: 'This is task 5',
-        //             priority: 'medium',
-        //             start_date: '2021-01-01',
-        //             end_date: '2021-01-02',
-        //             actual_due_date: '2021-01-02',
-        //             plan_hours: 2,
-        //             actual_hours: 1,
-        //             status: 0,
-        //             group: 'A',
-        //             type: 'task',
-        //             phase: 4,
-        //             parent: null,
-        //             assignees: [1],
-        //         },
-        //     ],
-        //     onChange: (e, ui) => {
-        //         console.log("change event -> ", e)
-        //         console.log('change ui -> ', ui)
-        //     },
-        //     onReceive: (e, ui) => {
-        //         console.log("re event -> ", e)
-        //         console.log('re ui -> ', ui)
-        //     }
-         });
-
-
+            phase: [],
+        });
     });
+
 </script>
 </body>
 </html>

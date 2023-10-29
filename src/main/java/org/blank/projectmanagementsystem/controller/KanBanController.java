@@ -26,6 +26,11 @@ public class KanBanController {
     private final UserService userService;
     private final PhaseService phaseService;
 
+    @PostMapping("/api/add-phase")
+    public ResponseEntity<Phase> addPhase(@RequestBody Phase phase) {
+        log.info("new phase: {}", phase);
+        return ResponseEntity.ok(phaseService.createPhase(phase));
+    }
     @GetMapping("/api/phases")
     public ResponseEntity<List<Phase>> getPhase() {
         List<Phase> phase = phaseService.getAllPhase();

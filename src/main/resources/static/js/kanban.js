@@ -116,15 +116,18 @@
                         phaseSelect.append(new Option(phase.name, phase.id));
                     });
 
+                    console.log(data);
+                    // Now that build_section is defined, you can call it
                     build_section(data);
-                    build_kanban();
+                    // build_kanban(); // Call build_kanban after building the sections
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
-
         });
+
+
 
 
         function build_tasks() {
@@ -340,4 +343,26 @@ function saveTask() {
     });
 }
 
+function addPhase(){
+    let phase = {
+        name: $('#phaseName').val(),
+    }
+    $.ajax({
+        url: '/api/add-phase',
+        method: 'POST',
+        data: JSON.stringify(phase),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (data) {
+            $('#addPhaseModalLabel').modal('hide');
+            alert('Phase added successfully');
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('Error: ' + error);
+        }
+    });
+
+
+}
 

@@ -13,9 +13,9 @@
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 400px));
-    grid-template-rows: 100%;
+    display: flex;
+    max-height: 100vh;
+    overflow-x: auto;
     gap: 15px;
     padding: 0 15px;
 }
@@ -89,11 +89,15 @@
     ---------------------------
 */
 
-.kb-section{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+.kb-section {
+    width: 350px; /* Set a fixed width for each phase */
+    margin: 0 10px 10px 0; /* Add some margin for spacing between phases */
+    padding: 1rem;
+    flex: 1;
+    background: #f2f2f2;
+    overflow-y: auto;
 }
+
 
 .kb-section-header{
     display: flex;
