@@ -56,12 +56,18 @@
         $this.on('click', '.' + classes.kb_section_header_btn_class, function (e) {
             e.preventDefault();
             let modalId = $(this).data('bs-target'); // Get the modal target ID
+            let phaseId = $(this).data('phase-id'); // Get the phase ID associated with the clicked button
+
+            console.log(phaseId); // Make sure phaseId is correct
+
             let $modal = $(modalId);
 
             if ($modal.length) {
                 $modal.addClass('show'); // Add the 'show' class to trigger the animation
             }
         });
+
+
 
 
         function build_kanban() {
@@ -82,7 +88,7 @@
                 <div id="${phase.id}-phase" class="${classes.kb_section_class}">
                     <div class="kb-section-header">
                         <span class="kb-section-header-name">${phase.name}</span>
-                        <button class="kb-section-header-btn" data-bs-toggle="modal" id="${phase.id}-btn" data-bs-target="#exampleModal">+</button>
+                        <button class="kb-section-header-btn" data-bs-toggle="modal" id="${phase.id}-btn" data-bs-target="#exampleModal" data-phase-id="${phase.id}">+</button>
                     </div>
                     <div id="${phase.id}-phase-body" class="kb-section-body"></div>
                 </div>
@@ -298,7 +304,7 @@
 
 }(jQuery));
 
-function saveTask() {
+function saveTask(phaseId) {
     // Create a task object with user IDs included
     let task = {
         id: $('#task-id').val(),
@@ -318,8 +324,9 @@ function saveTask() {
         type: $('#task-type').val(),
         assignees: [], // Initialize an empty array for user IDs
         subtasks: null,
-        phase: 1,
+        phase: phaseId,
     };
+
 
     // Get the selected user IDs from the assignees select box
     $('#task-assignees option:selected').each(function () {

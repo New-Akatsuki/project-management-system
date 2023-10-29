@@ -45,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="addPhase()" class="btn btn-primary" id="savePhaseButton">Save Phase</button>
+                <button type="button" onclick="addPhase()" class="btn btn-primary" id="savePhaseButton" data-bs-dismiss="modal">Save Phase</button>
             </div>
         </div>
     </div>
@@ -205,6 +205,7 @@
     $(document).ready(function () {
         $('#kanban').kanban({
             phase: [],
+            task:[],
         });
     });
 

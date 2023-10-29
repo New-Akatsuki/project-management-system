@@ -90,7 +90,7 @@
 */
 
 .kb-section {
-    width: 350px; /* Set a fixed width for each phase */
+    width: 350px;
     margin: 0 10px 10px 0; /* Add some margin for spacing between phases */
     padding: 1rem;
     flex: 1;
