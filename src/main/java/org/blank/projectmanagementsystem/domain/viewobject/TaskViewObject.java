@@ -31,4 +31,5 @@ public class TaskViewObject {
     private String type;
     private List<Long> assignees;
     private Boolean open;
+    private Long phase;
 }

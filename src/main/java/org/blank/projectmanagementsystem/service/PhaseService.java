@@ -12,4 +12,7 @@ public interface PhaseService {
     Phase updatePhase(Phase phase);
 
     void deletePhase(Long id);
+
+    Phase getPhaseById(Long id);
+
 }

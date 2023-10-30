@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class Phase {
     private String name;
 
     @OneToMany(mappedBy = "phase")
+    @JsonIgnore
     private List<Task> tasks;
 
 }

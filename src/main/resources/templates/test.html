@@ -25,10 +25,10 @@
 
 
 <div class="m-3 p-3 border border-1">
+    <button type="button"  id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
+        Add Phase +
+    </button>
     <div id="kanban">
-        <button type="button"  id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
-            Add Phase +
-        </button>
          </div>
 </div>
 
@@ -121,7 +121,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" onclick="saveTask()" class="btn btn-primary" id="save-changes">Save changes</button>
+                            <button type="button"  class="btn btn-primary" id="save-changes">Save changes</button>
                         </div>
                     </div>
                 </form>

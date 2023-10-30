@@ -36,4 +36,9 @@ public class PhaseServiceImpl implements PhaseService  {
     public void deletePhase(Long id) {
 
     }
+
+    @Override
+    public Phase getPhaseById(Long id) {
+        return phaseRepository.findById(id).orElse(null);
+    }
 }

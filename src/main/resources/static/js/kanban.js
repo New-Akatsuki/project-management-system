@@ -1,3 +1,4 @@
+let currentPhase = null;
 (function ($) {
 
     $.fn.kanban = function (options) {
@@ -58,7 +59,9 @@
             let modalId = $(this).data('bs-target'); // Get the modal target ID
             let phaseId = $(this).data('phase-id'); // Get the phase ID associated with the clicked button
 
-            console.log(phaseId); // Make sure phaseId is correct
+            currentPhase = phaseId; // Update the currentPhase variable
+
+            console.log("current Phase is "+ currentPhase); // Make sure phaseId is correct
 
             let $modal = $(modalId);
 
@@ -67,11 +70,68 @@
             }
         });
 
+        function saveTask(currentPhase) {
+            // Create a task object with user IDs included
+            let task = {
+                id: $('#task-id').val(),
+                name: $('#task-name').val(),
+                description: $('#task-description').val(),
+                priority: $('#task-priority').val(),
+                start_date: $('#task-start-date').val(),
+                end_date: $('#task-end-date').val(),
+                actual_due_date: null,
+                duration: null,
+                plan_hours: $('#task-plan-hours').val(),
+                actual_hours: null,
+                // process: null,
+                status: 0,
+                parent: null,
+                group: $('#task-group').val(),
+                type: $('#task-type').val(),
+                assignees: [], // Initialize an empty array for user IDs
+                subtasks: null,
+                phase: currentPhase,
+            };
+            console.log("current Phase lay ka "+currentPhase + "par")
+
+
+            // Get the selected user IDs from the assignees select box
+            $('#task-assignees option:selected').each(function () {
+                task.assignees.push($(this).val());
+            });
+
+            $.ajax({
+                url: '/api/tasks',
+                method: 'POST',
+                data: JSON.stringify(task),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    alert('Task saved successfully');
+
+                    updateKanban();
+
+                    $('#exampleModal').modal('hide');
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Error: ' + error);
+                }
+            });
+        }
+
+
+        //add click function to save button
+        $('#save-changes').on('click', function (e) {
+                e.preventDefault();
+                saveTask(currentPhase);
+
+            }
+        );
 
 
 
         function build_kanban() {
-
             $this.addClass(classes.kanban_board_class);
             $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
             // build_section();
@@ -125,14 +185,29 @@
                     console.log(data);
                     // Now that build_section is defined, you can call it
                     build_section(data);
+
                     // build_kanban(); // Call build_kanban after building the sections
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
-        });
+            $.ajax({
+                url: '/api/all-tasks',
+                method: 'GET',
+                success: function (data) {
+                    settings.tasks = data;
+                    console.log(settings.tasks);
+                    // kanban_render();
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('Error: ' + error);
 
+                }
+            })
+
+        });
 
 
 
@@ -193,7 +268,7 @@
 
 
                 const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
-                    subtaskIcon.addEventListener('click', () => {
+                subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
@@ -304,51 +379,18 @@
 
 }(jQuery));
 
-function saveTask(phaseId) {
-    // Create a task object with user IDs included
-    let task = {
-        id: $('#task-id').val(),
-        name: $('#task-name').val(),
-        description: $('#task-description').val(),
-        priority: $('#task-priority').val(),
-        start_date: $('#task-start-date').val(),
-        end_date: $('#task-end-date').val(),
-        actual_due_date: null,
-        duration: null,
-        plan_hours: $('#task-plan-hours').val(),
-        actual_hours: null,
-        // process: null,
-        status: 0,
-        parent: null,
-        group: $('#task-group').val(),
-        type: $('#task-type').val(),
-        assignees: [], // Initialize an empty array for user IDs
-        subtasks: null,
-        phase: phaseId,
-    };
+function updateKanban() {
 
 
-    // Get the selected user IDs from the assignees select box
-    $('#task-assignees option:selected').each(function () {
-        task.assignees.push($(this).val());
-    });
+    $('#kanban').empty();
 
-    $.ajax({
-        url: '/api/tasks',
-        method: 'POST',
-        data: JSON.stringify(task),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (data) {
-            $('#exampleModal').modal('hide');
-            alert('Task saved successfully');
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-            alert('Error: ' + error);
-        }
+    // Destroy the Kanban board
+    $('#kanban').kanban({
+        phase: [],
+        task: [],
     });
 }
+
 
 function addPhase(){
     let phase = {
@@ -361,8 +403,12 @@ function addPhase(){
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            $('#addPhaseModalLabel').modal('hide');
             alert('Phase added successfully');
+
+            updateKanban(); // Update the Kanban boar d
+
+            $('#addPhaseModal').modal('hide');
+
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);
@@ -372,4 +418,3 @@ function addPhase(){
 
 
 }
-

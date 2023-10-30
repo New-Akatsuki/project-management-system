@@ -81,6 +81,7 @@ public class Task implements Serializable {
     private Task parentTask;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "phase_id") // Define the foreign key column
     private Phase phase;
 
