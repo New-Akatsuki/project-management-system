@@ -44,9 +44,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-<!--            if user role is PMO or SDQC -->
-            <!-- HTML code -->
-            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC')">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','DH')">
                 <a class="nav-link" th:href="@{/pm/department}">
                     <i class="bi bi-briefcase"></i>
                     <span>Department</span>
@@ -61,7 +59,12 @@
                     <span>Projects</span>
                 </a>
             </li>
-
+            <li class="nav-item" sec:authorize="hasAnyAuthority('DH','PM')">
+                <a class="nav-link"  th:href="@{/pm/user-list}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>Create member account</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/issues}">
                     <i class="bi bi-info-circle"></i>
@@ -69,14 +72,14 @@
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','PM')">
+            <li class="nav-item" sec:authorize="hasAuthority('PMO')">
                 <a class="nav-link"  th:href="@{/pm/user-list}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
                 </a>
             </li>
 
-            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM')">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
                 <a class="nav-link" th:href="@{/pm/contract-info}">
                     <i class="bi bi-info-square-fill"></i>
                     <span>Contract Info</span>
