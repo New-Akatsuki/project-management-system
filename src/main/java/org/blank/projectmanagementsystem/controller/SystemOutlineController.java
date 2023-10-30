@@ -33,15 +33,12 @@ public class SystemOutlineController {
         if (systemOutline.getName() != null && !systemOutline.getName().isEmpty()) {
             // Valid name, save the systemOutline
             systemOutlineService.save(systemOutline);
-            return "redirect:/systemOutline/system-outline-list";
+            return "redirect:/pm/contract-info";
+
         } else {
             // Invalid name, handle the error (redirect to an error page or show an error message)
             return "error"; // You can create an error Thymeleaf template for this
         }
-
-
-
-
 
     }
 
@@ -65,6 +62,8 @@ public class SystemOutlineController {
         model.addAttribute("systemOutlines", systemOutlines);
         return "system-outline-list"; // Thymeleaf template name for displaying the list
     }
+
+
     @PostMapping("/system-outline-list")
     public String showSystemOutlineList(@ModelAttribute SystemOutline systemOutline) {
         // Validate if systemOutline.getName() is not null before saving

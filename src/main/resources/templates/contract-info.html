@@ -83,7 +83,147 @@
                 <div class="form-card text-start">
 
                   <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                          <div class="display-6 fs-4">
+                            Clients
+                          </div>
 
+
+                          <a id="addClientButton" class="icon-add-btn" data-toggle="modal" data-target="#addMemberModal">
+                            <i class='bx bx-plus m-0 p-0'></i>
+                          </a>
+
+                        </div>
+
+                        <div class="card-body">
+                          <table class="table table-hover">
+                            <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Phone</th>
+                              <th>Project Name</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>John Smith</td>
+                              <td>30</td>
+                              <td>USA</td>
+                              <td> <a id="openEditClientModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#editClientModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a></td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Mary Johnson</td>
+                              <td>28</td>
+                              <td>Canada</td>
+                              <td> <a id="editClientButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-target="#addDeliverablesModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a></td>
+
+                            </tr>
+
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-lg-12">
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                          <div class="display-6 fs-4">
+                            Deliverables Methods
+                          </div>
+
+
+                          <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
+                            <i class='bx bx-plus m-0 p-0'></i>
+                          </a>
+                          </a></div>
+
+                        <div class="card-body">
+                          <table class="table table-hover">
+                            <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>Internal</td>
+                              <td><a id="openDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a></td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>External</td>
+                              <td><a id="opensDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
+                                <i class='bx bx-edit m-0 p-0'></i>
+                              </a></td>
+                            </tr>
+
+
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-lg-12">
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                          <div class="display-6 fs-4">
+                            Architecture Outlines
+                          </div>
+                          <a id="addArchitectureOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addArchitectureOutlineModal">
+                            <i class='bx bx-plus m-0 p-0'></i>
+                          </a>
+                        </div>
+
+                        <div class="card-body">
+                          <table class="table table-hover">
+                            <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                              <td>1</td>
+                              <td>sdfsdfsfgfgsdfsdf</td>
+                              <td>Option 1</td>
+                              <td>
+                                <a id="editArchitectureOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#architectureOutlineModal">
+                                  <i class='bx bx-edit m-0 p-0'></i>
+                                </a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>Mary Johnson</td>
+                            </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
 
                     <div class="col-sm-12 col-lg-12">
                       <div class="card">
@@ -106,14 +246,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="systemOutline : ${systemOutlines}">
-                              <td th:text="${systemOutline.id}">${systemOutline.id}</td>
-                              <td th:text="${systemOutline.name}">${systemOutline.name}</td>
+
+
+                            <tr th:each="deliverable : ${deliverables}">
+                              <td th:text="${deliverable.id}"></td>
+                              <td th:text="${deliverable.name}"></td>
                               <td>
-                                <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/edit'}">Edit</a>
-                                <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/delete'}">Delete</a>
+                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/delete'}" class="btn btn-sm btn-danger mx-2">Delete</a>
                               </td>
                             </tr>
+
+
+
                             </tbody>
                           </table>
 
@@ -175,6 +320,10 @@
   });
 
 </script>
+
+
+
+
 
 <!--Modal box-->
 
@@ -257,11 +406,6 @@
   </div>
 </div>
 
-
-
-
-
-
 <!--Add Client-->
 <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -309,21 +453,21 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+      <form th:action="@{/systemOutline/save}" method="post" class="mt-4">
           <div class="form-group">
-            <label for="systemOutlineName">Name</label>
-            <input type="text" class="form-control" id="systemOutlineName" placeholder="Enter New System Outline">
+            <label for="outlineName" class="form-label">System Outline Name</label>
+            <input type="text" class="form-control" id="outlineName" name="name" required>
           </div>
-
+          <button type="submit" class="btn btn-primary">Add Outline</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
+        </form>
     </div>
-  </div>
-</div>
+
+    </div>
+    </div>
+    </div>
+
+
 
 <!--Add Architecture Outline-->
 <div class="modal fade" id="addArchitectureOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">

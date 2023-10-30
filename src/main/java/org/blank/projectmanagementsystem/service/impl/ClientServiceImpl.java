@@ -53,4 +53,9 @@ public class ClientServiceImpl implements ClientService {
     public void delete(int id) {
 
     }
+
+    @Override
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
 }
