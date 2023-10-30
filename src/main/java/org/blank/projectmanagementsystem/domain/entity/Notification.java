@@ -26,7 +26,7 @@ public class Notification {
     @Column(nullable = false)
     private LocalDate date;
 
-    private long orderId;
+    private long taskId;
 
     @JsonIgnore
     private String username;

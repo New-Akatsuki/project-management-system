@@ -13,6 +13,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -39,16 +40,16 @@ public class Task implements Serializable {
     private Priority priority= Priority.MEDIUM;
 
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
     private Float planHours;
 
     @Column(nullable = true)
-    private Date actualDueDate;
+    private LocalDate actualDueDate;
 
     @Column(nullable = true)
     private Float actualHours;
@@ -65,10 +66,11 @@ public class Task implements Serializable {
     private TaskType type = TaskType.TASK;
 
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(nullable = false)
     private Phase phase;
 
@@ -83,6 +85,5 @@ public class Task implements Serializable {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Task parentTask;
-
 
 }

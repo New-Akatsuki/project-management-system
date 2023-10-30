@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +19,9 @@ public class TaskFormInput {
     private String name;
     private String description;
     private String priority;
-    private Date start_date;
-    private Date end_date;
-    private Date actual_due_date;
+    private LocalDate start_date;
+    private LocalDate end_date;
+    private LocalDate actual_due_date;
     private int duration;
     private float plan_hours;
     private float actual_hours;

@@ -1,7 +1,9 @@
 package org.blank.projectmanagementsystem.domain.formInput;
 
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +11,8 @@ import java.util.List;
 public class ProjectFormInput {
     private String name;
     private Integer department;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String background;
     private String objective;
     private List<Integer> systemOutlines;

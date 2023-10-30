@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,26 +28,30 @@ public class Issue implements Serializable {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 700, nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @Column(nullable = false)
+    private OffsetDateTime modifyAt = OffsetDateTime.now();
 
     private boolean solved=false;
 
-    private int impact;
+    @Column(nullable = false, length = 700)
+    private String impact;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 700, nullable = false)
     private String direct_cause;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 700, nullable = false)
     private String root_cause;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 700, nullable = false)
     private String correctiveAction;
 
-    @Column(length = 500, nullable = false)
+    @Column(length = 700, nullable = false)
     private String preventiveAction;
 
     @OneToOne
