@@ -679,7 +679,7 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #7b89fa;
   transition: 0.3s;
   /*background: #f6f9ff;*/
   padding: 10px 15px;
@@ -687,20 +687,22 @@ h6 {
 }
 
 .sidebar-nav .nav-link.active {
-  background-color: #f6f9ff;
+  background-color: #d3e4ff;
 }
-
-
 
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #7b89fa;
 }
 
 .sidebar-nav .nav-link.collapsed {
   color: #012970;
   background: #fff;
+}
+
+.active-color{
+  color: #4154f1!important;
 }
 
 .sidebar-nav .nav-link.collapsed i {
@@ -1210,6 +1212,7 @@ h6 {
   }
 }
 
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
@@ -1392,4 +1395,8 @@ h6 {
 
 .border-block-1{
   border-block-color: #3577ff !important;
+}
+
+.w-fit{
+  width: fit-content;
 }

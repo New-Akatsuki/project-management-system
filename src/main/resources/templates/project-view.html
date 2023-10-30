@@ -126,6 +126,8 @@
         .modal.fade.show .modal-dialog {
             opacity: 1; /* Fade in the modal when it is shown */
         }
+
+
     </style>
 </head>
 
@@ -184,61 +186,72 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="taskModalLabel">Task Form</h5>
+                    <h5 class="modal-title text-center" id="taskModalLabel"><i class="bi bi-bar-chart-line"></i> KPI</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
-                        <!-- Number Input Box -->
-                        <div class="form-group">
-                            <div>
-                                <label for="numberInput" style="display: block;">Number Input:</label>
-                                <input type="number" id="numberInput" name="numberInput" min="0" style="display: inline-block; width: calc(100% - 10px);">
+                        <!-- Number Input Boxes in the Same Line -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="int-review">Internal Review:</label>
+                                    <input type="number" class="form-control" id="int-review" name="numberInput1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="ext-review">External Review:</label>
+                                    <input type="number" class="form-control" id="ext-review" name="numberInput2">
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Select Box -->
-                        <div class="form-group">
-                            <label for="selectBox" style="display: block;">Select Box:</label>
-                            <select id="selectBox" name="selectBox" style="display: inline-block; width: calc(100% - 10px);">
-                                <!-- Add your options here -->
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <!-- Add more options as needed -->
-                            </select>
+                        <!-- Number Input Boxes in the Same Line -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bsc-design">Basic Design:</label>
+                                    <input type="number" class="form-control" id="bsc-design" name="numberInput1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dtl-design">Detail Design:</label>
+                                    <input type="number" class="form-control" id="dtl-design" name="numberInput2">
+                                </div>
+                            </div>
                         </div>
 
-
-                        <!-- Other 5 Input Boxes -->
-                        <div class="form-group">
-                            <label for="input1">Input 1:</label>
-                            <input type="text" id="input1" name="input1">
+                        <!-- Number Input Boxes in the Same Line -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cod-line">Code Line:</label>
+                                    <input type="number" class="form-control" id="cod-line" name="numberInput1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="unt-testing">Unit Testing:</label>
+                                    <input type="number" class="form-control" id="unt-testing" name="numberInput2">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="input2">Input 2:</label>
-                            <input type="text" id="input2" name="input2">
+                        <!-- Number Input Boxes in the Same Line -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="int-testing">Integrated Testing:</label>
+                                    <input type="number" class="form-control" id="int-testing" name="numberInput1">
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="input3">Input 3:</label>
-                            <input type="text" id="input3" name="input3">
+                        <hr>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-
-                        <div class="form-group">
-                            <label for="input4">Input 4:</label>
-                            <input type="text" id="input4" name="input4">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="input5">Input 5:</label>
-                            <input type="text" id="input5" name="input5">
-                        </div>
-
-                        <!-- Add more form groups as needed -->
-
-                        <!-- Submit Button -->
-                        <button type="submit">Submit</button>
                     </form>
                 </div>
             </div>

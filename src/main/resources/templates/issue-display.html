@@ -71,41 +71,55 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    <div class="card">
+    <div class="card" style="padding: 10px">
         <div class="card-container">
             <div class="container">
                 <div class="d-flex flex-column gap-2 flex-md-row gap-md-5">
                     <div class="col-md-9"><h3><i class="bi bi-pip"></i> Display Issue</h3></div>
                     <div class="col-md-2">
-                        <i>Issue Id : </i>
-                        <i>ISU001</i>
+                        <label>Issue ID : </label>
+                        <span>ISU001</span>
                     </div>
                 </div>
                 <br>
                 <div class="d-flex flex-column gap-6 flex-md-row gap-md-5">
-                    <div class="col-md-3"><i>Category</i></div>
-                    <div class="col-md-3"><i>Issue Place</i></div>
-                    <div class="col-md-3"><i>Issue Pic</i></div>
+                    <div class="col-md-3">
+                        <label>Issue Place : </label>
+                        <span>Production</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Issue Pic : </label>
+                        <span>John Doe</span>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Category : </label>
+                        <span>Communication, Software</span>
+                    </div>
                 </div>
                 <br>
                 <div>
-                    <i>Title</i>
+                    <label><h5>Title : </h5></label>
+                    <span>Become Spiderman</span>
                 </div>
                 <br>
                 <div>
-                    <i>Content</i>
+                    <label>Content : </label>
+                    <span>While taking photo of a girl, a spider bit on the hand and became a superhero.</span>
                 </div>
                 <br>
                 <div>
-                    <i>Responsible Party</i>
+                    <label>Responsible Party : </label>
+                    <span>John Doe</span>
                 </div>
                 <br>
                 <div>
-                    <i>Direct Cause</i>
+                    <label>Direct Cause : </label>
+                    <span>Spider bite</span>
                 </div>
                 <br>
                 <div>
-                    <i>Root Cause</i>
+                    <label>Root Cause : </label>
+                    <span>Spider bite</span>
                 </div>
                 <br>
                 <div style="text-align: right; right: 50px;">
@@ -119,8 +133,8 @@
                 <option value="1">View</option>
             </select>
             <hr>
-            <div class="solve-form card" style="border-radius: 10px;">
-                <div class="card-body">
+            <div class="solve-form " style="border-radius: 10px;">
+
                     <div class="container" style="padding: 25px;">
                         <div><h2><i class="bi bi-lightbulb"></i> Solve Issue</h2></div><br>
                         <form>
@@ -149,31 +163,29 @@
                             </div>
                         </form>
                     </div>
-                </div>
             </div>
-            <div class="solve-display card" style="border-radius: 10px;">
-                <div class="card-body">
+            <div class="solve-display" style="border-radius: 10px;">
+
                     <div class="container" style="padding: 25px;">
                         <div><h2><i class="bi bi-lightbulb-fill"></i> Solution</h2></div><br>
-                        <div class="d-flex flex-column gap-6 flex-md-row gap-md-5">
-                            <div class="col-md-3"><i>Procedure</i></div>
-                            <div class="col-md-3"><i>Issue Place</i></div>
+                        <div>
+                            <label>Solution : </label>
+                            <span>Make a suit, wear a mask, swing between the buildings like Tarzan, and kick bad guys' ass.</span>
                         </div>
                         <br>
                         <div>
-                            <i>Solution</i>
+                            <label>Corrective Action : </label>
+                            <span>Just do as I said.</span>
                         </div>
                         <br>
                         <div>
-                            <i>Corrective Action</i>
+                            <label>Preventive Action : </label>
+                            <span>Take Care next time, or u will be get killed by Venom.</span>
                         </div>
                         <br>
                         <div>
-                            <i>Preventive Action</i>
-                        </div>
-                        <br>
-                        <div>
-                            <i>Impact</i>
+                            <label>Impact : </label>
+                            <span>I don't know what impact is.</span>
                         </div>
                         <div class="button-div">
                             <button onclick="edit()" class="btn btn-primary">Edit</button>
@@ -182,7 +194,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </main>
 <!-- End #main -->
 

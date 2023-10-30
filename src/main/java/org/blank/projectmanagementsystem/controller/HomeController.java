@@ -55,13 +55,13 @@ public class HomeController {
     public String departmentView(){
         return "department";
     }
-    @GetMapping("/create-issue-page")
+    @GetMapping("/create-issue")
     public String issuessdfView(){
-        return "create-issue-page";
+        return "create-issue";
     }
 
-    @GetMapping("/issue-display-page")
+    @GetMapping("/issue-display")
     public String issuessdsdffView(){
-        return "issue-display-page";
+        return "issue-display";
     }
 }
