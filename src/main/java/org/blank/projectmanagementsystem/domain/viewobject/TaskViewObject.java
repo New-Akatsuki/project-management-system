@@ -26,6 +26,7 @@ public class TaskViewObject {
     private Float actual_hours;
     private int progress;
     private boolean status;
+    private Long phase;
     private Long parent;
     private String group;
     private String type;

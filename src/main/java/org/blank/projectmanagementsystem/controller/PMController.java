@@ -28,7 +28,6 @@ public class PMController {
     }
 
 
-    @PreAuthorize("hasAuthority('PMO')")
     @GetMapping("/user-list")
     public String userList() {
         return "user-list";

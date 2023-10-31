@@ -29,7 +29,7 @@ public class MainController {
     }
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
-        return "test";
+        return "kanban";
     }
 
     @GetMapping("/user-list")
@@ -64,5 +64,10 @@ public class MainController {
     @GetMapping("/gantt")
     public String ganttView(){
         return "gantt-chart";
+    }
+
+    @GetMapping("/project-details-view")
+    public String details(){
+        return "project-details-info";
     }
 }

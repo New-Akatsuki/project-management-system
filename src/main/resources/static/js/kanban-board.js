@@ -1,29 +1,37 @@
 (function ($) {
-
     $.fn.kanban = function (options) {
         let $this = $(this);
-
-        let settings = $.extend({
-            phase: [],
+        let dataFromUser = {
+            phases: [],
             tasks: [],
-            users: [],
             onChange: function (e, ui) {
             },
             onReceive: function (e, ui) {
-            }
-        }, options)
+            },
+        }
+        let phaseId = null;
+        let parentId = null;
 
+        let settings = $.extend(
+            {
+                phases: [],
+                tasks: [],
+                onChange: function (e, ui) {
+                },
+                onReceive: function (e, ui) {
+                },
+            },
+            dataFromUser,
+            options
+        );
+
+        console.log(settings)
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
-            kanban_board_titles_class: "cd_kanban_board_titles",
-            kanban_board_title_class: "cd_kanban_board_title",
             kanban_board_blocks_class: "cd_kanban_board_blocks",
             kanban_board_block_class: "cd_kanban_board_block",
-            kanban_board_item_class: "cd_kanban_board_block_item",
             kanban_board_item_placeholder_class: "cd_kanban_board_block_item_placeholder",
-            kanban_board_item_title_class: "cd_kanban_board_block_item_title",
-            kanban_board_item_footer_class: "cd_kanban_board_block_item_footer",
             kb_section_class: "kb-section",
             kb_section_header_class: "kb-section-header",
             kb_section_header_name_class: "kb-section-header-name",
@@ -49,51 +57,79 @@
             kb_subtask_due_date_class: "kb-subtask-due-date",
             kb_subtask_status_layout_class: "kb-subtask-status-layout",
             kb_subtask_status_class: "kb-subtask-status",
-
         };
-
-
-
 
         $this.on('click', '.' + classes.kb_section_header_btn_class, function (e) {
             e.preventDefault();
-            let modalId = $(this).data('bs-target'); // Get the modal target ID
+            let modalId = $(this).data('bs-target');
             let $modal = $(modalId);
 
             if ($modal.length) {
-                $modal.addClass('show'); // Add the 'show' class to trigger the animation
+                $modal.modal('show'); // Use Bootstrap's modal() function to show the modal
             }
         });
 
-
-        function build_kanban() {
-
+        function initKanban() {
             $this.addClass(classes.kanban_board_class);
-            $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
+            //check if element exist, make empty
+            if ($this.find('.' + classes.kanban_board_blocks_class).length) {
+                $this.find('.' + classes.kanban_board_blocks_class).empty();
+            }
+            $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
             build_section();
             build_tasks();
             build_subtask();
-            enableDragAndDrop();
+            // enableDragAndDrop();
         }
 
+        /* ===========================================================
+       *  Rebuild UI Function
+       * ============================================================*/
+        function render() {
+            // Clear the kanban board and rebuild the sections and tasks
+            $this.addClass(classes.kanban_board_class);
+            //check if element exist, make empty
+            if ($this.find('.' + classes.kanban_board_blocks_class).length) {
+                $this.find('.' + classes.kanban_board_blocks_class).empty();
+            }
+            //$this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
+            build_section();
+            build_tasks();
+            build_subtask();
+        }
+
+        /* ===========================================================
+        *  Build Sections UI Function
+        * ============================================================*/
         function build_section() {
-            settings.phase.forEach((item, index, array) => {
+            settings.phases.forEach((item, index, array) => {
                 const section_container = `
                     <div id="${item.id}-phase" class="${classes.kb_section_class}">
                         <div class="kb-section-header">
                             <span class="kb-section-header-name">${item.name}</span>
-                            <button class="kb-section-header-btn" data-bs-toggle="modal" id="${item.id}-btn" data-bs-target="#exampleModal">+</button>
+                            <button class="kb-section-header-btn" id="${item.id}-btn">+</button>
                         </div>
                         <div id="${item.id}-phase-body" class="kb-section-body"></div>
                     </div>
                 `;
                 $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
+                $(`#${item.id}-btn`).on('click', () => {
+                    phaseId = item.id;
+                    parentId = null;
+                    resetTaskModal();
+                    //show modal
+                    $('#exampleModal').modal('show');
+                });
             });
         }
 
+        /* ===========================================================
+       *  Build Tasks UI Function
+       * ============================================================*/
         function build_tasks() {
-            settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
-                const height = settings.tasks.filter(data => data.parent===item.id).length * 50;
+            settings.tasks.filter(data => data.parent === null).forEach((item, index, array) => {
+                const numberOfSubtasks = settings.tasks.filter(data => data.parent === item.id).length;
+                const height = numberOfSubtasks * 50;
                 const task_container = `
                     <div id="${item.id}" class="kb-task mb-2">
                         <div class="kb-task-body">
@@ -107,31 +143,39 @@
                             </div>
                             <div class="kb-task-body-layout2">
                                 <div class="kb-task-due-date-layout">
-                                    <span class="kb-task-due-date subtask-date-font-size">Due date : ${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                    <span class="kb-task-due-date subtask-date-font-size">Due date : ${new Date(item.end_date).toLocaleString('en-US', {
+                                        month: 'short',
+                                        day: 'numeric'
+                                    })}</span>
                                 </div>
                                 <div class="kb-task-subtask-layout">
-                                    <span id="${item.id}-toggle-subtask-btn" class="toggle-subtask-icon toggle-subtask-icon-active"><i class="ri-git-merge-line"></i></span>
+                                  <span class="me-2">${numberOfSubtasks}</span>
+                                  <button id="${item.id}-toggle-subtask-btn" class="toggle-subtask-icon toggle-subtask-icon-active" ${numberOfSubtasks > 0 ? '' : 'disabled'}><i class="ri-git-merge-line"></i></button>
                                 </div>
                             </div>
                             <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
-                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Add SubTask</button>
-    
-                        </div>   
-                             
+                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn">Add Subtask</button>
+                        </div>  
                     </div>
             `;
                 //insert task into phase body
                 $this.find(`#${item.phase}-phase-body`).append(task_container);
 
-
-
+                // Add a click event handler to add subtask btn
+                $(`#${item.id}-add-subtask-btn`).on('click', () => {
+                    parentId = item.id;
+                    phaseId = item.phase;
+                    console.log(item.id, parentId, phaseId)
+                    resetTaskModal();
+                    //show modal
+                    $('#exampleModal').modal('show');
+                });
                 //toggle subtask
                 const task = document.getElementById(`${item.id}`);
 
                 $(`#${item.id} .kb-task-body-layout`).on('click', () => {
                     //show modal
                     $('#exampleModal').modal('show');
-
                     $('#task-name').val(item.name);
                     $('#task-description').val(item.description);
                     $('#task-priority').val(item.priority);
@@ -142,23 +186,24 @@
                     $('#task-type').val(item.type);
                 });
 
-
-                    const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
-                    subtaskIcon.addEventListener('click', () => {
+                const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
+                subtaskIcon.addEventListener('click', () => {
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
-                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+220}px`;
+                    task.style.height = subtaskBlock.classList.contains('hide') ? '165px' : `${height + 165}px`;
+                    const addSubtaskBtn = document.getElementById(`${item.id}-add-subtask-btn`);
                     subtaskIcon.classList.toggle('toggle-subtask-icon-active');
-
-                    const addSubTaskButton = document.getElementById(`${item.id}-add-subtask-btn`);
-                    addSubTaskButton.style.display = subtaskBlock.classList.contains('hide') ? 'none' : 'block';
                 });
             });
         }
+
+        /* ===========================================================
+       *  Build SubTasks UI Function
+       * ============================================================*/
         function build_subtask() {
-            settings.tasks.filter(data => data.parent!==null).forEach((item, index, array) => {
-                item.phase = settings.tasks.filter(data => data.id===item.parent)[0].phase;
+            settings.tasks.filter(data => data.parent !== null).forEach((item, index, array) => {
+                item.phase = settings.tasks.filter(data => data.id === item.parent)[0].phase;
                 const sub_task_container = `
                     <div id="${item.id}" class="kb-subtask-body">
                                 <span class="flex-1">
@@ -167,7 +212,10 @@
                                 <span class="kb-subtask-name flex-6">${item.name}</span>
                                 <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
                                     <span style="font-size: 9px">Due date</span>
-                                    <span>${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                    <span>${new Date(item.end_date).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                })}</span>
                                 </span>                                                             
                         </div>                   
                 `;
@@ -194,22 +242,12 @@
             });
         }
 
-
-        function update_task(){
-            //Todo:: update task
-        }
-        function delete_task(){
-            //Todo:: delete task
-        }
-
-        function kanban_render() {
-            build_kanban();
-        }
-
-
+        /* ===========================================================
+        *  Build SubTasks UI Function
+        * ============================================================*/
         function enableDragAndDrop() {
-            $('.' + classes.kb_section_class).sortable({
-                connectWith: '.' + classes.kb_section_class,
+            $('.' + classes.kb_section_body_class).sortable({
+                connectWith: '.' + classes.kb_section_body_class,
                 placeholder: 'ui-state-highlight',
                 items: '.' + classes.kb_task_class,
                 start: function (e, ui) {
@@ -246,94 +284,102 @@
         }
 
 
-        kanban_render();
+        /* ===========================================================
+      *  Save Phase to Database
+      * ============================================================*/
 
-        // $.ajax({
-        //     url: '/kanban-data',
-        //     method: 'GET',
-        //     success:function (data) {
-        //         console.log('data', data);
-        //
-        //
-        //
-        //     }
-        //
-        // }
-        // )
+        //Define savePhase function outside the kanban plugin
+        function savePhase() {
+            console.log("save phase")
+            const phaseData = {
+                id: null,
+                name: $('#phaseName').val(),
+                projectId: 1
+            };
 
-
-    }
-
-}(jQuery));
-
-function saveTask() {
-    // Create a task object with user IDs included
-    let task = {
-        id: $('#task-id').val(),
-        name: $('#task-name').val(),
-        description: $('#task-description').val(),
-        priority: $('#task-priority').val(),
-        start_date: $('#task-start-date').val(),
-        end_date: $('#task-end-date').val(),
-        actual_due_date: null,
-        duration: null,
-        plan_hours: $('#task-plan-hours').val(),
-        actual_hours: null,
-        // process: null,
-        status: 0,
-        parent: null,
-        group: $('#task-group').val(),
-        type: $('#task-type').val(),
-        assignees: [], // Initialize an empty array for user IDs
-        subtasks: null,
-        phase: 1,
-    };
-
-    // Get the selected user IDs from the assignees select box
-    $('#task-assignees option:selected').each(function () {
-        task.assignees.push($(this).val());
-    });
-
-    $.ajax({
-        url: '/api/tasks',
-        method: 'POST',
-        data: JSON.stringify(task),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (data) {
-            // Handle the success response
-            // Close the modal and display a success message
-            $('#exampleModal').modal('hide');
-            alert('Task saved successfully');
-        },
-        error: function (xhr, status, error) {
-            // Handle errors, e.g., display them in the console or an alert
-            console.error(xhr.responseText);
-            alert('Error: ' + error);
-        }
-    });
-}
-
-
-$(document).ready(function () {
-    // Make an AJAX request to fetch users
-    $.ajax({
-        url: '/api/users',
-        method: 'GET',
-        success: function (data) {
-            // Handle the retrieved user data
-            // You can populate your select box with this data
-            const assigneesSelect = $('#task-assignees');
-            assigneesSelect.empty(); // Clear existing options
-
-            data.forEach(function (user) {
-                assigneesSelect.append(new Option(user.name, user.id));
+            $.ajax({
+                url: '/add-phase',
+                method: 'POST',
+                data: JSON.stringify(phaseData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    $('#phaseName').val("")
+                    settings.phases.push(data)
+                    render()
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
             });
-        },
-        error: function (xhr, status, error) {
-            // Handle errors, e.g., display them in the console
-            console.error(xhr.responseText);
         }
-    });
-});
 
+        /* ===========================================================
+              Save Task to Database
+           ============================================================*/
+        function saveTask() {
+            // Initialize the task object
+            const task = {
+                id: null,
+                name: $('#task-name').val(),
+                description: $('#task-description').val(),
+                priority: $('#task-priority').val(),
+                start_date: $('#task-start-date').val(),
+                end_date: $('#task-end-date').val(),
+                actual_due_date: null,
+                duration: null,
+                plan_hours: parseFloat($('#task-plan-hours').val()),
+                actual_hours: null,
+                progress: 0,
+                status: false,
+                phase: phaseId,
+                parent: parentId,
+                group: $('#task-group').val(),
+                type: $('#task-type').val(),
+                assignees: [],
+                open: true,
+            };
+            console.log(task)
+
+            $.ajax({
+                url: '/add-task',
+                method: 'POST',
+                data: JSON.stringify(task),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    settings.tasks.push(data)
+                    resetTaskModal()
+                    render()
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors, e.g., display them in the console or an alert
+                    console.log(xhr.responseText);
+                },
+            });
+        }
+
+        //reset function for task modal
+        function resetTaskModal() {
+            $('#task-name').val("")
+            $('#task-description').val("")
+            $('#task-priority').val("")
+            $('#task-start-date').val("")
+            $('#task-end-date').val("")
+            $('#task-plan-hours').val("")
+            $('#task-group').val("")
+            $('#task-type').val("")
+        }
+
+
+        // Export your saveTask function for usage elsewhere
+        $.fn.kanban.savePhase = savePhase;
+        $.fn.kanban.saveTask = saveTask;
+
+        initKanban();
+        return {
+            render: render,
+        };
+    };
+})(jQuery);

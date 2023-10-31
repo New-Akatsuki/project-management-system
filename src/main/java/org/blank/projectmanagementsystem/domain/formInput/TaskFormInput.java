@@ -28,9 +28,9 @@ public class TaskFormInput {
     private int progress;
     private boolean status;
     private Long parent;
+    private Long phase;
     private String group;
     private String type;
     private List<Long> assignees;
-    private List<Long> subtasks;
     private Boolean open;
 }
