@@ -2,10 +2,7 @@ package org.blank.projectmanagementsystem.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 import org.blank.projectmanagementsystem.domain.Enum.TaskType;
@@ -24,6 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"project", "phase", "assignees", "parentTask"})
 public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)

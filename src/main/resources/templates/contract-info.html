@@ -54,8 +54,8 @@
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
   <!-- Breadcrumb part-->
@@ -75,18 +75,14 @@
     <div>
       <div class="row">
         <div class="col-sm-12">
-          <div class="card">
-
-            <div class="card-body px-">
-
               <fieldset>
                 <div class="form-card text-start">
 
                   <div class="row">
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                          <div class="display-6 fs-4">
+                      <div class="card shadow-none">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                          <div class="display-6 fs-4 fw-bold">
                            Clients
                           </div>
 
@@ -105,7 +101,7 @@
                               <th>Name</th>
                               <th>Phone</th>
                               <th>Project Name</th>
-                              <th>Action</th>
+                              <th class="col-1">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -137,7 +133,7 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card">
+                      <div class="card shadow-none">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             Deliverables Methods
@@ -155,7 +151,7 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Action</th>
+                              <th class="col-1">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -183,7 +179,7 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card">
+                      <div class="card shadow-none">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             Architecture Outlines
@@ -199,7 +195,7 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Action</th>
+                              <th class="col-1">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -222,7 +218,7 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card">
+                      <div class="card shadow-none">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             System Outlines
@@ -238,16 +234,18 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Action</th>
+                              <th class="col-1">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                               <td>1</td>
                               <td>John Smith</td>
-                              <td><a id="editSystemOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#systemOutlineModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
+                              <td>
+                                  <a id="editSystemOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#systemOutlineModal">
+                                      <i class='bx bx-edit m-0 p-0'></i>
+                                  </a>
+                              </td>
                             </tr>
                             <tr>
                               <td>2</td>
@@ -267,8 +265,6 @@
               </fieldset>
             </div>
           </div>
-        </div>
-      </div>
     </div>
   </div>
 

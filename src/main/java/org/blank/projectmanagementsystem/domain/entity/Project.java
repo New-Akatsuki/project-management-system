@@ -1,10 +1,7 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -19,6 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"projectManager","contractMembers","focMembers","architectures","systemOutlines","deliverables","client"})
 public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)

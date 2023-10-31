@@ -50,6 +50,8 @@ public class User implements Serializable,UserDetails {
 
     private String userRole;
 
+    private String phone;
+
     private boolean active = true;
 
     private boolean defaultPassword = true;
