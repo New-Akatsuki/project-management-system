@@ -64,4 +64,11 @@ public class HomeController {
     public String issuessdsdffView(){
         return "issue-display";
     }
+
+
+
+    @GetMapping("/reset-password")
+    public String PasswordReset(){
+        return "reset-password";
+    }
 }
