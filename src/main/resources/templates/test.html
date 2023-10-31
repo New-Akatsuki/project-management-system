@@ -203,10 +203,49 @@
 
 <script>
     $(document).ready(function () {
-        $('#kanban').kanban({
-            phase: [],
-            task:[],
-        });
+        let settingData = {
+            phases: [],
+            tasks: [],
+            users: [],
+            onChange: (e, ui) => {},
+            onReceive: (e, ui) => {}
+        };
+
+        function fetchData(url, arrayToPopulate) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        arrayToPopulate.push(...data);
+                        resolve();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        reject(error);
+                    }
+                });
+            });
+        }
+
+// Use Promise.all to wait for all requests to complete
+        Promise.all([
+            fetchData('/api/all-tasks', settingData.tasks),
+            fetchData('/api/phases', settingData.phases),
+            fetchData('/api/users', settingData.users)
+        ])
+            .then(() => {
+                // All requests have completed
+                console.log(settingData);
+                // You can perform additional actions here
+                $('#kanban').kanban(settingData);
+            })
+            .catch((error) => {
+                console.log("Error fetching data: " + error);
+            });
+
+
+
     });
 
 </script>

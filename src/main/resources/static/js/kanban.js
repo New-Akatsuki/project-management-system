@@ -5,13 +5,16 @@ let currentPhase = null;
         let $this = $(this);
 
         let settings = $.extend({
-            phase: [],
+            phases: [],
             tasks: [],
+            users:[],
             onChange: function (e, ui) {
             },
             onReceive: function (e, ui) {
             }
         }, options)
+
+        console.log(settings)
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
@@ -109,7 +112,7 @@ let currentPhase = null;
                 success: function (data) {
                     alert('Task saved successfully');
 
-                    updateKanban();
+                    // updateKanban();
 
                     $('#exampleModal').modal('hide');
                 },
@@ -129,22 +132,30 @@ let currentPhase = null;
             }
         );
 
+        function addUserToSelect(){
+            const assigneesSelect = $('#task-assignees');
+            assigneesSelect.empty();
+            settings.users.forEach(function (user) {
+                assigneesSelect.append(new Option(user.name, user.id));
+            });
+        }
 
 
         function build_kanban() {
+            console.log('building kanban')
             $this.addClass(classes.kanban_board_class);
             $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
-            // build_section();
+            build_section();
             build_tasks();
             build_subtask();
             enableDragAndDrop();
+            addUserToSelect();
         }
 
-        $(document).ready(function () {
-            // Define the build_section function before using it
-            function build_section(data) {
-                data.forEach(function (phase) {
-                    const section_container = `
+        function build_section(data) {
+            console.log(settings.phases.length, settings.phases)
+            settings.phases.forEach(function (phase) {
+                const section_container = `
                 <div id="${phase.id}-phase" class="${classes.kb_section_class}">
                     <div class="kb-section-header">
                         <span class="kb-section-header-name">${phase.name}</span>
@@ -153,61 +164,64 @@ let currentPhase = null;
                     <div id="${phase.id}-phase-body" class="kb-section-body"></div>
                 </div>
             `;
-                    $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
-                });
-            }
-
-            $.ajax({
-                url: '/api/users',
-                method: 'GET',
-                success: function (data) {
-                    const assigneesSelect = $('#task-assignees');
-                    assigneesSelect.empty();
-                    data.forEach(function (user) {
-                        assigneesSelect.append(new Option(user.name, user.id));
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
+                $this.find('.' + classes.kanban_board_blocks_class).append(section_container);
             });
+        }
 
-            $.ajax({
-                url: '/api/phases',
-                method: 'GET',
-                success: function (data) {
-                    const phaseSelect = $('#task-phase');
-                    phaseSelect.empty();
-                    data.forEach(function (phase) {
-                        phaseSelect.append(new Option(phase.name, phase.id));
-                    });
-
-                    console.log(data);
-                    // Now that build_section is defined, you can call it
-                    build_section(data);
-
-                    // build_kanban(); // Call build_kanban after building the sections
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-            $.ajax({
-                url: '/api/all-tasks',
-                method: 'GET',
-                success: function (data) {
-                    settings.tasks = data;
-                    console.log(settings.tasks);
-                    // kanban_render();
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('Error: ' + error);
-
-                }
-            })
-
-        });
+        // $(document).ready(function () {
+        //     // Define the build_section function before using i
+        //
+        //     $.ajax({
+        //         url: '/api/users',
+        //         method: 'GET',
+        //         success: function (data) {
+        //             const assigneesSelect = $('#task-assignees');
+        //             assigneesSelect.empty();
+        //             data.forEach(function (user) {
+        //                 assigneesSelect.append(new Option(user.name, user.id));
+        //             });
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error(xhr.responseText);
+        //         }
+        //     });
+        //
+        //     $.ajax({
+        //         url: '/api/phases',
+        //         method: 'GET',
+        //         success: function (data) {
+        //             const phaseSelect = $('#task-phase');
+        //             phaseSelect.empty();
+        //             data.forEach(function (phase) {
+        //                 phaseSelect.append(new Option(phase.name, phase.id));
+        //             });
+        //
+        //             console.log(data);
+        //             // Now that build_section is defined, you can call it
+        //             build_section(data);
+        //
+        //             // build_kanban(); // Call build_kanban after building the sections
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error(xhr.responseText);
+        //         }
+        //     });
+        //     $.ajax({
+        //         url: '/api/tasks/byPhase/1',
+        //         method: 'GET',
+        //         success: function (data) {
+        //
+        //             console.log(data);
+        //             // kanban_render();
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error(xhr.responseText);
+        //             alert('Error: ' + error);
+        //
+        //         }
+        //     })
+        //
+        // });
 
 
 
@@ -327,7 +341,7 @@ let currentPhase = null;
             //Todo:: delete task
         }
 
-        function kanban_render() {
+        $.fn.refresh = function kanban_render() {
             build_kanban();
         }
 
@@ -370,10 +384,12 @@ let currentPhase = null;
             }).disableSelection();
         }
 
+        $.fn.on('addPhase',()=>{
 
-        kanban_render();
+        });
 
 
+        build_kanban();
 
     }
 
@@ -386,14 +402,16 @@ function updateKanban() {
 
     // Destroy the Kanban board
     $('#kanban').kanban({
-        phase: [],
-        task: [],
+        phases: [],
+        tasks: [],
+        users: []
     });
 }
 
 
-function addPhase(){
+function addPhase(kanbanId){
     let phase = {
+        id: null,
         name: $('#phaseName').val(),
     }
     $.ajax({
@@ -403,10 +421,8 @@ function addPhase(){
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            alert('Phase added successfully');
-
-            updateKanban(); // Update the Kanban boar d
-
+            console.log(data)
+            // updateKanban(); // Update the Kanban boar d
             $('#addPhaseModal').modal('hide');
 
         },
