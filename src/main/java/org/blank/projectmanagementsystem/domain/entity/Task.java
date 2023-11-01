@@ -2,10 +2,7 @@ package org.blank.projectmanagementsystem.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 import org.blank.projectmanagementsystem.domain.Enum.TaskType;
@@ -13,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -23,6 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"project", "phase", "assignees", "parentTask"})
 public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -39,16 +38,16 @@ public class Task implements Serializable {
     private Priority priority= Priority.MEDIUM;
 
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
     private Float planHours;
 
     @Column(nullable = true)
-    private Date actualDueDate;
+    private LocalDate actualDueDate;
 
     @Column(nullable = true)
     private Float actualHours;
@@ -65,8 +64,13 @@ public class Task implements Serializable {
     private TaskType type = TaskType.TASK;
 
     @ManyToOne
-    @JoinColumn(nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(nullable = false)
+    private Phase phase;
 
     @ManyToMany
     @JoinTable(
@@ -79,6 +83,5 @@ public class Task implements Serializable {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Task parentTask;
-
 
 }

@@ -466,6 +466,11 @@ h6 {
   color: #012970;
   margin-right: 25px;
   position: relative;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.header-nav .nav-icon:hover{
+  background: #d1dfff;
 }
 
 .header-nav .nav-profile {

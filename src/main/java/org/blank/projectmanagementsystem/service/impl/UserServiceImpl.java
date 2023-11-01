@@ -41,10 +41,11 @@ public class UserServiceImpl implements UserService {
         //get current username from security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
-        User user = userRepository.findByUsername(username).orElse(null);
+        User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
         //change password
         if(user != null) {
             user.setPassword(passwordEncoder.encode(password));
+            user.setDefaultPassword(false);
             userRepository.save(user);
         }
     }
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
         //get current username from security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
-        User user = userRepository.findByUsername(username).orElse(null);
+        User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
 
     }
     @Override

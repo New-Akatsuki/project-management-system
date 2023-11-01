@@ -1,20 +1,16 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.blank.projectmanagementsystem.domain.entity.TestEntityClass;
-import org.blank.projectmanagementsystem.domain.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
-
-public class HomeController {
+@Slf4j
+public class MainController {
 
     private final UserService userService;
     @GetMapping("/")
@@ -33,7 +29,7 @@ public class HomeController {
     }
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
-        return "test";
+        return "kanban";
     }
 
     @GetMapping("/user-list")
@@ -70,5 +66,15 @@ public class HomeController {
     @GetMapping("/reset-password")
     public String PasswordReset(){
         return "reset-password";
+    }
+
+    @GetMapping("/gantt")
+    public String ganttView(){
+        return "gantt-chart";
+    }
+
+    @GetMapping("/project-details-view")
+    public String details(){
+        return "project-details-info";
     }
 }

@@ -2,10 +2,12 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.mapper.TaskMapper;
+import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final PhaseRepository phaseRepository;
     private final TaskMapper taskMapper = new TaskMapper();
 
     @Override
@@ -38,6 +41,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskViewObject createTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
+        //Set phase and project if it exists
+        if (taskFormInput.getPhase() != null) {
+            Phase phase = phaseRepository.getReferenceById(taskFormInput.getPhase());
+            task.setPhase(phase);
+            task.setProject(phase.getProject());
+        }
 
         // Set the parent task if it exists
         if (taskFormInput.getParent() != null) {

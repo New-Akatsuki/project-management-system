@@ -18,7 +18,7 @@ public class PMController {
     private final UserService userService;
 
     @GetMapping("/project-list")
-    public String ProjectList() {
+    public String projectList() {
         return "project-list";
     }
 
@@ -30,7 +30,7 @@ public class PMController {
 
     @GetMapping("/user-profile")
     public ModelAndView userprofile() {
-        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
+        return new ModelAndView("userprofile", "addUserFormInput", new AddUserFormInput());
     }
 
     @PostMapping("/user-profile")

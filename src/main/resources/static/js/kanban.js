@@ -6,11 +6,13 @@
         let settings = $.extend({
             phase: [],
             tasks: [],
+            users: [],
             onChange: function (e, ui) {
             },
             onReceive: function (e, ui) {
             }
         }, options)
+
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
