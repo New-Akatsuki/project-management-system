@@ -72,38 +72,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-
-//    @Override
-//    public TaskViewObject createTask(TaskFormInput taskFormInput) {
-//        Task task = taskMapper.mapToTask(taskFormInput);
-//         //add parent task if exist
-//        if (taskFormInput.getParent() == null) {
-//            Task parentTask = taskRepository.findById(taskFormInput.getParent()).orElse(null);
-//            task.setParentTask(parentTask);
-//        } else {
-//            task.setParentTask(taskRepository.findById(taskFormInput.getParent()).orElse(null));
-//        }
-//        //add parent task if exist
-//        var taskParent = taskRepository.findById(taskFormInput.getParent());
-//        taskParent.ifPresent(task::setParentTask);
-//
-//        //add assignees if exist
-//        if(task.getAssignees()==null){
-//            task.setAssignees(new HashSet<>());
-//        }
-//        task.getAssignees().addAll(taskFormInput.getAssignees().stream()
-//                .map(id->userRepository.findById(id)
-//                        .orElse(null)).toList());
-//        //add subtask if exist
-//        return taskMapper.mapToTaskViewObject(taskRepository.save(task));
-//    }
-
     @Override
     public TaskViewObject updateTask(TaskFormInput taskFormInput) {
-        Task parent = taskRepository.findById(taskFormInput.getParent()).orElse(null);
         Task task = taskMapper.mapToTask(taskFormInput);
+        //Set phase and project if it exists
+        if (taskFormInput.getPhase() != null) {
+            Phase phase = phaseRepository.getReferenceById(taskFormInput.getPhase());
+            task.setPhase(phase);
+            task.setProject(phase.getProject());
+        }
         task.setId(taskFormInput.getId());
-        task.setParentTask(parent);
+        if(taskFormInput.getParent()!=null){
+            Task parent = taskRepository.findById(taskFormInput.getParent()).orElse(null);
+            task.setParentTask(parent);
+        }
         return taskMapper.mapToTaskViewObject(taskRepository.save(task));
     }
 

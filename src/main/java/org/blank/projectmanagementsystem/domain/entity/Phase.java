@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 
 @Entity
 @Data
@@ -22,5 +23,13 @@ public class Phase {
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+
+    public PhaseDto maptoDto() {
+        return PhaseDto.builder()
+                .id(id)
+                .name(name)
+                .projectId(project.getId())
+                .build();
+    }
 
 }

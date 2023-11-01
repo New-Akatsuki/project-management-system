@@ -7,6 +7,7 @@ import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.blank.projectmanagementsystem.repository.ProjectRepository;
 import org.blank.projectmanagementsystem.service.PhaseService;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,9 @@ public class PhaseServiceImpl implements PhaseService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public List<Phase> getPhases(long projectId) {
+    public List<PhaseDto> getPhases(long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        return phaseRepository.findByProject(project);
+        return phaseRepository.findByProject(project).stream().map(Phase::maptoDto).toList();
     }
 
     @Override
@@ -34,10 +35,24 @@ public class PhaseServiceImpl implements PhaseService {
                 .project(project)
                 .build();
         phaseRepository.save(phase);
-        return phaseDto.builder()
+        return PhaseDto.builder()
                 .id(phase.getId())
                 .name(phase.getName())
                 .projectId(phase.getProject().getId())
                 .build();
+    }
+
+    @Override
+    public PhaseDto updatePhase(PhaseDto phaseDto) {
+        //check if phase exist
+        Phase phase = phaseRepository.findById(phaseDto.getId()).orElseThrow();
+        phase.setName(phaseDto.getName());
+        return phaseRepository.save(phase).maptoDto();
+    }
+
+    @Override
+    @Transactional
+    public void deletePhase(long phaseId) {
+        phaseRepository.deleteById(phaseId);
     }
 }

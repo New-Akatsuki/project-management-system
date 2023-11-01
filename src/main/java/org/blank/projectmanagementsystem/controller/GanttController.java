@@ -35,6 +35,18 @@ public class GanttController {
         return ResponseEntity.ok(phaseService.createPhase(phaseDto));
 
     }
+    @PutMapping("/update-phase")
+    public ResponseEntity<PhaseDto> updatePhase(@RequestBody PhaseDto phaseDto) {
+        log.info("update phase: {}", phaseDto);
+        return ResponseEntity.ok(phaseService.updatePhase(phaseDto));
+    }
+
+    @DeleteMapping("/delete-phase")
+    public ResponseEntity<PhaseDto> deletePhase(@RequestBody PhaseDto phaseDto) {
+        log.info("update phase: {}", phaseDto);
+        phaseService.deletePhase(phaseDto.getId());
+        return ResponseEntity.ok(phaseDto);
+    }
 
     @GetMapping("/get-task-data")
     public ResponseEntity<List<TaskViewObject>> getFakeGanttData() {

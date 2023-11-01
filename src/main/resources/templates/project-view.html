@@ -15,7 +15,27 @@
             rel="stylesheet"
     />
 
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Single Select -->
+    <link rel="stylesheet" href="/css/single-select.css">
+
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
 
     <!-- Favicons -->
     <link th:href="@{/images/favicon.png}" rel="icon">
@@ -33,6 +53,7 @@
     <link th:href="@{/sources/skins/dhtmlxgantt_material.css}" rel="stylesheet"/>
     <script th:src="@{/sources/dhtmlxgantt.js}"></script>
 
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- CSS for datepicker -->
     <link
             rel="stylesheet"
@@ -43,7 +64,7 @@
     />
 
     <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/kanban.css">
     <style>
         .card-container {
@@ -174,10 +195,7 @@
                     <br>
                     <!-- Kanban Board -->
                     <div>
-                        <div id="kanban">
-                            <button type="submit" id="add-phase-button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPhaseModal">
-                                Add Phase +
-                            </button>
+                        <div id="kanban" class="p-3">
                         </div>
                     </div>
                 </div>
@@ -256,26 +274,6 @@
                         <!-- Submit Button -->
                         <button type="submit">Submit</button>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="addPhaseModal" tabindex="-1" aria-labelledby="addPhaseModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addPhaseModalLabel">Add Phase</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label for="phaseName">Phase Name:</label>
-                    <input type="text" id="phaseName" class="form-control" placeholder="Enter Phase Name">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="savePhaseButton" data-bs-dismiss="modal">Save Phase</button>
                 </div>
             </div>
         </div>
@@ -420,27 +418,14 @@
             type: "GET",
             dataType: "json",
             success: function (data) {
-                console.log(data);
                 $('#kanban').kanban({
                     phases: data.phases,
                     tasks: data.tasks,
-                    onChange: (e, ui) => {
-                        console.log("change event -> ", e)
-                        console.log('change ui -> ', ui)
-                    },
-                    onReceive: (e, ui) => {
-                        console.log("re event -> ", e)
-                        console.log('re ui -> ', ui)
-                    }
                 });
             },
             error: function (error) {
                 console.log(error);
             }
-        });
-
-        $('#savePhaseButton').on('click', function() {
-            $.fn.kanban.savePhase();
         });
 
         $('#saveTaskBtn').on('click', function() {
