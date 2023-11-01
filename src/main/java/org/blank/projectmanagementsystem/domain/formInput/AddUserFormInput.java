@@ -4,9 +4,10 @@ import lombok.Data;
 
 @Data
 public class AddUserFormInput {
-    private String name;
+
     private String username;
+    private String email;
     private String role;
     private String department;
-    private String image;
+
 }
