@@ -347,14 +347,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <form class="mt-4">
+        <form th:action="@{/pm/contract-info}" method="post" class="mt-4">
         <div class="form-group">
           <label for="deliverablesName" class="form-label">Deliverable Method</label>
           <input type="text" class="form-control" id="deliverablesName" name="name" placeholder="Enter new deliverables method">
         </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" onclick="addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
+        <button type="submit" class="btn btn-primary">Add Deliverables</button>
       </form>
+      </div>
+      </div>
 
   </div>
 </div>
@@ -548,7 +549,7 @@
           <a href="/systemOutline/${systemOutline.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
         </td>
       </tr>
-    ';
+    `;
 
     // Append the new row to the table
     systemOutlineTableBody.append(newRow);
@@ -596,9 +597,8 @@
 
     }
   })
+
 </script>
-
-
 </body>
 
 </html>
