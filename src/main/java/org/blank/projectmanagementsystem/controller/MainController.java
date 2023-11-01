@@ -62,12 +62,6 @@ public class MainController {
     }
 
 
-
-    @GetMapping("/reset-password")
-    public String PasswordReset(){
-        return "reset-password";
-    }
-
     @GetMapping("/gantt")
     public String ganttView(){
         return "gantt-chart";
@@ -77,4 +71,10 @@ public class MainController {
     public String details(){
         return "project-details-info";
     }
+
+    @GetMapping("/change-password")
+    public String detailssd(){
+        return "change-password";
+    }
+
 }

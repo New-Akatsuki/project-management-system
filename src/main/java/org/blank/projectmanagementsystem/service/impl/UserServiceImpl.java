@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,19 +53,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(String currentPassword,String newPassword) {
         //get current username from security context
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = getUsername();
         //get user from database
         User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
 
     }
+    private String getUsername(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
     @Override
-    public User getLoginUser(Login login) {
-        return userRepository.findByNameAndPassword(login.getName(), login.getPassword());
+    public User getLoginUser() {
+        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
     }
 
     @Override
-    public User getEmail(Login login) {
-        return userRepository.findByEmail(login.getEmail());
+    public Optional<User> getEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 

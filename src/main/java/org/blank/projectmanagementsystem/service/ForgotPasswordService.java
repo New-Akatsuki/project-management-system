@@ -5,6 +5,7 @@ import java.util.UUID;
 
 
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.ForgotPasswordToken;
 import org.blank.projectmanagementsystem.repository.ForgotPasswordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,10 @@ import org.springframework.ui.Model;
 
 
 @Service
+@RequiredArgsConstructor
 public class ForgotPasswordService {
-    @Autowired
-    ForgotPasswordRepository fpRepo;
-
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final ForgotPasswordRepository fpRepo;
+    private final JavaMailSender javaMailSender;
     private final int HOURS = 2;
 
     public String generateToken() {
@@ -42,7 +41,7 @@ public class ForgotPasswordService {
                 +"<p><a href=\" " + emailLink + " \">Change My Password</a> </p>"+
                 "<br>";
         helper.setText(emailContent, true);
-        helper.setFrom("minmratbhoneaung.etc@gmail.com", "ACE Inspiration");
+        helper.setFrom("minmratbhoneaung.etc@gmail.com", "Dir-ACE Technology");
         helper.setSubject(subject);
         helper.setTo(to);
         javaMailSender.send(message);
@@ -68,8 +67,9 @@ public class ForgotPasswordService {
             return "error";
 
         }else {
-            return "resetPassword";
+            return "reset-password";
         }
 
     }
+
 }
