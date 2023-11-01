@@ -31,6 +31,24 @@
 
   <!-- Template Main CSS File -->
   <link href="/css/style.css" rel="stylesheet" />
+
+
+    <style>
+        .count-box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .count-icon {
+            font-size: 48px;
+            color: #007bff; /* Change the color as needed */
+        }
+
+
+
+    </style>
 </head>
 
 <body>
@@ -52,6 +70,74 @@
 
       <!-- Main Content -->
 
+        <!-- DashBoard MM Header Start -->
+        <div class="container mt-4">
+            <p>Welcome, <span th:text="${username}"></span>!</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Users: <span th:text="${userCount}"></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Clients: <span th:text="${clientCount}"></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Departments: <span th:text="${departmenetCount}"></span></p>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+
+        <!-- DashBoard MM Header End -->
+
+
+
+
+
+        <!-- DashBoard MM Body Start -->
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>Monthly Productivity Ratio</h4>
+                    <div class="chartBox">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <h4>Monthly Man Month</h4>
+                    <div class="chartBox">
+                        <canvas id="pieChart"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>KPI Reports</h4>
+                        <div class="chartBox">
+                            <canvas id="kpi-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
         <!-- End Main Content-->
     </main>
     <!-- End #main -->
@@ -61,7 +147,86 @@
 
     <!-- Template Main JS File -->
     <script src="/js/main.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 
+
+<script>
+    // setup
+    const data = {
+        labels: ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemeber', 'October', 'November', 'December'],
+        datasets: [
+            {
+                label: ' Planned Productivity (Man-Months)',
+                data: [140, 130, 155, 160, 165, 150, 139, 147, 152, 131, 149, 154],
+                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Customize the bar color
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Actual Productivity (Man-Months)',
+                data: [120, 110, 135, 140, 145, 130, 119, 127, 132, 111, 129, 134],
+                backgroundColor: 'rgba(255, 99, 71, 0.5)', // Customize the bar color
+                borderColor: 'rgba(255, 99, 71, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Target Percentage (%)',
+                data: [85, 84, 87, 88, 89, 86, 84, 85, 86, 83, 85, 87],
+                backgroundColor: 'rgba(60, 179, 113, 0.5)', // Customize the bar color
+                borderColor: 'rgba(60, 179, 113, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Actual Percentage (%)',
+                data: [80, 79, 82, 83, 84, 81, 79, 80, 81, 78, 80, 82],
+                backgroundColor: 'rgba(255,165,0,0.95)', // Customize the bar color
+                borderColor: 'rgb(255,0,0)',
+                borderWidth: 1,
+            }
+        ],
+    };
+
+    // config
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    };
+
+    // render init block
+    const myChart = new Chart(document.getElementById('myChart'), config);
+
+</script>
+<script>
+    // Data for the pie chart
+    const pieChartData = {
+        labels: ['Development', 'Quality Assurance', 'Design', 'Project Management', 'Support'],
+        datasets: [
+            {
+                data: [120, 50, 30, 20, 40],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#58D68D'],
+            },
+        ],
+    };
+
+    // Pie chart configuration
+    const pieChartConfig = {
+        type: 'pie',
+        data: pieChartData,
+        options: {
+            responsive: true,
+        },
+    };
+
+    // Create the pie chart
+    const manMonthPieChart = new Chart(document.getElementById('pieChart'), pieChartConfig);
+</script>
   </body>
 
 </html>

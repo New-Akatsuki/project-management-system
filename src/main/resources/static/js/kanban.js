@@ -193,7 +193,7 @@ let currentPhase = null;
         //             const phaseSelect = $('#task-phase');
         //             phaseSelect.empty();
         //             data.forEach(function (phase) {
-        //                 phaseSelect.append(new Option(phase.name, phase.id));
+        //                 phaseSelect.append(new  Option(phase.name, phase.id));
         //             });
         //
         //             console.log(data);

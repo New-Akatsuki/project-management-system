@@ -3,7 +3,13 @@ package org.blank.projectmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.TestEntityClass;
 import org.blank.projectmanagementsystem.domain.entity.User;
+import org.blank.projectmanagementsystem.repository.DepartmentRepository;
+import org.blank.projectmanagementsystem.service.ClientService;
+import org.blank.projectmanagementsystem.service.ProjectService;
+import org.blank.projectmanagementsystem.service.TaskService;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,8 +23,24 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
+    private final DepartmentRepository departmentRepository;
+    private final ClientService clientService;
     @GetMapping("/")
-    public String index(){
+    public String index(ModelMap model){
+        long userCount = userService.getAllUser().size();
+        long clientCount = clientService.getallClients().size();
+        long departmentCount = departmentRepository.findAll().size();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            // Get the username from the authentication object
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+
+        }
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("clientCount", clientCount);
+        model.addAttribute("departmenetCount", departmentCount);
         return "index";
     }
 
