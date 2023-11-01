@@ -92,4 +92,6 @@ public class User implements Serializable,UserDetails {
         return active;
     }
 
+    public void setDepartment(String department) {
+    }
 }
