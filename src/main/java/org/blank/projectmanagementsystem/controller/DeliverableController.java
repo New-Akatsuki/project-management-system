@@ -54,18 +54,18 @@ public class DeliverableController {
     }
 
 
-    @GetMapping("/systemOutline/system-outline-list")
+    @GetMapping("/deliverable-list")
     public String showDeliverableList(Model model) {
         List<Deliverable> deliverables = deliverableService.getAllDeliverable();
         model.addAttribute("deliverables", deliverables);
-        return "system-outline-list";
+        return "deliverable-list";
     }
 
-    @PostMapping("/systemOutline/system-outline-list")
+    @PostMapping("/deliverable-list")
     public String showDeliverableList(@ModelAttribute Deliverable deliverable, Model model) {
         if (deliverable.getName() != null && !deliverable.getName().isEmpty()) {
             deliverableService.save(deliverable);
-            return "redirect:/systemOutline/system-outline-list";
+            return "redirect:/deliverable/deliverable-list";
 
         } else {
             return "error";

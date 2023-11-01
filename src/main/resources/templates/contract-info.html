@@ -142,12 +142,10 @@
                           <div class="display-6 fs-4">
                             Deliverables Methods
                           </div>
-
-
                           <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
                             <i class='bx bx-plus m-0 p-0'></i>
                           </a>
-                          </a></div>
+                          </div>
 
                         <div class="card-body">
                           <table class="table table-hover">
@@ -159,22 +157,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Internal</td>
-                              <td><a id="openDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>External</td>
-                              <td><a id="opensDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
-                            </tr>
 
-
+                            <tr th:each="deliverable : ${deliverables}">
+                              <td th:text="${deliverable.id}"></td>
+                              <td th:text="${deliverable.name}"></td>
+                              <td>
+                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                              </td>
+                            </tr>
                             </tbody>
                           </table>
 
@@ -231,6 +221,7 @@
                           <div class="display-6 fs-4">
                             System Outlines
                           </div>
+
                           <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
                             <i class='bx bx-plus m-0 p-0'></i>
                           </a>
@@ -245,18 +236,14 @@
                               <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-
-
-                            <tr th:each="deliverable : ${deliverables}">
-                              <td th:text="${deliverable.id}"></td>
-                              <td th:text="${deliverable.name}"></td>
+                            <tbody id="systemOutlineTableBody">
+                            <tr th:each="systemOutline : ${systemOutlines}">
+                              <td th:text="${systemOutline.id}"></td>
+                              <td th:text="${systemOutline.name}"></td>
                               <td>
-                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
-                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/delete'}" class="btn btn-sm btn-danger mx-2">Delete</a>
+                                <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
                               </td>
                             </tr>
-
 
 
                             </tbody>
@@ -360,19 +347,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="deliverablesName">Deliverable Method</label>
-            <input type="text" class="form-control" id="deliverablesName" placeholder="Enter new deliverables method">
-          </div>
+        <form class="mt-4">
+        <div class="form-group">
+          <label for="deliverablesName" class="form-label">Deliverable Method</label>
+          <input type="text" class="form-control" id="deliverablesName" name="name" placeholder="Enter new deliverables method">
+        </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" onclick="addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
+      </form>
 
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -443,31 +426,31 @@
 </div>
 
 <!--Add System Outline-->
-<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addSystemOutlineModalLabel">Add New System Outline</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+<!--          <span aria-hidden="true">&times;</span>-->
         </button>
       </div>
       <div class="modal-body">
-      <form th:action="@{/systemOutline/save}" method="post" class="mt-4">
+        <!-- Add your form for adding a new system outline here -->
+        <!-- Example form fields: -->
+        <form  class="mt-4">
           <div class="form-group">
             <label for="outlineName" class="form-label">System Outline Name</label>
             <input type="text" class="form-control" id="outlineName" name="name" required>
           </div>
-          <button type="submit" class="btn btn-primary">Add Outline</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" onclick="addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
         </form>
-        </form>
+        <!-- Add Bootstrap classes to the form elements for better styling -->
+      </div>
     </div>
-
-    </div>
-    </div>
-    </div>
-
-
+  </div>
+</div>
 
 <!--Add Architecture Outline-->
 <div class="modal fade" id="addArchitectureOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">
@@ -548,5 +531,74 @@
     </form>
   </div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function updateUI(systemOutline) {
+    const systemOutlineTableBody = $('#systemOutlineTableBody');
+
+    // Create a new row with the system outline data
+    const newRow = `
+      <tr>
+        <td>${systemOutline.id}</td>
+        <td>${systemOutline.name}</td>
+        <td>
+          <a href="/systemOutline/${systemOutline.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
+        </td>
+      </tr>
+    ';
+
+    // Append the new row to the table
+    systemOutlineTableBody.append(newRow);
+
+    console.log("System Outline Object: " + JSON.stringify(systemOutline));
+  }
+  function addSystemOutline() {
+    let newSystemOutline = {
+      id: null,
+      name: $('#outlineName').val()
+    };
+
+    $.ajax({
+      type: "POST",
+      url: "/pm/contract-info",
+      contentType: "application/json",
+      data: JSON.stringify(newSystemOutline),
+      dataType: 'json',
+      success: function (data) {
+        $("#addSystemOutlineModal").modal('hide');
+        console.log("SUCCESS: ", data);
+        // Update the UI with the newly added system outline
+
+
+        updateUI(data);
+
+      },
+      error: function (xhr, status, error) {
+        console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.', error);
+      }
+    });
+  }
+
+  $.ajax({
+    type:"GET",
+    url:"/pm/contract-infos",
+    success:function (data){
+
+      console.log("SUCCESS : ", data);
+      $("#addSystemOutlineModal").modal('hide');
+    },
+    error:function (e){
+      console.log("ERROR : ", e);
+
+    }
+  })
+</script>
+
+
 </body>
+
 </html>

@@ -46,6 +46,13 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
     }
 
     @Override
+    public void addSystemOutline(String newSystemOutline) {
+        SystemOutline systemOutline = new SystemOutline();
+        systemOutline.setName(newSystemOutline);
+        systemOutlineRepository.save(systemOutline);
+    }
+
+    @Override
     public List<SystemOutline> getAllSystemOutlines() {
         return systemOutlineRepository.findAll();
     }

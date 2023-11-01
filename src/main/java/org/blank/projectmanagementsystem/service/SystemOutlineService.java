@@ -16,5 +16,5 @@ public interface SystemOutlineService {
     void delete(Integer id);
 
 
-
+    void addSystemOutline(String newSystemOutline);
 }
