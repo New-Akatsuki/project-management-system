@@ -33,6 +33,7 @@ public class ProjectManagementSystemApplication {
                     User.builder()
                             .name("John")
                             .username("john@gmail.com")
+
                             .password(passwordEncoder.encode("1234"))
                             .role(Role.PM)
                             .department(department2)

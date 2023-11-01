@@ -3,6 +3,7 @@ package org.blank.projectmanagementsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
+import org.blank.projectmanagementsystem.domain.entity.Login;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
@@ -54,6 +55,15 @@ public class UserServiceImpl implements UserService {
         //get user from database
         User user = userRepository.findByUsername(username).orElse(null);
 
+    }
+    @Override
+    public User getLoginUser(Login login) {
+        return userRepository.findByNameAndPassword(login.getName(), login.getPassword());
+    }
+
+    @Override
+    public User getEmail(Login login) {
+        return userRepository.findByEmail(login.getEmail());
     }
 
 
