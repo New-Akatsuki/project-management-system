@@ -122,21 +122,15 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>KPI Reports</h4>
-                        <div class="chartBox">
-                            <canvas id="kpi-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
+        <div class="container">
+            <h1>KPI Report</h1>
+
+            <div class="chart-container">
+                <canvas id="kpiChart"></canvas>
             </div>
-
-
-
-
+        </div>
 
         <!-- End Main Content-->
     </main>
@@ -227,6 +221,42 @@
     // Create the pie chart
     const manMonthPieChart = new Chart(document.getElementById('pieChart'), pieChartConfig);
 </script>
+
+<script>
+    // Data for the KPI report
+    const kpiData = {
+        labels: ['Screen Counts', 'Test Cases', 'KSTEP/Review Counts'],
+        datasets: [
+            {
+                label: 'Count',
+                data: [150, 200, 75], // Replace with your actual data
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.5)', // Color for Screen Counts
+                    'rgba(255, 99, 71, 0.5)', // Color for Test Cases
+                    'rgba(60, 179, 113, 0.5)' // Color for KSTEP/Review Counts
+                ],
+                borderWidth: 1
+            }
+        ]
+    };
+
+    // Configuration for the KPI chart
+    const kpiConfig = {
+        type: 'bar',
+        data: kpiData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Create and render the KPI chart
+    const kpiChart = new Chart(document.getElementById('kpiChart'), kpiConfig);
+</script>
+
   </body>
 
 </html>
