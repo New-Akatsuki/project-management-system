@@ -13,11 +13,12 @@
 }
 
 .cd_kanban_board > .cd_kanban_board_blocks{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 400px));
-    grid-template-rows: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
     gap: 15px;
     padding: 0 15px;
+    height: 75vh;
 }
 .cd_kanban_board > .cd_kanban_board_blocks:after{
     content: '';
@@ -29,6 +30,9 @@
     padding: 1rem;
     flex: 1;
     background: #f2f2f2;
+    max-width: 360px;
+    min-width: 360px;
+    border-radius: 5px;
     overflow-y: auto;
 }
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block:last-child{
@@ -81,8 +85,6 @@
     border-top: 1px solid #c0c2cd;
 }
 
-
-
 /*
     ---------------------------
     kanban board
@@ -123,14 +125,16 @@
     gap: 5px;
     padding: 0.5rem;
     margin-top: 20px;
+    height: 50px;
 }
 
 .kb-task {
-    height: 120px;
+    height: 165px;
     margin: 0 10px;
     padding: 10px 20px;
     background-color: #fff;
     transition: height 0.3s ease-out;
+    border-radius: 5px;
 }
 
 .subtask-date-font-size{
@@ -169,16 +173,21 @@
     font-weight: bold;
 }
 
-/* Styles for the status layout (icon) */
-.kb-task-status-layout {
-    /* Add any additional styles for the status icon here */
-}
-
 /* Styles for the due date and subtask layout */
 .kb-task-due-date-layout,
 .kb-task-subtask-layout {
     display: flex;
     align-items: center;
+}
+
+.add-subtask-btn {
+    background: transparent;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-inline: none;
+    width: 100%;
+    padding: 7px 0;
 }
 
 /* Styles for the due date text */
@@ -262,7 +271,7 @@
     right: -100%; /* Start off the screen to the right */
     bottom: 0;
     margin: 0;
-    width: 50%; /* Adjust the width to your preference */
+    width: 800px; /* Adjust the width to your preference */
     max-width: 100%;
     transition: right 0.3s ease; /* Add a transition for sliding in */
 }
@@ -320,6 +329,7 @@
     padding: 10px 0;
 }
 
+/*SubTask modal*/
 
 /* Label Styles */
 label {
@@ -385,6 +395,8 @@ input[type="checkbox"] {
     transform: rotate(-90deg);
 }
 .toggle-subtask-icon {
+    border:none;
+    border-radius: 5px;
     transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
 }
 .toggle-subtask-icon:hover {

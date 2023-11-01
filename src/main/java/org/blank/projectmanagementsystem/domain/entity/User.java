@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,24 +27,34 @@ public class User implements Serializable,UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(unique = true, nullable = false, length = 45)
+    @Column(unique = true, length = 45)
     private String username;
+
+    @Column(unique = true, nullable = false, length = 45)
+    private String email;
 
     @Column(nullable = false, length = 255)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Department department;
 
+    private String imgUrl;
+
+    private String userRole;
+
+    private String phone;
+
     private boolean active = true;
+
+    private boolean defaultPassword = true;
 
     @ManyToMany(mappedBy = "assignees")
     private Set<Task> tasks;
@@ -53,12 +64,12 @@ public class User implements Serializable,UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return email;
     }
 
     @Override
@@ -80,4 +91,5 @@ public class User implements Serializable,UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
 }

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
+    <style>
+        .card-container {
+            margin: 20px; /* Adjust the margin value as needed */
+        }
+
+    </style>
+    <style>
+        .solve-display {
+            display: none;
+        }
+
+        .button-div {
+            position: absolute;
+            right: 45px;
+            width: 100%;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
+                <li class="breadcrumb-item active">Display Issue</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <div class="card">
+        <div class="card-container">
+            <div class="container">
+                <div class="d-flex flex-column gap-2 flex-md-row gap-md-5">
+                    <div class="col-md-9"><h3><i class="bi bi-pip"></i> Display Issue</h3></div>
+                    <div class="col-md-2">
+                        <i>Issue Id : </i>
+                        <i>ISU001</i>
+                    </div>
+                </div>
+                <br>
+                <div class="d-flex flex-column gap-6 flex-md-row gap-md-5">
+                    <div class="col-md-3"><i>Category</i></div>
+                    <div class="col-md-3"><i>Issue Place</i></div>
+                    <div class="col-md-3"><i>Issue Pic</i></div>
+                </div>
+                <br>
+                <div>
+                    <i>Title</i>
+                </div>
+                <br>
+                <div>
+                    <i>Content</i>
+                </div>
+                <br>
+                <div>
+                    <i>Responsible Party</i>
+                </div>
+                <br>
+                <div>
+                    <i>Direct Cause</i>
+                </div>
+                <br>
+                <div>
+                    <i>Root Cause</i>
+                </div>
+                <br>
+                <div style="text-align: right; right: 50px;">
+                    <a href="/issue2" class="btn btn-primary">Edit</a>
+                </div>
+            </div>
+            <hr>
+            <label for="status">Status</label>
+            <select id="status" onchange="toggleFields()">
+                <option value="0">Form</option>
+                <option value="1">View</option>
+            </select>
+            <hr>
+            <div class="solve-form card" style="border-radius: 10px;">
+                <div class="card-body">
+                    <div class="container" style="padding: 25px;">
+                        <div><h2><i class="bi bi-lightbulb"></i> Solve Issue</h2></div><br>
+                        <form>
+                            <div>
+                                <label for="co-action">Corrective Action</label>
+                            </div>
+                            <div id="co-action"></div>
+                            <br>
+                            <div>
+                                <label for="pre-action">Preventive Action</label>
+                            </div>
+                            <div id="pre-action"></div>
+                            <br>
+                            <div>
+                                <label for="impact">Impact</label>
+                            </div>
+                            <div>
+                                <input id="impact" name="impact" type="text" class="form-control"/>
+                            </div>
+                            <br>
+                            <input type="hidden" name="coAction" id="co-actionInput">
+                            <input type="hidden" name="preAction" id="pre-actionInput">
+                            <div class="button-div">
+                                <button type="submit" class="btn btn-primary">Solve Issue</button>
+                                <button class="btn btn-danger">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="solve-display card" style="border-radius: 10px;">
+                <div class="card-body">
+                    <div class="container" style="padding: 25px;">
+                        <div><h2><i class="bi bi-lightbulb-fill"></i> Solution</h2></div><br>
+                        <div class="d-flex flex-column gap-6 flex-md-row gap-md-5">
+                            <div class="col-md-3"><i>Procedure</i></div>
+                            <div class="col-md-3"><i>Issue Place</i></div>
+                        </div>
+                        <br>
+                        <div>
+                            <i>Solution</i>
+                        </div>
+                        <br>
+                        <div>
+                            <i>Corrective Action</i>
+                        </div>
+                        <br>
+                        <div>
+                            <i>Preventive Action</i>
+                        </div>
+                        <br>
+                        <div>
+                            <i>Impact</i>
+                        </div>
+                        <div class="button-div">
+                            <button onclick="edit()" class="btn btn-primary">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+
+<script>
+    let coAction = new Quill("#co-action", aa)
+    let preAction = new Quill("#pre-action", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-action');
+        toggleToolbar(1, 'pre-action');
+    })
+</script>
+<script>
+    function toggleFields() {
+        var status = document.getElementById("status").value;
+
+        if (status === "0") {
+            document.querySelector(".solve-form").style.display = "block";
+            document.querySelector(".solve-display").style.display = "none";
+        } else if (status === "1") {
+            document.querySelector(".solve-form").style.display = "none";
+            document.querySelector(".solve-display").style.display = "block";
+        }
+    }
+
+    function edit() {
+        document.querySelector(".solve-form").style.display = "block";
+        document.querySelector(".solve-display").style.display = "none";
+    }
+
+</script>
+</body>
+</html>

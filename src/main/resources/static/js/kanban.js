@@ -6,11 +6,13 @@
         let settings = $.extend({
             phase: [],
             tasks: [],
+            users: [],
             onChange: function (e, ui) {
             },
             onReceive: function (e, ui) {
             }
         }, options)
+
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
@@ -64,7 +66,6 @@
         });
 
 
-
         function build_kanban() {
 
             $this.addClass(classes.kanban_board_class);
@@ -90,8 +91,6 @@
             });
         }
 
-
-
         function build_tasks() {
             settings.tasks.filter(data => data.parent===null).forEach((item, index, array) => {
                 const height = settings.tasks.filter(data => data.parent===item.id).length * 50;
@@ -115,7 +114,10 @@
                                 </div>
                             </div>
                             <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
-                        </div>        
+                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">Add SubTask</button>
+    
+                        </div>   
+                             
                     </div>
             `;
                 //insert task into phase body
@@ -146,8 +148,11 @@
                     const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                     subtaskBlock.classList.toggle('hide');
                     //for animation
-                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+120}px`;
+                    task.style.height = subtaskBlock.classList.contains('hide') ? '120px' : `${height+220}px`;
                     subtaskIcon.classList.toggle('toggle-subtask-icon-active');
+
+                    const addSubTaskButton = document.getElementById(`${item.id}-add-subtask-btn`);
+                    addSubTaskButton.style.display = subtaskBlock.classList.contains('hide') ? 'none' : 'block';
                 });
             });
         }
@@ -163,10 +168,8 @@
                                 <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
                                     <span style="font-size: 9px">Due date</span>
                                     <span>${new Date(item.end_date).toLocaleString('en-US', { month: 'short', day: 'numeric' })}</span>
-                                </span>    
-                        </div>
-                    </div>
-                    
+                                </span>                                                             
+                        </div>                   
                 `;
 
 
@@ -189,13 +192,6 @@
                     $('#task-type').val(item.type);
                 });
             });
-
-            //     if(settings.tasks.filter(data => data.id===item.parent).filter(data => data.parent===null).length>0)
-            //     {
-            //         console.log(`${item.parent}-subtask-block`)
-            //         $this.find(`#${item.parent}-subtask-block`).append(sub_task_container);
-            //     }
-            // });
         }
 
 
@@ -252,8 +248,18 @@
 
         kanban_render();
 
-
-
+        // $.ajax({
+        //     url: '/kanban-data',
+        //     method: 'GET',
+        //     success:function (data) {
+        //         console.log('data', data);
+        //
+        //
+        //
+        //     }
+        //
+        // }
+        // )
 
 
     }
@@ -261,8 +267,9 @@
 }(jQuery));
 
 function saveTask() {
+    // Create a task object with user IDs included
     let task = {
-        id: 10,
+        id: $('#task-id').val(),
         name: $('#task-name').val(),
         description: $('#task-description').val(),
         priority: $('#task-priority').val(),
@@ -272,17 +279,21 @@ function saveTask() {
         duration: null,
         plan_hours: $('#task-plan-hours').val(),
         actual_hours: null,
-        process:null,
+        // process: null,
         status: 0,
         parent: null,
-        group:$('#task-group').val(),
+        group: $('#task-group').val(),
         type: $('#task-type').val(),
-        assignees:[],
-        subtasks:null,
-        open:false// Add the type field
-        // Add any other fields as needed
+        assignees: [], // Initialize an empty array for user IDs
+        subtasks: null,
+        phase: 1,
     };
-    console.log(task)
+
+    // Get the selected user IDs from the assignees select box
+    $('#task-assignees option:selected').each(function () {
+        task.assignees.push($(this).val());
+    });
+
     $.ajax({
         url: '/api/tasks',
         method: 'POST',
@@ -290,15 +301,39 @@ function saveTask() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            $('#exampleModal').modal('hide'); // Close the modal
-            alert(data); // Display a success message
+            // Handle the success response
+            // Close the modal and display a success message
+            $('#exampleModal').modal('hide');
+            alert('Task saved successfully');
         },
         error: function (xhr, status, error) {
-            // Handle the error, e.g., display it in a console or an alert
+            // Handle errors, e.g., display them in the console or an alert
             console.error(xhr.responseText);
             alert('Error: ' + error);
         }
     });
-
-
 }
+
+
+$(document).ready(function () {
+    // Make an AJAX request to fetch users
+    $.ajax({
+        url: '/api/users',
+        method: 'GET',
+        success: function (data) {
+            // Handle the retrieved user data
+            // You can populate your select box with this data
+            const assigneesSelect = $('#task-assignees');
+            assigneesSelect.empty(); // Clear existing options
+
+            data.forEach(function (user) {
+                assigneesSelect.append(new Option(user.name, user.id));
+            });
+        },
+        error: function (xhr, status, error) {
+            // Handle errors, e.g., display them in the console
+            console.error(xhr.responseText);
+        }
+    });
+});
+

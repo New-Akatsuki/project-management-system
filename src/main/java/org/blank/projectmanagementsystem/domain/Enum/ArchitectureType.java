@@ -19,5 +19,4 @@ public enum ArchitectureType {
     DEPLOYMENT,
     CONTINUOUS_INTEGRATION,
     CONTINUOUS_DEPLOYMENT
-
 }

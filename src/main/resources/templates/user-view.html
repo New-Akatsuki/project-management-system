@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Favicons -->
+  <link th:href="@{/images/favicon.png}" rel="icon">
+  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">UserView</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1>Dashboard</h1>
+      </div>
+      <div class="col-md-6 text-end">
+        <a href="addUser.html" class="btn btn-primary">Add User</a>
+        <a href="addDepartment.html" class="btn btn-success">Add Department</a>
+      </div>
+    </div>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Ongoing Project</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Add table rows with data here -->
+      <tr>
+        <td>John Doe</td>
+        <td>Marketing</td>
+        <td>Project A</td>
+        <td>Manager</td>
+        <td>
+          <button class="btn btn-info">Edit</button>
+          <button class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+      <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+</body>
+</html>

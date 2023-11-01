@@ -7,9 +7,11 @@ import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.springframework.cglib.core.Local;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TaskMapper {
@@ -29,8 +31,9 @@ public class TaskMapper {
                 .actual_hours(task.getActualHours())
                 .progress(task.isStatus()?1:0)
                 .status(task.isStatus())
+                .phase(task.getPhase().getId())
                 .parent(task.getParentTask()==null?null:task.getParentTask().getId())
-                .group(task.getGroup().name().toLowerCase())
+                .group(task.getGroup().name())
                 .type(task.getType().name().toLowerCase())
                 .assignees(task.getAssignees()==null?null:task.getAssignees().stream().map(User::getId).toList())
                 .open(true)
@@ -52,32 +55,29 @@ public class TaskMapper {
                 .type(TaskType.valueOf(taskFormInput.getType().toUpperCase()))
                 .build();
     }
-    public String convertDateToString(Date date) {
+    public String convertDateToString(LocalDate date) {
         if(date == null) return null;
-//        date.setHours(0);
-//        date.setMinutes(0);
-//        date.setSeconds(0);
-//        date.setTime((date.getTime() / 1000) * 1000);
-        return dateFormat.format(date);
+        return dateFormat.format(java.sql.Date.valueOf(date));
     }
 
-    private Date convertStringToDate(String date) {
+    private LocalDate convertStringToDate(String date) {
         if(date == null) return null;
         try {
-            return dateFormat.parse(date);
+            return dateFormat.parse(date).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return null;
     }
 
-    private int calculateDuration(Date startDate, Date endDate){
-        return (int) (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+    private int calculateDuration(LocalDate startDate, LocalDate endDate){
+        return (int) (endDate.toEpochDay() - startDate.toEpochDay());
     }
 
     public static void main(String[] args) {
         TaskMapper taskMapper = new TaskMapper();
         System.out.println(taskMapper.convertStringToDate("2021-05-31T17:00:00.000Z"));
-        System.out.println(taskMapper.convertDateToString(new Date()));
-        System.out.println(taskMapper.convertStringToDate(taskMapper.convertDateToString(new Date())));
+        System.out.println(taskMapper.convertDateToString(LocalDate.of(2021,5,31)));
+        System.out.println(taskMapper.convertStringToDate(taskMapper.convertDateToString(LocalDate.of(2021,5,31))));
     }
 }

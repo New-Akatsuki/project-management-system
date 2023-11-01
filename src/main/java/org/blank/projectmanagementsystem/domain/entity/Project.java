@@ -1,12 +1,10 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"projectManager","contractMembers","focMembers","architectures","systemOutlines","deliverables","client"})
 public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,13 +32,13 @@ public class Project implements Serializable {
     private String objective;
 
     @Column(nullable = false)
-    private float duration;
+    private String duration;
 
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -55,7 +54,7 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "contract_member_id", nullable = false)  // Column in the join table for Architecture
     )
-    private Set<User> contractMember;
+    private Set<User> contractMembers;
 
     @OneToMany
     @JoinTable(
@@ -63,7 +62,7 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "foc_member_id")  // Column in the join table for Architecture
     )
-    private Set<User> focMember;
+    private Set<User> focMembers;
 
 
     @ManyToMany

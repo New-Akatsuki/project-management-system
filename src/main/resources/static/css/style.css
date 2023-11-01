@@ -466,6 +466,11 @@ h6 {
   color: #012970;
   margin-right: 25px;
   position: relative;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.header-nav .nav-icon:hover{
+  background: #d1dfff;
 }
 
 .header-nav .nav-profile {
@@ -1327,7 +1332,13 @@ h6 {
 .justify-self-stretch{
   justify-self: stretch;
 }
+.text-justify{
+  text-align: justify;
+}
 
+.border-start-1{
+  border-left: 1px solid #ccc;
+}
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -1367,3 +1378,23 @@ h6 {
   flex: 7;
 }
 
+.bg-gray-color{
+    background-color: #ccc;
+}
+
+.flex-4{
+  flex:4;
+}
+.flex-5{
+  flex: 5;
+}
+.flex-6{
+  flex: 6;
+}
+.flex-7{
+  flex: 7;
+}
+
+.border-block-1{
+  border-block-color: #3577ff !important;
+}

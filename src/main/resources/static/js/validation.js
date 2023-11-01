@@ -70,6 +70,7 @@ function showPatternInvalidMsg(element,msg_div,element_name) {
     msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
 }
 
+
 function checkPasswordsMatch(passwordElement, confirmPassElement) {
     confirmPassElement.element.addEventListener("input", function () {
        if (passwordElement.element.value !== confirmPassElement.element.value) {

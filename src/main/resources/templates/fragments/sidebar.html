@@ -1,5 +1,7 @@
-    <!DOCTYPE html>
-    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
     <head>
       <meta charset="utf-8"/>
       <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -38,17 +40,31 @@
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/}">
-                    <i class="bi bi-grid"></i>
-                    <span>DashBoard</span>
+                    <i class="bi bi-briefcase"></i>
+                    <span>Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','DH')">
+                <a class="nav-link" th:href="@{/pm/department}">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Department</span>
+                </a>
+            </li>
+
+
+
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/createproject}">
+                <a class="nav-link" th:href="@{/pm/project-list}">
                     <i class="bi bi-journals"></i>
                     <span>Projects</span>
                 </a>
             </li>
-
+            <li class="nav-item" sec:authorize="hasAnyAuthority('DH','PM')">
+                <a class="nav-link"  th:href="@{/pm/user-list}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>Create member account</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/issues}">
                     <i class="bi bi-info-circle"></i>
@@ -56,16 +72,23 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/user-list}">
+            <li class="nav-item" sec:authorize="hasAuthority('PMO')">
+                <a class="nav-link"  th:href="@{/pm/user-list}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
                 </a>
             </li>
 
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
+                <a class="nav-link" th:href="@{/pm/contract-info}">
+                    <i class="bi bi-info-square-fill"></i>
+                    <span>Contract Info</span>
+                </a>
+            </li>
+
 
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/userProfile}">
+                <a class="nav-link" th:href="@{/pm/user-profile}">
                     <i class="bi bi-person"></i>
                     <span>User Profile</span>
                 </a>
@@ -77,7 +100,9 @@
             console.log(activePage);
             const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");
             navLinks.forEach(link => {
-                if (link.href.includes(`${activePage}`)) {
+                if(activePage==="/"){
+                    navLinks[0].classList.add("active");
+                }else if (link.href.includes(`${activePage}`)) {
                     link.classList.add("active");
                 } else {
                     link.classList.remove("active");
@@ -91,15 +116,8 @@
 
     <!-- Vendor JS Files -->
 
-
-
-
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/main.js}"></script>
-
-
-
-
 
     </body>
     </html>
