@@ -6,7 +6,6 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.blank.projectmanagementsystem.mapper.UserMapper;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
@@ -26,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        //create 8 number random password for user
+        String password = String.valueOf((int) (Math.random() * 100000000));
+        user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
 

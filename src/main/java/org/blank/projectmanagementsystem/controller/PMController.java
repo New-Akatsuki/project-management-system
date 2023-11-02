@@ -3,15 +3,17 @@ package org.blank.projectmanagementsystem.controller;
 import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -20,8 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 public class PMController {
     private final UserService userService;
-
-
 
     @GetMapping("/project-list")
     public String projectList() {
@@ -50,11 +50,11 @@ public class PMController {
     }
 
     @PostMapping("/add-user")
-    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput){
+    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
         log.info("================================================");
         log.info("adduser: {}", addUserFormInput);
         log.info("================================================\n");
-
+        userService.registerUser(addUserFormInput);
         return "redirect:/";
     }
 
