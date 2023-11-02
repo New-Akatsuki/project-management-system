@@ -12,8 +12,5 @@ public interface ArchitectureService {
     Architecture saveArchitecture(Architecture architecture);
     void deleteArchitecture(int id);
     Architecture updateArchitecture(int id, Architecture architecture);
-
-
-
-
+    void save(Architecture architecture);
 }

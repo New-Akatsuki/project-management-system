@@ -75,15 +75,19 @@
     <div>
       <div class="row">
         <div class="col-sm-12">
+          <div class="card">
+
+            <div class="card-body px-">
+
               <fieldset>
                 <div class="form-card text-start">
 
                   <div class="row">
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card shadow-none">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                          <div class="display-6 fs-4 fw-bold">
-                           Clients
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                          <div class="display-6 fs-4">
+                            Clients
                           </div>
 
 
@@ -101,7 +105,7 @@
                               <th>Name</th>
                               <th>Phone</th>
                               <th>Project Name</th>
-                              <th class="col-1">Action</th>
+                              <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -133,17 +137,15 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card shadow-none">
+                      <div class="card">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             Deliverables Methods
                           </div>
-
-
                           <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
                             <i class='bx bx-plus m-0 p-0'></i>
                           </a>
-                          </a></div>
+                          </div>
 
                         <div class="card-body">
                           <table class="table table-hover">
@@ -151,26 +153,18 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th class="col-1">Action</th>
+                              <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Internal</td>
-                              <td><a id="openDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>External</td>
-                              <td><a id="opensDeliverablesModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#deliverablesModal" data-target="#addDeliverablesModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
-                            </tr>
 
-
+                            <tr th:each="deliverable : ${deliverables}">
+                              <td th:text="${deliverable.id}"></td>
+                              <td th:text="${deliverable.name}"></td>
+                              <td>
+                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                              </td>
+                            </tr>
                             </tbody>
                           </table>
 
@@ -179,7 +173,7 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card shadow-none">
+                      <div class="card">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             Architecture Outlines
@@ -195,16 +189,20 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th class="col-1">Action</th>
+                              <th>Type</th>
+                              <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                               <td>1</td>
                               <td>sdfsdfsfgfgsdfsdf</td>
-                              <td><a id="editArchitectureOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#architectureOutlineModal">
-                                <i class='bx bx-edit m-0 p-0'></i>
-                              </a></td>
+                              <td>Option 1</td>
+                              <td>
+                                <a id="editArchitectureOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#architectureOutlineModal">
+                                  <i class='bx bx-edit m-0 p-0'></i>
+                                </a>
+                              </td>
                             </tr>
                             <tr>
                               <td>2</td>
@@ -218,11 +216,12 @@
                     </div>
 
                     <div class="col-sm-12 col-lg-12">
-                      <div class="card shadow-none">
+                      <div class="card">
                         <div class="card-header d-flex justify-content-between">
                           <div class="display-6 fs-4">
                             System Outlines
                           </div>
+
                           <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
                             <i class='bx bx-plus m-0 p-0'></i>
                           </a>
@@ -234,23 +233,18 @@
                             <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th class="col-1">Action</th>
+                              <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>John Smith</td>
+                            <tbody id="systemOutlineTableBody">
+                            <tr th:each="systemOutline : ${systemOutlines}">
+                              <td th:text="${systemOutline.id}"></td>
+                              <td th:text="${systemOutline.name}"></td>
                               <td>
-                                  <a id="editSystemOutlineButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#systemOutlineModal">
-                                      <i class='bx bx-edit m-0 p-0'></i>
-                                  </a>
+                                <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
                               </td>
                             </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Mary Johnson</td>
-                            </tr>
+
 
                             </tbody>
                           </table>
@@ -265,6 +259,8 @@
               </fieldset>
             </div>
           </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -285,6 +281,37 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  /// Get the input field and select box elements by their IDs
+  const inputField = document.getElementById('architectureOutlineType');
+  const selectBox = document.getElementById('yourSelectBoxId'); // Replace 'yourSelectBoxId' with the actual ID of your select box
+
+  // Add an event listener to the input field to populate the select box when the input changes
+  inputField.addEventListener('input', function() {
+    // Clear existing options in the select box
+    selectBox.innerHTML = '';
+
+    // Get the value from the input field
+    const inputValue = inputField.value;
+
+    // Split the input value into options (assuming options are comma-separated)
+    const options = inputValue.split(',');
+
+    // Populate the select box with options
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.trim(); // Trim to remove leading/trailing spaces
+      optionElement.text = option.trim();
+      selectBox.appendChild(optionElement);
+    });
+  });
+
+</script>
+
+
+
+
+
 <!--Modal box-->
 
 <!--Edit Deliverables-->
@@ -320,19 +347,16 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="deliverablesName">Deliverable Method</label>
-            <input type="text" class="form-control" id="deliverablesName" placeholder="Enter new deliverables method">
-          </div>
+        <form th:action="@{/pm/contract-info}" method="post" class="mt-4">
+        <div class="form-group">
+          <label for="deliverablesName" class="form-label">Deliverable Method</label>
+          <input type="text" class="form-control" id="deliverablesName" name="name" placeholder="Enter new deliverables method">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Deliverables</button>
+      </form>
+      </div>
+      </div>
 
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -365,11 +389,6 @@
     </form>
   </div>
 </div>
-
-
-
-
-
 
 <!--Add Client-->
 <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
@@ -408,27 +427,27 @@
 </div>
 
 <!--Add System Outline-->
-<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addSystemOutlineModalLabel">Add New System Outline</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+<!--          <span aria-hidden="true">&times;</span>-->
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <!-- Add your form for adding a new system outline here -->
+        <!-- Example form fields: -->
+        <form  class="mt-4">
           <div class="form-group">
-            <label for="systemOutlineName">Name</label>
-            <input type="text" class="form-control" id="systemOutlineName" placeholder="Enter New System Outline">
+            <label for="outlineName" class="form-label">System Outline Name</label>
+            <input type="text" class="form-control" id="outlineName" name="name" required>
           </div>
-
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" onclick="addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <!-- Add Bootstrap classes to the form elements for better styling -->
       </div>
     </div>
   </div>
@@ -447,8 +466,13 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="architectureOutlineName">Name</label>
+            <label for="architectureOutlineName" class="form-label">Name</label>
             <input type="text" class="form-control" id="architectureOutlineName" placeholder="Enter architecture outline name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="architectureOutlineType">Type</label>
+            <input type="text" class="form-control" id="architectureOutlineType" placeholder="Enter architecture outline type">
           </div>
 
         </form>
@@ -484,9 +508,6 @@
     </form>
   </div>
 </div>
-
-
-
 <!-- "System Outline" Modal -->
 <div class="modal fade" id="systemOutlineModal" tabindex="-1" aria-labelledby="systemOutlineModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -513,8 +534,71 @@
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function updateUI(systemOutline) {
+    const systemOutlineTableBody = $('#systemOutlineTableBody');
+
+    // Create a new row with the system outline data
+    const newRow = `
+      <tr>
+        <td>${systemOutline.id}</td>
+        <td>${systemOutline.name}</td>
+        <td>
+          <a href="/systemOutline/${systemOutline.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
+        </td>
+      </tr>
+    `;
+
+    // Append the new row to the table
+    systemOutlineTableBody.append(newRow);
+
+    console.log("System Outline Object: " + JSON.stringify(systemOutline));
+  }
+  function addSystemOutline() {
+    let newSystemOutline = {
+      id: null,
+      name: $('#outlineName').val()
+    };
+
+    $.ajax({
+      type: "POST",
+      url: "/pm/contract-info",
+      contentType: "application/json",
+      data: JSON.stringify(newSystemOutline),
+      dataType: 'json',
+      success: function (data) {
+        $("#addSystemOutlineModal").modal('hide');
+        console.log("SUCCESS: ", data);
+        // Update the UI with the newly added system outline
 
 
+        updateUI(data);
 
+      },
+      error: function (xhr, status, error) {
+        console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.', error);
+      }
+    });
+  }
+
+  $.ajax({
+    type:"GET",
+    url:"/pm/contract-infos",
+    success:function (data){
+
+      console.log("SUCCESS : ", data);
+      $("#addSystemOutlineModal").modal('hide');
+    },
+    error:function (e){
+      console.log("ERROR : ", e);
+
+    }
+  })
+
+</script>
 </body>
+
 </html>
