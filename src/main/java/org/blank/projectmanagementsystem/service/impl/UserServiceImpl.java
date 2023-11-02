@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
@@ -22,7 +23,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private UserMapper userMapper;
 
     @Override
     public User save(User user) {
@@ -59,19 +59,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(AddUserFormInput addUserFormInput) {
-        // Check if the username is already taken
-        if (userRepository.findByUsername(addUserFormInput.getUsername()).isPresent()) {
+        // Check if the name is already taken
+        if (userRepository.findByName(addUserFormInput.getName()).isPresent()) {
             // Handle username already exists
-            return null;
+            throw new RuntimeException("Name already exists");
         }
-        Department department = departmentRepository.findByName(addUserFormInput.getDepartment()).orElse(null);
+
+        Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
+        Department department = (Department) departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
 
         // Create a new User object based on the addUserFormInput
-        User user = userMapper.mapToUser(addUserFormInput);
-        user.setDepartment(addUserFormInput.getDepartment());
+        User user =  User.builder()
+                .name(addUserFormInput.getName())
+                .email(addUserFormInput.getEmail())
+                .role(Role.valueOf(addUserFormInput.getRole()))
+                .department(department)
+                .build();
 
         // Set other user properties as needed
         // Save the user
         return userRepository.save(user);
     }
+
+
 }

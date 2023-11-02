@@ -11,15 +11,7 @@ import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 
 public class UserMapper {
 
-    public User mapToUser(AddUserFormInput addUserFormInput){
 
-
-        return User.builder()
-                .username(addUserFormInput.getUsername())
-                .email(addUserFormInput.getEmail())
-                .role(Role.valueOf(addUserFormInput.getRole()))
-                .build();
-    }
     public UserViewObject mapToUserViewObject(User user){
         return new UserViewObject(user);
     }

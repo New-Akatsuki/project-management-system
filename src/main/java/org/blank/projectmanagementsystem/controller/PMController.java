@@ -1,8 +1,11 @@
 package org.blank.projectmanagementsystem.controller;
 
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
@@ -14,8 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/pm")
+@Slf4j
 public class PMController {
     private final UserService userService;
+
+
 
     @GetMapping("/project-list")
     public String projectList() {
@@ -44,8 +50,12 @@ public class PMController {
     }
 
     @PostMapping("/add-user")
-    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-        return "user_list";
+    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput){
+        log.info("================================================");
+        log.info("adduser: {}", addUserFormInput);
+        log.info("================================================\n");
+
+        return "redirect:/";
     }
 
     @GetMapping("/edit-user")
