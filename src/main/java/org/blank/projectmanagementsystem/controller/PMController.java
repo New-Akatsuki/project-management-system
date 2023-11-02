@@ -50,7 +50,7 @@ public class PMController {
 
     @PostMapping("/add-user")
     public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-        return "redirect:/";
+        return "user_list";
     }
 
     @GetMapping("/edit-user")

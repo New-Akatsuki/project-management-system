@@ -2,9 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
-import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.mapper.UserMapper;
@@ -60,10 +58,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public void userRegister(org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput addUserFormInput) {
 
-    }
 
     @Override
     public User registerUser(AddUserFormInput addUserFormInput) {
@@ -80,8 +75,9 @@ public class UserServiceImpl implements UserService {
 
         // Set other user properties as needed
         // Save the user
-        return userRepository.save(user);
+         return userRepository.save(user);
     }
+
 
 
 }
