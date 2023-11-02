@@ -36,8 +36,6 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
 
-    <!-- Dark Css -->
-    <link rel="stylesheet" href="/css/dark.min.css">
 
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
@@ -97,25 +95,16 @@
                                         <th class="col-1">Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Development</td>
+                                    <tbody id="departmentTableBody">
+                                    <tr th:each="department : ${departments}">
+                                        <td  th:text="${department.id}"></td>
+                                        <td th:text="${department.name}"></td>
                                         <td><a id="openEditClientModalButton" class="icon-add-btn"
                                                data-bs-toggle="modal" data-bs-target="#editClientModal">
                                             <i class='bx bx-edit m-0 p-0'></i>
                                         </a></td>
                                     </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Marketing</td>
-                                        <td><a id="editDepartmentButton" class="icon-add-btn" data-bs-toggle="modal"
-                                               data-bs-target="#departmentModal">
-                                            <i class='bx bx-edit m-0 p-0'></i>
-                                        </a>
-                                        </td>
 
-                                    </tr>
 
                                     </tbody>
                                 </table>
@@ -170,7 +159,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" onclick="addDepartment()">Save</button>
             </div>
         </div>
     </div>
@@ -199,11 +188,60 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="delete-department-button" class="btn btn-danger">Delete</button>
-
-                <button type="submit" id="department-modal-save-button" class="btn btn-primary">Save changes</button>
+                <button type="button" id="department-modal-save-button" class="btn btn-primary">Save changes</button>
             </div>
         </form>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<script>
+    function updateUI(department) {
+        const departmentTableBody = $('#departmentTableBody');
+
+        // Create a new row with the system outline data
+        const newRow = `
+      <tr>
+        <td>${department.id}</td>
+        <td>${department.name}</td>
+        <td>
+          <a href="/department/${department.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
+        </td>
+      </tr>
+    `;
+
+        // Append the new row to the table
+        departmentTableBody.append(newRow);
+
+        console.log("Department: " + JSON.stringify(department));
+    }
+    function addDepartment() {
+        console.log("addDepartment() called");
+        let newDepartment = {
+            id: null,
+            name: $('#departmentName').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/pmo/add-department",
+            contentType: "application/json",
+            data: JSON.stringify(newDepartment),
+            dataType: 'json',
+            success: function (data) {
+                $("#addDepartmentModal").modal('hide');
+                console.log("SUCCESS: ", data);
+                // Update the UI with the newly added system outline
+                updateUI(data);
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+            }
+        });
+    }
+
+
+</script>
 </body>
 </html>

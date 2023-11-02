@@ -44,8 +44,8 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','DH')">
-                <a class="nav-link" th:href="@{/pm/department}">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC')">
+                <a class="nav-link" th:href="@{/pmo/department}">
                     <i class="bi bi-briefcase"></i>
                     <span>Department</span>
                 </a>

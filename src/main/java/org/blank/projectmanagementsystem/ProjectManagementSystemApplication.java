@@ -58,7 +58,7 @@ public class ProjectManagementSystemApplication {
                     User.builder()
                             .name("Project Manager")
                             .username("pm")
-                            .email("kaprnya@gmail.com")
+                            .email("minmratbhoneaung.etc@gmail.com")
                             .password(passwordEncoder.encode("1234"))
                             .role(Role.PM)
                             .department(department2)

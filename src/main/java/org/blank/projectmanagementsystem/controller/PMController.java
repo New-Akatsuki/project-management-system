@@ -110,9 +110,5 @@ public class PMController {
 //        return "redirect:/pm/contract-info";
 //    }
 
-    @GetMapping("/department")
-    public String Department() {
-        return "department";
-    }
 }
 

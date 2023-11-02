@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository user;
     private org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput AddUserFormInput;
 
     private final UserMapper userMapper =new UserMapper();
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService {
             // Handle username already exists
             return null;
         }
-        Department department= departmentRepository.findByName(addUserFormInput.getDepartment()).orElse(null);
+        Department department= departmentRepository.findByName(addUserFormInput.getDepartment());
 
         // Create a new User object based on the addUserFormInput
         User user = userMapper.mapToUser(addUserFormInput);
