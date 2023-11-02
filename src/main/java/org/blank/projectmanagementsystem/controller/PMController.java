@@ -1,18 +1,13 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -64,14 +59,14 @@ public class PMController {
         return "/user-list";
     }
 
-    @GetMapping("/project-detail")
+    @GetMapping("/project-details-info")
     public String ProjectDetail() {
-        return "project-detail";
+        return "project-details-info";
     }
 
     @GetMapping("/create-project")
     public String CreateProject() {
-        return "create-project";
+        return "create-new-project";
     }
 
     @GetMapping("/edit-project")

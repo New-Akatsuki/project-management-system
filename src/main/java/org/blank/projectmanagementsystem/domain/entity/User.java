@@ -39,6 +39,7 @@ public class User implements Serializable,UserDetails {
     @Column(nullable = false, length = 255)
     private String password;
 
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

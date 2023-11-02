@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
-import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.blank.projectmanagementsystem.mapper.UserMapper;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
@@ -13,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +22,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository user;
-    private org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput AddUserFormInput;
 
-    private final UserMapper userMapper =new UserMapper();
 
     @Override
     public User save(User user) {
         return userRepository.save(user);
     }
+
+
     @Override
     public void saveDepartment(Department department) {
         departmentRepository.save(department);
@@ -57,6 +56,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
 
     }
+    private String getUsername(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    @Override
+    public User getLoginUser() {
+        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
+    }
+
+    @Override
+    public Optional<User> getEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
 
 
@@ -77,13 +88,3 @@ public class UserServiceImpl implements UserService {
         // Save the user
          return userRepository.save(user);
     }
-
-
-
-}
-
-
-
-
-
-
