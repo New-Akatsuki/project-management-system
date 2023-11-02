@@ -4,10 +4,17 @@ import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 
+import java.util.Optional;
+
 public interface UserService {
     User save(User user);
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
     void changePassword(String currentPassword, String newPassword);
      User registerUser(AddUserFormInput addUserFormInput);
+
+
+
+
+
 }
