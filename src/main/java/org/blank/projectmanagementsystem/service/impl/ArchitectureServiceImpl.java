@@ -50,9 +50,8 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     }
 
     @Override
-    public void save(Architecture architecture) {
-        architectureRepository.save(architecture);
-
+    public Architecture save(Architecture architecture) {
+        return architectureRepository.save(architecture);
     }
 
 

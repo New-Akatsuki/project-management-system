@@ -41,8 +41,9 @@ public class DeliverableServiceImpl implements DeliverableService {
     }
 
     @Override
-    public void save(Deliverable deliverable) {
+    public Deliverable save(Deliverable deliverable) {
 
+        return deliverable;
     }
 
     @Override
