@@ -22,7 +22,7 @@ public class ArchitectureServiceTest {
         // Arrange
         Architecture architecture = new Architecture();
         architecture.setName("Test Architecture");
-        architecture = architectureService.saveArchitecture(architecture);
+        architecture = architectureService.save(architecture);
 
         // Act
         Architecture retrievedArchitecture = architectureService.getById(architecture.getId());
@@ -37,11 +37,11 @@ public class ArchitectureServiceTest {
         // Arrange
         Architecture architecture1 = new Architecture();
         architecture1.setName("Architecture 1");
-        architectureService.saveArchitecture(architecture1);
+        architectureService.save(architecture1);
 
         Architecture architecture2 = new Architecture();
         architecture2.setName("Architecture 2");
-        architectureService.saveArchitecture(architecture2);
+        architectureService.save(architecture2);
 
         // Act
         Iterable<Architecture> architectures = architectureService.getAllArchitectures();
@@ -56,7 +56,7 @@ public class ArchitectureServiceTest {
         // Arrange
         Architecture architecture = new Architecture();
         architecture.setName("Initial Name");
-        architecture = architectureService.saveArchitecture(architecture);
+        architecture = architectureService.save(architecture);
 
         // Act
         architecture.setName("Updated Name");
@@ -72,7 +72,7 @@ public class ArchitectureServiceTest {
         // Arrange
         Architecture architecture = new Architecture();
         architecture.setName("Test Architecture");
-        architecture = architectureService.saveArchitecture(architecture);
+        architecture = architectureService.save(architecture);
 
         // Act
         architectureService.deleteArchitecture(architecture.getId());

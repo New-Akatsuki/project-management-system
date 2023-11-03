@@ -43,7 +43,7 @@ public class DeliverableServiceImpl implements DeliverableService {
     @Override
     public Deliverable save(Deliverable deliverable) {
 
-        return deliverable;
+        return deliverableRepository.save(deliverable);
     }
 
     @Override

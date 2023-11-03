@@ -65,6 +65,7 @@ public class PMRestController {
     @GetMapping("/pm/architectures")
     public ResponseEntity<List<Architecture>> getArchitectures() {
         List<Architecture> architectures = architectureService.getAllArchitectures();
+
         return ResponseEntity.ok(architectures);
     }
 
