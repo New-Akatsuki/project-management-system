@@ -7,6 +7,8 @@ import org.blank.projectmanagementsystem.service.DeliverableService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @Transactional
@@ -37,4 +39,36 @@ public class DeliverableServiceImpl implements DeliverableService {
     public Deliverable getDeliverable(int id) {
         return deliverableRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Deliverable save(Deliverable deliverable) {
+
+        return deliverable;
+    }
+
+    @Override
+    public List<Deliverable> getAllDeliverable() {
+        return deliverableRepository.findAll();
+    }
+
+
+    @Override
+    public Deliverable findById(int id) {
+        return deliverableRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Deliverable saveName(String name) {
+        Deliverable deliverable = new Deliverable();
+        deliverable.setName(name);
+        deliverableRepository.save(deliverable);
+        return deliverable;
+    }
+
+    @Override
+    public List<Deliverable> getAllDeliverables() {
+        return deliverableRepository.findAll();
+    }
+
+
 }

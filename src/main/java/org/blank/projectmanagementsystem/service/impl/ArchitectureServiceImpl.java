@@ -49,6 +49,11 @@ public class ArchitectureServiceImpl implements ArchitectureService {
         return null;
     }
 
+    @Override
+    public Architecture save(Architecture architecture) {
+        return architectureRepository.save(architecture);
+    }
+
 
 }
 

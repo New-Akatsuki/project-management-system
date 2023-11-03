@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 import java.io.Serializable;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -22,6 +24,7 @@ public class Deliverable implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
+
 
     @Column(unique = true,nullable = false, length =45)
     private String name;

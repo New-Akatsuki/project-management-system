@@ -1,30 +1,29 @@
 package org.blank.projectmanagementsystem.controller;
 
-import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.entity.User;
+import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
-import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
-import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
-import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/pm")
-@Slf4j
 public class PMController {
     private final UserService userService;
 
     @GetMapping("/project-list")
-    public String projectList() {
+    public String ProjectList() {
         return "project-list";
     }
 
@@ -36,7 +35,7 @@ public class PMController {
 
     @GetMapping("/user-profile")
     public ModelAndView userprofile() {
-        return new ModelAndView("userprofile", "addUserFormInput", new AddUserFormInput());
+        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
     }
 
     @PostMapping("/user-profile")
@@ -51,10 +50,6 @@ public class PMController {
 
     @PostMapping("/add-user")
     public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-        log.info("================================================");
-        log.info("adduser: {}", addUserFormInput);
-        log.info("================================================\n");
-        userService.registerUser(addUserFormInput);
         return "redirect:/";
     }
 
@@ -69,14 +64,15 @@ public class PMController {
         return "/user-list";
     }
 
-    @GetMapping("/project-details-info")
+    @GetMapping("/project-detail")
     public String ProjectDetail() {
-        return "project-details-info";
+        return "project-detail";
     }
 
     @GetMapping("/create-project")
     public String CreateProject() {
-        return "create-new-project";
+
+        return "create-project";
     }
 
     @GetMapping("/edit-project")
@@ -86,7 +82,13 @@ public class PMController {
 
 
     @GetMapping("/contract-info")
-    public String ContractInfo() {
+    public String ContractInfo(Model model) {
+        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
+        model.addAttribute("systemOutlines", systemOutlines);
+
+        List<Deliverable> deliverables=deliverableService.getAllDeliverables();
+        model.addAttribute("deliverables",deliverables);
+
         return "contract-info";
     }
 
