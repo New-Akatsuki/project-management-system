@@ -16,6 +16,7 @@ public class UserMapper {
     //Form Input to Entity
     public User mapToUser(AddUserFormInput addUserFormInput){
 
+
         return User.builder()
                 .username(addUserFormInput.getUsername())
                 .email(addUserFormInput.getEmail())

@@ -8,7 +8,6 @@ import org.blank.projectmanagementsystem.domain.entity.Login;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.blank.projectmanagementsystem.mapper.UserMapper;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
@@ -34,64 +33,62 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        //create 8 number random password for user
+        if(user.getPassword() == null) {
+            String password = String.valueOf((int) (Math.random() * 100000000));
+            user.setPassword(passwordEncoder.encode(password));
+        }
         return userRepository.save(user);
     }
+
     @Override
     public void saveDepartment(Department department) {
         departmentRepository.save(department);
     }
+
 
     @Override
     public void changeDefaultPassword(String password) {
         //get current username from security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
-        User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
+        User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
         //change password
-        if(user != null) {
+        if (user != null) {
             user.setPassword(passwordEncoder.encode(password));
             user.setDefaultPassword(false);
             userRepository.save(user);
         }
     }
+
     @Override
-    public void changePassword(String currentPassword,String newPassword) {
+    public void changePassword(String currentPassword, String newPassword) {
         //get current username from security context
-        String username = getUsername();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
-        User user = userRepository.findByUsernameOrEmail(username,username).orElse(null);
-
-    }
-    private String getUsername(){
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-    @Override
-    public User getLoginUser() {
-        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
-    }
-
-    @Override
-    public Optional<User> getEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public void userRegister(org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput addUserFormInput) {
-
+        User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
     @Override
     public User registerUser(AddUserFormInput addUserFormInput) {
-        // Check if the username is already taken
-        if (userRepository.findByUsername(addUserFormInput.getUsername()).isPresent()) {
+        // Check if the name is already taken
+        if (userRepository.findByName(addUserFormInput.getName()).isPresent()) {
             // Handle username already exists
-            return null;
+            throw new RuntimeException("Name already exists");
         }
+
+        Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
+        Department department = (Department) departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
         Department department= departmentRepository.findByName(addUserFormInput.getDepartment());
 
         // Create a new User object based on the addUserFormInput
-        User user = userMapper.mapToUser(addUserFormInput);
-        user.setDepartment(addUserFormInput.getDepartment());
+        User user =  User.builder()
+                .name(addUserFormInput.getName())
+                .email(addUserFormInput.getEmail())
+                .role(Role.valueOf(addUserFormInput.getRole()))
+                .department(department)
+                .build();
 
         // Set other user properties as needed
         // Save the user
@@ -100,3 +97,9 @@ public class UserServiceImpl implements UserService {
 
 
 }
+
+
+
+
+
+
