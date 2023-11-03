@@ -26,8 +26,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         //create 8 number random password for user
-        String password = String.valueOf((int) (Math.random() * 100000000));
-        user.setPassword(passwordEncoder.encode(password));
+        if(user.getPassword() == null) {
+            String password = String.valueOf((int) (Math.random() * 100000000));
+            user.setPassword(passwordEncoder.encode(password));
+        }
         return userRepository.save(user);
     }
 
