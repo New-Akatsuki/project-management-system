@@ -67,43 +67,43 @@
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/kanban.css">
     <style>
-        .card-container {
-            margin: 20px; /* Adjust the margin value as needed */
-        }
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            font-family: sans-serif;
-        }
-        .tabs__label {
-            padding: 10px 16px;
-            cursor: pointer;
-        }
+        /*.card-container {*/
+        /*    margin: 20px; !* Adjust the margin value as needed *!*/
+        /*}*/
+        /*.tabs {*/
+        /*    display: flex;*/
+        /*    flex-wrap: wrap;*/
+        /*    font-family: sans-serif;*/
+        /*}*/
+        /*.tabs__label {*/
+        /*    padding: 10px 16px;*/
+        /*    cursor: pointer;*/
+        /*}*/
 
-        .tabs__radio {
-            display: none;
-        }
+        /*.tabs__radio {*/
+        /*    display: none;*/
+        /*}*/
 
-        .tabs__content {
-            order: 1;
-            line-height: 1.5;
-            font-size: 0.9em;
-            display: none;
-        }
+        /*.tabs__content {*/
+        /*    order: 1;*/
+        /*    line-height: 1.5;*/
+        /*    font-size: 0.9em;*/
+        /*    display: none;*/
+        /*}*/
 
-        .tabs__radio:checked + .tabs__label {
-            /*font-weight: bold;*/
-            color: #1DA1F2;
-            border-bottom: 2px solid #1DA1F2;
-        }
+        /*.tabs__radio:checked + .tabs__label {*/
+        /*    !*font-weight: bold;*!*/
+        /*    color: #1DA1F2;*/
+        /*    border-bottom: 2px solid #1DA1F2;*/
+        /*}*/
 
-        .tabs__radio:checked + .tabs__label + .tabs__content {
-            display: initial;
-        }
+        /*.tabs__radio:checked + .tabs__label + .tabs__content {*/
+        /*    display: initial;*/
+        /*}*/
 
-        .tabs__button {
-            margin-left: auto; /* Move the button to the right */
-        }
+        /*.tabs__button {*/
+        /*    margin-left: auto; !* Move the button to the right *!*/
+        /*}*/
 
         /* Custom styles for the model div */
         #exampleModal{
@@ -191,18 +191,18 @@
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
                 <label for="tab1" class="tabs__label">Kanban</label>
-                <div class="tabs__content container py-0">
+                <div class="tabs__content py-0">
                     <br>
                     <!-- Kanban Board -->
                     <div>
-                        <div id="kanban" class="p-3">
+                        <div id="kanban" class="px-3">
                         </div>
                     </div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
                 <label for="tab2" class="tabs__label">Gantt Chart</label>
-                <div class="tabs__content container py-0">
+                <div class="tabs__content py-0">
                     <br>
                     <!-- Gantt Chart -->
                     <div id="gantt" style="width: 100%; height: 70vh"></div>
@@ -335,7 +335,6 @@
                                     <select id="task-type" class="form-select" required>
                                         <option value="" selected>Select task type</option>
                                         <option value="task">Task</option>
-                                        <option value="project">Project</option>
                                         <option value="milestone">Milestone</option>
                                     </select>
                                 </div>
@@ -429,8 +428,9 @@
         });
 
         $('#saveTaskBtn').on('click', function() {
-            $.fn.kanban.saveTask();
+            $.fn.kanban.saveOrUpdateTask(null);
         });
+
 
     });
 </script>

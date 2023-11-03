@@ -27,7 +27,7 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(length = 500)

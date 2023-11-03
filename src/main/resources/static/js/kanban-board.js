@@ -1,9 +1,37 @@
 (function ($) {
     $.fn.kanban = function (options) {
         let $this = $(this);
+
+        //current phase and parent ids
+        let phaseId = null;
+        let parentId = null;
+        let currentTaskId = null;
+
         //modal data object
         let addPhaseModalData = {title:'Add',modalId:'addPhaseModal',};
         let editPhaseModalData = {title:'Edit',modalId:'editPhaseModal'};
+
+        //simple task object
+        let simpleTask = {
+            id: null,
+            name: "Task",
+            description: "",
+            priority:"",
+            start_date: "",
+            end_date: "",
+            actual_due_date: null,
+            duration: null,
+            plan_hours: "",
+            actual_hours: null,
+            progress: 0,
+            status: false,
+            phase: phaseId,
+            parent: parentId,
+            group: "",
+            type: "",
+            assignees: [],
+            open: true,
+        };
 
         let dataFromUser = {
             phases: [],
@@ -13,8 +41,6 @@
             onReceive: function (e, ui) {
             },
         }
-        let phaseId = null;
-        let parentId = null;
 
         let settings = $.extend(
             {
@@ -77,7 +103,7 @@
              * ============================================================*/
         function initKanban() {
             $this.addClass(classes.kanban_board_class);
-            $this.append( `<button type="submit" id="add-phase-button" class="btn btn-primary" 
+            $this.append( `<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
                             data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
                                 Add Phase +
                            </button>`);
@@ -93,7 +119,6 @@
             buildPhaseModal(addPhaseModalData);
             buildPhaseModal(editPhaseModalData);
             buildConfirmModal();
-            buildTaskViewModal();
         }
 
         /* ===========================================================
@@ -179,7 +204,7 @@
                                 <div class="kb-task-name-layout">
                                     <span class="kb-task-name fs-6 fw-bold">${item.name}</span>
                                 </div>
-                                <div class="kb-task-status-layout">
+                                <div class="kb-task-status-layout d-flex align-items-center">
                                    ${doneIcon} 
                                 </div>
                             </div>
@@ -196,8 +221,8 @@
                                 </div>
                             </div>
                             <div id="${item.id}-subtask-block" class="hide subtask-block"></div>
-                            <button id="${item.id}-add-subtask-btn" class="add-subtask-btn d-flex align-items-center justify-content-center gap-2"><i class='bx bx-plus fs-4'></i>Add Subtask</button>
-                        </div>  
+                        </div>
+                        <button id="${item.id}-add-subtask-btn" class="add-subtask-btn d-flex align-items-center justify-content-center gap-2"><i class='bx bx-plus fs-4'></i>Add Subtask</button>
                     </div>
             `;
                 //insert task into phase body
@@ -207,27 +232,21 @@
                 $(`#${item.id}-add-subtask-btn`).on('click', () => {
                     parentId = item.id;
                     phaseId = item.phase;
-                    console.log(item.id, parentId, phaseId)
                     resetTaskModal();
                     //show modal
                     $('#exampleModal').modal('show');
                 });
+
                 //toggle subtask
                 const task = document.getElementById(`${item.id}`);
 
                 $(`#${item.id} .kb-task-name-layout`).on('click', () => {
-                    //show modal
-                    // $('#exampleModal').modal('show');
+                    //remove offcanva if exist
+                    $('#taskViewModal').remove();
+                    //create offcanvas
+                    buildTaskViewModal(item.id);
                     //show offcanvas
                     $('#taskViewModal').offcanvas('show');
-                    $('#task-name').val(item.name);
-                    $('#task-description').val(item.description);
-                    $('#task-priority').val(item.priority);
-                    $('#task-start-date').val(item.start_date);
-                    $('#task-end-date').val(item.end_date);
-                    $('#task-plan-hours').val(item.plan_hours);
-                    $('#task-group').val(item.group);
-                    $('#task-type').val(item.type);
                 });
 
                 const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
@@ -237,7 +256,6 @@
                         subtaskBlock.classList.toggle('hide');
                         //for animation
                         task.style.height = subtaskBlock.classList.contains('hide') ? '155px' : `${height + 145}px`;
-                        const addSubtaskBtn = document.getElementById(`${item.id}-add-subtask-btn`);
                         subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                     });
                 }
@@ -269,20 +287,16 @@
 
                 // Add a click event handler to each subtask
                 const subtask = document.getElementById(`${item.id}`);
-                subtask.addEventListener('click', () => {
-                    // Show the modal and populate it with subtask data
-                    $('#exampleModal').modal('show');
-
-                    // Populate the modal fields with subtask data
-                    $('#task-name').val(item.name);
-                    $('#task-description').val(item.description);
-                    $('#task-priority').val(item.priority);
-                    $('#task-start-date').val(item.start_date);
-                    $('#task-end-date').val(item.end_date);
-                    $('#task-plan-hours').val(item.plan_hours);
-                    $('#task-group').val(item.group);
-                    $('#task-type').val(item.type);
-                });
+                if(subtask){
+                    subtask.addEventListener('click', () => {
+                        //remove offcanva if exist
+                        $('#taskViewModal').remove();
+                        //create offcanvas
+                        buildTaskViewModal(item.id);
+                        //show offcanvas
+                        $('#taskViewModal').offcanvas('show');
+                    });
+                }
             });
         }
 
@@ -467,12 +481,12 @@
 
 
         /* ===========================================================
-              Save Task to Database
+            Save Task to Database
            ============================================================*/
-        function saveTask() {
+        function saveOrUpdateTask() {
             // Initialize the task object
             const task = {
-                id: null,
+                id: currentTaskId,
                 name: $('#task-name').val(),
                 description: $('#task-description').val(),
                 priority: $('#task-priority').val(),
@@ -488,10 +502,34 @@
                 parent: parentId,
                 group: $('#task-group').val(),
                 type: $('#task-type').val(),
-                assignees: [],
+                assignees: [$('#task-assignees').val()],
                 open: true,
             };
+            //check if task id exist
+            if(currentTaskId) {
+                let currentTask = settings.tasks.filter(data => data.id === currentTaskId)[0];
+                currentTask.name= task.name
+                currentTask.description= task.description
+                currentTask.priority= task.priority
+                currentTask.start_date= task.start_date
+                currentTask.end_date= task.end_date
+                currentTask.plan_hours= task.plan_hours
+                currentTask.group= task.group
+                currentTask.type= task.type
+                currentTask.assignees= task.assignees
 
+                console.log(currentTask)
+
+                updateTask(currentTask)
+
+
+            }else {
+                console.log('saving task...')
+                saveTask(task)
+            }
+        }
+
+        function saveTask(task){
             $.ajax({
                 url: '/add-task',
                 method: 'POST',
@@ -501,6 +539,10 @@
                 success: function (data) {
                     settings.tasks.push(data)
                     resetTaskModal()
+                    if(document.getElementById('taskViewModal')){
+                        console.log('taskViewModal exist')
+                        renderSubtask(parentId);
+                    }
                     render()
                 },
                 error: function (xhr, status, error) {
@@ -522,6 +564,20 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (data) {
+                    //update settings.task data
+                    settings.tasks.filter(val => val.id === task.id)[0] = data;
+                    //check taskViewModal exist
+                    if(document.getElementById('taskViewModal')){
+                        //close offcanvas
+                        $('#taskViewModal').offcanvas('hide');
+                        $('#taskViewModal').remove();
+                        render()
+                        buildTaskViewModal(currentTaskId);
+                        $('#taskViewModal').offcanvas('show');
+                        currentTaskId = null
+                        console.log('currentTaskId',currentTaskId)
+                    }
+
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
@@ -542,26 +598,170 @@
             $('#task-type').val("")
         }
 
+        function fillDataTaskModal(taskId) {
+            const task = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            $('#task-name').val(task.name)
+            $('#task-description').val(task.description)
+            $('#task-priority').val(task.priority)
+            $('#task-start-date').val(task.start_date)
+            $('#task-end-date').val(task.end_date)
+            $('#task-plan-hours').val(task.plan_hours)
+            $('#task-group').val(task.group)
+            $('#task-type').val(task.type)
+        }
+
         /*
         ================================================
         Build Task View Modal
         ================================================
          */
-        function buildTaskViewModal(task){
+        function buildTaskViewModal(taskId){
+            const task = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+            const completeBtnText = task.status ? 'completed':'Mark complete';
+            const subtaskList = settings.tasks.filter(val=> val.parent === task.id);
+            const isExpandAccordion = subtaskList.length>0;
+
             const view = `
             <div class="offcanvas offcanvas-end" tabindex="-1" id="taskViewModal" aria-labelledby="taskViewModalLabel">
               <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="taskViewModalLabel">Offcanvas right</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                   <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
-              
+                    <div class="d-flex flex-column gap-3 col-12 px-3 y-scroll">
+                        <h5 class="offcanvas-title mb-2 col-12">${task.name}</h5>
+                        <button id="${task.id}-edit-task-btn" class="btn btn-primary float-edit-btn"><i class="bx bx-edit-alt me-2"></i>Edit</button>
+                        <div class="d-flex col-12">
+                            <span class="col-3 fw-bold">Assignee</span>
+                            <span class="col-9">${['User1','User2'].join(', ')}</span>
+                        </div>
+                        <div class="d-flex col-12">
+                            <span class="col-3 fw-bold">Start date</span>
+                            <span class="col-3">
+                                ${new Date(task.start_date).toLocaleString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                })}
+                            </span>
+                            <span class="col-3 fw-bold">Due date</span>
+                            <span class="col-3">
+                                ${new Date(task.end_date).toLocaleString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                })}
+                            </span>
+                        </div>
+                        <div class="d-flex col-12">
+                            <span class="col-3 fw-bold">Priority</span>
+                            <span class="col-3"><span class="${priorityClass}">${task.priority}</span></span>
+                        
+                            <span class="col-3 fw-bold">Task Group</span>
+                            <span class="col-3">${task.group}</span>
+                        </div>
+                        <div class="d-flex flex-column gap-1 col-12">
+                            <span class="fw-bold">Description</span>
+                            <span class="border border-1 px-3 py-1 desc-view">
+                                ${task.description||'No description'}
+                            </span>
+                        </div>
+                        <div class="d-flex flex-column gap-1 col-12">
+                            <div class="accordion mb-3" id="subtask-view-offcanvas">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header${isExpandAccordion?'':' collapsed'}">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="${isExpandAccordion}"
+                                                aria-controls="collapseOne">
+                                            <span id="subtask-accordion-header" class="display-6 fs-5 fw-bold">Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span></span>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse${isExpandAccordion?' collapse show':' collapse'}"
+                                         data-bs-parent="#subtask-view-offcanvas">
+                                        <div class="accordion-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="${task.id}-add-subtask" class="add-subtask-btn d-flex align-items-center justify-content-center gap-2"><i class='bx bx-plus fs-4'></i>Add Subtask</button>
+                    </div>
               </div>
             </div>
             `;
+
+
+            let btn = ` <button id="${task.id}-complete-btn" class="btn-sm make-complete-btn py-1 px-2 fs-6 ${task.status?'btn-complete':''}">
+                            <i class='bx bx-check fs-5 me-1'></i>${completeBtnText} 
+                            </button>
+                        `;
             $this.append(view);
+            //append as first child of offcanvas-header
+            $(`.offcanvas-header`).prepend(btn);
+
+
+            //append subtasks
+            renderSubtask(task.id)
+
+            const addSubtaskBtn = document.getElementById(`${task.id}-add-subtask`);
+            console.log(task.id,addSubtaskBtn)
+            // Add a click event handler to add subtask btn
+            addSubtaskBtn.addEventListener('click', () => {
+                console.log('clicked add btn')
+                parentId = task.id;
+                phaseId = task.phase;
+                resetTaskModal();
+                $('#exampleModal').modal('show');
+            });
+
+            const completeBtn = document.getElementById(`${task.id}-complete-btn`)
+            if(completeBtn){
+                completeBtn.addEventListener('click',()=> {
+                    console.log('click complete btn')
+                    task.status = !task.status;
+                });
+            }
+            $(`#${task.id}-edit-task-btn`).on('click',()=>{
+                console.log('clicked edit btn')
+                currentTaskId = task.id;
+                fillDataTaskModal(task.id);
+                $('#exampleModal').modal('show');
+            });
         }
 
+        function renderSubtask(taskId){
+            $('#subtask-accordion-header').empty();
+            $(`#subtask-view-offcanvas .accordion-body`).empty();
+            const subtaskList = settings.tasks.filter(val=> val.parent === taskId);
+            //append subtasks
+            subtaskList.forEach((item)=>{
+                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>':'<i class="bx bx-check-circle"></i>' ;
+                const subtask = `
+                    <div id="${item.id}-offcanvas-subtask" class="kb-subtask-body">
+                            <span class="flex-1 fs-4 d-flex align-items-center justify-content-center">
+                                ${doneIcon}
+                            </span>
+                            <span class="kb-subtask-name flex-7">${item.name}</span>
+                            <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end me-3">
+                                <span style="font-size: 9px">Due date</span>
+                                <span>${new Date(item.end_date).toLocaleString('en-US', {month: 'short', day: 'numeric'})}</span>
+                            </span>                                                             
+                        </div>                   
+                `;
+
+                $(`#subtask-view-offcanvas .accordion-body`).append(subtask)
+
+                $(`#${item.id}-offcanvas-subtask`).on('click',()=>{
+                    $('#taskViewModal').offcanvas('hide');
+                    //remove offcanva if exist
+                    $('#taskViewModal').remove();
+                    //create offcanvas
+                    buildTaskViewModal(item.id);
+                    //show offcanvas
+                    $('#taskViewModal').offcanvas('show');
+                })
+            })
+            $('#subtask-accordion-header').append(`Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span>`)
+        }
 
         //reset function for phase modal
         function resetPhaseModal(data) {
@@ -571,7 +771,7 @@
 
         // Export your saveTask function for usage elsewhere
         $.fn.kanban.savePhase = savePhase;
-        $.fn.kanban.saveTask = saveTask;
+        $.fn.kanban.saveOrUpdateTask = saveOrUpdateTask;
 
         initKanban();
         return {

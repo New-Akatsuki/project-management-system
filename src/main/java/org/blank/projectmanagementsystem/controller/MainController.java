@@ -70,4 +70,10 @@ public class MainController {
     public String details(){
         return "project-details-info";
     }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test-single-select";
+    }
 }
+

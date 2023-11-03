@@ -438,3 +438,77 @@ input[type="checkbox"] {
 .offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
     --bs-offcanvas-width: 650px!important;
 }
+
+.make-complete-btn{
+    background: rgba(53, 119, 255, 0.04);
+    border: 1px solid #3577ff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3577ff;
+}
+.make-complete-btn:hover{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.btn-complete{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.desc-view{
+    border-radius: 7px;
+    max-height: 100px;
+    overflow-y: scroll;
+    text-align: justify;
+}
+.priority-high{
+    padding: 3px 5px;
+    border-radius: 5px;
+    background: #ff3535;
+    border: 1px solid #ff3535;
+    color: white;
+    font-size: 12px;
+}
+.priority-medium{
+    padding: 3px 5px;
+    border-radius: 5px;
+    background: #ff9f35;
+    border: 1px solid #ff9f35;
+    color: white;
+    font-size: 12px;
+}
+.priority-low{
+    padding: 3px 5px;
+    border-radius: 5px;
+    background: #ffdd35;
+    border: 1px solid #ffdd35;
+    color: white;
+    font-size: 12px;
+}
+
+.offcanvas-body .y-scroll{
+    max-height: 75vh!important;
+    overflow-y: scroll!important;
+}
+.accordion-body{
+    max-height: 150px!important;
+    overflow-y: scroll;
+    padding: 0!important;
+}
+
+.move-top{
+    position: absolute;
+    top: 85px;
+    left: 250px;
+    z-index: 1;
+}
+
+.float-edit-btn{
+    position: absolute;
+    top: 85px;
+    right: 25px;
+    z-index: 1;
+}
