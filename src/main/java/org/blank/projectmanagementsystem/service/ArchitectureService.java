@@ -9,7 +9,7 @@ import java.util.List;
 public interface ArchitectureService {
     Architecture getById(int id);
    List<Architecture> getAllArchitectures();
-    Architecture saveArchitecture(Architecture architecture);
+
     void deleteArchitecture(int id);
     Architecture updateArchitecture(int id, Architecture architecture);
     Architecture save(Architecture architecture);

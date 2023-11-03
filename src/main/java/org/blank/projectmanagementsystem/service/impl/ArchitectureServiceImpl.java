@@ -30,10 +30,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
         return architectureRepository.findAll();
     }
 
-    @Override
-    public Architecture saveArchitecture(Architecture architecture) {
-        return architectureRepository.save(architecture);
-    }
+
 
     @Override
     public void deleteArchitecture(int id) {

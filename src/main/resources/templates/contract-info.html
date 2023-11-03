@@ -329,7 +329,7 @@
           <input type="text" class="form-control" id="deliverablesName" name="name" required placeholder="Enter new deliverables method">
         </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addDeliverable()" class="btn btn-primary">Add Deliverables</button>
+        <button type="button" onclick="addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
       </form>
       </div>
       </div>
@@ -393,7 +393,7 @@
             <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
           </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" onclick="addClient()" class="btn btn-primary">Add Client</button>
+          <button type="button" onclick="addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
         </form>
        </div>
     </div>
@@ -471,7 +471,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="addArchitecture()">Add Architecture</button>
+        <button type="button" class="btn btn-primary" onclick="addArchitecture()" data-dismiss="modal">Add Architecture</button>
       </div>
     </div>
   </div>
@@ -603,6 +603,7 @@
 
   function addDeliverable() {
     let newDeliverable = {
+      id: null,
       name: $('#deliverablesName').val()
     };
 
@@ -641,7 +642,7 @@
 
   // Function to update the UI with client data
   function updateClientUI(client) {
-    const clientTableBody = $('#clientTableBody');
+    const clientTableBody   = $('#clientTableBody');
     const newRow = `
     <tr>
       <td>${client.id}</td>
@@ -754,7 +755,9 @@
       url: "/pm/architectures",
       success: function(data) {
           console.log("SUCCESS:", data);
-
+        data.forEach(function(architecture) {
+          updateArchitectureUI(architecture);
+        });
       },
       error: function(e) {
           console.log("ERROR:", e);
