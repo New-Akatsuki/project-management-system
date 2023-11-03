@@ -11,7 +11,6 @@ import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 
 public class UserMapper {
 
-
     public UserViewObject mapToUserViewObject(User user){
         return new UserViewObject(user);
     }

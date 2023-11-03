@@ -192,6 +192,25 @@
   const department_wrapperUpdateName = singleSelect(id2, data2);
 
 </script>
+<script>
+
+  function updateMemberUI(data) {
+    // Update the UI to reflect the added member.
+    let userTable = $("#user-list-table tbody");
+
+    // Create a new table row with the user data and append it to the table.
+    let newRow = $('<tr>');
+    newRow.append('<td>' + data.id + '</td>');
+    newRow.append('<td>' + data.name + '</td>');
+    newRow.append('<td>' + data.department + '</td>');
+    newRow.append('<td>' + data.role + '</td>');
+
+    userTable.append(newRow);
+  }
+
+
+
+</script>
 
 
 

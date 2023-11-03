@@ -8,8 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department,Integer> {
-
-
-
     Optional<Object> findById(Long departmentId);
 }

@@ -41,7 +41,6 @@
           referrerpolicy="no-referrer"
   />
 
-
   <!-- Hope Ui Design System Css -->
   <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
   <!-- Library / Plugin Css Build -->
@@ -96,7 +95,7 @@
             </div>
             <div class="card-body">
               <div class="new-user-info">
-                <form th:action="@{/pm/add-user}" th:object="${addUserFormInput}" method="post">
+                <form  id="memberForm">
 
                 <div class="row">
 <!--                    <div class="profile-img-edit position-relative">-->
@@ -153,7 +152,7 @@
                       </div>
                     </div>
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Create New Member</button>
+                      <button type="button" onclick="addNewMember()" class="btn btn-primary">Create New Member</button>
                     </div>
                   </div>
                 </form>
@@ -191,6 +190,51 @@
 <!--  const department_wrapperUpdateName = singleSelect(id2, data2);-->
 
 <!--</script>-->
+<script>
+
+    function addNewMember() {
+      let addMember ={
+        id: null,
+        name: $("#name").val(),
+        email: $("#email").val(),
+        role: $("#role").val(),
+        department: $("#department").val()
+      };
+      $.ajax({
+        type: "POST",
+        url: "/pm/add-users",
+        contentType: "application/json",
+        data: JSON.stringify(addMember),
+        dataType: 'json',
+        success: function (data) {
+          console.log("SUCCESS: ", data);
+        },
+        error: function (xhr, status, error) {
+          console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.', error);
+        }
+      })
+    }
+
+      // $.ajax({
+      //   type: "GET",
+      //   url: "/pm/add-user-list",
+      //   contentType: "application/json",
+      //   data: JSON.stringify(addMember),
+      //   dataType: 'json',
+      //   success: function (data) {
+      //     console.log("SUCCESS: ", data);
+      //   },
+      //   error:function(xhr,status,error){
+      //     console.log("ERROR: ", xhr.responseText);
+      //     alert('Error! Please try again.',error);
+      //   }
+      //
+      // })
+
+
+
+</script>
 
 </body>
 </html>

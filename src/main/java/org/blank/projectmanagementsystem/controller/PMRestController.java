@@ -2,10 +2,8 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.entity.Architecture;
-import org.blank.projectmanagementsystem.domain.entity.Client;
-import org.blank.projectmanagementsystem.domain.entity.Deliverable;
-import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
+import org.blank.projectmanagementsystem.domain.entity.*;
+import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,6 +71,12 @@ public class PMRestController {
     public ResponseEntity<Architecture> addArchitecture(@RequestBody Architecture architecture) {
         Architecture newArchitecture = architectureService.save(architecture);
         return ResponseEntity.ok(newArchitecture);
+    }
+
+    @PostMapping("/pm/add-users")
+    public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
+        User newUser = userService.registerUser(addUserFormInput);
+        return ResponseEntity.ok(addUserFormInput);
     }
 
 //    @PostMapping("/pm/add-architecture")
