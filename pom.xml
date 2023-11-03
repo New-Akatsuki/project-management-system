@@ -87,18 +87,20 @@
             <artifactId>jakarta.mail-api</artifactId>
             <version>2.1.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.sun.mail/smtp -->
-<!--        <dependency>-->
-<!--            <groupId>com.sun.mail</groupId>-->
-<!--            <artifactId>smtp</artifactId>-->
-<!--            <version>2.0.1</version>-->
-<!--        </dependency>-->
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>3.1.5</version>
         </dependency>
+<!--Generate Default Password-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version> <!-- Use the latest version available -->
+        </dependency>
+
 
 
 
