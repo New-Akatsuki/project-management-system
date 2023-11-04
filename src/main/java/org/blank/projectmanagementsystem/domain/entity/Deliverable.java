@@ -21,7 +21,7 @@ public class Deliverable implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(nullable = false)
-    private Integer id;
+    private Long id;
 
 
     @Column(unique = true,nullable = false, length =45)

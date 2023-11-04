@@ -58,4 +58,11 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
+
+    @Override
+    public Client getClientById(Long id) {
+
+        return clientRepository.findById(id).orElse(null);
+
+    }
 }

@@ -17,4 +17,6 @@ public interface SystemOutlineService {
 
 
     void addSystemOutline(String newSystemOutline);
+
+    SystemOutline getSystemOutlineById(Long id);
 }

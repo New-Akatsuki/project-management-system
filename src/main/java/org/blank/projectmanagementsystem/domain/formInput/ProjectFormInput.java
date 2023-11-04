@@ -15,7 +15,7 @@ public class ProjectFormInput {
     private String objective;
     private List<Integer> systemOutlines;
     private List<Integer> architectureOutlines;
-    private List<Integer> deliverables;
+    private List<Long> deliverables;
     private List<Long> contractMembers;
     private List<Long> focMembers;
     private Long client;

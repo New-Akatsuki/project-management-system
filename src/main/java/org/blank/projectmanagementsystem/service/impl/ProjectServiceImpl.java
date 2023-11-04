@@ -73,7 +73,7 @@ public class ProjectServiceImpl implements ProjectService {
                     .orElse(null)).toList();
         }
         //get Deliverables
-        List<Integer> deliverablesIds = projectFormInput.getDeliverables();
+        List<Long> deliverablesIds = projectFormInput.getDeliverables();
         List<Deliverable> deliverables = new ArrayList<>();
         if(deliverablesIds!=null && deliverablesIds.size() > 0){
             deliverables = deliverablesIds.stream().map(id-> deliverableRepository.findById(id)

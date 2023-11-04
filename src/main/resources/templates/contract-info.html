@@ -47,6 +47,8 @@
   <!-- Bootstrap CSS for modal box -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
 
 </head>
 
@@ -96,26 +98,16 @@
                         </div>
 
                         <div class="card-body">
-                          <table class="table table-hover">
+                          <table class="table table-sm" style="width:100%;" id="client">
                            <thead>
                             <tr>
-                              <th>ID</th>
+                              <th>No.</th>
                               <th>Name</th>
                               <th>Email</th>
                               <th>Phone</th>
                               <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody id="clientTableBody">
-                            <tr th:each="client : ${clients}">
-                              <td th:text="${client.id}"></td>
-                              <td th:text="${client.name}"></td>
-                              <td th:text="${client.email}"></td>
-                              <td th:text="${client.phoneNumber}"></td>
-                              <td>
-                                <a th:href="@{'/client/' + ${client.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
-                              </td>
-                            </tbody>
                           </table>
                         </div>
                       </div>
@@ -133,25 +125,15 @@
                           </div>
 
                         <div class="card-body">
-                          <table class="table table-hover">
+                          <table class="table table-sm" id="deliverable">
                             <thead>
                             <tr>
-                              <th>ID</th>
+                              <th>No.</th>
                               <th>Name</th>
                               <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody id="deliverableTableBody">
-                            <tr th:each="deliverable : ${deliverables}">
-                              <td th:text="${deliverable.id}"></td>
-                              <td th:text="${deliverable.name}"></td>
-                              <td>
-                                <a th:href="@{'/deliverable/' + ${deliverable.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
-                              </td>
-                            </tr>
 
-
-                            </tbody>
                           </table>
 
                         </div>
@@ -190,7 +172,7 @@
                               <td th:text="${architecture.name}"></td>
                               <td th:text="${architecture.type}"></td>
                               <td>
-                                <a th:href="@{'/architecture/' + ${architecture.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                                <button class="btn btn-sm btn-primary mx-2" onclick="openEditArchitectureModal('${architecture.id}', '${architecture.name}', '${architecture.type}')">Edit</button>
                               </td>
                             </tr>
                             </tbody>
@@ -227,7 +209,7 @@
                               <td th:text="${systemOutline.id}"></td>
                               <td th:text="${systemOutline.name}"></td>
                               <td>
-                                <a th:href="@{'/systemOutline/' + ${systemOutline.id} + '/edit'}" class="btn btn-sm btn-primary mx-2">Edit</a>
+                                <button class="btn btn-sm btn-primary mx-2" onclick="openEditSystemOutlineModal('${systemOutline.id}', '${systemOutline.name}')">Edit</button>
                               </td>
                             </tr>
 
@@ -274,28 +256,8 @@
 
 <!--Modal box-->
 
-<!--Edit Deliverables-->
-<div class="modal fade" id="deliverablesModal" tabindex="-1" aria-labelledby="deliverablesModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="deliverables-modal-form" class="modal-content">
-      <div class="modal-header">
-        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>                                </svg>
-        <h1 class="modal-title fs-5" id="deliverablesModalLabel">Edit Deliverables Method</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="method-name">Change Method Name:</label>
-        <input type="text" id="method-name" class="form-control" required>
-        <!-- Add more input fields as needed for "Deliverables Methods" editing -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="delete-deliverable-button" class="btn btn-danger">Delete</button>
 
-        <button type="submit" id="deliverables-modal-save-button" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
-</div>
+
 <!--Add Deliverables-->
 <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog" aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -313,43 +275,38 @@
           <input type="text" class="form-control" id="deliverablesName" name="name" required placeholder="Enter new deliverables method">
         </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onclick="addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
+        <button type="button" onclick="$.fn.addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
       </form>
       </div>
       </div>
   </div>
 </div>
 
-<!--Edit Client-->
-<!-- "Edit Client" Modal -->
-<div class="modal  fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="edit-client-modal-form" class="modal-content">
+<!--Add Deliverables-->
+<div class="modal fade" id="editDeliverableModal" tabindex="-1" role="dialog" aria-labelledby="editDeliverablesModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>                                </svg>
-
-        <h1 class="modal-title fs-5" id="editClientModalLabel">Edit Client</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="editDeliverablesModalLabel">Add New Deliverables</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <!-- <span aria-hidden="true">&times;</span>-->
+        </button>
       </div>
       <div class="modal-body">
-        <label for="client-name">Client Name:</label>
-        <input type="text" id="client-name" class="form-control" required>
-        <label for="client-phone">Phone No:</label>
-        <input type="text" id="client-phone" class= "form-control" required>
-        <label for="client-email">Email :</label>
-        <input type="text" id="client-email" class= "form-control" required>
-        <!-- Add more input fields as needed for editing client information -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="delete-client-button" class="btn btn-danger">Delete</button>
+        <form class="mt-4">
+          <div class="form-group">
+            <input type="hidden" id="editDeliverableId" name="id">
+            <label for="editDeliverableName" class="form-label">Deliverable Method</label>
+            <input type="text" class="form-control" id="editDeliverableName" name="name" required placeholder="Enter new deliverable method">
+          </div>
 
-        <button type="submit" id="edit-client-modal-save-button" class="btn btn-primary">Save changes</button>
-
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" onclick="$.fn.updateDeliverable()" class="btn btn-primary" data-dismiss="modal">Update Deliverables</button>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
-
 
 <!-- Add Client Modal -->
 <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
@@ -376,13 +333,49 @@
             <label for="clientPhoneNumber" class="form-label">Phone Number</label>
             <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
           </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" onclick="addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
         </form>
        </div>
     </div>
   </div>
 </div>
+
+
+<!--Edit Client-->
+<div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editClientModalLabel">Edit Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for editing an existing client -->
+        <form class="mt-4">
+          <div class="form-group">
+            <label for="editClientName" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="editClientName" name="name" required placeholder="Enter client name">
+          </div>
+          <div class="form-group">
+            <label for="editClientEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editClientEmail" name="email" required placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" onclick="updateClient()" class="btn btn-primary" data-dismiss="modal">Update Client</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 
 <!--Add System Outline-->
@@ -411,6 +404,39 @@
     </div>
   </div>
 </div>
+
+
+<!--Edit System Outline-->
+
+<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="editSystemOutlineModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editSystemOutlineModalLabel">Edit System Outline</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <!--          <span aria-hidden="true">&times;</span>-->
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for editing an existing system outline -->
+        <form class="mt-4">
+          <input type="hidden" id="outlineId" name="id">
+
+          <div class="form-group">
+            <label for="editOutlineName" class="form-label">System Outline Name</label>
+            <input type="text" class="form-control" id="editOutlineName" name="name" required>
+          </div>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" onclick="updateSystemOutline()" class="btn btn-primary" data-bs-dismiss="modal">Update Outline</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <!--Add Architecture Outline-->
 <div class="modal fade" id="addArchitectureModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
@@ -461,293 +487,48 @@
   </div>
 </div>
 
-
-<!--edit "Architecture Outline" Modal -->
-<div class="modal fade" id="architectureOutlineModal" tabindex="-1" aria-labelledby="architectureOutlineModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="architecture-outline-modal-form" class="modal-content">
+<!--Edit Architecture Outline-->
+<div class="modal fade" id="editArchitectureModal" tabindex="-1" role="dialog" aria-labelledby="editArchitectureModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>                                </svg>
-
-        <h1 class="modal-title fs-5" id="architectureOutlineModalLabel">Edit Architecture Outline</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="editArchitectureModalLabel">Update Architecture Outline</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
-        <label for="outline-title">Outline Title:</label>
-        <input type="text" id="outline-title" class="form-control" required>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="delete-architecture-outline-button" class="btn btn-danger">Delete</button>
+        <form class="mt-4">
+          <div class="form-group">
+            <label for="editArchitectureName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editArchitectureName" name="name" placeholder="Enter architecture outline name" required>
+          </div>
 
-        <button type="submit" id="architecture-outline-modal-save-button" class="btn btn-primary">Save changes</button>
+          <div class="form-group">
+            <label class="form-label" for="editArchitectureType">Type</label>
+            <select class="form-control" id="editArchitectureType" required>
+              <!-- Options will be populated dynamically based on your data -->
+            </select>
+          </div>
+
+          <input type="hidden" id="architectureId" name="id">
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="updateArchitecture()" data-dismiss="modal">Update Architecture</button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
-<!-- "System Outline" Modal -->
-<div class="modal fade" id="systemOutlineModal" tabindex="-1" aria-labelledby="systemOutlineModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="system-outline-modal-form" class="modal-content">
-      <div class="modal-header">
-        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                <path opacity="0.4" d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z" fill="currentColor"></path>                                <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z" fill="currentColor"></path>                                </svg>
 
-        <h1 class="modal-title fs-5" id="systemOutlineModalLabel">Edit System Outline</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="system-title">System Title:</label>
-        <input type="text" id="system-title" class="form-control" required>
 
-        <!-- Add more input fields as needed for editing system outline information -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="delete-system-outline-button" class="btn btn-danger">Delete</button>
-
-        <button type="submit" id="system-outline-modal-save-button" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
-</div>
+<!-- "Edit System Outline" Modal -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="/js/contract-info-script.js"></script>
 
-
-
-<script>
-  function updateSystemOutlineUI(systemOutline) {
-    const systemOutlineTableBody = $('#systemOutlineTableBody');
-
-    const newRow = `
-        <tr>
-          <td>${systemOutline.id}</td>
-          <td>${systemOutline.name}</td>
-          <td>
-            <a href="/systemOutline/${systemOutline.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
-          </td>
-        </tr>
-      `;
-
-    systemOutlineTableBody.append(newRow);
-    console.log("System Outline Object: " + JSON.stringify(systemOutline));
-  }
-
-  function addSystemOutline() {
-    let newSystemOutline = {
-      id: null,
-      name: $('#outlineName').val()
-    };
-
-    $.ajax({
-      type: "POST",
-      url: "/pm/add-system-outline", // Replace with your server endpoint for adding system outlines
-      contentType: "application/json",
-      data: JSON.stringify(newSystemOutline),
-      dataType: 'json',
-      success: function(data) {
-        $("#addSystemOutlineModal").modal('hide');
-        console.log("SUCCESS: ", data);
-        updateSystemOutlineUI(data);
-      },
-      error: function(xhr, status, error) {
-        console.log("ERROR: ", xhr.responseText);
-        alert('Error! Please try again.', error);
-      }
-    });
-  }
-
-  $.ajax({
-    type:"GET",
-    url:"/pm/system-outlines",
-    success:function (data){
-
-      console.log("SUCCESS : ", data);
-      $("#addSystemOutlineModal").modal('hide');
-    },
-    error:function (e){
-      console.log("ERROR : ", e);
-
-    }
-  })
-
-  function updateDeliverableUI(deliverable) {
-    const deliverableTableBody = $('#deliverableTableBody');
-
-    const newRow = `
-        <tr>
-          <td>${deliverable.id}</td>
-          <td>${deliverable.name}</td>
-          <td>
-            <a href="/deliverable/${deliverable.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
-          </td>
-        </tr>
-      `;
-
-    deliverableTableBody.append(newRow);
-    console.log("Deliverable Object: " + JSON.stringify(deliverable));
-  }
-
-  function addDeliverable() {
-    let newDeliverable = {
-      id: null,
-      name: $('#deliverablesName').val()
-    };
-
-    $.ajax({
-      type: "POST",
-      url: "/pm/add-deliverable", // Replace with your server endpoint for adding deliverables
-      contentType: "application/json",
-      data: JSON.stringify(newDeliverable),
-      dataType: 'json',
-      success: function(data) {
-        $("#addDeliverablesModal").modal('hide');
-        console.log("SUCCESS: ", data);
-        updateDeliverableUI(data); // Use the data returned from the server response
-      },
-      error: function(xhr, status, error) {
-        console.log("ERROR: ", xhr.responseText);
-        alert('Error! Please try again.', error);
-      }
-    });
-  }
-
-  $.ajax({
-    type:"GET",
-    url:"/pm/deliverables",
-    success:function (data){
-
-      console.log("SUCCESS : ", data);
-      $("#addDeliverablesModal").modal('hide');
-    },
-    error:function (e){
-      console.log("ERROR : ", e);
-
-    }
-  })
-
-
-  // Function to update the UI with client data
-  function updateClientUI(client) {
-    const clientTableBody   = $('#clientTableBody');
-    const newRow = `
-    <tr>
-      <td>${client.id}</td>
-      <td>${client.name}</td>
-      <td>${client.email}</td>
-      <td>${client.phoneNumber}</td>
-      <td>
-        <a href="/client/${client.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
-      </td>
-    </tr>
-  `;
-    clientTableBody.append(newRow);
-    console.log("Client Object: " + JSON.stringify(client));
-  }
-
-  function addClient() {
-    // Function to add a new client using AJAX
-    let newClient = {
-      id: null,
-      name: $('#clientName').val(),
-      email: $('#clientEmail').val(),
-      phoneNumber: $('#clientPhoneNumber').val()
-    };
-
-    $.ajax({
-      type: "POST",
-      url: "/pm/add-client", // Replace with your server endpoint for adding clients
-      contentType: "application/json",
-      data: JSON.stringify(newClient),
-      dataType: 'json',
-      success: function(data) {
-        $("#addClientModal").modal('hide');
-        console.log("SUCCESS: ", data);
-        updateClientUI(data);
-      },
-      error: function(xhr, status, error) {
-        console.log("ERROR: ", xhr.responseText);
-        alert('Error! Please try again.', error);
-      }
-    });
-  }
-
-  // Fetch existing clients when the page is loaded
-  $.ajax({
-    type: "GET",
-    url: "/pm/clients", // Replace with your server endpoint for fetching clients
-    success: function(data) {
-      console.log("SUCCESS:", data);
-      // Update the UI with existing clients if needed
-      data.forEach(function(client) {
-        updateClientUI(client);
-      });
-    },
-    error: function(e) {
-      console.log("ERROR:", e);
-    }
-  });
-
-
-  <!--Add Architecture Outline-->
-  // Function to update the UI with architecture data
-  function updateArchitectureUI(architecture) {
-      const architectureTableBody = $('#architectureTableBody');
-      const newRow = `
-    <tr>
-      <td>${architecture.id}</td>
-      <td>${architecture.name}</td>
-      <td>${architecture.type}</td>
-      <td>
-        <a href="/architecture/${architecture.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
-      </td>
-    </tr>
-  `;
-      architectureTableBody.append(newRow);
-      console.log("Architecture Object: " + JSON.stringify(architecture));
-  }
-
-  // Function to add a new architecture
-  function addArchitecture() {
-      let newArchitecture = {
-          id: null,
-          name: $('#architectureName').val(),
-          type: $('#architectureType').val()
-      };
-
-      // AJAX POST request to add new architecture
-      $.ajax({
-          type: 'POST',
-          url: '/pm/add-architecture',
-          contentType: 'application/json',
-          data: JSON.stringify(newArchitecture),
-          dataType: 'json',
-          success: function(data) {
-              $("#addArchitectureModal").modal('hide');
-              console.log('SUCCESS:', data);
-              updateArchitectureUI(data); // Call the updateArchitectureUI function to update the UI with new data
-          },
-          error: function(xhr, status, error) {
-              console.log('ERROR:', xhr.responseText);
-              alert('Error! Please try again.');
-          }
-      });
-  }
-
-
-
-  // AJAX GET request to fetch architecture data when the page loads
-  $.ajax({
-      type: "GET",
-      url: "/pm/architectures",
-      success: function(data) {
-          console.log("SUCCESS:", data);
-        data.forEach(function(architecture) {
-          updateArchitectureUI(architecture);
-        });
-      },
-      error: function(e) {
-          console.log("ERROR:", e);
-      }
-  });
-
-</script>
 </body>
 </html>

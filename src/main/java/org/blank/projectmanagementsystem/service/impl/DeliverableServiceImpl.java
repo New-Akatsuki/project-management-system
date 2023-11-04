@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -31,12 +32,12 @@ public class DeliverableServiceImpl implements DeliverableService {
     }
 
     @Override
-    public void deleteDeliverable(int id) {
+    public void deleteDeliverable(long id) {
         deliverableRepository.deleteById(id);
     }
 
     @Override
-    public Deliverable getDeliverable(int id) {
+    public Deliverable getDeliverable(long id) {
         return deliverableRepository.findById(id).orElse(null);
     }
 
@@ -51,9 +52,18 @@ public class DeliverableServiceImpl implements DeliverableService {
         return deliverableRepository.findAll();
     }
 
+    @Override
+    public Deliverable getDeliverableById(Long id) {
+        Optional<Deliverable> optionalDeliverable = deliverableRepository.findById(id);
+
+        // If deliverable is found, return it; otherwise, return null
+        return optionalDeliverable.orElse(null);
+
+    }
+
 
     @Override
-    public Deliverable findById(int id) {
+    public Deliverable findById(long id) {
         return deliverableRepository.findById(id).orElse(null);
     }
 

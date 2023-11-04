@@ -51,6 +51,11 @@ public class ArchitectureServiceImpl implements ArchitectureService {
         return architectureRepository.save(architecture);
     }
 
+    @Override
+    public Architecture getArchitectureById(Long id) {
+        return architectureRepository.findById(Math.toIntExact(id)).orElse(null);
+    }
+
 
 }
 
