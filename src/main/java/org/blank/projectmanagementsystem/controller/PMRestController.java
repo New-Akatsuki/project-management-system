@@ -43,9 +43,9 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/pm/system-outline/update/{id}")
-    public ResponseEntity<SystemOutline> updateSystemOutline(@PathVariable Long id, @RequestBody SystemOutline systemOutline) {
-        SystemOutline existingSystemOutline = systemOutlineService.getSystemOutlineById(id);
+    @PutMapping("/pm/system-outline/update")
+    public ResponseEntity<SystemOutline> updateSystemOutline(@RequestBody SystemOutline systemOutline) {
+        SystemOutline existingSystemOutline = systemOutlineService.getSystemOutlineById(systemOutline.getId());
 
         if (existingSystemOutline != null) {
             // Update the existing systemOutline's information
@@ -135,9 +135,9 @@ public class PMRestController {
         }
     }
 
-    @PutMapping("/pm/client/update/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
-        Client existingClient = clientService.getClientById(id);
+    @PutMapping("/pm/client/update")
+    public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+        Client existingClient = clientService.getClientById(client.getId());
 
         if (existingClient != null) {
             // Update the existing client's information
@@ -185,9 +185,9 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/pm/architecture/update/{id}")
-    public ResponseEntity<Architecture> updateArchitecture(@PathVariable Long id, @RequestBody Architecture architecture) {
-        Architecture existingArchitecture = architectureService.getArchitectureById(id);
+    @PutMapping("/pm/architecture/update")
+    public ResponseEntity<Architecture> updateArchitecture(@RequestBody Architecture architecture) {
+        Architecture existingArchitecture = architectureService.getArchitectureById(architecture.getId());
 
         if (existingArchitecture != null) {
             // Update the existing architecture's information

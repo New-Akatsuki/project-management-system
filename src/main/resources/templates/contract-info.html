@@ -125,7 +125,7 @@
                           </div>
 
                         <div class="card-body">
-                          <table class="table table-sm" id="deliverable">
+                          <table class="table table-sm" style="width:100%;" id="deliverable">
                             <thead>
                             <tr>
                               <th>No.</th>
@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="card-body">
-                          <table class="table table-hover">
+                          <table class="table table-sm" style="width:100%;" id="architecture">
                             <thead>
                             <tr>
                               <th>ID</th>
@@ -165,17 +165,7 @@
                               <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tbody id="architectureTableBody">
-                            <tr th:each="architecture : ${architectures}">
-                              <td th:text="${architecture.id}"></td>
-                              <td th:text="${architecture.name}"></td>
-                              <td th:text="${architecture.type}"></td>
-                              <td>
-                                <button class="btn btn-sm btn-primary mx-2" onclick="openEditArchitectureModal('${architecture.id}', '${architecture.name}', '${architecture.type}')">Edit</button>
-                              </td>
-                            </tr>
-                            </tbody>
+
 
                           </table>
 
@@ -196,7 +186,8 @@
                         </div>
 
                         <div class="card-body">
-                          <table class="table table-hover">
+
+                          <table class="table table-sm" style="width:100%;" id="systemOutline">
                             <thead>
                             <tr>
                               <th>ID</th>
@@ -204,17 +195,6 @@
                               <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody id="systemOutlineTableBody">
-                            <tr th:each="systemOutline : ${systemOutlines}">
-                              <td th:text="${systemOutline.id}"></td>
-                              <td th:text="${systemOutline.name}"></td>
-                              <td>
-                                <button class="btn btn-sm btn-primary mx-2" onclick="openEditSystemOutlineModal('${systemOutline.id}', '${systemOutline.name}')">Edit</button>
-                              </td>
-                            </tr>
-
-
-                            </tbody>
                           </table>
 
                         </div>
@@ -239,16 +219,7 @@
 <!-- End #main -->
 
 
-<!-- Vendor JS Files -->
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Template Main JS File -->
-<script src="/js/main.js"></script>
-
-<!-- Bootstrap JS and Popper.js for Modal Box -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
@@ -356,6 +327,7 @@
         <!-- Form for editing an existing client -->
         <form class="mt-4">
           <div class="form-group">
+            <input type="hidden" id="editClientId" name="id">
             <label for="editClientName" class="form-label">Client Name</label>
             <input type="text" class="form-control" id="editClientName" name="name" required placeholder="Enter client name">
           </div>
@@ -507,9 +479,30 @@
           <div class="form-group">
             <label class="form-label" for="editArchitectureType">Type</label>
             <select class="form-control" id="editArchitectureType" required>
-              <!-- Options will be populated dynamically based on your data -->
-            </select>
-          </div>
+
+
+                <option value="IDE">IDE</option>
+                <option value="FRAMEWORK">Framework</option>
+                <option value="LIBRARY">Library</option>
+                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                <option value="SCRIPT_LANGUAGE">Script Language</option>
+                <option value="MARKUP_LANGUAGE">Markup Language</option>
+                <option value="DATABASE">Database</option>
+                <option value="VCS">Version Control System</option>
+                <option value="API">API</option>
+                <option value="TESTING">Testing</option>
+                <option value="ALGORITHM">Algorithm</option>
+                <option value="DESIGN_PATTERN">Design Pattern</option>
+                <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                <option value="OTHER">Other</option>
+              </select>
+
+
+
+            </div>
 
           <input type="hidden" id="architectureId" name="id">
 
@@ -524,7 +517,17 @@
 </div>
 
 
-<!-- "Edit System Outline" Modal -->
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>

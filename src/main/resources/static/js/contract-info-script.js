@@ -264,7 +264,7 @@ $(document).ready(function () {
     function addSystemOutline() {
         let newSystemOutline = {
             id: null,
-            name: $('#systemOutlineName').val(),
+            name: $('#OutlineName').val(),
         };
 
         $.ajax({
@@ -451,7 +451,7 @@ $(document).ready(function () {
     }
 
     /*===================================================
-          update systemoutline to database
+          update systemOutline to database
    ===================================================*/
     function updateSystemOutline() {
         // Get updated deliverable information from modal fields
