@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <style>
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            font-family: sans-serif;
+        }
+
+        .tabs__label {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        .tabs__radio {
+            display: none;
+        }
+
+        .tabs__content {
+            order: 1;
+            width: 100%;
+            line-height: 1.5;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .tabs__radio:checked + .tabs__label {
+            font-weight: bold;
+            color: #009578;
+            border-bottom: 2px solid #009578;
+        }
+
+        .tabs__radio:checked + .tabs__label + .tabs__content {
+            display: initial;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .card .card-header {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            color: #fff;
+            padding: 18px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        /* New styles for pagination */
+        .pagination {
+            display: flex;
+            list-style: none;
+            margin: 20px 0;
+            padding: 0;
+            justify-content: center;
+        }
+
+        .pagination button {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .pagination button:hover {
+            background-color: #007a66;
+        }
+
+        .pagination button.active {
+            background-color: #007a66;
+        }
+
+        .card .card-body {
+            padding: 15px;
+            font-size: 1.1em;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card .card-body .uploaded-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: auto; /* Push the uploaded info to the bottom of the flex container */
+            text-align: right;
+        }
+
+        .select-box{
+            position: absolute;
+            top: 121px;
+            right: 40px;
+            z-index: 1;
+            align-items: center;
+            gap: 5px;
+        }
+        .w-70px{
+            width: 70px;
+            text-align: end;
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
+                <li class="breadcrumb-item active">Display Issue</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="tabs">
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+        <label for="tab1" class="tabs__label">Open</label>
+
+        <div class="tabs__content" style="padding: 10px;">
+            <div class="select-box d-flex">
+                <label class="w-70px col-3" for="sortOpen">Sort By:</label>
+                <select id="sortOpen" class="form-select">
+                    <option value="newest">Newest Upload</option>
+                    <option value="oldest">Oldest Upload</option>
+                </select>
+            </div>
+            <input type="text" id="openSearch" placeholder="Search...">
+            <div id="openTabContent"></div>
+        </div>
+
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+        <label for="tab2" class="tabs__label">Closed</label>
+
+        <div class="tabs__content" style="padding: 10px;">
+            <div class="select-box d-flex">
+                <label class="w-70px col-3" for="sortClosed">Sort By:</label>
+                <select id="sortClosed" class="form-select">
+                    <option value="newest">Newest Upload</option>
+                    <option value="oldest">Oldest Upload</option>
+                </select>
+            </div>
+            <input type="text" id="closedSearch" placeholder="Search...">
+            <div id="closedTabContent"></div>
+        </div>
+    </div>
+
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    const issues = [
+        {
+            id: "ISU01",
+            title: 'UI Alignment Problem',
+            description: 'The UI elements are not aligned properly on the dashboard.',
+            status: 'Open',
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-01T10:30:00' // Add the uploaded date and time
+        },
+        {
+            id: "ISU02",
+            title: 'Superman vs Batman',
+            description: 'Unable to establish a connection with the database server.',
+            status: 'Closed',
+            assignedTo: 'Jane Smith',
+            uploadedAt: '2023-11-02T14:45:00' // Add the uploaded date and time
+        },
+        {
+            id: "ISU03",
+            title: 'UI Alignment Problem',
+            description: 'The UI elements are not aligned properly on the dashboard.',
+            status: 'Open',
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-03T09:15:00' // Add the uploaded date and time
+        },
+        // Add more issues as needed
+    ];
+
+    const issuesPerPage = 4; // Set the number of issues per page
+
+    function createCards(tabContent, data, page) {
+        tabContent.innerHTML = ''; // Clear previous content
+
+        const startIndex = (page - 1) * issuesPerPage;
+        const endIndex = startIndex + issuesPerPage;
+        const displayedIssues = data.slice(startIndex, endIndex);
+
+        displayedIssues.forEach(issue => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.innerHTML = `
+                    <a href="issue-display#${issue.id}" class="card-link">
+                        <div class="card-header">
+                            <h5 class="text-white">${issue.title}</h5>
+                        </div>
+                        <div class="card-body issue-details">
+                            <p><strong>Description:</strong> ${issue.description}</p>
+                            <p><strong>Status:</strong> ${issue.status}</p>
+                            <p><strong>Assigned To:</strong> ${issue.assignedTo}</p>
+                            <span class="uploaded-info">Uploaded: ${formatDate(issue.uploadedAt)}</span>
+                        </div>
+                    </a>
+                `;
+
+            tabContent.appendChild(card);
+        });
+
+        // Add pagination controls
+        createPagination(tabContent, data, page);
+    }
+
+    function createPagination(tabContent, data, page) {
+        const totalPages = Math.ceil(data.length / issuesPerPage);
+
+        const paginationContainer = document.createElement('ul');
+        paginationContainer.classList.add('pagination');
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.innerText = i;
+            button.addEventListener('click', function () {
+                createCards(tabContent, data, i);
+            });
+
+            if (i === page) {
+                button.classList.add('active');
+            }
+
+            const listItem = document.createElement('li');
+            listItem.appendChild(button);
+            paginationContainer.appendChild(listItem);
+        }
+
+        tabContent.appendChild(paginationContainer);
+    }
+
+    function filterAndSortIssues(tabContent, searchTerm, status, sortOption, page) {
+        const filteredIssues = issues.filter(issue =>
+            (status === 'All' || issue.status === status) &&
+            (issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                issue.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                issue.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                issue.assignedTo.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+
+        const sortedIssues = sortIssues(filteredIssues, sortOption);
+
+        createCards(tabContent, sortedIssues, page);
+    }
+
+    function sortIssues(issues, sortOption) {
+        if (sortOption === 'newest') {
+            return issues.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+        } else if (sortOption === 'oldest') {
+            return issues.sort((a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt));
+        } else {
+            return issues;
+        }
+    }
+
+    const openSearchInput = document.getElementById('openSearch');
+    const sortOpenSelect = document.getElementById('sortOpen');
+
+    openSearchInput.addEventListener('input', function () {
+        const sortOption = sortOpenSelect.value;
+        filterAndSortIssues(openTabContent, this.value, 'Open', sortOption, 1);
+    });
+
+    sortOpenSelect.addEventListener('change', function () {
+        const searchTerm = openSearchInput.value;
+        const sortOption = this.value;
+        filterAndSortIssues(openTabContent, searchTerm, 'Open', sortOption, 1);
+    });
+
+    const closedSearchInput = document.getElementById('closedSearch');
+    const sortClosedSelect = document.getElementById('sortClosed');
+
+    closedSearchInput.addEventListener('input', function () {
+        const sortOption = sortClosedSelect.value;
+        filterAndSortIssues(closedTabContent, this.value, 'Closed', sortOption, 1);
+    });
+
+    sortClosedSelect.addEventListener('change', function () {
+        const searchTerm = closedSearchInput.value;
+        const sortOption = this.value;
+        filterAndSortIssues(closedTabContent, searchTerm, 'Closed', sortOption, 1);
+    });
+
+    // Initial card creation
+    const initialSortOptionOpen = sortOpenSelect.value;
+    createCards(openTabContent, sortIssues(issues.filter(issue => issue.status === 'Open'), initialSortOptionOpen), 1);
+
+    const initialSortOptionClosed = sortClosedSelect.value;
+    createCards(closedTabContent, sortIssues(issues.filter(issue => issue.status === 'Closed'), initialSortOptionClosed), 1);
+
+    // Helper function to format date
+    function formatDate(timestamp) {
+        const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+        return new Date(timestamp).toLocaleDateString('en-US', options);
+    }
+</script>
+</body>
+</html>

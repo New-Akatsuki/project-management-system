@@ -37,10 +37,10 @@ public class Issue implements Serializable {
     private int impact;
 
     @Column(length = 500, nullable = false)
-    private String direct_cause;
+    private String directCause;
 
     @Column(length = 500, nullable = false)
-    private String root_cause;
+    private String rootCause;
 
     @Column(length = 500, nullable = false)
     private String correctiveAction;
@@ -54,11 +54,11 @@ public class Issue implements Serializable {
 
     @OneToOne
     @JoinColumn(nullable = false)
-    private IssuePlace issue_place;
+    private IssuePlace issuePlace;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(nullable = false)
-    private Set<IssueCategory> issue_category;
+    private IssueCategory issueCategory;
 
     @ManyToOne
     @JoinColumn(nullable = false)

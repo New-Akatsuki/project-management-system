@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
+    <style>
+        .card-container {
+            margin: 20px; /* Adjust the margin value as needed */
+        }
+
+    </style>
+    <style>
+        .solve-display {
+            display: none;
+        }
+    </style>
+    <style>
+        /* Add your custom styles here if needed */
+        .custom-card {
+            border-radius: 15px;
+            margin: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-footer {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            color: white;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 55px; /* Set the desired height */
+        }
+    </style>
+    <style>
+        .issue-details {
+            padding: 20px;
+        }
+
+        .issue-details div {
+            margin-bottom: 10px;
+        }
+
+        .issue-details label, .issue-details span {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .issue-details label {
+            width: 150px;
+            font-weight: bold;
+        }
+
+        .issue-details .colon {
+            display: inline-block;
+            width: 10px; /* Adjust the width as needed */
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
+                <li class="breadcrumb-item active">Display Issue</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- End Page Title -->
+    <div class="card custom-card">
+        <div class="card-header position-relative">
+            <h3><i class="bi bi-pip"></i> Display Issue Details</h3>
+            <a class="icon-add-btn">
+                <i class='bx bx-edit m-0 p-0'></i>
+            </a>
+        </div>
+
+
+        <div class="card-body container position-relative issue-details">
+            <div>
+                <label>Issue ID</label>
+                <span class="colon">:</span>
+                <span>ISU001</span>
+            </div>
+
+            <div>
+                <label>Title</label>
+                <span class="colon">:</span>
+                <span>Bitten by a spider</span>
+            </div>
+
+            <div>
+                <label>Issue Place</label>
+                <span class="colon">:</span>
+                <span>Production</span>
+            </div>
+            <div>
+                <label>Issue Pic</label>
+                <span class="colon">:</span>
+                <span>John Doe</span>
+            </div>
+            <div>
+                <label>Category</label>
+                <span class="colon">:</span>
+                <span>Communication, Software</span>
+            </div>
+            <div>
+                <label>Content</label>
+                <span class="colon">:</span>
+                <span>While taking a photo of a girl, a spider bit on the hand and became a superhero.</span>
+            </div>
+            <div>
+                <label>Responsible Party</label>
+                <span class="colon">:</span>
+                <span>John Doe</span>
+            </div>
+            <div>
+                <label>Direct Cause</label>
+                <span class="colon">:</span>
+                <span>Spider bite</span>
+            </div>
+            <div>
+                <label>Root Cause</label>
+                <span class="colon">:</span>
+                <span>Spider bite</span>
+            </div>
+            <div>
+                <label>Status</label>
+                <span class="colon">:</span>
+                <span>Open</span>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+            <p><strong>Uploaded at </strong><span>31 October 2023.</span></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <label for="status">Status</label>
+    <select id="status" onchange="toggleFields()">
+        <option value="0">Form</option>
+        <option value="1">View</option>
+    </select>
+    <hr>
+    <div class="card solve-form" style="border-radius: 20px; padding: 20px; margin: 10px">
+        <div class="container">
+
+            <br>
+            <form>
+                <div>
+                    <label for="co-action">Corrective Action</label>
+                </div>
+                <div id="co-action"></div>
+                <br>
+                <div>
+                    <label for="pre-action">Preventive Action</label>
+                </div>
+                <div id="pre-action"></div>
+                <br>
+                <div>
+                    <label for="impact">Impact</label>
+                </div>
+                <div>
+                    <input id="impact" name="impact" type="text" class="form-control"/>
+                </div>
+                <br>
+                <input type="hidden" name="coAction" id="co-actionInput">
+                <input type="hidden" name="preAction" id="pre-actionInput">
+                <div class="d-flex justify-content-end gap-3 mt-2">
+                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                    <button class="btn btn-danger">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="card solve-display" style="border-radius: 10px;">
+
+        <div class="container" style="padding: 25px;">
+            <div><h2><i class="bi bi-lightbulb-fill"></i> Solution</h2></div>
+            <br>
+            <div>
+                <label>Solution : </label>
+                <span>Make a suit, wear a mask, swing between the buildings like Tarzan, and kick bad guys' ass.</span>
+            </div>
+            <br>
+            <div>
+                <label>Corrective Action : </label>
+                <span>Just do as I said.</span>
+            </div>
+            <br>
+            <div>
+                <label>Preventive Action : </label>
+                <span>Take Care next time, or u will be get killed by Venom.</span>
+            </div>
+            <br>
+            <div>
+                <label>Impact : </label>
+                <span>I don't know what impact is.</span>
+            </div>
+            <div class="button-div">
+                <button onclick="edit()" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+
+<script>
+    let coAction = new Quill("#co-action", aa)
+    let preAction = new Quill("#pre-action", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-action');
+        toggleToolbar(1, 'pre-action');
+    })
+</script>
+<script>
+    function toggleFields() {
+        var status = document.getElementById("status").value;
+
+        if (status === "0") {
+            document.querySelector(".solve-form").style.display = "block";
+            document.querySelector(".solve-display").style.display = "none";
+        } else if (status === "1") {
+            document.querySelector(".solve-form").style.display = "none";
+            document.querySelector(".solve-display").style.display = "block";
+        }
+    }
+
+    function edit() {
+        document.querySelector(".solve-form").style.display = "block";
+        document.querySelector(".solve-display").style.display = "none";
+    }
+
+</script>
+</body>
+</html>

@@ -55,13 +55,34 @@ public class HomeController {
     public String departmentView(){
         return "department";
     }
-    @GetMapping("/create-issue")
-    public String issuessdfView(){
-        return "create-issue";
-    }
 
     @GetMapping("/issue-display")
     public String issuessdsdffView(){
         return "issue-display";
+    }
+
+    @GetMapping("/project-details")
+    public String abc(){
+        return "project-details-info";
+    }
+
+    @GetMapping("/pic-display")
+    public String def(){
+        return "pic-display";
+    }
+
+    @GetMapping("/test-issue")
+    public String test2(){
+        return "test-issue";
+    }
+
+    @GetMapping("/pic-solve")
+    public String test3(){
+        return "pic-solve-issue";
+    }
+
+    @GetMapping("/issue-create")
+    public String issueCreateView(){
+        return "issue-create";
     }
 }

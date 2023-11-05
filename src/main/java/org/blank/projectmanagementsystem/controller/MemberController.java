@@ -70,9 +70,6 @@ public class MemberController {
         return "redirect:/";
     }
 
-
-
-
     @GetMapping("/create-issue")
     public ModelAndView createIssue(){
         return new ModelAndView("issue-create", "issueCreateFormInput", new IssueCreateFormInput());
@@ -90,5 +87,6 @@ public class MemberController {
     public ModelAndView displayIssue(){
         return new ModelAndView("issue-display", "IssueSolveFormInput", new IssueSolveFormInput());
     }
+
 
 }

@@ -36,15 +36,19 @@
             margin-bottom: 20px;
             border: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s;
+            transition: transform 0.3s;
         }
 
         .issue-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
+        .issue-card:hover {
+            transform: scale(1.02);
+        }
+
         .card-header {
-            background-color: #007bff;
+            background: linear-gradient(to right, #6a0572, #00b4d8);
             color: #fff;
             border-bottom: none;
         }
@@ -53,9 +57,6 @@
             padding: 10px;
         }
 
-        .card-footer {
-            background-color: #f8f9fa;
-        }
 
         .pagination-container {
             margin-top: 20px;
@@ -66,10 +67,35 @@
         }
 
         .card {
+            border-radius: 20px;
+        }
+
+        .uploaded-info {
+            font-size: 1em;
+            color: #666;
+            text-align: right;
+            float: right; /* Add this line to float the element to the right */
+            margin-top: -20px; /* Adjust the margin if necessary */
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
             border-radius: 10px;
         }
     </style>
 
+    <style>
+
+        .cool-box {
+            width: 100%;
+        }
+
+        .cool-div {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -88,57 +114,78 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    <div class="card" style="padding: 20px">
+    <div class="container" style="padding: 15px">
 
-        <h4><i class="bi bi-search"></i> Issue Page</h4>
-        <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" th:href="@{/issue-display-page}">Create
-            Issue</a>
-
-        <div class="container" style="padding: 5px">
-
-            <!-- Number of cards per page input and Sort By Status Dropdown -->
-            <div class="d-flex justify-content-between mt-3 gap-2">
-                <div class="flex-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1 gap-md-0">
-                    <label for="issuesPerPage" class="flex-4">Issues Per Page:</label>
-                    <select id="issuesPerPage" class="form-select flex-3" onchange="changePerPage(this.value)">
-                        <option value="3" selected>3</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                    </select>
-                  <div class="flex-3 d-none d-md-block"></div>
-                </div>
-
-
-                <div class="flex-3 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-1 gap-md-0">
-                  <div class="flex-3 d-none d-md-block"></div>
-                    <label for="sortBy" class="flex-4">Sort By Status:</label>
-                    <select id="sortBy" class="form-select flex-3" onchange="sortIssues(this.value)">
-                        <option value="all">All</option>
-                        <option value="open">Open</option>
-                        <option value="closed">Closed</option>
-                    </select>
-
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4><i class="bi bi-search"></i> Issue Page</h4>
             </div>
-
-          <!-- Search Box -->
-          <div class="search-box mb-3">
+            <div class="col-md-6 text-end">
+                <!-- Move the "Create Issue" button to the right -->
+                <a class="btn btn-primary" th:href="@{/issue-display-page}">Create Issue</a>
+            </div>
+        </div>
+        <!-- Search Box -->
+        <div class="search-box mb-3">
             <label for="issueSearch"></label>
-            <input type="text" class="form-control" id="issueSearch" placeholder="Search issues...">
-          </div>
+            <input type="text" id="issueSearch" placeholder="Search issues...">
+        </div>
 
-            <!-- Issue Cards -->
-            <div class="row" id="issueContainer">
-                <!-- Cards will be dynamically added here -->
+
+        <div class="row cool-div">
+            <div class="col-md-6 col-lg-3">
+                <label for="issuesPerPage" class="cool-label">Issues Per Page:</label>
+                <select id="issuesPerPage" class="form-select cool-box" onchange="changePerPage(this.value)">
+                    <option value="3" selected>3</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                </select>
             </div>
-
-            <!-- Pagination -->
-            <div class="pagination-container overflow-x-auto">
-                <ul class="pagination" id="pagination"></ul>
+            <div class="col-md-6 col-lg-3">
+                <label for="sortBy" class="cool-label">Sort By Status:</label>
+                <select id="sortBy" class="form-select cool-box" onchange="sortIssues(this.value)">
+                    <option value="all">All</option>
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <label for="sortMonth" class="cool-label">Sort By Month:</label>
+                <select id="sortMonth" class="form-select cool-box">
+                    <option value="all">All</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <label for="sortYear" class="cool-label">Sort By Year:</label>
+                <input type="number" id="sortYear" class="form-control" style="height: 38px" placeholder="Enter year"
+                       oninput="sortIssuesByYear(this.value)" min="2000">
             </div>
         </div>
 
+
+        <!-- Issue Cards -->
+        <div class="row" id="issueContainer" style="margin-top: 15px">
+            <!-- Cards will be dynamically added here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container overflow-x-auto">
+            <ul class="pagination" id="pagination"></ul>
+        </div>
     </div>
+
 </main>
 <!-- End #main -->
 
@@ -157,42 +204,48 @@
             title: 'UI Alignment Problem',
             description: 'The UI elements are not aligned properly on the dashboard.',
             status: 'Open',
-            assignedTo: 'John Doe'
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-01'
         },
         {
             id: "ISU02",
             title: 'Superman vs Batman',
             description: 'Unable to establish a connection with the database server.',
             status: 'Closed',
-            assignedTo: 'Jane Smith'
+            assignedTo: 'Jane Smith',
+            uploadedAt: '2023-11-01'
         },
         {
             id: "ISU03",
             title: 'UI Alignment Problem',
             description: 'The UI elements are not aligned properly on the dashboard.',
             status: 'Open',
-            assignedTo: 'John Doe'
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-01'
         },
         {
             id: "ISU04",
             title: 'UI Alignment Problem',
             description: 'The UI elements are not aligned properly on the dashboard.',
             status: 'Open',
-            assignedTo: 'John Doe'
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-01'
         },
         {
             id: "ISU05",
             title: 'Superman vs Batman',
             description: 'Unable to establish a connection with the database server.',
             status: 'Closed',
-            assignedTo: 'Jane Smith'
+            assignedTo: 'Jane Smith',
+            uploadedAt: '2023-11-01'
         },
         {
             id: "ISU06",
             title: 'UI Alignment Problem',
             description: 'The UI elements are not aligned properly on the dashboard.',
             status: 'Open',
-            assignedTo: 'John Doe'
+            assignedTo: 'John Doe',
+            uploadedAt: '2023-11-01'
         },
         // Add more issues as needed
     ];
@@ -210,7 +263,8 @@
             issue.title.toLowerCase().includes(searchText) ||
             issue.description.toLowerCase().includes(searchText) ||
             issue.status.toLowerCase().includes(searchText) ||
-            issue.assignedTo.toLowerCase().includes(searchText)
+            issue.assignedTo.toLowerCase().includes(searchText) ||
+            issue.uploadedAt.toLowerCase().includes(searchText)
         );
         displayIssues(filteredIssues, 1);
     });
@@ -234,14 +288,15 @@
             const card = `
           <div class="col-md-12">
             <a href="issue-display#${issue.id}" class="card-link">
-              <div class="card issue-card">
-                <div class="card-header">
+              <div class="card issue-card" style="border-radius:20px">
+                <div class="card-header" style="border-radius:20px 20px 0 0; padding: 20px">
                   <h5 class="text-white">${issue.title}</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="padding:20px">
                   <p class="card-text"><strong>Description:</strong>${issue.description}</p>
                   <p class="card-text"><strong>Status:</strong> ${issue.status}</p>
                   <p class="card-text"><strong>Assigned To:</strong> ${issue.assignedTo}</p>
+                  <span class="uploaded-info">Uploaded: ${issue.uploadedAt}</span>
                 </div>
               </div>
             </a>
@@ -279,7 +334,41 @@
         displayIssues(filteredIssues, 1);
     }
 
+
 </script>
+
+<!-- ... (existing code) ... -->
+
+<script>
+    // Your existing script content
+
+    // Function to sort issues by month and year
+    function sortIssuesByMonthAndYear(month, year) {
+        const filteredIssues = (month === 'all' && year === 'all') ? issues : issues.filter(issue => {
+            const issueMonth = new Date(issue.uploadedAt).getMonth() + 1; // Months are zero-based
+            const issueYear = new Date(issue.uploadedAt).getFullYear();
+
+            return (month === 'all' || issueMonth.toString().padStart(2, '0') === month) &&
+                (year === 'all' || issueYear.toString() === year);
+        });
+
+        displayIssues(filteredIssues, 1);
+    }
+
+    // Function to handle changes in both month and year inputs
+    function changeMonthAndYear() {
+        const selectedMonth = document.getElementById('sortMonth').value;
+        const selectedYear = document.getElementById('sortYear').value;
+        sortIssuesByMonthAndYear(selectedMonth, selectedYear);
+    }
+
+    // Attach event listeners to month and year inputs
+    document.getElementById('sortMonth').addEventListener('change', changeMonthAndYear);
+    document.getElementById('sortYear').addEventListener('input', changeMonthAndYear);
+</script>
+
+<!-- ... (existing code) ... -->
+
 </body>
 
 </html>
