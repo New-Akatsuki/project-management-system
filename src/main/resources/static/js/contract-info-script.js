@@ -15,6 +15,7 @@ $(document).ready(function () {
             contractInfo = data;
             renderClientTable(data.clients);
             renderDeliverableTable(data.deliverables);
+            renderArchitectureTable(data.architectures);
         },
         error: function (error) {
             console.log('Error fetching data:', error);
@@ -90,6 +91,75 @@ $(document).ready(function () {
         });
     }
 
+    /*===================================================
+    Build the architecture table
+     ===================================================*/
+
+    function renderArchitectureTable(items) {
+
+        //check if deliverable table is already initialized, if so, refresh the table with new data
+        if ($.fn.DataTable.isDataTable('#architecture')) {
+            $('#architecture').DataTable().destroy();
+        }
+
+        return $('#architecture').DataTable({
+            data: items,
+            columns: [
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {data: 'name'},
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return `
+                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteArchitecture(${row.id})">Delete</button>
+                                `;
+                    }
+                },
+
+            ]
+        });
+    }
+
+    /*===================================================
+   Build the SystemOutline table
+    ===================================================*/
+
+    function renderSystemOutlineTable(items) {
+
+        //check if deliverable table is already initialized, if so, refresh the table with new data
+        if ($.fn.DataTable.isDataTable('#systemOutline')) {
+            $('#systemOutline').DataTable().destroy();
+        }
+
+        return $('#systemOutline').DataTable({
+            data: items,
+            columns: [
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {data: 'name'},
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return `
+                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditSystemOutlineModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteSystemOutline(${row.id})">Delete</button>
+                                `;
+                    }
+                },
+
+            ]
+        });
+    }
 
     /*===================================================
             save deliverable to database
@@ -121,6 +191,104 @@ $(document).ready(function () {
             }
         });
     }
+
+    /*===================================================
+           save Client to database
+    ===================================================*/
+    function addClient() {
+        let newClient = {
+            id: null,
+            name: $('#clientName').val(),
+            email: $('#clientEmail').val(),
+            phoneNumber: $('#clientPhoneNumber').val(),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/pm/add-client", // Replace with your server endpoint for adding deliverables
+            contentType: "application/json",
+            data: JSON.stringify(newClient),
+            dataType: 'json',
+            success: function (data) {
+                $("#addClientModal").modal('hide');
+
+                // Update the deliverable in the contractInfo object
+                contractInfo.clients.push(data);
+                //reload Table
+                renderClientTable(contractInfo.clients);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                alert('Error! Please try again.', error);
+            }
+        });
+    }
+
+    /*===================================================
+          save Architecture to database
+      ===================================================*/
+    function addArchitecture() {
+        let newArchitecture = {
+            id: null,
+            name: $('#architectureName').val(),
+            type: $('#architectureType').val(),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/pm/add-architecture", // Replace with your server endpoint for adding deliverables
+            contentType: "application/json",
+            data: JSON.stringify(newArchitecture),
+            dataType: 'json',
+            success: function (data) {
+                $("#addArchitectureModal").modal('hide');
+
+                // Update the deliverable in the contractInfo object
+                contractInfo.architectures.push(data);
+                //reload Table
+                renderArchitectureTable(contractInfo.architectures);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                alert('Error! Please try again.', error);
+            }
+        });
+    }
+
+
+    /*===================================================
+         save SystemOutline to database
+     ===================================================*/
+    function addSystemOutline() {
+        let newSystemOutline = {
+            id: null,
+            name: $('#systemOutlineName').val(),
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/pm/add-system-outline", // Replace with your server endpoint for adding deliverables
+            contentType: "application/json",
+            data: JSON.stringify(newSystemOutline),
+            dataType: 'json',
+            success: function (data) {
+                $("#addSystemOutlineModal").modal('hide');
+
+                // Update the deliverable in the contractInfo object
+                contractInfo.systems.push(data);
+                //reload Table
+                renderSystemOutlineTable(contractInfo.systems);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                alert('Error! Please try again.', error);
+            }
+        });
+    }
+
 
 
     /*===================================================
@@ -174,6 +342,168 @@ $(document).ready(function () {
     }
 
     /*===================================================
+           update client to database
+    ===================================================*/
+    function updateClient() {
+        // Get updated deliverable information from modal fields
+        let id = $('#editClientId').val();
+        let name = $('#editClientName').val();
+        let email = $('#editClientEmail').val();
+        let phoneNumber = $('#editClientPhoneNumber').val();
+
+        // Prepare updated deliverable object
+        let updatedClient = {
+            id: id,
+            name: name,
+            email: email,
+            phoneNumber: phoneNumber
+        };
+
+        console.log("Updated Client: ", updatedClient)
+        // Make a PUT request to update the deliverable data
+        $.ajax({
+            type: "PUT",
+            url: "/pm/client/update", // Endpoint to update deliverable data by ID
+            contentType: "application/json",
+            data: JSON.stringify(updatedClient),
+            dataType: 'json',
+            success: function (data) {
+                // Handle success response if needed
+                console.log("SUCCESS: ", data);
+
+                console.log("contractINfo", contractInfo);
+                // Update the deliverable in the contractInfo object
+                contractInfo.clients = contractInfo.clients.map(client => {
+                    if (client.id === data.id) {
+                        return data;
+                    }
+                    return client;
+                })
+
+                //reload Table
+                renderClientTable(contractInfo.clients);
+
+                // Close the modal after updating
+                $('#editClientModal').modal('hide');
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                // Optionally, close the modal on error if desired
+                $('#editClientModal').modal('hide');
+            }
+        });
+    }
+
+
+
+    /*===================================================
+          update architecture to database
+   ===================================================*/
+    function updateArchitecture() {
+        // Get updated deliverable information from modal fields
+        let id = $('#editArchitectureId').val();
+        let name = $('#editArchitectureName').val();
+        let type = $('#editArchitectureType').val();
+
+
+        // Prepare updated deliverable object
+        let updatedClient = {
+            id: id,
+            name: name,
+            type: type,
+        };
+
+        console.log("Updated Architecture: ", updatedArchitecture)
+        // Make a PUT request to update the deliverable data
+        $.ajax({
+            type: "PUT",
+            url: "/pm/architecture/update", // Endpoint to update deliverable data by ID
+            contentType: "application/json",
+            data: JSON.stringify(updatedArchitecture),
+            dataType: 'json',
+            success: function (data) {
+                // Handle success response if needed
+                console.log("SUCCESS: ", data);
+
+                console.log("contractINfo", contractInfo);
+                // Update the deliverable in the contractInfo object
+                contractInfo.architectures = contractInfo.architectures.map(architecture => {
+                    if (architecture.id === data.id) {
+                        return data;
+                    }
+                    return architecture;
+                })
+
+                //reload Table
+                renderArchitectureTable(contractInfo.architectures);
+
+                // Close the modal after updating
+                $('#editArchitectureModal').modal('hide');
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                // Optionally, close the modal on error if desired
+                $('#editArchitectureModal').modal('hide');
+            }
+        });
+    }
+
+    /*===================================================
+          update systemoutline to database
+   ===================================================*/
+    function updateSystemOutline() {
+        // Get updated deliverable information from modal fields
+        let id = $('#editSystemOutlineId').val();
+        let name = $('#editSystemOutlineName').val();
+
+        // Prepare updated deliverable object
+        let updatedClient = {
+            id: id,
+            name: name,
+
+        };
+
+        console.log("Updated SystemOutline: ", updatedSystemOutline)
+        // Make a PUT request to update the deliverable data
+        $.ajax({
+            type: "PUT",
+            url: "/pm/system-outline/update", // Endpoint to update deliverable data by ID
+            contentType: "application/json",
+            data: JSON.stringify(updatedSystemOutline),
+            dataType: 'json',
+            success: function (data) {
+                // Handle success response if needed
+                console.log("SUCCESS: ", data);
+
+                console.log("contractINfo", contractInfo);
+                // Update the deliverable in the contractInfo object
+                contractInfo.systems = contractInfo.systems.map(systemOutline => {
+                    if (systemOutline.id === data.id) {
+                        return data;
+                    }
+                    return systemOutline;
+                })
+
+                //reload Table
+                renderSystemOutlineTable(contractInfo.systems);
+
+                // Close the modal after updating
+                $('#editSystemOutlineModal').modal('hide');
+
+            },
+            error: function (xhr, status, error) {
+                console.log("ERROR: ", xhr.responseText);
+                // Optionally, close the modal on error if desired
+                $('#editSystemOutlineModal').modal('hide');
+            }
+        });
+    }
+
+
+
+    /*===================================================
             delete deliverable to database
     ===================================================*/
     function deleteDeliverable(deliverableId) {
@@ -196,6 +526,75 @@ $(document).ready(function () {
         });
     }
 
+
+    /*===================================================
+           delete client to database
+   ===================================================*/
+    function deleteClient(clientId) {
+        // Make a DELETE request to delete the deliverable data
+        $.ajax({
+            type: "DELETE",
+            url: `/pm/client/delete/${clientId}`, // Endpoint to delete deliverable data by ID
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (data) {
+                // Update the deliverable in the contractInfo object
+                contractInfo.clients = contractInfo.clients.filter(client => client.id !== data);
+
+                //reload Table
+                renderClientTable(contractInfo.clients);
+
+            },
+            error: function () {
+            }
+        });
+    }
+
+    /*===================================================
+         delete architecture to database
+ ===================================================*/
+    function deleteArchitecture(architectureId) {
+        // Make a DELETE request to delete the deliverable data
+        $.ajax({
+            type: "DELETE",
+            url: `/pm/architecture/delete/${architectureId}`, // Endpoint to delete deliverable data by ID
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (data) {
+                // Update the deliverable in the contractInfo object
+                contractInfo.architectures = contractInfo.architectures.filter(architecture => architecture.id !== data);
+
+                //reload Table
+                renderArchitectureTable(contractInfo.architectures);
+
+            },
+            error: function () {
+            }
+        });
+    }
+
+    /*===================================================
+         delete systemOutline to database
+     ===================================================*/
+    function deleteSystemOutline(systemOutlineId) {
+        // Make a DELETE request to delete the deliverable data
+        $.ajax({
+            type: "DELETE",
+            url: `/pm/system-outline/delete/${systemOutlineId}`, // Endpoint to delete deliverable data by ID
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (data) {
+                // Update the deliverable in the contractInfo object
+                contractInfo.systems = contractInfo.systems.filter(systemOutline => systemOutline.id !== data);
+
+                //reload Table
+                renderSystemOutlineTable(contractInfo.systems);
+            },
+            error: function () {
+            }
+        });
+    }
+
     /*===================================================
             open edit deliverable modal
     ===================================================*/
@@ -211,6 +610,52 @@ $(document).ready(function () {
     }
 
     /*===================================================
+            open edit Client modal
+    ===================================================*/
+    function openEditClientModal(clientId) {
+
+        const client = contractInfo.clients.filter(client => client.id === clientId)[0];
+
+        // Populate modal fields with deliverable data
+        $('#editClientId').val(client.id);
+        $('#editClientName').val(client.name);
+        $('#editClientEmail').val(client.email);
+        $('#editClientPhoneNumber').val(client.phoneNumber);
+
+        // Show the edit deliverable modal
+        $('#editClientModal').modal('show');
+    }
+
+    /*===================================================
+           open edit Architecture modal
+   ===================================================*/
+    function openEditArchitectureModal(architectureId) {
+
+        const architecture = contractInfo.architectures.filter(architecture => architecture.id === architectureId)[0];
+
+        // Populate modal fields with deliverable data
+        $('#editArchitectureId').val(architecture.id);
+        $('#editArchitectureName').val(architecture.name);
+        $('#editArchitectureType').val(architecture.type);
+        // Show the edit deliverable modal
+        $('#editDeliverableModal').modal('show');
+    }
+
+    /*===================================================
+           open edit systemOutline modal
+   ===================================================*/
+    function openEditSystemOutlineModal(systemOutlineId) {
+
+        const systemOutline = contractInfo.systems.filter(systemOutline => systemOutline.id === systemOutlineId)[0];
+
+        // Populate modal fields with deliverable data
+        $('#editSystemOutlineId').val(systemOutlineId.id);
+        $('#editSystemOutlineIdName').val(systemOutlineId.name);
+        // Show the edit deliverable modal
+        $('#editSystemOutlineModal').modal('show');
+    }
+
+    /*===================================================
         export deliverable functions to global scope
     ===================================================*/
     $.fn.addDeliverable = addDeliverable;
@@ -221,5 +666,32 @@ $(document).ready(function () {
     /*===================================================
        export client functions to global scope
    ===================================================*/
+
+
+    $.fn.addClient = addClient;
+    $.fn.openEditClientModal = openEditClientModal;
+    $.fn.updateClient = updateClient;
+    $.fn.deleteClient = deleteClient;
+
+    /*===================================================
+      export architecture functions to global scope
+  ===================================================*/
+
+
+    $.fn.addArchitecture = addArchitecture;
+    $.fn.openEditArchitectureModal = openEditArchitectureModal;
+    $.fn.updateArchitecture = updateArchitecture;
+    $.fn.deleteArchitecture = deleteArchitecture;
+
+
+    /*===================================================
+      export systemOutline functions to global scope
+  ===================================================*/
+
+
+    $.fn.addSystemOutline= addSystemOutline;
+    $.fn.openEditSystemOutlineModal = openEditSystemOutlineModal;
+    $.fn.updateSystemOutline = updateSystemOutline;
+    $.fn.deleteSystemOutline = deleteSystemOutline;
 
 });

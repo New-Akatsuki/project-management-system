@@ -334,7 +334,7 @@
             <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
           </div>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" onclick="addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+          <button type="button" onclick="$.fn.addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
         </form>
        </div>
     </div>
@@ -368,7 +368,7 @@
             <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
           </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" onclick="updateClient()" class="btn btn-primary" data-dismiss="modal">Update Client</button>
+          <button type="button" onclick="$.fn.updateClient()" class="btn btn-primary" data-dismiss="modal">Update Client</button>
         </form>
       </div>
     </div>
@@ -397,7 +397,7 @@
             <input type="text" class="form-control" id="outlineName" name="name" required>
           </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" onclick="addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
+          <button type="button" onclick="$.fn.addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
         </form>
         <!-- Add Bootstrap classes to the form elements for better styling -->
       </div>
@@ -427,7 +427,7 @@
             <input type="text" class="form-control" id="editOutlineName" name="name" required>
           </div>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" onclick="updateSystemOutline()" class="btn btn-primary" data-bs-dismiss="modal">Update Outline</button>
+          <button type="button" onclick="$.fn.updateSystemOutline()" class="btn btn-primary" data-bs-dismiss="modal">Update Outline</button>
         </form>
       </div>
     </div>
@@ -481,7 +481,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="addArchitecture()" data-dismiss="modal">Add Architecture</button>
+        <button type="button" class="btn btn-primary" onclick="$.fn.addArchitecture()" data-dismiss="modal">Add Architecture</button>
       </div>
     </div>
   </div>
@@ -515,7 +515,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="updateArchitecture()" data-dismiss="modal">Update Architecture</button>
+            <button type="button" class="btn btn-primary" onclick="$.fn.updateArchitecture()" data-dismiss="modal">Update Architecture</button>
           </div>
         </form>
       </div>

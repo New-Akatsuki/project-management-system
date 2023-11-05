@@ -19,4 +19,6 @@ public interface SystemOutlineService {
     void addSystemOutline(String newSystemOutline);
 
     SystemOutline getSystemOutlineById(Long id);
+
+    void deleteSystemOutline(Long id);
 }

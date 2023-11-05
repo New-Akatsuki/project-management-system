@@ -7,11 +7,11 @@ import java.util.List;
 
 @Service
 public interface ArchitectureService {
-    Architecture getById(int id);
+    Architecture getById(Long id);
    List<Architecture> getAllArchitectures();
 
-    void deleteArchitecture(int id);
-    Architecture updateArchitecture(int id, Architecture architecture);
+    void deleteArchitecture(Long id);
+    Architecture updateArchitecture(Long id, Architecture architecture);
     Architecture save(Architecture architecture);
 
     Architecture getArchitectureById(Long id);

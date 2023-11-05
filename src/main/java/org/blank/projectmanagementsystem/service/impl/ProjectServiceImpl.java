@@ -66,7 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         //get Architecture outlines
-        List<Integer> architectureIds = projectFormInput.getArchitectureOutlines();
+        List<Long> architectureIds = projectFormInput.getArchitectureOutlines();
         List<Architecture> architectures = new ArrayList<>();
         if(architectureIds!=null && architectureIds.size() > 0){
             architectures = architectureIds.stream().map(id-> architectureRepository.findById(id)

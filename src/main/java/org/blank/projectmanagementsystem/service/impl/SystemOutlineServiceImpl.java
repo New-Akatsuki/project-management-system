@@ -58,6 +58,11 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
     }
 
     @Override
+    public void deleteSystemOutline(Long id) {
+        systemOutlineRepository.deleteById(Math.toIntExact(id));
+    }
+
+    @Override
     public List<SystemOutline> getAllSystemOutlines() {
         return systemOutlineRepository.findAll();
     }

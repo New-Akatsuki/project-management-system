@@ -59,6 +59,14 @@ public class PMRestController {
         }
     }
 
+
+    @DeleteMapping("/pm/system-outline/delete/{id}")
+    public ResponseEntity<Long> deleteSystemOutline(@PathVariable Long id) {
+        systemOutlineService.deleteSystemOutline(id);
+        //return 2xx if successful
+        return ResponseEntity.ok(id);
+    }
+
     @GetMapping("/pm/deliverables") // Changed endpoint
     public ResponseEntity<List<Deliverable>> getDeliverables() {
         List<Deliverable> deliverables = deliverableService.getAllDeliverables();
@@ -145,6 +153,14 @@ public class PMRestController {
     }
 
 
+    @DeleteMapping("/pm/client/delete/{id}")
+    public ResponseEntity<Long> deleteClient(@PathVariable Long id) {
+        clientService.deleteClient(id);
+        //return 2xx if successful
+        return ResponseEntity.ok(id);
+    }
+
+
     @GetMapping("/pm/architectures")
     public ResponseEntity<List<Architecture>> getArchitectures() {
         List<Architecture> architectures = architectureService.getAllArchitectures();
@@ -184,6 +200,12 @@ public class PMRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    @DeleteMapping("/pm/architecture/delete/{id}")
+    public ResponseEntity<Long> deleteArchitecture(@PathVariable Long id) {
+        architectureService.deleteArchitecture(id);
+        //return 2xx if successful
+        return ResponseEntity.ok(id);
     }
 
 
