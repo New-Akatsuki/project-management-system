@@ -24,7 +24,7 @@ public class PhaseServiceImpl implements PhaseService {
     @Override
     public List<PhaseDto> getPhases(long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
-        return phaseRepository.findByProject(project).stream().map(Phase::maptoDto).toList();
+        return phaseRepository.findByProject(project).stream().map(Phase::mapToDto).toList();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PhaseServiceImpl implements PhaseService {
         //check if phase exist
         Phase phase = phaseRepository.findById(phaseDto.getId()).orElseThrow();
         phase.setName(phaseDto.getName());
-        return phaseRepository.save(phase).maptoDto();
+        return phaseRepository.save(phase).mapToDto();
     }
 
     @Override

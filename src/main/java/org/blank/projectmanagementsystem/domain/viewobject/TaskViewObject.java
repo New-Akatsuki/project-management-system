@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
+import org.blank.projectmanagementsystem.domain.entity.User;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -31,6 +33,6 @@ public class TaskViewObject {
     private Long parent;
     private String group;
     private String type;
-    private List<Long> assignees;
+    private Set<User> assignees;
     private Boolean open;
 }

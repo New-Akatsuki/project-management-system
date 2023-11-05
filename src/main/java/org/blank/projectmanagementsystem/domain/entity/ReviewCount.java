@@ -13,7 +13,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class ReviewCount implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
 
     private int count;
 

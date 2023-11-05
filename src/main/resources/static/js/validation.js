@@ -99,13 +99,16 @@ function checkPasswordsMatch(passwordElement, confirmPassElement) {
     });
 }
 
-function formValidate(form_id) {
+function formValidate(form_id, action=()=>{}) {
     const nameForm = document.getElementById(form_id);
 
     nameForm.addEventListener("submit", function (event) {
         if (!nameForm.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
+        }else {
+            console.log('in form validation');
+            action();
         }
         nameForm.classList.add("was-validated");
     });
@@ -117,39 +120,46 @@ function checkDatesValidation(date_id1, date_id2){
     endDateID = date_id2
     $("#"+date_id1).on('change', function() {
         startDate = $(this).val();
-        _checkDate(date_id1)
+        _checkDate()
         console.log('Value changed:', startDate);
     });
     $("#"+date_id2).on('change', function() {
         endDate = $(this).val();
-        _checkDate(date_id2)
+        _checkDate()
         console.log('Value changed:', endDate);
     });
 }
-function _checkDate(id) {
-    const element = document.getElementById(id);
-    console.log(element)
+function _checkDate() {
+    const start_element = document.getElementById(startDateID);
+    const end_element = document.getElementById(endDateID);
+
     const start_msg_div =document.getElementById(`${startDateID}_error`);
     const end_msg_div =document.getElementById(`${endDateID}_error`);
-    const msg_div =document.getElementById(`${id}_error`);
-    console.log(msg_div)
+
     if (startDate && endDate) {
         const startDateValue = new Date(startDate);
         const endDateValue = new Date(endDate);
-        console.log(startDateValue.getDate(),endDateValue.getDate())
-        console.log(startDateValue.getDate()<endDateValue.getDate())
+
         if ((startDateValue > endDateValue)||
             (startDateValue.getFullYear()===endDateValue.getFullYear()&&
                 startDateValue.getMonth()===endDateValue.getMonth()&&
                 startDateValue.getDate()===endDateValue.getDate())) {
             // Show an error message
-            element.setCustomValidity("invalid date");
-            element.classList.add("is-invalid");
-            msg_div.textContent = "Invalid date";
+            start_element.setCustomValidity("invalid date");
+            end_element.setCustomValidity("invalid date");
+            start_element.classList.add("is-invalid");
+            end_element.classList.add("is-invalid");
+
+            start_msg_div.textContent = "Invalid date";
+            end_msg_div.textContent = "Invalid date";
         } else {
             // Clear the error message
-            element.setCustomValidity("");
-            element.classList.remove("is-invalid");
+            start_element.setCustomValidity("");
+            start_element.classList.remove("is-invalid");
+
+            end_element.setCustomValidity("");
+            end_element.classList.remove("is-invalid");
+
             start_msg_div.textContent = "";
             end_msg_div.textContent="";
         }

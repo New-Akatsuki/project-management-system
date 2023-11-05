@@ -33,15 +33,6 @@
             open: true,
         };
 
-        let dataFromUser = {
-            phases: [],
-            tasks: [],
-            onChange: function (e, ui) {
-            },
-            onReceive: function (e, ui) {
-            },
-        }
-
         let settings = $.extend(
             {
                 phases: [],
@@ -51,7 +42,6 @@
                 onReceive: function (e, ui) {
                 },
             },
-            dataFromUser,
             options
         );
 
@@ -118,7 +108,6 @@
             enableDragAndDrop();
             buildPhaseModal(addPhaseModalData);
             buildPhaseModal(editPhaseModalData);
-            buildConfirmModal();
         }
 
         /* ===========================================================
@@ -157,7 +146,7 @@
                                         <li><button class="dropdown-item d-flex align-items-center" id="${item.id}-rename-btn" type="button">
                                             <i class='bx bx-edit-alt'></i>Rename 
                                         </button></li>
-                                        <li><button class="dropdown-item d-flex align-items-center" id="${item.id}-delete-btn" type="button">
+                                        <li><button class="dropdown-item d-flex align-items-center" id="${item.id}-delete-phase-btn" type="button">
                                         <i class='bx bx-trash'></i>Delete</button></li>
                                       </ul>
                                </div>
@@ -181,8 +170,9 @@
                     //show modal
                     $(`#${editPhaseModalData.title.toLowerCase()}PhaseModal`).modal('show');
                 });
-                $(`#${item.id}-delete-btn`).on('click',()=>{
+                $(`#${item.id}-delete-phase-btn`).on('click',()=>{
                     phaseId = item.id;
+                    renderConfirmModal(true)
                     //show modal
                     $('#confirmModal').modal('show');
                 });
@@ -267,7 +257,10 @@
        * ============================================================*/
         function build_subtask() {
             settings.tasks.filter(data => data.parent !== null).forEach((item, index, array) => {
-                item.phase = settings.tasks.filter(data => data.id === item.parent)[0].phase;
+                const parentData = settings.tasks.filter(data => data.id === item.parent)[0];
+                if(parentData){
+                    item.phase = parentData.phase;
+                }
                 const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>':'<i class="bx bx-check-circle"></i>' ;
                 const sub_task_container = `
                     <div id="${item.id}" class="kb-subtask-body">
@@ -331,7 +324,8 @@
         /* ===========================================================
        *  Build phase modals Function
        * ============================================================*/
-        function buildConfirmModal(){
+        function buildConfirmModal(is_phase=true){
+            console.log('is_phase',is_phase)
             const modal = `
               <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -356,7 +350,11 @@
             $this.append(modal);
             $('#confirmButton').on('click', ()=>{
                 if($('#confirmInput').val() === 'CONFIRM'){
-                    deletePhase();
+                    if(is_phase){
+                        deletePhase();
+                    }else{
+                        deleteTask();
+                    }
                 }else {
                     $('#errorConfirmText').removeClass('d-none');
                     //focus input
@@ -370,11 +368,18 @@
             })
 
         }
-
-
         /* ===========================================================
-        *  Build phase modals Function
-        * ============================================================*/
+              *  render phase modals Function
+              * ============================================================*/
+        function renderConfirmModal(is_phase=true){
+            $('#confirmModal').remove();
+            buildConfirmModal(is_phase)
+        }
+
+
+            /* ===========================================================
+            *  Build phase modals Function
+            * ============================================================*/
         function buildPhaseModal(phaseData={title:'Add',modalId:'addPhaseModal'}){
             const phaseModal = `
               <div class="modal fade" id="${phaseData.modalId}" tabindex="-1" aria-labelledby="${phaseData.modalId}Label" aria-hidden="true">
@@ -459,7 +464,7 @@
           *  delete Phase to Database
           * ============================================================*/
         function deletePhase() {
-            console.log("update phase")
+            console.log("delete phase")
             let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId,10))[0]
             $.ajax({
                 url: '/delete-phase',
@@ -502,7 +507,7 @@
                 parent: parentId,
                 group: $('#task-group').val(),
                 type: $('#task-type').val(),
-                assignees: [$('#task-assignees').val()],
+                assignees: $('#task-assignees').val().map(val=> parseInt(val, 10)),
                 open: true,
             };
             //check if task id exist
@@ -521,12 +526,11 @@
                 console.log(currentTask)
 
                 updateTask(currentTask)
-
-
             }else {
-                console.log('saving task...')
                 saveTask(task)
+                console.log('task assignee ',task.assignees)
             }
+            $("#exampleModal").modal("hide")
         }
 
         function saveTask(task){
@@ -586,6 +590,38 @@
             });
         }
 
+        /* ===========================================================
+       *  delete Task to Database
+       * ============================================================*/
+        function deleteTask() {
+            console.log("delete task")
+            let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId,10))[0]
+            console.log(taskData)
+            $.ajax({
+                url: '/delete-task',
+                method: 'DELETE',
+                data: JSON.stringify(taskData),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    console.log('delete-success')
+                    settings.tasks = settings.tasks.filter(val => val.id !== taskData.id);
+                    settings.tasks = settings.tasks.filter(val => val.parent !== taskData.id);
+                    console.log('tasks',settings.tasks)
+
+                    $('#taskViewModal').offcanvas('hide');
+                    $('#taskViewModal').remove();
+                    $('#confirmModal').modal('hide');
+                    currentTaskId=null
+                    render()
+                },
+                error: function (error) {
+                    console.log("Error response text:", error.responseText);
+                }
+            });
+        }
+
+
         //reset function for task modal
         function resetTaskModal() {
             $('#task-name').val("")
@@ -596,6 +632,8 @@
             $('#task-plan-hours').val("")
             $('#task-group').val("")
             $('#task-type').val("")
+            $('.mult-select-tag').remove()
+            new MultiSelectTag('task-assignees')
         }
 
         function fillDataTaskModal(taskId) {
@@ -625,6 +663,8 @@
             const view = `
             <div class="offcanvas offcanvas-end" tabindex="-1" id="taskViewModal" aria-labelledby="taskViewModalLabel">
               <div class="offcanvas-header">
+                   <div id="btn-area" class="d-flex gap-2">
+                   </div>
                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body">
@@ -633,7 +673,7 @@
                         <button id="${task.id}-edit-task-btn" class="btn btn-primary float-edit-btn"><i class="bx bx-edit-alt me-2"></i>Edit</button>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Assignee</span>
-                            <span class="col-9">${['User1','User2'].join(', ')}</span>
+                            <span class="col-9">${task.assignees.map(val=>val.name).join(", ")}</span>
                         </div>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Start date</span>
@@ -669,14 +709,14 @@
                         <div class="d-flex flex-column gap-1 col-12">
                             <div class="accordion mb-3" id="subtask-view-offcanvas">
                                 <div class="accordion-item">
-                                    <h2 class="accordion-header${isExpandAccordion?'':' collapsed'}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button${isExpandAccordion?'':' collapsed'}" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOne" aria-expanded="${isExpandAccordion}"
                                                 aria-controls="collapseOne">
                                             <span id="subtask-accordion-header" class="display-6 fs-5 fw-bold">Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span></span>
                                         </button>
                                     </h2>
-                                    <div id="collapseOne" class="accordion-collapse${isExpandAccordion?' collapse show':' collapse'}"
+                                    <div id="collapseOne" class="accordion-collapse collapse${isExpandAccordion?' show':''}"
                                          data-bs-parent="#subtask-view-offcanvas">
                                         <div class="accordion-body"></div>
                                     </div>
@@ -691,12 +731,13 @@
 
 
             let btn = ` <button id="${task.id}-complete-btn" class="btn-sm make-complete-btn py-1 px-2 fs-6 ${task.status?'btn-complete':''}">
-                            <i class='bx bx-check fs-5 me-1'></i>${completeBtnText} 
+                                     <i class='bx bx-check fs-5 me-1'></i>${completeBtnText} 
                             </button>
-                        `;
+                            <button id="${task.id}-delete-task-btn" class="btn btn-danger"><i class="bx bx-trash-alt"></i></button>
+                            `;
             $this.append(view);
             //append as first child of offcanvas-header
-            $(`.offcanvas-header`).prepend(btn);
+            $(`.offcanvas-header #btn-area`).prepend(btn);
 
 
             //append subtasks
@@ -717,7 +758,7 @@
             if(completeBtn){
                 completeBtn.addEventListener('click',()=> {
                     console.log('click complete btn')
-                    task.status = !task.status;
+                    // task.status = !task.status;
                 });
             }
             $(`#${task.id}-edit-task-btn`).on('click',()=>{
@@ -725,6 +766,14 @@
                 currentTaskId = task.id;
                 fillDataTaskModal(task.id);
                 $('#exampleModal').modal('show');
+            });
+
+            $(`#${task.id}-delete-task-btn`).on('click',()=>{
+                console.log('clicked edit btn')
+                currentTaskId = task.id
+                renderConfirmModal(false)
+                //show modal
+                $('#confirmModal').modal('show');
             });
         }
 

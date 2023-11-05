@@ -6,6 +6,7 @@ import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 import org.blank.projectmanagementsystem.domain.Enum.TaskType;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

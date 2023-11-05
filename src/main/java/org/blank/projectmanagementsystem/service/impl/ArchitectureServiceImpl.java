@@ -20,7 +20,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     private final ArchitectureRepository architectureRepository;
 
     @Override
-    public Architecture getById(int id) {
+    public Architecture getById(Long id) {
 
         return architectureRepository.findById(id).orElse(null);
     }
@@ -36,12 +36,12 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     }
 
     @Override
-    public void deleteArchitecture(int id) {
+    public void deleteArchitecture(Long id) {
         architectureRepository.deleteById(id);
     }
 
     @Override
-    public Architecture updateArchitecture(int id, Architecture architecture) {
+    public Architecture updateArchitecture(Long id, Architecture architecture) {
         if (architectureRepository.existsById(id)) {
             architecture.setId(id);
             return architectureRepository.save(architecture);

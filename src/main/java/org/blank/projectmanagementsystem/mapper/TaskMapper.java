@@ -37,7 +37,7 @@ public class TaskMapper {
                 .parent(task.getParentTask()==null?null:task.getParentTask().getId())
                 .group(task.getGroup().name())
                 .type(task.getType().name().toLowerCase())
-                .assignees(task.getAssignees()==null?null:task.getAssignees().stream().map(User::getId).toList())
+                .assignees(task.getAssignees()==null?null:task.getAssignees())
                 .open(true)
                 .build();
     }
@@ -76,10 +76,4 @@ public class TaskMapper {
         return (int) (endDate.toEpochDay() - startDate.toEpochDay());
     }
 
-//    public static void main(String[] args) {
-//        TaskMapper taskMapper = new TaskMapper();
-//        System.out.println(taskMapper.convertStringToDate("2021-05-31T17:00:00.000Z"));
-//        System.out.println(taskMapper.convertDateToString(LocalDate.of(2021,5,31)));
-//        System.out.println(taskMapper.convertStringToDate(taskMapper.convertDateToString(LocalDate.of(2021,5,31))));
-//    }
 }

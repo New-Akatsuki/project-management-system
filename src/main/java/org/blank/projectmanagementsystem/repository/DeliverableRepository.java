@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DeliverableRepository extends JpaRepository<Deliverable, Integer> {
+public interface DeliverableRepository extends JpaRepository<Deliverable, Long> {
       Deliverable findByName(String name);
 
 }

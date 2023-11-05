@@ -205,6 +205,7 @@
     padding-block: 10px;
     padding-inline: 5px;
     border-block: 1px solid #e5e5e5;
+    cursor: pointer;
 }
 .justify-self-end{
     justify-self: end;

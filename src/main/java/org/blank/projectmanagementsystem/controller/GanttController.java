@@ -7,6 +7,7 @@ import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.service.PhaseService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,14 @@ import java.util.Map;
 public class GanttController {
     private final TaskService taskService;
     private final PhaseService phaseService;
+    private final ProjectService projectService;
 
     @GetMapping("/get-phase-data")
     public ResponseEntity<Map<String,Object>> getPhaseData(@RequestParam long projectId) {
         var phaseList =  phaseService.getPhases(projectId);
         var taskList = taskService.getAllTasks();
-        return ResponseEntity.ok(new HashMap<>(Map.of("phases", phaseList, "tasks", taskList)));
+        var projectMembers = projectService.getProjectMembers(projectId);
+        return ResponseEntity.ok(new HashMap<>(Map.of("phases", phaseList, "tasks", taskList, "projectMembers", projectMembers)));
     }
 
     @PostMapping("/add-phase")
@@ -69,11 +72,11 @@ public class GanttController {
     }
 
     @DeleteMapping("/delete-task")
-    public ResponseEntity<String> deleteTask(@RequestBody TaskFormInput task) {
+    public ResponseEntity<TaskFormInput> deleteTask(@RequestBody TaskFormInput task) {
         log.info("delete task: {}", task);
         taskService.deleteTask(task.getId());
         //response json msg
-        return ResponseEntity.ok("delete success");
+        return ResponseEntity.ok(task);
     }
 
 }

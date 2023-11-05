@@ -11,11 +11,14 @@ import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
             task.setProject(phase.getProject());
         }
         task.setId(taskFormInput.getId());
-        if(taskFormInput.getParent()!=null){
+        if (taskFormInput.getParent() != null) {
             Task parent = taskRepository.findById(taskFormInput.getParent()).orElse(null);
             task.setParentTask(parent);
         }
@@ -92,6 +95,24 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public void deleteTask(Long id) {
+        //check task exist or not
+        var currentTask = taskRepository.findById(id);
+        currentTask.ifPresent(task -> {
+            task.getAssignees().clear();
+            clearAssignees(task);
+        });
+
         taskRepository.deleteById(id);
     }
+
+    //create recursive function to get all subtask and clear assignees
+    private void clearAssignees(Task task) {
+        task.getAssignees().clear();
+        var subTasks = taskRepository.findAllByParentTask(task);
+        subTasks.forEach(val->{
+            val.getAssignees().clear();
+            clearAssignees(val);
+        });
+    }
 }
+

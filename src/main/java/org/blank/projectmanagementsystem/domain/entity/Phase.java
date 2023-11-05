@@ -24,7 +24,7 @@ public class Phase {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    public PhaseDto maptoDto() {
+    public PhaseDto mapToDto() {
         return PhaseDto.builder()
                 .id(id)
                 .name(name)

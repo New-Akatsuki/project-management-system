@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class ReviewCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true,nullable = false, length = 35)
     private String name;
