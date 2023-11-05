@@ -14,6 +14,10 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"
     />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+    />
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -31,14 +35,11 @@
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <style>
-        .card-container {
-            margin: 20px; /* Adjust the margin value as needed */
-        }
-
 
         .tabs {
             display: flex;
             flex-wrap: wrap;
+            max-width: 100%;
             font-family: sans-serif;
         }
 
@@ -53,21 +54,33 @@
 
         .tabs__content {
             order: 1;
+            width: 100%;
             line-height: 1.5;
             font-size: 0.9em;
             display: none;
         }
 
         .tabs__radio:checked + .tabs__label {
-            /*font-weight: bold;*/
-            color: #1DA1F2;
-            border-bottom: 2px solid #1DA1F2;
+            font-weight: bold;
+            color: #009578;
+            border-bottom: 2px solid #009578;
         }
 
         .tabs__radio:checked + .tabs__label + .tabs__content {
             display: initial;
         }
 
+
+    </style>
+
+    <style>
+        .inputmodalbox, .dateInputBox {
+            display: inline-block;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -87,14 +100,14 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    <div class="card">
+    <div class="card" style="padding: 20px; border-radius: 10px">
         <div class="card-container">
             <h3><i class='bx bx-task'></i> Task Page</h3>
         </div>
         <div class="container">
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
-                <label for="tab1" class="tabs__label">Upcoming</label>
+                <label for="tab1" class="tabs__label">Pending</label>
                 <div class="tabs__content container">
                     <br>
                     <!-- Container for Pending Task Cards -->
@@ -120,21 +133,6 @@
 
         </div>
     </div>
-
-
-    <!-- Modal Form -->
-    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="taskModalLabel">Task Form</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
 </main>
 <!-- End #main -->
 
@@ -142,75 +140,138 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <!-- Custom JavaScript -->
+<script>var accordionItems = [
+    {id: 1, title: "Task 1", description: "a", planHour: "40", status: 1, actualHour: null, dueDate: "11/02/2023"},
+    {id: 2, title: "Task 2", description: "b", planHour: "24", status: 2, actualHour: null, dueDate: "09/30/2023"},
+    {id: 3, title: "Task 3", description: "c", planHour: "48", status: 1, actualHour: null, dueDate: "11/05/2023"},
+    {id: 4, title: "Task 4", description: "d", planHour: "56", status: 0, actualHour: "50", dueDate: "11/23/2023"},
+    {id: 5, title: "Task 5", description: "e", planHour: "28", status: 2, actualHour: null, dueDate: "10/05/2023"},
+    {id: 6, title: "Task 6", description: "f", planHour: "42", status: 0, actualHour: "40", dueDate: "11/01/2023"},
+];
+
+accordionItems.forEach(function (item, index) {
+    let cardItem = document.createElement("div");
+    cardItem.classList.add("mb-3");
+    cardItem.innerHTML = `
+          <div class="accordion rounded" id="${index}Item">
+              <div class="accordion-item ">
+                  <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#flush-collapse-${index}" aria-expanded="false"
+                              aria-controls="flush-collapse-${index}">
+                          ${item.title}
+                      </button>
+                  </h2>
+                  <div id="flush-collapse-${index}" class="accordion-collapse collapse"
+                       data-bs-parent="#${index}Item">
+                      <div class="accordion-body">
+                          <div>${item.description}<div>
+                          <div class="text-end">
+                              <button class="btn btn-primary text-right" data-bs-toggle="modal"
+                                      data-bs-target="#editModal-${item.id}">Edit</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      `;
+
+    // Add task to the corresponding container based on status
+    switch (item.status) {
+        case 0:
+            document.getElementById('completedContainer').appendChild(cardItem);
+            break;
+        case 1:
+            document.getElementById('pendingContainer').appendChild(cardItem);
+            break;
+        case 2:
+            document.getElementById('overdueContainer').appendChild(cardItem);
+            break;
+        default:
+            break;
+    }
+
+    // Dynamic creation of modal with form
+    let today = new Date();
+
+// Get the month, day, and year
+    let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    let day = today.getDate().toString().padStart(2, '0');
+    let year = today.getFullYear();
+
+// Format the date as mm-dd-yyyy
+    let formattedDate = `${day}/${month}/${year}`;
+
+    let modal = document.createElement("div");
+    modal.classList.add("modal", "fade", "text-dark");
+    modal.id = `editModal-${item.id}`;
+    modal.tabIndex = "-1";
+    modal.setAttribute("aria-labelledby", `editModalLabel-${item.id}`);
+    modal.setAttribute("aria-hidden", "true");
+    modal.innerHTML = `
+      <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="editModalLabel-${item.id}">${item.title}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <!-- Form for editing -->
+                  <form id="editForm-${item.id}">
+                    <div class="row" style="padding:10px">
+                      <div class="col-6">
+                        <label for="planHour">Plan Hour :</label>
+                        <input type="number" id="planHour" class="inputmodalbox"
+                        placeholder="Enter plan hour" value="${item.planHour}" readonly disabled>
+                      </div>
+                      <!-- Conditionally display actual hour -->
+
+
+                      <div class="col-6">
+                        <label for="planHour">Due Date :</label>
+                        <input type="text" class="dateInputBox" placeholder="Select due date" value="${item.dueDate}" readonly disabled/>
+                      </div>
+                    </div>
+
+                    <div class="row" style="padding:10px">
+                       <div class="col-6">
+                        <label for="actualHour">Actual Hour :</label>
+                        <input type="number" id="actualHour" class="inputmodalbox" min="0"
+                        placeholder="Enter actual hour" value="${item.actualHour !== null ? item.actualHour : ''}">
+                      </div>
+                      <div class="col-6">
+                        <label for="actualHour">Actual Date :</label>
+                        <input type="text" class="dateInputBox" placeholder="Select actua date" value="${formattedDate}"/>
+                      </div>
+                    </div>
+
+                    <!-- Add other fields as needed -->
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="saveChanges(${item.id})">Save changes</button>
+              </div>
+          </div>
+      </div>
+  `;
+
+    document.body.appendChild(modal);
+});
+</script>
 <script>
-    // Dummy data (replace this with your logic to fetch data from the database)
-    const taskDataFromDatabase = [
-        {id: 1, title: 'Task 1', description: 'Description 1', state: 'pending'},
-        {id: 4, title: 'Task 4', description: 'Description 4', state: 'pending'},
-        {id: 2, title: 'Task 2', description: 'Description 2', state: 'overdue'},
-        {id: 3, title: 'Task 3', description: 'Description 3', state: 'completed'},
-        // Add more data as needed
-    ];
-
-    // Function to create a task card
-    function createTaskCard(task) {
-        const card = document.createElement('div');
-        card.classList.add('card', 'clickable', 'mb-3','col-md-12'); // Added 'mb-3' for bottom margin
-        card.style.width = '35rem';
-        card.innerHTML = `
-        <div class="card-body">
-          <h6 class="card-title">${task.title}</h6>
-          <i class="card-text">${task.description}</i>
-        </div>
-      `;
-        card.addEventListener('click', () => {
-            populateModal(task);
-            $('#taskModal').modal('show');
+    $(document).ready(function () {
+        $(".dateInputBox").datepicker({
+            dateFormat: "dd/mm/yy",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
         });
-        return card;
-    }
-
-    // Function to populate modal with task details
-    function populateModal(task) {
-        const modalTitle = document.getElementById('taskModalLabel');
-        const modalBody = document.querySelector('#taskModal .modal-body');
-
-        modalTitle.innerText = task.title;
-
-        // Clear previous content
-        modalBody.innerHTML = '';
-
-        // Add task details to modal body
-        const detailsList = document.createElement('ul');
-        detailsList.innerHTML = `
-        <li>Description: ${task.description}</li>
-        <li>State: ${task.state}</li>
-        <!-- Add more details as needed -->
-      `;
-        modalBody.appendChild(detailsList);
-    }
-
-    // Populate task cards for each state
-    const pendingContainer = document.getElementById('pendingContainer');
-    const overdueContainer = document.getElementById('overdueContainer');
-    const completedContainer = document.getElementById('completedContainer');
-
-    taskDataFromDatabase.forEach(task => {
-        const taskCard = createTaskCard(task);
-        switch (task.state) {
-            case 'pending':
-                pendingContainer.appendChild(taskCard);
-                break;
-            case 'overdue':
-                overdueContainer.appendChild(taskCard);
-                break;
-            case 'completed':
-                completedContainer.appendChild(taskCard);
-                break;
-        }
     });
 </script>
 </body>

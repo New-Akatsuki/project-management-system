@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 
 public class TaskMapper {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -37,7 +38,7 @@ public class TaskMapper {
                 .parent(task.getParentTask()==null?null:task.getParentTask().getId())
                 .group(task.getGroup().name())
                 .type(task.getType().name().toLowerCase())
-                .assignees(task.getAssignees()==null?null:task.getAssignees())
+                .assignees(task.getAssignees()==null?new HashSet<>():task.getAssignees())
                 .open(true)
                 .build();
     }
@@ -52,14 +53,10 @@ public class TaskMapper {
                 .actualDueDate(taskFormInput.getActual_due_date())
                 .planHours(taskFormInput.getPlan_hours())
                 .actualHours(taskFormInput.getActual_hours())
-                .status(taskFormInput.getProgress() == 1)
+                .status(taskFormInput.isStatus())
                 .group(TaskGroup.valueOf(taskFormInput.getGroup()==null?"A":taskFormInput.getGroup().toUpperCase()))
                 .type(TaskType.valueOf(taskFormInput.getType().toUpperCase()))
                 .build();
-    }
-    public String convertDateToString(LocalDate date) {
-        if(date == null) return null;
-        return dateFormat.format(java.sql.Date.valueOf(date));
     }
 
     private LocalDate convertStringToDate(String date) {

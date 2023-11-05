@@ -13,4 +13,5 @@ public interface TaskService {
 
     TaskViewObject updateTask(TaskFormInput task);
     void deleteTask(Long id);
+
 }

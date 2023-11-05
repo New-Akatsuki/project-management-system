@@ -24,7 +24,7 @@ public class TaskViewObject {
     private LocalDate start_date;
     private LocalDate end_date;
     private LocalDate actual_due_date;
-    private Integer duration;
+    private int duration;
     private Float plan_hours;
     private Float actual_hours;
     private int progress;

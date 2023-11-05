@@ -337,32 +337,37 @@
 <script src="/js/validation.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
+
+<script>
+    // Add fade animation to the modal
+    $('#taskModal').on('show.bs.modal', function() {
+        $(this).find('.modal-dialog').addClass('fade');
+    });
+
+    function setupDatePicker(elementId,minDate,maxDate) {
+        $(elementId).datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: minDate,
+            maxDate: maxDate,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
+        });
+    }
+
+    setupDatePicker("#task-start-date");
+    setupDatePicker("#task-end-date");
+
+</script>
+
 <!-- Custom JavaScript -->
 <script type="text/javascript" src="/js/kanban-board.js"></script>
 <script th:src="@{/js/gantt-chart.js}"></script>
 
 <script>
     $(document).ready(function() {
-        // Add fade animation to the modal
-        $('#taskModal').on('show.bs.modal', function() {
-            $(this).find('.modal-dialog').addClass('fade');
-        });
-
-        function setupDatePicker(elementId,minDate,maxDate) {
-            $(elementId).datepicker({
-                dateFormat: "yy-mm-dd",
-                minDate: minDate,
-                maxDate: maxDate,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                changeMonth: true,
-                changeYear: true,
-                onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
-            });
-        }
-
-        setupDatePicker("#task-start-date");
-        setupDatePicker("#task-end-date");
 
         //get phase from server with request param of project id
         $.ajax({
@@ -395,7 +400,7 @@
         }
 
         checkDatesValidation("task-start-date","task-end-date");
-        formValidate("addTaskForm", addTask)
+        formValidate("addTaskForm", addTask);
     });
 </script>
 </body>

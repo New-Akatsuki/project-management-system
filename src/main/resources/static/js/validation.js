@@ -107,6 +107,8 @@ function formValidate(form_id, action=()=>{}) {
             event.preventDefault();
             event.stopPropagation();
         }else {
+            event.preventDefault();
+            event.stopPropagation();
             console.log('in form validation');
             action();
         }

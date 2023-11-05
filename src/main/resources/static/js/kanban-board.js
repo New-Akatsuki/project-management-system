@@ -19,11 +19,10 @@
             priority:"",
             start_date: "",
             end_date: "",
-            actual_due_date: null,
+            actual_due_date: "",
             duration: null,
-            plan_hours: "",
-            actual_hours: null,
-            progress: 0,
+            plan_hours: 0,
+            actual_hours: 0,
             status: false,
             phase: phaseId,
             parent: parentId,
@@ -172,7 +171,7 @@
                 });
                 $(`#${item.id}-delete-phase-btn`).on('click',()=>{
                     phaseId = item.id;
-                    renderConfirmModal(true)
+                    renderConfirmModal(deletePhase,"Are you sure to delete this phase?");
                     //show modal
                     $('#confirmModal').modal('show');
                 });
@@ -237,6 +236,26 @@
                     buildTaskViewModal(item.id);
                     //show offcanvas
                     $('#taskViewModal').offcanvas('show');
+                });
+
+                function updateTaskStatus() {
+                    let taskData = item;
+                    taskData.status = !taskData.status;
+                    taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
+                    taskData.actual_due_date = null;
+                    taskData.actual_hours = null;
+                    updateTask(taskData)
+                    $('#confirmModal').modal('hide');
+                }
+                $(`#${item.id} .kb-task-status-layout`).on('click', () => {
+                    if(item.status){
+                        renderConfirmModal(updateTaskStatus,"Are you sure to make this task incomplete?")
+                        //show modal
+                        $('#confirmModal').modal('show');
+                    }else{
+                        buildCompleteTaskModal(item.id)
+                        $('#completeTaskModal').modal('show');
+                    }
                 });
 
                 const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
@@ -324,18 +343,17 @@
         /* ===========================================================
        *  Build phase modals Function
        * ============================================================*/
-        function buildConfirmModal(is_phase=true){
-            console.log('is_phase',is_phase)
+        function buildConfirmModal(action=()=>{console.log('clicked confirm')},title='Are you sure?'){
             const modal = `
               <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="confirmModalLabel">Are you sure?</h1>
+                            <h1 class="modal-title fs-5" id="confirmModalLabel">${title}</h1>
                             <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="phaseName" class="form-label">Enter <span class="text-danger">"CONFIRM'</span> to delete</label>
+                            <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to delete</label>
                             <input type="text" id="confirmInput" class="form-control">
                             <div id="errorConfirmText" class="d-flex d-none text-danger align-items-center gap-1"><i class="bx bx-info-circle"></i>Please check your input</div>
                         </div>
@@ -350,11 +368,7 @@
             $this.append(modal);
             $('#confirmButton').on('click', ()=>{
                 if($('#confirmInput').val() === 'CONFIRM'){
-                    if(is_phase){
-                        deletePhase();
-                    }else{
-                        deleteTask();
-                    }
+                    action();
                 }else {
                     $('#errorConfirmText').removeClass('d-none');
                     //focus input
@@ -371,9 +385,9 @@
         /* ===========================================================
               *  render phase modals Function
               * ============================================================*/
-        function renderConfirmModal(is_phase=true){
+        function renderConfirmModal(action=()=>{console.log('clicked confirm')},title) {
             $('#confirmModal').remove();
-            buildConfirmModal(is_phase)
+            buildConfirmModal(action,title)
         }
 
 
@@ -501,7 +515,6 @@
                 duration: null,
                 plan_hours: parseFloat($('#task-plan-hours').val()),
                 actual_hours: null,
-                progress: 0,
                 status: false,
                 phase: phaseId,
                 parent: parentId,
@@ -560,7 +573,7 @@
         *  update Task to Database
         * ============================================================*/
         function updateTask(task){
-            console.log(task)
+            console.log('task',task)
             $.ajax({
                 url: '/update-task',
                 method: 'PUT',
@@ -569,19 +582,21 @@
                 dataType: 'json',
                 success: function (data) {
                     //update settings.task data
-                    settings.tasks.filter(val => val.id === task.id)[0] = data;
-                    //check taskViewModal exist
-                    if(document.getElementById('taskViewModal')){
+                    settings.tasks.filter(val => val.id === data.id)[0] = data;
+                    settings.tasks.filter(val => val.id === data.id)[0].assignees = data.assignees;
+                    //reload
+                    render()
+                    //check taskViewModal exist and check class list contain show
+                    const modal = document.getElementById('taskViewModal')
+                    if(modal&& modal.classList.contains('show')){
                         //close offcanvas
                         $('#taskViewModal').offcanvas('hide');
                         $('#taskViewModal').remove();
-                        render()
-                        buildTaskViewModal(currentTaskId);
+                        buildTaskViewModal(data.id);
                         $('#taskViewModal').offcanvas('show');
-                        currentTaskId = null
-                        console.log('currentTaskId',currentTaskId)
                     }
-
+                    currentTaskId = null
+                    console.log('currentTaskId',currentTaskId)
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
@@ -632,8 +647,6 @@
             $('#task-plan-hours').val("")
             $('#task-group').val("")
             $('#task-type').val("")
-            $('.mult-select-tag').remove()
-            new MultiSelectTag('task-assignees')
         }
 
         function fillDataTaskModal(taskId) {
@@ -647,6 +660,80 @@
             $('#task-group').val(task.group)
             $('#task-type').val(task.type)
         }
+
+        /* ===========================================================
+           Build completeTaskModal Function
+          ============================================================*/
+        function buildCompleteTaskModal(taskId){
+            // Dynamic creation of modal with form
+            let today = new Date();
+            // Get the month, day, and year
+            let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+            let day = today.getDate().toString().padStart(2, '0');
+            let year = today.getFullYear();
+
+            // Format the date as mm-dd-yyyy
+            let formattedDate = `${year}-${month}-${day}`;
+
+            const item = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            const completeTaskModal = `
+              <div class="modal fade" id="completeTaskModal" tabindex="-1" aria-labelledby="completeTaskModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <form id="complete-task-form">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h1 class="modal-title fs-5" id="completeTaskModalLabel">Make Complete Task</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div> 
+                        <div class="modal-body">
+                            <div class="row" style="padding:10px">
+                              <div class="col-6">
+                                <label for="planHour">Plan Hour :</label>
+                                <input type="number" id="planHour" class="inputmodalbox"
+                                placeholder="Enter plan hour" value="${item.plan_hours}" disabled>
+                              </div>
+                              <div class="col-6">
+                                <label for="planHour">Due Date :</label>
+                                <input type="text" class="dateInputBox" placeholder="Select due date" value="${item.end_date}" disabled/>
+                              </div>
+                            </div>
+        
+                            <div class="row" style="padding:10px">
+                               <div class="col-6">
+                                <label for="actualHour">Actual Hour :</label>
+                                <input type="number" id="actualHour" class="inputmodalbox" min="0"
+                                placeholder="Enter actual hour" value="${item.actual_hours !== null ? item.actual_hours : ''}">
+                              </div>
+                              <div class="col-6">
+                                <label for="actualHour">Actual Date :</label>
+                                <input type="text" id="${taskId}-actual-date" placeholder="Select actual date" value="${formattedDate}"/>
+                              </div>
+                            </div>
+                        </div>        
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" id="completeTaskButton" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </div>
+                  </form> 
+                </div>
+            </div>`;
+            $this.append(completeTaskModal);
+            checkDatesValidation("task-start-date","task-end-date");
+            console.log('item',item)
+            const updateStatusInfo = ()=>{
+                let task = item;
+                task.actual_hours = parseFloat($('#actualHour').val());
+                task.actual_due_date = $(`#${taskId}-actual-date`).val();
+                task.status = task.actual_hours > 0;
+                task.assignees = item.assignees.map(val=> parseInt(val.id, 10));
+                updateTask(task);
+                $("#completeTaskModal").modal("hide");
+            }
+            setupDatePicker(`#${taskId}-actual-date`);
+            formValidate('complete-task-form',updateStatusInfo)
+        }
+
 
         /*
         ================================================
@@ -673,7 +760,7 @@
                         <button id="${task.id}-edit-task-btn" class="btn btn-primary float-edit-btn"><i class="bx bx-edit-alt me-2"></i>Edit</button>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Assignee</span>
-                            <span class="col-9">${task.assignees.map(val=>val.name).join(", ")}</span>
+                            <span class="col-9">${task.assignees.map(val=>val.name).join(", ")||'No assignee'}</span>
                         </div>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Start date</span>
@@ -754,11 +841,27 @@
                 $('#exampleModal').modal('show');
             });
 
+            function updateTaskStatus() {
+                let taskData = task;
+                taskData.status = !taskData.status;
+                taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
+                taskData.actual_due_date = null;
+                taskData.actual_hours = null;
+                updateTask(taskData)
+                $('#confirmModal').modal('hide');
+            }
+
             const completeBtn = document.getElementById(`${task.id}-complete-btn`)
             if(completeBtn){
                 completeBtn.addEventListener('click',()=> {
-                    console.log('click complete btn')
-                    // task.status = !task.status;
+                    if(task.status){
+                        renderConfirmModal(updateTaskStatus,"Are you sure to make this task incomplete?")
+                        //show modal
+                        $('#confirmModal').modal('show');
+                    }else{
+                        buildCompleteTaskModal(task.id)
+                        $('#completeTaskModal').modal('show');
+                    }
                 });
             }
             $(`#${task.id}-edit-task-btn`).on('click',()=>{
@@ -771,7 +874,7 @@
             $(`#${task.id}-delete-task-btn`).on('click',()=>{
                 console.log('clicked edit btn')
                 currentTaskId = task.id
-                renderConfirmModal(false)
+                renderConfirmModal(deleteTask,"Are you sure to delete this task?")
                 //show modal
                 $('#confirmModal').modal('show');
             });

@@ -409,6 +409,11 @@ input[type="checkbox"] {
     color: #02ff70;
     font-size: 2rem;
 }
+.kb-task-status-layout:hover{
+    cursor: pointer;
+    border-radius: 5px;
+    background: #dfe9ff;
+}
 .dropdown-toggle{
     display: none!important;
 }

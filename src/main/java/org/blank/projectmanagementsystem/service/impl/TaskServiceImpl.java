@@ -89,6 +89,14 @@ public class TaskServiceImpl implements TaskService {
             Task parent = taskRepository.findById(taskFormInput.getParent()).orElse(null);
             task.setParentTask(parent);
         }
+        if(taskFormInput.getAssignees() != null){
+            task.setAssignees(new HashSet<>());
+            task.getAssignees().addAll(
+                    taskFormInput.getAssignees().stream()
+                            .map(id -> userRepository.findById(id).orElse(null))
+                            .collect(Collectors.toSet())
+            );
+        }
         return taskMapper.mapToTaskViewObject(taskRepository.save(task));
     }
 
@@ -104,6 +112,8 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.deleteById(id);
     }
+
+
 
     //create recursive function to get all subtask and clear assignees
     private void clearAssignees(Task task) {
