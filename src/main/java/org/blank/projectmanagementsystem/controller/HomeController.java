@@ -1,13 +1,11 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.TestEntityClass;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
-import org.blank.projectmanagementsystem.service.ClientService;
-import org.blank.projectmanagementsystem.service.ProjectService;
-import org.blank.projectmanagementsystem.service.TaskService;
-import org.blank.projectmanagementsystem.service.UserService;
+import org.blank.projectmanagementsystem.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,13 +21,16 @@ import java.util.List;
 public class HomeController {
 
     private final UserService userService;
-    private final DepartmentRepository departmentRepository;
+    private final DepartmentService departmentService;
     private final ClientService clientService;
     @GetMapping("/")
     public String index(ModelMap model){
         long userCount = userService.getAllUser().size();
         long clientCount = clientService.getallClients().size();
-        long departmentCount = departmentRepository.findAll().size();
+        long departmentCount = departmentService.getAllDepartments().size();
+        List<Department> departments = departmentService.getAllDepartments();
+
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.isAuthenticated()) {
@@ -41,6 +42,7 @@ public class HomeController {
         model.addAttribute("userCount", userCount);
         model.addAttribute("clientCount", clientCount);
         model.addAttribute("departmenetCount", departmentCount);
+        model.addAttribute("departments", departments);
         return "index";
     }
 

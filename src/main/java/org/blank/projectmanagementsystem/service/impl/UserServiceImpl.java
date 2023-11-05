@@ -12,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +56,21 @@ public class UserServiceImpl implements UserService {
         //get user from database
         User user = userRepository.findByUsername(username).orElse(null);
 
+    }
+
+    @Override
+    public Map<String, Integer> getTotalEmployeeByDepartment() {
+        List<User> getAllUser = userRepository.findAll();
+        Map<String, Integer> departmentEmployeeCount = new HashMap<>();
+        for (User user : getAllUser) {
+            String departmentName = user.getDepartment().getName();
+            if (departmentEmployeeCount.containsKey(departmentName)) {
+                departmentEmployeeCount.put(departmentName, departmentEmployeeCount.get(departmentName) + 1);
+            } else {
+                departmentEmployeeCount.put(departmentName, 1);
+            }
+        }
+        return departmentEmployeeCount;
     }
 
     @Override
