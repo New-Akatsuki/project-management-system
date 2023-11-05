@@ -25,24 +25,24 @@ public class HomeController {
     private final ClientService clientService;
     @GetMapping("/")
     public String index(ModelMap model){
-        long userCount = userService.getAllUser().size();
-        long clientCount = clientService.getallClients().size();
-        long departmentCount = departmentService.getAllDepartments().size();
-        List<Department> departments = departmentService.getAllDepartments();
-
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication.isAuthenticated()) {
-            // Get the username from the authentication object
-            String username = authentication.getName();
-            model.addAttribute("username", username);
-
-        }
-        model.addAttribute("userCount", userCount);
-        model.addAttribute("clientCount", clientCount);
-        model.addAttribute("departmenetCount", departmentCount);
-        model.addAttribute("departments", departments);
+//        long userCount = userService.getAllUser().size();
+//        long clientCount = clientService.getallClients().size();
+//        long departmentCount = departmentService.getAllDepartments().size();
+//        List<Department> departments = departmentService.getAllDepartments();
+//
+//
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication.isAuthenticated()) {
+//            // Get the username from the authentication object
+//            String username = authentication.getName();
+//            model.addAttribute("username", username);
+//
+//        }
+//        model.addAttribute("userCount", userCount);
+//        model.addAttribute("clientCount", clientCount);
+//        model.addAttribute("departmenetCount", departmentCount);
+//        model.addAttribute("departments", departments);
         return "index";
     }
 

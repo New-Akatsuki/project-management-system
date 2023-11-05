@@ -26,9 +26,12 @@ public class ProjectManagementSystemApplication {
             Department department = new Department(null, "IT", true);
             Department department2 = new Department(null, "HR", true);
             Department department3 = new Department(null, "Marketing", true);
+        ;
             userService.saveDepartment(department);
             userService.saveDepartment(department2);
             userService.saveDepartment(department3);
+
+
 
             // save demo data after start
             var user1 = userService.save(
