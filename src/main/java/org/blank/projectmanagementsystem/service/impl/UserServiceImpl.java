@@ -6,6 +6,7 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +89,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
+    @Override
+    public List<UserViewObject> getAllUsers() {
+        return userRepository.findAll().stream().map(UserViewObject::new).toList();
+    }
 }

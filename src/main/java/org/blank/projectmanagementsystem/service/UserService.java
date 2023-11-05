@@ -3,7 +3,10 @@ package org.blank.projectmanagementsystem.service;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
+import org.blank.projectmanagementsystem.mapper.UserMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -15,4 +18,6 @@ public interface UserService {
 
 
     User registerUser(AddUserFormInput addUserFormInput);
+
+    List<UserViewObject> getAllUsers();
 }

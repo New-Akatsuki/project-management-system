@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class User implements Serializable,UserDetails {
     @Column(unique = true, nullable = false, length = 45)
     private String email;
 
+    @JsonIgnore
 //    @Column(nullable = false, length = 255)
     private String password;
 

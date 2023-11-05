@@ -25,8 +25,6 @@ public class ForgotPasswordService {
 
     public String generateToken() {
         return UUID.randomUUID().toString();
-
-
     }
 
     public LocalDateTime expireTimeRange () {

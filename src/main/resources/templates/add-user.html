@@ -216,21 +216,19 @@
       })
     }
 
-      // $.ajax({
-      //   type: "GET",
-      //   url: "/pm/add-user-list",
-      //   contentType: "application/json",
-      //   data: JSON.stringify(addMember),
-      //   dataType: 'json',
-      //   success: function (data) {
-      //     console.log("SUCCESS: ", data);
-      //   },
-      //   error:function(xhr,status,error){
-      //     console.log("ERROR: ", xhr.responseText);
-      //     alert('Error! Please try again.',error);
-      //   }
-      //
-      // })
+      $.ajax({
+        type: "GET",
+        url: "/pm/user-list",
+
+        success: function (data) {
+
+        },
+        error:function(xhr,status,error){
+          console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.',error);
+        }
+
+      })
 
 
 

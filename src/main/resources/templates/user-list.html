@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DIR-ACE TECHNOLOGY</title>
-  <meta content="" name="description" />
-  <meta content="" name="keywords" />
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect" />
-  <link
-          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"
-  />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
-  <!-- Favicons -->
-  <link th:href="@{/images/DAT.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
-  <link
-          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-          rel="stylesheet"
-  />
-  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
-
-  <!-- Template Main CSS File -->
-  <link href="/css/style.css" rel="stylesheet" />
-  <!-- Library / Plugin Css Build -->
-  <link rel="stylesheet" href="/css/core/libs.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
 
 
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
 
-  <!-- Custom Css -->
-  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Dark Css -->
+    <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
 
-  <!-- Dark Css -->
-  <link rel="stylesheet" href="/css/dark.min.css">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
 
-  <!-- Customizer Css -->
-  <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Single Select -->
+    <!--  <link rel="stylesheet" href="/css/single-select.css">-->
 
-  <!-- RTL Css -->
-  <link rel="stylesheet" href="/css/rtl.min.css">
 
+    <!--    <link rel="stylesheet" href="/css/datatable.css"/>-->
+    <!--    <script src="/js/ajax-jquery.js"></script>-->
+    <!--    <script src="/js/datatable.js"></script>-->
 
-  <!-- Single Select -->
-  <link rel="stylesheet" href="/css/single-select.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -57,88 +61,57 @@
 
 
 <main id="main" class="main">
-  <!-- Breadcrumb part-->
-  <div class="pagetitle">
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">userlist</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- End Page Title -->
-
-  <!-- Main Content -->
-  </div>
-  <div class="conatiner-fluid content-inner mt-n5 py-0">
-    <div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <div class="header-title">
-                <h4 class="card-title">User List</h4>
-                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" th:href="@{/pm/add-user}">Add User</a>
-
-              </div>
-            </div>
-            <div class="card-body px-">
-              <div class="table-responsive">
-                <table id="user-list-table" class="table table-striped" role="grid" data-bs-toggle="data-table">
-                  <thead>
-                  <tr class="ligth">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Role</th>
-                    <th style="min-width: 100px">Action</th>
-
-                  </tr>
-                  </thead>
-
-                  <!-- Delete when data is inputted -->
-                  <tbody>
-
-                  <tr>
-                    <td>M001</td>
-                    <td>Ko Khun Chaw</td>
-                    <td>Banking</td>
-                    <td>Junior Software Engineer</td>
-                    <td>
-                      <div class="flex align-items-center list-user-action">
-                        <a id="openEditUserModalButton" class="icon-add-btn" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                          <i class='bx bx-edit m-0 p-0'></i>
-                        </a>
-
-
-                      </div>
-                    </td>
-                    <td>
-
-                      <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" role="switch" name="user-enable" id="user-enable">
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">userlist</li>
+            </ol>
+        </nav>
     </div>
-  </div>
+    <!-- End Page Title -->
 
+    <!-- Main Content -->
 
+    <div class="conatiner-fluid content-inner mt-n5 py-0">
+        <div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">User List</h4>
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4"
+                                   th:href="@{/pm/add-user}">Add User</a>
 
-  <!-- End Main Content-->
+                            </div>
+                        </div>
+                        <div class="card-body px-">
+                            <div class="table-responsive">
+                                <table id="user-list-table" class="display" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Content-->
 </main>
-<!-- End #main -->
-
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
@@ -146,73 +119,100 @@
 <script th:src="@{/js/single-select.js}"></script>
 
 
-<!-- Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <form id="edit-user-modal-form" class="modal-content">
-      <div class="modal-header">
-        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Your close icon here -->
-        </svg>
-        <h1 class="modal-title fs-5" id="editUserModalLabel">Edit User</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <label for="user-name">User Name:</label>
-        <input type="text" id="user-name" class="form-control" required>
-        <label for="user-email">Email:</label>
-        <input type="text" id="user-email" class="form-control" required>
+<!-- Edit User Modal-->
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Edit User Role And Department</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editName">Name</label>
+                        <input type="text" class="form-control" id="editName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">Role</label>
+                        <input type="text" class="form-control" id="editRole">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDepartment">Department</label>
+                        <input type="text" class="form-control" id="editDepartment">
+                    </div>
+                </div>
+            </div>
 
-        <label  class="form-label" for="department">Department</label>
-        <div id="department" class="w-100"></div>
-
-
-        <label for="role" class="form-label">Role</label>
-        <select class="form-select"  id="role" name="role" required>
-          <option value="PMO">PMO</option>
-          <option value="SDQC">SDQC</option>
-          <option value="DH">DH</option>
-          <option value="PM">PM</option>
-          <option value="member">Member</option>
-          <!-- Add more role options as needed -->
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" id="edit-user-modal-save-button" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="editUser" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <!--Single Select-->
 <script>
 
-  const data2 = ['ACE', 'DAT', 'Ace Plus']
-  const id2 = init("department")
-  const department_wrapperUpdateName = singleSelect(id2, data2);
+    const data2 = ['ACE', 'DAT', 'Ace Plus']
+    const id2 = init("department")
+    const department_wrapperUpdateName = singleSelect(id2, data2);
 
 </script>
 <script>
+    let userList = [];
+    $(document).ready(function () {
 
-  function updateMemberUI(data) {
-    // Update the UI to reflect the added member.
-    let userTable = $("#user-list-table tbody");
+        // Make an AJAX request to fetch data from the REST API endpoint
+        $.ajax({
+            url: '/pm/users', // Replace with your actual API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Data received:', data);
+                userList = data;
+                // Initialize DataTable with the received data
+                let table = $('#user-list-table').DataTable({
+                    data: data,
+                    columns: [
+                        {data: 'id'},
+                        {data: 'name'},
+                        {data: 'department'},
+                        {data: 'role'},
+                        {
+                            data: 'id',
+                            render: function (data, type, row, meta) {
+                                return `
+                                <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleCli(${row.id})">Delete</button>
+                                `;
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    });
 
-    // Create a new table row with the user data and append it to the table.
-    let newRow = $('<tr>');
-    newRow.append('<td>' + data.id + '</td>');
-    newRow.append('<td>' + data.name + '</td>');
-    newRow.append('<td>' + data.department + '</td>');
-    newRow.append('<td>' + data.role + '</td>');
+    function displayEditUserModal(userId) {
+        const user = userList.find(user => user.id === userId);
+        // Populate modal fields with user data
+        $('#editName').val(user.name);
+        $('#editRole').val(user.role);
+        $('#editDepartment').val(user.department);
+        // Disable the "name" field
+        $('#editName').prop('disabled', true);
 
-    userTable.append(newRow);
-  }
-
-
+        // Show the modal
+        $('#userEditModal').modal('show');
+    }
 
 </script>
-
-
 
 
 </body>

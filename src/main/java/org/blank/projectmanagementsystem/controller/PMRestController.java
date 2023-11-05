@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,6 +94,11 @@ public class PMRestController {
 //            return new ResponseEntity<>("Error adding architecture", HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
+    @GetMapping("/pm/users")
+    public ResponseEntity<List<UserViewObject>> getUserList() {
+        List<UserViewObject> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
    }
 
 

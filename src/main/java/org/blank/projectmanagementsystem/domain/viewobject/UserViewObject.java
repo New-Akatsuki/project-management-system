@@ -1,21 +1,25 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
+import lombok.Data;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 
+import java.io.Serializable;
+
+@Data
 public class UserViewObject {
-    private String username;
-    private String email;
+
+    private Long id;
+    private String name;
     private String role;
     private String department;
 
     public UserViewObject(User user) {
-        username=user.getUsername();
-        email=user.getEmail();
-        role= String.valueOf(user.getRole());
-        Department department=user.getDepartment();
-
+        name = user.getName();
+        id = user.getId();
+        role = String.valueOf(user.getRole());
+        department = user.getDepartment().getName();
     }
-    }
+}
 
 
