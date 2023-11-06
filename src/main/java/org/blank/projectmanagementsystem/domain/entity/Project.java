@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.hibernate.annotations.OnDelete;
 
 import java.io.Serializable;
@@ -50,34 +51,37 @@ public class Project implements Serializable {
     @JoinColumn(nullable = false)
     private Department department;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "contract_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "contract_member_id", nullable = false)  // Column in the join table for Architecture
     )
-    private Set<User> contractMembers = new HashSet<>();
+    private Set<User> contractMembers;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "foc_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "foc_member_id")  // Column in the join table for Architecture
     )
-    private Set<User> focMembers = new HashSet<>();
+    private Set<User> focMembers;
 
 
-    @OneToMany
+    @ManyToMany
     private Set<Architecture> architectures = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany
     private Set<SystemOutline> systemOutlines = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany
     private Set<Deliverable> deliverables = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Client client;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status = ProjectStatus.ONGOING;
 }

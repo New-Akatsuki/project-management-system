@@ -2,7 +2,6 @@ package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.Project;
-import org.blank.projectmanagementsystem.domain.entity.Role;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;

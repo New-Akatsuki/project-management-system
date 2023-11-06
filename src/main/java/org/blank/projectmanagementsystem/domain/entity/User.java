@@ -57,8 +57,14 @@ public class User implements Serializable,UserDetails {
 
     private boolean defaultPassword = true;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "assignees")
     private Set<Task> tasks;
+
+    @ManyToMany(mappedBy = "contractMembers")
+    private List<Project> contractProjects;
+
+    @ManyToMany(mappedBy = "focMembers")
+    private List<Project> focProjects;
 
     /*
      *the following is user details for spring security

@@ -19,7 +19,4 @@ public interface UserService {
     void changePassword(String currentPassword, String newPassword);
     User registerUser(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
-    Map<String, Integer> getTotalEmployeeByDepartment();
-    List<User> getAllUser();
-    Long getUserCountByDepartment(Department department);
 }

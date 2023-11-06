@@ -9,7 +9,6 @@ import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
-import org.blank.projectmanagementsystem.service.MailService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +28,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MailService mailService;
 
     @Override
     public User save(User user) {
@@ -105,19 +103,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public Long getUserCountByDepartment(Department department) {
-        return userRepository.countByDepartment(department);
-    }
-
     private void sendDefaultPasswordEmail(User user, String password) {
         // Call the MailService to send the default password email
-        mailService.sendDefaultPassword(user, password);
+//        mailService.sendDefaultPassword(user, password);
     }
 
     @Override

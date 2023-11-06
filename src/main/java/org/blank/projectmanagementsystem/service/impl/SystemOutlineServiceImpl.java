@@ -21,36 +21,6 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
         return systemOutlineRepository.save(systemOutline);
     }
 
-    @Override
-    public SystemOutline saveName(String name) {
-        SystemOutline systemOutline = new SystemOutline();
-        systemOutline.setName(name);
-        systemOutlineRepository.save(systemOutline);
-        return systemOutline;
-
-    }
-
-    @Override
-    public void updateSystemOutline(SystemOutline systemOutline) {
-        systemOutlineRepository.save(systemOutline);
-    }
-
-    @Override
-    public SystemOutline findById(Integer id) {
-        return systemOutlineRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void delete(Integer id) {
-        systemOutlineRepository.deleteById(id);
-    }
-
-    @Override
-    public void addSystemOutline(String newSystemOutline) {
-        SystemOutline systemOutline = new SystemOutline();
-        systemOutline.setName(newSystemOutline);
-        systemOutlineRepository.save(systemOutline);
-    }
 
     @Override
     public SystemOutline getSystemOutlineById(Long id) {
@@ -59,7 +29,7 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
 
     @Override
     public void deleteSystemOutline(Long id) {
-        systemOutlineRepository.deleteById(Math.toIntExact(id));
+        systemOutlineRepository.deleteById(id);
     }
 
     @Override

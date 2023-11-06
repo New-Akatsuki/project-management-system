@@ -110,13 +110,7 @@ public class PMController {
     }
 
     @GetMapping("/contract-info")
-    public String ContractInfo(Model model) {
-        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
-        model.addAttribute("systemOutlines", systemOutlines);
-
-        List<Deliverable> deliverables=deliverableService.getAllDeliverables();
-        model.addAttribute("deliverables",deliverables);
-
+    public String ContractInfo() {
         return "contract-info";
     }
 

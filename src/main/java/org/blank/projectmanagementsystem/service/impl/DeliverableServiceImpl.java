@@ -22,34 +22,9 @@ public class DeliverableServiceImpl implements DeliverableService {
     }
 
     @Override
-    public Deliverable createDeliverable(Deliverable deliverable) {
-        return deliverableRepository.save(deliverable);
-    }
-
-    @Override
-    public Deliverable updateDeliverable(Deliverable deliverable) {
-        return deliverableRepository.save(deliverable);
-    }
-
-    @Override
-    public void deleteDeliverable(long id) {
-        deliverableRepository.deleteById(id);
-    }
-
-    @Override
-    public Deliverable getDeliverable(Long id) {
-        return deliverableRepository.findById(id).orElse(null);
-    }
-
-    @Override
     public Deliverable save(Deliverable deliverable) {
 
         return deliverableRepository.save(deliverable);
-    }
-
-    @Override
-    public List<Deliverable> getAllDeliverable() {
-        return deliverableRepository.findAll();
     }
 
     @Override
@@ -64,13 +39,6 @@ public class DeliverableServiceImpl implements DeliverableService {
         return deliverableRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public Deliverable saveName(String name) {
-        Deliverable deliverable = new Deliverable();
-        deliverable.setName(name);
-        deliverableRepository.save(deliverable);
-        return deliverable;
-    }
 
     @Override
     public List<Deliverable> getAllDeliverables() {

@@ -39,7 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project saveProject(ProjectFormInput projectFormInput, String pmUsername) {
         //get project manager data
-//        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        //String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
@@ -99,6 +99,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setSystemOutlines(systemOutlines);
         project.setDeliverables(deliverables);
         project.setDepartment(projectManager.getDepartment());
+        project.setStatus(ProjectStatus.ONGOING);
 
         return projectRepository.save(project);
     }
