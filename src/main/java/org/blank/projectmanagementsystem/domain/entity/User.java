@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +46,7 @@ public class User implements Serializable,UserDetails {
 
     private boolean active = true;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "assignees")
     private Set<Task> tasks;
 

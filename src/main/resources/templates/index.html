@@ -197,115 +197,117 @@
 
 
 
+<script th:inline="javascript">
+    var departmentNames = /*[[${departmentNames}]]*/ [];
+    var userCounts = /*[[${userCounts}]]*/ [];
 
-<script>
-
-    var departments = /*[[${departments}]]*/ [];
-
-
-    const pieChartData = {
-        labels: ['Development', 'Quality Assurance', 'Design', 'Project Management', 'Support'],
-        datasets: [
-            {
-                data: [120, 50, 30, 20, 40],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF5733', '#58D68D'],
-            },
-        ],
-    };
-
-    // Pie chart configuration
-    const pieChartConfig = {
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    var chart = new Chart(ctx, {
         type: 'pie',
-        data: pieChartData,
+        data: {
+            labels: departmentNames,
+            datasets: [{
+                label: 'User Count',
+                data: userCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 71, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(36, 122, 252, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(255, 159, 64, 0.5)'
+                    // Add more colors as needed
+                ],
+                borderColor: 'rgba(255, 99, 71, 1)',
+                borderWidth: 1,
+            }]
+        },
         options: {
-            responsive: true,
-        },
-    };
-
-    // Create the pie chart
-    const manMonthPieChart = new Chart(document.getElementById('pieChart'), pieChartConfig);
-</script>
-
-<script>
-    // Sample data (replace with your actual data)
-    const reviewData = [
-        {
-            ProjectID: 'ProjectA',
-            Tasks: 'Task1',
-            DevelopingPhase: 'Basic Design',
-            Amount: 100,
-            InternalLeaderReviews: 5,
-            ExternalReviews: 3,
-        },
-        {
-            ProjectID: 'ProjectA',
-            Tasks: 'Task1',
-            DevelopingPhase: 'Detail Design',
-            Amount: 150,
-            InternalLeaderReviews: 8,
-            ExternalReviews: 4,
-        },
-        // Add more data entries
-    ];
-
-    // Calculate Review Counts
-    const reviewCounts = {};
-
-    reviewData.forEach((entry) => {
-        const { ProjectID, Tasks, DevelopingPhase, Amount } = entry;
-        const key = `${ProjectID}-${Tasks}-${DevelopingPhase}`;
-
-        if (reviewCounts[key]) {
-            reviewCounts[key] += Amount;
-        } else {
-            reviewCounts[key] = Amount;
+            responsive: true
         }
     });
-
-    // Calculate KPIs based on Review Counts
-    const kpiScreenCounts = Object.values(reviewCounts); // You can add more logic to calculate screen counts KPI
-    const kpiTestCases = Object.values(reviewCounts); // You can add more logic to calculate test cases KPI
-    const kpiKSTEP = Object.values(reviewCounts).map((amount) => amount / 1000); // Divide by 1000 for KSTEP
-
-    // Create a bar chart
-    const ctx = document.getElementById('kpiChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(reviewCounts), // X-axis labels
-            datasets: [
-                {
-                    label: 'Screen Counts',
-                    data: kpiScreenCounts, // Screen Counts KPI
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1,
-                },
-                {
-                    label: 'Test Cases',
-                    data: kpiTestCases, // Test Cases KPI
-                    backgroundColor: 'rgba(255, 99, 71, 0.5)',
-                    borderColor: 'rgba(255, 99, 71, 1)',
-                    borderWidth: 1,
-                },
-                {
-                    label: 'KSTEP/Review Counts',
-                    data: kpiKSTEP,
-                    backgroundColor: 'rgba(60, 179, 113, 0.5)',
-                    borderColor: 'rgba(60, 179, 113, 1)',
-                    borderWidth: 1,
-                },
-            ],
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
 </script>
+
+<!--<script>-->
+<!--    // Sample data (replace with your actual data)-->
+<!--    const reviewData = [-->
+<!--        {-->
+<!--            ProjectID: 'ProjectA',-->
+<!--            Tasks: 'Task1',-->
+<!--            DevelopingPhase: 'Basic Design',-->
+<!--            Amount: 100,-->
+<!--            InternalLeaderReviews: 5,-->
+<!--            ExternalReviews: 3,-->
+<!--        },-->
+<!--        {-->
+<!--            ProjectID: 'ProjectA',-->
+<!--            Tasks: 'Task1',-->
+<!--            DevelopingPhase: 'Detail Design',-->
+<!--            Amount: 150,-->
+<!--            InternalLeaderReviews: 8,-->
+<!--            ExternalReviews: 4,-->
+<!--        },-->
+<!--        // Add more data entries-->
+<!--    ];-->
+
+<!--    // Calculate Review Counts-->
+<!--    const reviewCounts = {};-->
+
+<!--    reviewData.forEach((entry) => {-->
+<!--        const { ProjectID, Tasks, DevelopingPhase, Amount } = entry;-->
+<!--        const key = `${ProjectID}-${Tasks}-${DevelopingPhase}`;-->
+
+<!--        if (reviewCounts[key]) {-->
+<!--            reviewCounts[key] += Amount;-->
+<!--        } else {-->
+<!--            reviewCounts[key] = Amount;-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Calculate KPIs based on Review Counts-->
+<!--    const kpiScreenCounts = Object.values(reviewCounts); // You can add more logic to calculate screen counts KPI-->
+<!--    const kpiTestCases = Object.values(reviewCounts); // You can add more logic to calculate test cases KPI-->
+<!--    const kpiKSTEP = Object.values(reviewCounts).map((amount) => amount / 1000); // Divide by 1000 for KSTEP-->
+
+<!--    // Create a bar chart-->
+<!--    const ctx = document.getElementById('kpiChart').getContext('2d');-->
+<!--    new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: Object.keys(reviewCounts), // X-axis labels-->
+<!--            datasets: [-->
+<!--                {-->
+<!--                    label: 'Screen Counts',-->
+<!--                    data: kpiScreenCounts, // Screen Counts KPI-->
+<!--                    backgroundColor: 'rgba(75, 192, 192, 0.5)',-->
+<!--                    borderColor: 'rgba(75, 192, 192, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--                {-->
+<!--                    label: 'Test Cases',-->
+<!--                    data: kpiTestCases, // Test Cases KPI-->
+<!--                    backgroundColor: 'rgba(255, 99, 71, 0.5)',-->
+<!--                    borderColor: 'rgba(255, 99, 71, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--                {-->
+<!--                    label: 'KSTEP/Review Counts',-->
+<!--                    data: kpiKSTEP,-->
+<!--                    backgroundColor: 'rgba(60, 179, 113, 0.5)',-->
+<!--                    borderColor: 'rgba(60, 179, 113, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--            ],-->
+<!--        },-->
+<!--        options: {-->
+<!--            scales: {-->
+<!--                y: {-->
+<!--                    beginAtZero: true,-->
+<!--                },-->
+<!--            },-->
+<!--        },-->
+<!--    });-->
+<!--</script>-->
   </body>
 
 </html>

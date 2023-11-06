@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.entity.Task;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 
@@ -16,4 +17,5 @@ public interface TaskService {
 
     List<Task> getTasksByPhase(Long phaseId);
 
+    List<Task> getTasksByUser(User user);
 }

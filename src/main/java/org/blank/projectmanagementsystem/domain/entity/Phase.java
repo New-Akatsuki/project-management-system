@@ -26,4 +26,13 @@ public class Phase {
     @JsonIgnore
     private List<Task> tasks;
 
+
+    @Override
+    public String toString() {
+        return "Phase{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }

@@ -78,5 +78,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    @Override
+    public Long getUserCountByDepartment(Department department) {
+        return userRepository.countByDepartment(department);
+    }
+
 
 }

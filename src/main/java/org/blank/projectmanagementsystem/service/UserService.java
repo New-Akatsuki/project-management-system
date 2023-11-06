@@ -15,4 +15,6 @@ public interface UserService {
     Map<String, Integer> getTotalEmployeeByDepartment();
 
     List<User> getAllUser();
+
+    Long getUserCountByDepartment(Department department);
 }

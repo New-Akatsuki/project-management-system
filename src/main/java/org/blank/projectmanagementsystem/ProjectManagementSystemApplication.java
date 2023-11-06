@@ -26,7 +26,7 @@ public class ProjectManagementSystemApplication {
             Department department = new Department(null, "IT", true);
             Department department2 = new Department(null, "HR", true);
             Department department3 = new Department(null, "Marketing", true);
-        ;
+
             userService.saveDepartment(department);
             userService.saveDepartment(department2);
             userService.saveDepartment(department3);
@@ -67,6 +67,18 @@ public class ProjectManagementSystemApplication {
                             .build()
 
             );
+
+            var user4 = userService.save(
+                    User.builder()
+                            .name("real")
+                            .username("real@gmail.com")
+                            .password(passwordEncoder.encode("1234"))
+                            .role(Role.MEMBER)
+                            .department(department3)
+                            .active(true)
+                            .build()
+            );
+
 
         };
     }

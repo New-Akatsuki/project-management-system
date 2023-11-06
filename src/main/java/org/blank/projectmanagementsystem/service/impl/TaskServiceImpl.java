@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.mapper.TaskMapper;
@@ -116,5 +117,12 @@ private final PhaseRepository phaseRepository;
     @Override
     public List<Task> getTasksByPhase(Long phaseId) {
         return taskRepository.findByPhaseId(phaseId);
+    }
+
+    @Override
+    public List<Task> getTasksByUser(User user) {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getAssignees().contains(user))
+                .toList();
     }
 }

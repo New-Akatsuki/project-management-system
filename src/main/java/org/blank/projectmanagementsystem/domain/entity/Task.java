@@ -68,6 +68,7 @@ public class Task implements Serializable {
     @JoinColumn(nullable = true)
     private Project project;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "task_assignee",  // Specify the name of the join table
@@ -85,5 +86,27 @@ public class Task implements Serializable {
     @JoinColumn(name = "phase_id") // Define the foreign key column
     private Phase phase;
 
+    @Override
+    public  String toString(){
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", startDate=" + startDate +
+                ", dueDate=" + dueDate +
+                ", planHours=" + planHours +
+                ", actualDueDate=" + actualDueDate +
+                ", actualHours=" + actualHours +
+                ", status=" + status +
+                ", group=" + group +
+                ", type=" + type +
+                ", project=" + project +
+                ", assignees=" + assignees +
+                ", parentTask=" + parentTask +
+                ", phase=" + phase +
+                '}';
+
+    }
 
 }

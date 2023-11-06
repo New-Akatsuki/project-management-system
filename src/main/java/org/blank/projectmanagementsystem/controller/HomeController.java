@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.TestEntityClass;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -13,11 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-
+@Slf4j
 public class HomeController {
 
     private final UserService userService;
@@ -25,23 +27,39 @@ public class HomeController {
     private final ClientService clientService;
     @GetMapping("/")
     public String index(ModelMap model){
-//        long userCount = userService.getAllUser().size();
-//        long clientCount = clientService.getallClients().size();
-//        long departmentCount = departmentService.getAllDepartments().size();
-//        List<Department> departments = departmentService.getAllDepartments();
-//
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication.isAuthenticated()) {
-//            // Get the username from the authentication object
-//            String username = authentication.getName();
-//            model.addAttribute("username", username);
-//
-//        }
-//        model.addAttribute("userCount", userCount);
-//        model.addAttribute("clientCount", clientCount);
-//        model.addAttribute("departmenetCount", departmentCount);
+        long userCouNT = userService.getAllUser().size();
+        long clientCount = clientService.getallClients().size();
+        long departmentCount = departmentService.getAllDepartments().size();
+        List<Department> departments = departmentService.getAllDepartments();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.isAuthenticated()) {
+            // Get the username from the authentication object
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+
+        }
+
+        List<String> departmentNames = new ArrayList<>();
+        List<Long> userCounts = new ArrayList<>();
+
+        for (Department department : departments) {
+            departmentNames.add(department.getName());
+            long userCount = userService.getUserCountByDepartment(department);
+            userCounts.add(userCount);
+        }
+        log.info("====================================================================================");
+        log.info("Department Names: {}", departmentNames);
+        log.info("User Counts: {}", userCounts);
+        log.info("====================================================================================");
+
+
+
+        model.addAttribute("departmentNames", departmentNames);
+        model.addAttribute("userCounts", userCounts);
+        model.addAttribute("userCount", userCouNT);
+        model.addAttribute("clientCount", clientCount);
+        model.addAttribute("departmenetCount", departmentCount);
 //        model.addAttribute("departments", departments);
         return "index";
     }
