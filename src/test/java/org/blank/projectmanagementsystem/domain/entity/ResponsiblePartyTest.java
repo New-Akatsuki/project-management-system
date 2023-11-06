@@ -1,64 +1,62 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ResponsiblePartyTest {
 
-    private ResponsibleParty responsibleParty;
-    private User provider;
-    private Client client;
+    @Test
+    public void testConstructorAndGetters() {
+        // Create an instance of ResponsibleParty
+        Long id = 1L;
+        Set<User> providers = new HashSet<>();
+        Client client = new Client();
+        ResponsibleParty responsibleParty = new ResponsibleParty(id, providers, client);
 
-    @BeforeEach
-    public void setUp() {
-        provider = new User(/* pass necessary parameters to the User constructor */);
-        client = new Client(/* pass necessary parameters to the Client constructor */);
-
-        responsibleParty = ResponsibleParty.builder()
-                .id(1L)
-                .Provider(provider)
-                .client(client)
-                .build();
+        // Verify the values returned by the getters
+        Assertions.assertEquals(id, responsibleParty.getId());
+        Assertions.assertEquals(providers, responsibleParty.getProviders());
+        Assertions.assertEquals(client, responsibleParty.getClient());
     }
 
     @Test
-    public void testGetId() {
-        assertEquals(1L, responsibleParty.getId());
+    public void testSetters() {
+        // Create an instance of ResponsibleParty
+        ResponsibleParty responsibleParty = new ResponsibleParty();
+
+        // Set values using the setters
+        Long id = 1L;
+        Set<User> providers = new HashSet<>();
+        Client client = new Client();
+        responsibleParty.setId(id);
+        responsibleParty.setProviders(providers);
+        responsibleParty.setClient(client);
+
+        // Verify the values returned by the getters
+        Assertions.assertEquals(id, responsibleParty.getId());
+        Assertions.assertEquals(providers, responsibleParty.getProviders());
+        Assertions.assertEquals(client, responsibleParty.getClient());
     }
 
     @Test
-    public void testGetProvider() {
-        assertNotNull(responsibleParty.getProvider());
-        assertEquals(provider, responsibleParty.getProvider());
-    }
+    public void testProvidersSettersAndGetters() {
+        // Create an instance of ResponsibleParty
+        ResponsibleParty responsibleParty = new ResponsibleParty();
 
-    @Test
-    public void testGetClient() {
-        assertNotNull(responsibleParty.getClient());
-        assertEquals(client, responsibleParty.getClient());
-    }
+        // Create a set of providers
+        Set<User> providers = new HashSet<>();
+        User provider1 = new User();
+        User provider2 = new User();
+        providers.add(provider1);
+        providers.add(provider2);
 
-    @Test
-    public void testEquals() {
-        ResponsibleParty anotherResponsibleParty = ResponsibleParty.builder()
-                .id(1L)
-                .Provider(provider)
-                .client(client)
-                .build();
+        // Set the providers using the setter
+        responsibleParty.setProviders(providers);
 
-        assertEquals(responsibleParty, anotherResponsibleParty);
-    }
-
-    @Test
-    public void testNotEquals() {
-        ResponsibleParty differentResponsibleParty = ResponsibleParty.builder()
-                .id(2L)
-                .Provider(new User())
-                .client(new Client())
-                .build();
-
-        assertNotEquals(responsibleParty, differentResponsibleParty);
+        // Verify the values returned by the getter
+        Assertions.assertEquals(providers, responsibleParty.getProviders());
     }
 }
-

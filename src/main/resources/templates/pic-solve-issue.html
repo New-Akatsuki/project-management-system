@@ -5,10 +5,13 @@
     <title>DIR-ACE TECHNOLOGY</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
+
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -34,7 +37,14 @@
 
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
     <style>
         .rounded-card {
             border-radius: 10px;
@@ -82,9 +92,6 @@
     <div class="card rounded-card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 style="color: white; margin-left:15px"><i class="bi bi-pip"></i> Display Issue Details</h3>
-            <a class="icon-add-btn">
-                <i class='bx bx-edit'></i>
-            </a>
         </div>
 
         <!--Outer card body -->
@@ -234,97 +241,36 @@
 
     <div class="card rounded-card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
-            <a class="icon-add-btn">
-                <i class='bx bx-edit'></i>
-            </a>
+            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
         </div>
 
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px; margin-top: 10px">
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="solution">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#solution-box" aria-expanded="true"
-                                    aria-controls="solution-box">
-                                <span class="display-6 fs-5 fw-bold">Solution</span>
-                            </button>
-                        </h2>
-                        <div id="solution-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#solution">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card-body" style="padding: 15px; margin: 10px">
+            <form>
+                <div>
+                    <label for="co-action">Corrective Action</label>
                 </div>
-            </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="co-action">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#co-action-box" aria-expanded="true"
-                                    aria-controls="co-action-box">
-                                <span class="display-6 fs-5 fw-bold">Corrective Action</span>
-                            </button>
-                        </h2>
-                        <div id="co-action-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#co-action">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
+                <div id="co-action"></div>
+                <br>
+                <div>
+                    <label for="pre-action">Preventive Action</label>
                 </div>
-            </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="pre-action">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#pre-action-box" aria-expanded="true"
-                                    aria-controls="pre-action-box">
-                                <span class="display-6 fs-5 fw-bold">Preventive Action</span>
-                            </button>
-                        </h2>
-                        <div id="pre-action-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#pre-action">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
+                <div id="pre-action"></div>
+                <br>
+                <div>
+                    <label for="impact">Impact</label>
                 </div>
-            </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="impact">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#impact-box" aria-expanded="true"
-                                    aria-controls="impact-box">
-                                <span class="display-6 fs-5 fw-bold">Impact</span>
-                            </button>
-                        </h2>
-                        <div id="impact-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#impact">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <div id="impact"></div>
                 </div>
-            </div>
-
-        </div>
-        <div class="upload-info">
-            <p><strong>Uploaded at </strong><span>31 October 2023.</span></p>
+                <br>
+                <input type="hidden" name="coAction" id="co-actionInput">
+                <input type="hidden" name="preAction" id="pre-actionInput">
+                <div class="d-flex justify-content-end gap-3 mt-2">
+                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                    <button class="btn btn-danger">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -342,6 +288,22 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+<script>
+    let coAction = new Quill("#co-action", aa)
+    let preAction = new Quill("#pre-action", aa)
+    let impact = new Quill("#impact", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-action');
+        toggleToolbar(1, 'pre-action');
+        toggleToolbar(2, 'impact');
+    })
+</script>
 <script>
     // Assume you have JSON data
     const jsonData = {
@@ -408,36 +370,6 @@
     updateContent("collapseTwo", jsonData.directCause);
     updateContent("collapseThree", jsonData.rootCause);
 </script>
-
-<script>
-    // Assume you have JSON data
-    const solutionJson = {
-        solution: "Sample Solution",
-        coAction: "Sample Action",
-        preAction: "Sample Action",
-        impact: "Sample Impact",
-    };
-
-    // Function to update the content of the spans and generate a table
-    function updateContent(sectionId, data) {
-        const container = document.querySelector(`#${sectionId} .accordion-body`);
-
-        if (container) {
-            container.innerHTML = '';
-                const spanElement = document.createElement('span');
-                spanElement.textContent = data;
-                container.appendChild(spanElement);
-
-        }
-    }
-
-    // Update each section with corresponding data
-    updateContent("solution-box", solutionJson.solution);
-    updateContent("co-action-box", solutionJson.coAction);
-    updateContent("pre-action-box", solutionJson.preAction);
-    updateContent("impact-box", solutionJson.impact);
-</script>
-
 </body>
 
 </html>

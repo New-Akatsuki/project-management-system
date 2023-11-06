@@ -19,4 +19,8 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     @Query("SELECT p FROM Project p WHERE :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers")
     Optional<List<Project>> findAllProjectsByUserInMembers(@Param("user") User user);
 
+    //get all project that user is project manager or contract members or foc members and project is status is ONGOING
+    @Query("SELECT p FROM Project p WHERE (p.projectManager = :user OR :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers) AND p.status = :status")
+    Optional<List<Project>> findAllProjectsByUserInMembersAndStatus(@Param("user") User user,@Param("status") String status);
+
 }

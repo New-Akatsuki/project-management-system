@@ -60,7 +60,6 @@ public class User implements Serializable,UserDetails {
     @ManyToMany
     private Set<Task> tasks;
 
-
     /*
      *the following is user details for spring security
      */
@@ -95,6 +94,4 @@ public class User implements Serializable,UserDetails {
         return active;
     }
 
-    public void setDepartment(String department) {
-    }
 }

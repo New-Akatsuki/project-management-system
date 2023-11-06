@@ -17,6 +17,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponsibleParty implements Serializable {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -28,4 +29,5 @@ public class ResponsibleParty implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = true)
     private Client client;
+
 }

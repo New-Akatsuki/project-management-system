@@ -103,8 +103,10 @@
                     navLinks[0].classList.add("active");
                 }else if (link.href.includes(`${activePage}`)) {
                     link.classList.add("active");
+                    link.classList.add("active-color");
                 } else {
                     link.classList.remove("active");
+                    link.classList.remove("active-color");
                 }
             });
         </script>

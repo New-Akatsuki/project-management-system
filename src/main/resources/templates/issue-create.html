@@ -8,7 +8,7 @@
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
 
-      <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -35,19 +35,59 @@
           integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <!-- Template Main CSS File -->
-    <!-- multi-select css link -->
-    <link rel="stylesheet" href="/css/multiple-select.css">
-    <!-- Hope Ui Design System Css -->
-    <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/quilltext.css">
+
+    <!-- multi-select css link -->
+    <link rel="stylesheet" href="/css/multiple-select.css">
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+    <link rel="stylesheet" href="/css/hope.css">
     <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/select2.css">
+
+    <!--    <script src="/js/select2.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <style>
+        .card .card-header {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            color: #fff;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card .card-header h3 {
+            color: #fff;
+            margin: 10px;
+        }
+    </style>
+    <style>
+        .card-body {
+            background: white;
+        }
+    </style>
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            height: 100%;
+            line-height: 30px;
+        }
+    </style>
+
+    <style>
+        .modal {
+            --bs-modal-width: 500px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+    </style>
 </head>
 
 <body>
@@ -65,148 +105,188 @@
         </ol>
     </nav>
     <!-- End Page Title -->
-    <div class="card" style="border-radius: 10px;">
+    <div class="card" style="border-radius: 20px;">
+        <div class="card-header">
+            <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
+        </div>
         <div class="card-body" style="padding: 20px;">
-            <div class="container">
-                <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
-                <br>
-                <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}" id="create-issue">
-                    <div class="container d-flex flex-column gap-2">
-                        <div>
-                            <label for="title" class="form-label">Title</label>
-                            <input class="form-control" type="text" name="title" id="title" placeholder="Enter issue title"
-                                   />
-                            <div id="title_error" class="invalid-feedback"></div>
-                        </div>
-                        <div class="d-flex flex-column flex-md-row align-items-md-stretch gap-2">
-                            <div class="flex-1">
+
+            <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
+                  id="create-issue">
+                <input type="hidden" name="issueId" value="USR001"/>
+                <div class="container d-flex flex-column gap-2">
+                    <div class="flex-1">
+                        <label for="title" class="form-label">Title</label>
+                        <input class="form-control" type="text" name="title" id="title"
+                               placeholder="Enter issue title"/>
+                        <div id="title_error" class="invalid-feedback"></div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <!-- Left Set -->
+                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
+                            <div class="d-flex flex-column w-100 p-0">
                                 <label for="issue_category" class="form-label">Category</label>
-                                <select id="issue_category" name="category" multiple >
-                                    <option value="communication">Communication</option>
-                                    <option value="programming">Programming</option>
+                                <!-- First Select Box with Default Value -->
+                                <select class="js-example-basic-single select-box form-select"
+                                        id="issue_category" style="width: 100%; height: 100%;">
+                                    <option value="default" selected disabled>Select an option</option>
+                                    <!-- Add more options as needed -->
                                 </select>
                             </div>
+                            <button type="button" class="btn btn-primary btn-icon" id="callCategoryModal"><i
+                                    class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                        </div>
 
-                            <div class="flex-1 d-flex flex-column">
-                                <label for="issue_place" class="form-label">Issue Place</label>
-<!--                                <div id="issue_place" class="w-100"></div>-->
-                                <select id="issue_place" name="place" required>
-                                    <option value="server 1">Server 1</option>
-                                    <option value="server 2">Server 2</option>
+                        <!-- Right Set -->
+                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
+                            <div class="d-flex flex-column w-100 p-0">
+                                <label for="issue_place">Issue Place</label>
+                                <!-- Second Select Box with Default Value -->
+                                <select class="js-example-basic-single select-box1 form-select"
+                                        id="issue_place" style="width: 100%; height: 100%;">
+                                    <option value="default" selected disabled>Select an option</option>
+                                    <!-- Add more options as needed -->
                                 </select>
                             </div>
-
-                            <div class="flex-1 d-flex flex-column">
-                                <label for="issue_pic" class="form-label">Issue PIC</label>
-<!--                                <div id="issue_pic" class="w-100"></div>-->
-                                <select id="issue_pic" name="pic" required>
-                                    <option value="John">John</option>
-                                    <option value="Matt">Matt</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="content" class="form-label">Content</label>
-                            <div id="content"></div>
-                        </div>
-
-                        <div>
-                            <label for="res-party" class="form-label">Responsible Party</label>
-                            <div id="res-party"></div>
-                        </div>
-
-                        <div>
-                            <label for="dir-cause" class="form-label">Direct Cause</label>
-                            <div id="dir-cause"></div>
-                        </div>
-
-                        <div>
-                            <label for="root-cause">Root Cause</label>
-                            <div id="root-cause"></div>
-                        </div>
-
-                        <!--  Hidden Items    -->
-                        <input type="hidden" name="content" id="contentInput">
-                        <input type="hidden" name="resParty" id="resPartyInput">
-                        <input type="hidden" name="dirCause" id="dirCauseInput">
-                        <input type="hidden" name="rootCause" id="rootCauseInput">
-                        <!-- Hidden Items End -->
-
-                        <div class="align-self-end">
-                            <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
+                            <button type="button" class="btn btn-primary btn-icon" id="callPlaceModal"
+                            data-target="categoryModal"><i
+                                    class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                         </div>
                     </div>
-                </form>
+
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="issue_pic">Issue PIC</label>
+                            <select class="js-example-basic-single select-box2 form-select"
+                                    id="issue_pic" style="width: 100%; height: 100%;">
+                                <option value="default" selected disabled>Select an option</option>
+                            </select>
+                        </div>
+
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="res_party">Responsible Party</label>
+                            <select class="js-example-basic-multiple form-select" multiple="multiple"
+                                    id="res_party" style="width: 100%; height: 100%;">
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="content" class="form-label">Content</label>
+                        <div id="content"></div>
+                    </div>
+
+
+                    <div>
+                        <label for="dir-cause" class="form-label">Direct Cause</label>
+                        <div id="dir-cause"></div>
+                    </div>
+
+                    <div>
+                        <label for="root-cause">Root Cause</label>
+                        <div id="root-cause"></div>
+                    </div>
+                    <div class="align-self-end">
+                        <input type="reset" class="btn btn-secondary" value="Reset" onclick="clean()">
+                        <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
+                    </div>
+                </div>
+                <!--  Hidden Items    -->
+                <input type="hidden" name="content" id="contentInput">
+                <input type="hidden" name="resParty" id="resPartyInput">
+                <input type="hidden" name="dirCause" id="dirCauseInput">
+                <input type="hidden" name="rootCause" id="rootCauseInput">
+                <!-- Hidden Items End -->
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Add New Category</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="align-items: center;">
+                        <input type="text" class="form-control" id="addCategory"/>
+                        <span class="text-danger d-none" id="addCategoryError">The category must not be blank.</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="saveAddCategory" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="align-items: center;">
+                        <input type="text" class="form-control" id="addPlace"/>
+                        <span class="text-danger d-none" id="addPlaceError">The place must not be blank.</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveAddPlace">Save</button>
+                </div>
             </div>
         </div>
     </div>
     <!-- End Card -->
 </main>
 <!-- End #main -->
-<!--Modal Section-->
-<div class="modal fade" id="addIssuePlaceModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureOutlineModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addArchitectureOutlineModalLabel">Add New Architecture Outline</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="architectureOutlineName">Name</label>
-                        <input type="text" class="form-control" id="architectureOutlineName" placeholder="Enter architecture outline name">
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" onclick="addNewOption('aa')">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Modal Section End-->
-
-<!-- Vendor JS Files -->
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="/js/multi-select.js"></script>
-<!-- Jquery for combo box -->
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<!--<script th:src="@{/js/single-select.js}"></script>-->
 <script th:src="@{/js/text-editor.js}"></script>
-<script th:src="@{/js/issue-create-validation.js}"></script>
 
 <script>
+    function clean() {
+        quillContent.root.innerHTML = "";
+        quillDirCause.root.innerHTML = "";
+        quillRootCause.root.innerHTML = "";
+        $('#issue_category').val("default").trigger('change');
+        $('#issue_place').val("default").trigger('change');
+        $('#issue_pic').val("default").trigger('change');
+        $('#res_party').val(null).trigger('change');
+    }
+
     let quillContent = new Quill("#content", aa);
-    let quillResParty = new Quill("#res-party", aa);
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
-
     document.getElementById('create-issue').addEventListener('submit', function (e) {
         // Get the Quill content
         var quillContentHTML = quillContent.root.innerHTML;
-        var quillResPartyHTML = quillResParty.root.innerHTML;
         var quillDirCauseHTML = quillDirCause.root.innerHTML;
         var quillRootCauseHTML = quillRootCause.root.innerHTML;
 
         // Validation check
-        if (!isValidQuillContent(quillContentHTML) || !isValidQuillContent(quillResPartyHTML) ||
-            !isValidQuillContent(quillDirCauseHTML) || !isValidQuillContent(quillRootCauseHTML)) {
+        if (!isValidQuillContent(quillContentHTML) || isValidQuillContent(quillDirCauseHTML) || !isValidQuillContent(quillRootCauseHTML)) {
             // If validation fails, prevent the form submission
             e.preventDefault();
             alert("Quill content cannot be empty.");
         } else {
             // Update hidden input fields
             document.getElementById('contentInput').value = quillContentHTML;
-            document.getElementById('resPartyInput').value = quillResPartyHTML;
             document.getElementById('dirCauseInput').value = quillDirCauseHTML;
             document.getElementById('rootCauseInput').value = quillRootCauseHTML;
         }
@@ -219,7 +299,6 @@
     }
 
 
-
     //document element ready
     document.addEventListener('DOMContentLoaded', function () {
         const containers = document.querySelectorAll('.ql-container');
@@ -227,35 +306,181 @@
             item.classList.add('round-full-border');
         });
         toggleToolbar(0, 'content');
-        toggleToolbar(1, 'res-party');
-        toggleToolbar(2, 'dir-cause');
-        toggleToolbar(3, 'root-cause');
+        toggleToolbar(1, 'dir-cause');
+        toggleToolbar(2, 'root-cause');
     })
 </script>
+
 <script>
     $(document).ready(function () {
-        $("#date").datepicker({
-            dateFormat: "dd/mm/yy",
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            changeMonth: true,
-            changeYear: true,
+        // Function to populate options from JSON data
+        function populateSelect(selector, jsonData) {
+            var select = $(selector);
+            $.each(jsonData, function (index, value) {
+                select.append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+        }
+
+        // Simulated JSON data for the second third box
+        var jsonData3 = [
+            {id: 'A', name: 'Option A'},
+            {id: 'B', name: 'Option B'},
+            {id: 'C', name: 'Option C'}
+        ];
+        populateSelect('.js-example-basic-single.select-box2', jsonData3);
+
+        // Initialize Select2 for both select boxes
+        $('.js-example-basic-single').select2();
+
+        $('#create-issue').submit(function (e) {
+            e.preventDefault();
+
+            let title = $('#title').val();
+            let issue_category = $('#issue_category').val();
+            let issue_place = $('#issue_place').val();
+            let issue_pic = $('#issue_pic').val();
+            let res_party = $('#res-party').val();
+            let content = quillContent.root.innerHTML;
+            let dir_cause = quillDirCause.root.innerHTML;
+            let root_cause = quillRootCause.root.innerHTML;
+
+            $.ajax({
+                url: '/member/create-issue',
+                type: 'POST',
+                data: {
+                    id: "USR001",
+                    title: title,
+                    category: issue_category,
+                    place: issue_place,
+                    pic: issue_pic,
+                    content: content,
+                    resParty: res_party,
+                    dirCause: dir_cause,
+                    rootCause: root_cause
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.status == "success") {
+                        alert("Issue created successfully");
+                        window.location.href = "/member/issue";
+                    } else {
+                        alert("Issue creation failed");
+                    }
+                }
+            })
+
+
         })
     });
 </script>
 <script>
-    new MultiSelectTag('issue_category')
+    function populateSelect(selector, options) {
+        let select = $(selector);
+        $.each(options, function (index, value) {
+            select.append('<option value="' + value.id + '">' + value.name + '</option>');
+        });
+    }
+
+    function updateSelect(selector, option) {
+        let select = $(selector);
+        select.append('<option value="' + option.id + '">' + option.name + '</option>');
+    }
+
+    function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId) {
+        function toggleError() {
+            error.toggleClass('d-none', input.val().trim() !== '');
+        }
+
+        function resetModal() {
+            let modalID = $('#' + modalId);
+            input.val('');
+            error.addClass('d-none');
+            modalID.modal('show');
+            // Use the 'shown.bs.modal' event to focus on the input
+            modalID.on('shown.bs.modal', function () {
+                input.focus();
+            });
+        }
+
+        function handlePostRequest(data) {
+            $.ajax({
+                url: postURL,
+                type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (responseData) {
+                    $('#' + modalId).modal('hide');
+                    updateSelect(selectBoxClass, responseData);
+                    console.log(responseData);
+                },
+                error: function (responseData) {
+                    console.log(responseData);
+                    alert("Creation failed");
+                }
+            });
+        }
+
+        input.on('input', toggleError);
+
+        modalButton.click(resetModal);
+
+        $(document).ready(function () {
+            $.ajax({
+                url: getURL,
+                type: 'GET',
+                success: function (data) {
+                    populateSelect(selectBoxClass, data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        modalSaveButton.click(function () {
+            let inputValue = input.val().trim();
+            if (inputValue !== '') {
+                handlePostRequest({ id: null, name: inputValue });
+            }else{
+                error.removeClass('d-none');
+                input.focus();
+            }
+        });
+    }
+
+    // Usage for addPlace button
+    setupModalHandling(
+        $('#addPlace'),
+        $('#addPlaceError'),
+        $('#callPlaceModal'),
+        $('#saveAddPlace'),
+        '/member/get-place',
+        '/member/create-place',
+        '.js-example-basic-single.select-box1',
+        'placeModal'
+    );
+
+    // Usage for addCategory button
+    setupModalHandling(
+        $('#addCategory'),
+        $('#addCategoryError'),
+        $('#callCategoryModal'),
+        $('#saveAddCategory'),
+        '/member/get-category',
+        '/member/create-category',
+        '.js-example-basic-single.select-box',
+        'categoryModal'
+    );
 </script>
-<!--<script>-->
-<!--    const data1 = ['server 1', '1 server', 'a server 2']-->
-<!--    const data2 = ['ayeaye', 'myamya', 'hlahla']-->
-<!--    const id1 = init("issue_place", 'Enter issue place')-->
-<!--    const id2 = init("issue_pic", 'Select issue PIC')-->
-<!--    console.log(id1, id2)-->
-<!--    const issue_place_wrapperUpdateName = singleSelect(id1, data1,-->
-<!--        {btn_id:'addIssuePlace',modal_id: "addIssuePlaceModal",btn_name: 'Add new place'}-->
-<!--    );-->
-<!--    const issue_pic_wrapperUpdateName = singleSelect(id2, data2);-->
-<!--</script>-->
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2({
+            placeholder: '  Select options',
+            // allowClear: true,
+            closeOnSelect: true,
+            width: '100%'
+        });
+    });
+</script>
 </body>
 </html>

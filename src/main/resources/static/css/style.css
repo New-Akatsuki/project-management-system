@@ -1407,3 +1407,7 @@ h6 {
 .border-block-1{
   border-block-color: #3577ff !important;
 }
+
+.w-fit{
+  width: fit-content;
+}

@@ -23,6 +23,7 @@ function singleSelect(id, input_data, create_new_option={btn_id:'',modal_id:null
             wrapper.classList.remove("active");
             selectBtn.firstElementChild.innerText = selectedLi.innerText;
         }
+        return selectedLi.innerText;
     }
 
     window.addEventListener('click', (e) => {
@@ -56,7 +57,6 @@ function singleSelect(id, input_data, create_new_option={btn_id:'',modal_id:null
     });
 
     selectBtn.addEventListener("click", () => wrapper.classList.toggle("active"));
-
     return updateName;
 }
 
