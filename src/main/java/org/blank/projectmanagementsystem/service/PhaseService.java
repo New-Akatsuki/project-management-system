@@ -6,6 +6,8 @@ import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 import java.util.List;
 
 public interface PhaseService {
-    List<Phase> getPhases(long projectId);
+    List<PhaseDto> getPhases(long projectId);
     PhaseDto createPhase(PhaseDto phaseDto);
+    PhaseDto updatePhase(PhaseDto phaseDto);
+    void deletePhase(long phaseId);
 }

@@ -25,7 +25,6 @@ public class TaskFormInput {
     private int duration;
     private float plan_hours;
     private float actual_hours;
-    private int progress;
     private boolean status;
     private Long parent;
     private Long phase;
@@ -33,4 +32,5 @@ public class TaskFormInput {
     private String type;
     private List<Long> assignees;
     private Boolean open;
+    private Long phase;
 }

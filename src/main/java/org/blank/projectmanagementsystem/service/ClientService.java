@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface ClientService {
     Client save(Client client);
+
+    List<Client> getallClients();
     Optional<Client> findByName(String name);
     Optional<Optional<Client>> findByEmail(String email);
     Optional<Optional<Client>> findByPhoneNumber(String phoneNumber);

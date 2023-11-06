@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.repository;
 
+import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> getReferenceByUsername(String username);
 
-    Optional<User> findByName(String name);
+    Long countByDepartment(Department department);
 
 
 //    Optional<User> findByUserId(Long userId);

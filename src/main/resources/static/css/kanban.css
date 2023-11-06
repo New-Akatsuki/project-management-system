@@ -17,7 +17,7 @@
     flex-wrap: nowrap;
     overflow-x: scroll;
     gap: 15px;
-    padding: 0 15px;
+    padding: 0;
     height: 75vh;
 }
 .cd_kanban_board > .cd_kanban_board_blocks:after{
@@ -27,14 +27,23 @@
 }
 .cd_kanban_board > .cd_kanban_board_blocks .kb-section{
     margin:10px 10px 10px 0;
-    padding: 1rem;
     flex: 1;
-    background: #f2f2f2;
+    background: rgb(232, 237, 246);
     max-width: 360px;
     min-width: 360px;
     border-radius: 5px;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
+
+.px-board{
+    padding-inline: 1rem;
+}
+.border-highlight-left{
+    border-left: 5px solid #3577ff;
+}
+
 .cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block:last-child{
     margin: 10px 0 0;
 }
@@ -91,46 +100,40 @@
     ---------------------------
 */
 
-.kb-section{
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 .kb-section-header{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    padding-block: 1rem;
     background-color: #f2f2f2;
     border-bottom: 1px solid #c0c2cd;
+    border-radius: 5px 5px 0 0;
 }
 
-.kb-section-header-name{
-    font-weight: bold;
-    font-size: 15px;
-}
 
 .kb-section-header-btn {
-    border: 1px solid black;
-    border-radius: 30%;
-    background: black;
-    color: white;
+    border: none;
+    color: #3577ff;
+}
+.kb-section-header-btn:hover{
+    cursor: pointer;
+    background: #dfe9ff;
+    border-radius: 5px;
 }
 
 .kb-section-body{
     display: flex;
     flex-direction: column;
     gap: 5px;
-    padding: 0.5rem;
-    margin-top: 20px;
-    height: 50px;
+    padding-block: 0.5rem;
+    margin-top: 10px;
+    min-height: 50px;
+    overflow-y: scroll;
 }
 
 .kb-task {
-    height: 165px;
-    margin: 0 10px;
+    height: 155px;
     padding: 10px 20px;
     background-color: #fff;
     transition: height 0.3s ease-out;
@@ -146,7 +149,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
+    margin: 0;
     cursor:pointer;
 }
 
@@ -155,7 +158,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 20px;
     padding: 10px 0;
 }
 
@@ -165,13 +167,8 @@
 /* Styles for the task name */
 .kb-task-name-layout {
     flex: 1;
-    margin-right: 10px; /* Add some spacing between the name and status */
 }
 
-/* Styles for the task name text */
-.kb-task-name {
-    font-weight: bold;
-}
 
 /* Styles for the due date and subtask layout */
 .kb-task-due-date-layout,
@@ -183,13 +180,16 @@
 .add-subtask-btn {
     background: transparent;
     text-align: center;
-    border: 1px solid #ccc;
+    border-radius: 5px;
+    border-block: 1px solid #e7edfd;
+    border-inline: 3px solid #3577ff;
     cursor: pointer;
-    border-inline: none;
     width: 100%;
     padding: 7px 0;
 }
-
+.add-subtask-btn:hover{
+    background: #e7edfd;
+}
 /* Styles for the due date text */
 .kb-task-due-date {
     margin-right: 10px;
@@ -205,6 +205,7 @@
     padding-block: 10px;
     padding-inline: 5px;
     border-block: 1px solid #e5e5e5;
+    cursor: pointer;
 }
 .justify-self-end{
     justify-self: end;
@@ -397,13 +398,28 @@ input[type="checkbox"] {
 .toggle-subtask-icon {
     border:none;
     border-radius: 5px;
+    background: #dfe9ff;
     transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
 }
 .toggle-subtask-icon:hover {
     cursor: pointer;
-    background: #ccc;
+    background: #dfe9ff;
 }
-
+.kb-task-status-layout{
+    color: #02ff70;
+    font-size: 2rem;
+}
+.kb-task-status-layout:hover{
+    cursor: pointer;
+    border-radius: 5px;
+    background: #dfe9ff;
+}
+.dropdown-toggle{
+    display: none!important;
+}
+.dropdown-item:hover{
+    background: #dfe9ff!important;
+}
 @keyframes floatOutSubtask {
     0% {
         opacity: 0;
@@ -423,4 +439,86 @@ input[type="checkbox"] {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
+    --bs-offcanvas-width: 650px!important;
+}
+
+.make-complete-btn{
+    background: rgba(53, 119, 255, 0.04);
+    border: 1px solid #3577ff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3577ff;
+}
+.make-complete-btn:hover{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.btn-complete{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.desc-view{
+    border-radius: 7px;
+    max-height: 100px;
+    overflow-y: scroll;
+    text-align: justify;
+}
+
+.text-block{
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: white;
+    vertical-align: middle;
+}
+.priority-high{
+    background: #ff3535;
+    border: 1px solid #ff3535;
+}
+.priority-medium{
+    background: #ff9f35;
+    border: 1px solid #ff9f35;
+}
+.priority-low{
+    background: #ffdd35;
+    border: 1px solid #ffdd35;
+}
+
+.type-task{
+    background: #3577ff;
+    border: 1px solid #3577ff;
+}
+.type-milestone{
+    background: #ffdd35;
+    border: 1px solid #ffdd35;
+}
+
+.offcanvas-body .y-scroll{
+    max-height: 75vh!important;
+    overflow-y: scroll!important;
+}
+.accordion-body{
+    max-height: 150px!important;
+    overflow-y: scroll;
+    padding: 0!important;
+}
+
+.move-top{
+    position: absolute;
+    top: 85px;
+    left: 250px;
+    z-index: 1;
+}
+
+.float-edit-btn{
+    position: absolute;
+    top: 85px;
+    right: 25px;
+    z-index: 1;
 }

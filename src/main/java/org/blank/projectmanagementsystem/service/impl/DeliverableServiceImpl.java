@@ -31,12 +31,12 @@ public class DeliverableServiceImpl implements DeliverableService {
     }
 
     @Override
-    public void deleteDeliverable(int id) {
+    public void deleteDeliverable(Long id) {
         deliverableRepository.deleteById(id);
     }
 
     @Override
-    public Deliverable getDeliverable(int id) {
+    public Deliverable getDeliverable(Long id) {
         return deliverableRepository.findById(id).orElse(null);
     }
 

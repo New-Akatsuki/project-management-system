@@ -37,7 +37,7 @@ public class User implements Serializable,UserDetails {
     private String email;
 
     @JsonIgnore
-    //@Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -57,8 +57,9 @@ public class User implements Serializable,UserDetails {
 
     private boolean defaultPassword = true;
 
-    @ManyToMany(mappedBy = "assignees")
+    @ManyToMany
     private Set<Task> tasks;
+
 
     /*
      *the following is user details for spring security
@@ -70,7 +71,8 @@ public class User implements Serializable,UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        //if username is null return email
+        return username == null ? email : username;
     }
 
     @Override

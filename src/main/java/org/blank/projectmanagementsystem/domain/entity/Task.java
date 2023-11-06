@@ -6,6 +6,7 @@ import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.Priority;
 import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
 import org.blank.projectmanagementsystem.domain.Enum.TaskType;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -27,7 +28,7 @@ public class Task implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 30)
     private String name;
 
     @Column(length = 500)

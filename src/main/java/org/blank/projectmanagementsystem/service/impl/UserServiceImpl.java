@@ -15,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -82,11 +84,21 @@ public class UserServiceImpl implements UserService {
                 .role(Role.valueOf(addUserFormInput.getRole()))
                 .department(department)
                 .build();
-
         // Set other user properties as needed
         // Save the user
         return userRepository.save(user);
     }
+
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Long getUserCountByDepartment(Department department) {
+        return userRepository.countByDepartment(department);
+    }
+
 
     @Override
     public List<UserViewObject> getAllUsers() {

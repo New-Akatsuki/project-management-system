@@ -1381,7 +1381,16 @@ h6 {
 .bg-gray-color{
     background-color: #ccc;
 }
-
+/*create flex-n (n is 1 to 10) */
+.flex-1{
+  flex:1;
+}
+.flex-2{
+  flex:2;
+}
+.flex-3{
+  flex:3;
+}
 .flex-4{
   flex:4;
 }

@@ -7,13 +7,8 @@ import java.util.List;
 public interface DeliverableService {
     Deliverable createDeliverable(Deliverable deliverable);
     Deliverable updateDeliverable(Deliverable deliverable);
-    void deleteDeliverable(int id);
-    Deliverable getDeliverable(int id);
-    Deliverable save(Deliverable deliverable);
-
-    Deliverable findById(int id);
-    Deliverable saveName(String name);
-
+    void deleteDeliverable(Long id);
+    Deliverable getDeliverable(Long id);
 
     List<Deliverable> getAllDeliverables();
 

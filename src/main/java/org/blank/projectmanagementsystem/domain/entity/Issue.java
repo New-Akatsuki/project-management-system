@@ -62,9 +62,9 @@ public class Issue implements Serializable {
     @JoinColumn(nullable = false)
     private IssuePlace issue_place;
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(nullable = false)
-    private Set<IssueCategory> issue_category;
+    private IssueCategory issue_category;
 
     @ManyToOne
     @JoinColumn(nullable = false)
