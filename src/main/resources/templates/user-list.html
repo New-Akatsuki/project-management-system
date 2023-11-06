@@ -153,14 +153,14 @@
 </div>
 
 
-<!--Single Select-->
-<script>
+<!--&lt;!&ndash;Single Select&ndash;&gt;-->
+<!--<script>-->
 
-    const data2 = ['ACE', 'DAT', 'Ace Plus']
-    const id2 = init("department")
-    const department_wrapperUpdateName = singleSelect(id2, data2);
+<!--    const data2 = ['ACE', 'DAT', 'Ace Plus']-->
+<!--    const id2 = init("department")-->
+<!--    const department_wrapperUpdateName = singleSelect(id2, data2);-->
 
-</script>
+<!--</script>-->
 <script>
     let userList = [];
     $(document).ready(function () {
@@ -211,6 +211,52 @@
         // Show the modal
         $('#userEditModal').modal('show');
     }
+    function editUser(){
+        //Capture the data from the modal fields
+        var name=$('#editName').val();
+        var role=$('#editRole').val();
+        var department=$('#editDepartment').val();
+        //Perform an AJAX request to update the user on the server
+        $.ajax({
+            url: '/pm/users', // Replace with your actual API endpoint
+            method: 'PUT',
+            data: JSON.stringify(editUser),
+            dataType: 'json',
+
+            success: function (data) {
+                console.log('Data received:', data);
+                // Hide the modal
+                $('#userEditModal').modal('hide');
+                // Reload the DataTable with new data
+                $('#user-list-table').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    }
+
+</script>
+<script>
+function deleteMember (id){
+    $.ajax({
+        url: '/pm/users', // Replace with your actual API endpoint
+        method: 'DELETE',
+        data: JSON.stringify(deleteMember),
+        dataType: 'json',
+
+        success: function (data) {
+            console.log('Data received:', data);
+            // Hide the modal
+            $('#userEditModal').modal('hide');
+            // Reload the DataTable with new data
+            $('#user-list-table').DataTable().ajax.reload();
+        },
+        error: function (error) {
+            console.log('Error fetching data:', error);
+        }
+    });
+}
 
 </script>
 

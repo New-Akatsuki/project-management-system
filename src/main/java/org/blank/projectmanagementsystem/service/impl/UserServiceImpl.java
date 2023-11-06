@@ -66,12 +66,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(AddUserFormInput addUserFormInput) {
-        // Check if the name is already taken
-        if (userRepository.findByName(addUserFormInput.getName()).isPresent()) {
-            // Handle username already exists
-            throw new RuntimeException("Name already exists");
-        }
-
+//        // Check if the name is already taken
+//        if (userRepository.findByName(addUserFormInput.getName()).isPresent()) {
+//            // Handle username already exists
+//            throw new RuntimeException("Name already exists");
+//        }
         Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
         Department department = (Department) departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
