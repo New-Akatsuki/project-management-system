@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -57,12 +58,15 @@ public class User implements Serializable,UserDetails {
 
     private boolean defaultPassword = true;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "assignees")
     private Set<Task> tasks;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "contractMembers")
     private List<Project> contractProjects;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "focMembers")
     private List<Project> focProjects;
 

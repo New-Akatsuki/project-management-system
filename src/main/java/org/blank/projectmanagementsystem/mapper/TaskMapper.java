@@ -7,6 +7,7 @@ import org.blank.projectmanagementsystem.domain.Enum.TaskType;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.Assignee;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.springframework.cglib.core.Local;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class TaskMapper {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -38,7 +40,7 @@ public class TaskMapper {
                 .parent(task.getParentTask()==null?null:task.getParentTask().getId())
                 .group(task.getGroup().name())
                 .type(task.getType().name().toLowerCase())
-                .assignees(task.getAssignees()==null?new HashSet<>():task.getAssignees())
+                .assignees(task.getAssignees()==null?new HashSet<>():task.getAssignees().stream().map(Assignee::new).collect(Collectors.toSet()))
                 .open(true)
                 .build();
     }

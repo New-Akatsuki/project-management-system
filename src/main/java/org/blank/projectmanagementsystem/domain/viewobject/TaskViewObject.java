@@ -33,6 +33,6 @@ public class TaskViewObject {
     private Long parent;
     private String group;
     private String type;
-    private Set<User> assignees;
+    private Set<Assignee> assignees;
     private Boolean open;
 }
