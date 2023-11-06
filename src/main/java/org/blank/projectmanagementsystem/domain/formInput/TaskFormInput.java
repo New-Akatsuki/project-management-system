@@ -32,4 +32,5 @@ public class TaskFormInput {
     private String type;
     private List<Long> assignees;
     private Boolean open;
+    private Long phase;
 }
