@@ -70,14 +70,18 @@ public class ProjectServiceImpl implements ProjectService {
 
         //get Architecture outlines
         List<Long> architectureIds = projectFormInput.getArchitectureOutlines();
+
         Set<Architecture> architectures = new HashSet<>();
+
         if(architectureIds!=null && architectureIds.size() > 0){
             architectures = architectureIds.stream().map(id-> architectureRepository.findById(id)
                     .orElse(null)).collect(Collectors.toSet());
         }
         //get Deliverables
         List<Long> deliverablesIds = projectFormInput.getDeliverables();
+
         Set<Deliverable> deliverables = new HashSet<>();
+
         if(deliverablesIds!=null && deliverablesIds.size() > 0){
             deliverables = deliverablesIds.stream().map(id-> deliverableRepository.findById(id)
                     .orElse(null)).collect(Collectors.toSet());

@@ -13,12 +13,12 @@ public class ArchitectureTest {
     @BeforeEach
     public void setUp() {
         architecture = new Architecture();
-        architecture.setId(1);
+        architecture.setId(1L);
         architecture.setName("SpringBoot");
         architecture.setType(ArchitectureType.FRAMEWORK); // Set an appropriate ArchitectureType enum value
 
         architectureWithBuilder = Architecture.builder()
-                .id(2)
+                .id(2L)
                 .name("Java")
                 .type(ArchitectureType.PROGRAMMING_LANGUAGE) // Set an appropriate ArchitectureType enum value
                 .build();
@@ -45,12 +45,12 @@ public class ArchitectureTest {
     @Test
     public void testEquals() {
         Architecture anotherArchitecture = new Architecture();
-        anotherArchitecture.setId(1);
+        anotherArchitecture.setId(1L);
         anotherArchitecture.setName("SpringBoot");
         anotherArchitecture.setType(ArchitectureType.FRAMEWORK);
 
         Architecture anotherArchitectureWithBuilder = Architecture.builder()
-                .id(2)
+                .id(2L)
                 .name("Java")
                 .type(ArchitectureType.PROGRAMMING_LANGUAGE)
                 .build();

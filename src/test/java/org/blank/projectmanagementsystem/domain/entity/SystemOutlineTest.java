@@ -12,11 +12,11 @@ public class SystemOutlineTest {
     @BeforeEach
     public void setUp() {
         systemOutline = new SystemOutline();
-        systemOutline.setId(1);
+        systemOutline.setId(1L);
         systemOutline.setName("Outline A");
 
         systemOutlineWithBuilder = SystemOutline.builder()
-                .id(2)
+                .id(2L)
                 .name("Outline C")
                 .build();
 
@@ -37,11 +37,11 @@ public class SystemOutlineTest {
     @Test
     public void testEquals() {
         SystemOutline sameSystemOutline = new SystemOutline();
-        sameSystemOutline.setId(1);
+        sameSystemOutline.setId(1L);
         sameSystemOutline.setName("Outline A");
 
         SystemOutline anotherSystemOutlineWithBuilder =SystemOutline.builder()
-                .id(2)
+                .id(2L)
                 .name("Outline C")
                 .build();
 
@@ -61,7 +61,7 @@ public class SystemOutlineTest {
     @Test
     public void testHashCode() {
         SystemOutline sameSystemOutline = new SystemOutline();
-        sameSystemOutline.setId(1);
+        sameSystemOutline.setId(1L);
         sameSystemOutline.setName("Outline A");
 
 

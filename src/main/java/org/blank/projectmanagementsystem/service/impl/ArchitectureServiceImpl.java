@@ -25,6 +25,9 @@ public class ArchitectureServiceImpl implements ArchitectureService {
         return architectureRepository.findById(id).orElse(null);
     }
 
+
+
+
     @Override
     public List<Architecture> getAllArchitectures() {
         return architectureRepository.findAll();
@@ -49,6 +52,11 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     @Override
     public Architecture save(Architecture architecture) {
         return architectureRepository.save(architecture);
+    }
+
+    @Override
+    public Architecture getArchitectureById(Long id) {
+        return architectureRepository.findById(id).orElse(null);
     }
 
 

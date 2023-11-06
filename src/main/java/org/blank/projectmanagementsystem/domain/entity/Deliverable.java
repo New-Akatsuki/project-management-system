@@ -29,4 +29,6 @@ public class Deliverable implements Serializable {
     @Column(unique = true,nullable = false, length =45)
     private String name;
 
+    private boolean active=true;
+
 }
