@@ -156,7 +156,7 @@ public class ProjectManagementSystemApplication {
                             .deliverables(List.of(1L))
                             .client(1L)
                             .contractMembers(List.of(2L))
-                            .focMembers(List.of(2L))
+                            .focMembers(List.of(5L))
                             .department(1)
                             .build(),"pmo@gmail.com"
             );

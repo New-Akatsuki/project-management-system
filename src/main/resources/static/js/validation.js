@@ -142,10 +142,12 @@ function _checkDate() {
         const startDateValue = new Date(startDate);
         const endDateValue = new Date(endDate);
 
-        if ((startDateValue > endDateValue)||
-            (startDateValue.getFullYear()===endDateValue.getFullYear()&&
-                startDateValue.getMonth()===endDateValue.getMonth()&&
-                startDateValue.getDate()===endDateValue.getDate())) {
+        if ((startDateValue > endDateValue)
+            // ||
+            // (startDateValue.getFullYear()===endDateValue.getFullYear()&&
+            //     startDateValue.getMonth()===endDateValue.getMonth()&&
+            //     startDateValue.getDate()===endDateValue.getDate())
+        ) {
             // Show an error message
             start_element.setCustomValidity("invalid date");
             end_element.setCustomValidity("invalid date");

@@ -8,15 +8,15 @@
         let currentTaskId = null;
 
         //modal data object
-        let addPhaseModalData = {title:'Add',modalId:'addPhaseModal',};
-        let editPhaseModalData = {title:'Edit',modalId:'editPhaseModal'};
+        let addPhaseModalData = {title: 'Add', modalId: 'addPhaseModal',};
+        let editPhaseModalData = {title: 'Edit', modalId: 'editPhaseModal'};
 
         //simple task object
         let simpleTask = {
             id: null,
             name: "Task",
             description: "",
-            priority:"",
+            priority: "",
             start_date: "",
             end_date: "",
             actual_due_date: "",
@@ -36,6 +36,10 @@
             {
                 phases: [],
                 tasks: [],
+                users: [],
+                stateDate: null,
+                endDate: null,
+                projectId: null,
                 onChange: function (e, ui) {
                 },
                 onReceive: function (e, ui) {
@@ -87,12 +91,13 @@
                 $modal.modal('show'); // Use Bootstrap's modal() function to show the modal
             }
         });
+
         /* ===========================================================
              *  Build Kanban UI Function
              * ============================================================*/
         function initKanban() {
             $this.addClass(classes.kanban_board_class);
-            $this.append( `<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
+            $this.append(`<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
                             data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
                                 Add Phase +
                            </button>`);
@@ -158,20 +163,21 @@
                 $(`#${item.id}-btn`).on('click', () => {
                     phaseId = item.id;
                     parentId = null;
+                    buildAddTaskModal(settings.startDate, settings.endDate)
                     resetTaskModal();
                     //show modal
                     $('#exampleModal').modal('show');
                 });
                 //rename phase
-                $(`#${item.id}-rename-btn`).on('click',()=>{
+                $(`#${item.id}-rename-btn`).on('click', () => {
                     phaseId = item.id;
                     resetPhaseModal(editPhaseModalData);
                     //show modal
                     $(`#${editPhaseModalData.title.toLowerCase()}PhaseModal`).modal('show');
                 });
-                $(`#${item.id}-delete-phase-btn`).on('click',()=>{
+                $(`#${item.id}-delete-phase-btn`).on('click', () => {
                     phaseId = item.id;
-                    renderConfirmModal(deletePhase,"Are you sure to delete this phase?");
+                    renderConfirmModal(deletePhase, "Are you sure to delete this phase?");
                     //show modal
                     $('#confirmModal').modal('show');
                 });
@@ -185,7 +191,7 @@
             settings.tasks.filter(data => data.parent === null).forEach((item, index, array) => {
                 const numberOfSubtasks = settings.tasks.filter(data => data.parent === item.id).length;
                 const height = numberOfSubtasks * 50;
-                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>':'<i class="bx bx-check-circle"></i>' ;
+                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
                 const task_container = `
                     <div id="${item.id}" class="kb-task mb-2">
                         <div class="kb-task-body">
@@ -200,9 +206,9 @@
                             <div class="kb-task-body-layout2">
                                 <div class="kb-task-due-date-layout">
                                     <span class="kb-task-due-date subtask-date-font-size">Due date : ${new Date(item.end_date).toLocaleString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric'
-                                    })}</span>
+                    month: 'short',
+                    day: 'numeric'
+                })}</span>
                                 </div>
                                 <div class="kb-task-subtask-layout">
                                   <span class="me-2">${numberOfSubtasks}</span>
@@ -221,6 +227,7 @@
                 $(`#${item.id}-add-subtask-btn`).on('click', () => {
                     parentId = item.id;
                     phaseId = item.phase;
+                    buildAddTaskModal(item.start_date, item.end_date)
                     resetTaskModal();
                     //show modal
                     $('#exampleModal').modal('show');
@@ -230,8 +237,6 @@
                 const task = document.getElementById(`${item.id}`);
 
                 $(`#${item.id} .kb-task-name-layout`).on('click', () => {
-                    //remove offcanva if exist
-                    $('#taskViewModal').remove();
                     //create offcanvas
                     buildTaskViewModal(item.id);
                     //show offcanvas
@@ -247,19 +252,20 @@
                     updateTask(taskData)
                     $('#confirmModal').modal('hide');
                 }
+
                 $(`#${item.id} .kb-task-status-layout`).on('click', () => {
-                    if(item.status){
-                        renderConfirmModal(updateTaskStatus,"Are you sure to make this task incomplete?")
+                    if (item.status) {
+                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?")
                         //show modal
                         $('#confirmModal').modal('show');
-                    }else{
+                    } else {
                         buildCompleteTaskModal(item.id)
                         $('#completeTaskModal').modal('show');
                     }
                 });
 
                 const subtaskIcon = document.getElementById(`${item.id}-toggle-subtask-btn`);
-                if(subtaskIcon) {
+                if (subtaskIcon) {
                     subtaskIcon.addEventListener('click', () => {
                         const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                         subtaskBlock.classList.toggle('hide');
@@ -277,10 +283,10 @@
         function build_subtask() {
             settings.tasks.filter(data => data.parent !== null).forEach((item, index, array) => {
                 const parentData = settings.tasks.filter(data => data.id === item.parent)[0];
-                if(parentData){
+                if (parentData) {
                     item.phase = parentData.phase;
                 }
-                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>':'<i class="bx bx-check-circle"></i>' ;
+                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
                 const sub_task_container = `
                     <div id="${item.id}" class="kb-subtask-body">
                             <span class="flex-1">
@@ -289,7 +295,10 @@
                             <span class="kb-subtask-name flex-6">${item.name}</span>
                             <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end">
                                 <span style="font-size: 9px">Due date</span>
-                                <span>${new Date(item.end_date).toLocaleString('en-US', {month: 'short', day: 'numeric'})}</span>
+                                <span>${new Date(item.end_date).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                })}</span>
                             </span>                                                             
                         </div>                   
                 `;
@@ -299,10 +308,8 @@
 
                 // Add a click event handler to each subtask
                 const subtask = document.getElementById(`${item.id}`);
-                if(subtask){
+                if (subtask) {
                     subtask.addEventListener('click', () => {
-                        //remove offcanva if exist
-                        $('#taskViewModal').remove();
                         //create offcanvas
                         buildTaskViewModal(item.id);
                         //show offcanvas
@@ -318,7 +325,7 @@
         function enableDragAndDrop() {
             $('.' + classes.kb_section_body_class).sortable({
                 connectWith: '.' + classes.kb_section_body_class,
-                placeholder: '.'+ classes.kanban_board_item_placeholder_class,
+                placeholder: '.' + classes.kanban_board_item_placeholder_class,
                 items: '.' + classes.kb_task_class,
                 start: function (e, ui) {
                     ui.item.data('originalSection', ui.item.closest('.' + classes.kb_section_class));
@@ -328,7 +335,7 @@
                     const originalSection = ui.item.data('originalSection');
                     const newSection = task.closest('.' + classes.kb_section_class);
 
-                    const taskId = parseInt(task.attr('id'),10);
+                    const taskId = parseInt(task.attr('id'), 10);
                     const originalSectionId = originalSection.attr('id');
                     const newSectionId = newSection.attr('id');
 
@@ -343,7 +350,9 @@
         /* ===========================================================
        *  Build phase modals Function
        * ============================================================*/
-        function buildConfirmModal(action=()=>{console.log('clicked confirm')},title='Are you sure?'){
+        function buildConfirmModal(action = () => {
+            console.log('clicked confirm')
+        }, title = 'Are you sure?') {
             const modal = `
               <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -367,41 +376,44 @@
                 </div>
             </div>`;
             $this.append(modal);
-            $('#confirmButton').on('click', ()=>{
-                if($('#confirmInput').val() === 'CONFIRM'){
+            $('#confirmButton').on('click', () => {
+                if ($('#confirmInput').val() === 'CONFIRM') {
                     action();
-                }else {
+                } else {
                     $('#errorConfirmText').removeClass('d-none');
                     //focus input
                     $('#confirmInput').focus();
                 }
             });
-            $('#confirmInput').on('input', ()=>{
-                if($('#confirmInput').val() === 'CONFIRM'||$('#confirmInput').val() === ''){
+            $('#confirmInput').on('input', () => {
+                if ($('#confirmInput').val() === 'CONFIRM' || $('#confirmInput').val() === '') {
                     $('#errorConfirmText').addClass('d-none');
                 }
             })
 
         }
+
         /* ===========================================================
               *  render phase modals Function
               * ============================================================*/
-        function renderConfirmModal(action=()=>{console.log('clicked confirm')},title) {
+        function renderConfirmModal(action = () => {
+            console.log('clicked confirm')
+        }, title) {
             $('#confirmModal').remove();
-            buildConfirmModal(action,title)
+            buildConfirmModal(action, title)
         }
 
 
-            /* ===========================================================
-            *  Build phase modals Function
-            * ============================================================*/
-        function buildPhaseModal(phaseData={title:'Add',modalId:'addPhaseModal'}){
+        /* ===========================================================
+        *  Build phase modals Function
+        * ============================================================*/
+        function buildPhaseModal(phaseData = {title: 'Add', modalId: 'addPhaseModal'}) {
             const phaseModal = `
               <div class="modal fade" id="${phaseData.modalId}" tabindex="-1" aria-labelledby="${phaseData.modalId}Label" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="${phaseData.modalId}Label">${phaseData.title==="Edit"?'Rename':'Add New'} Phase</h1>
+                            <h1 class="modal-title fs-5" id="${phaseData.modalId}Label">${phaseData.title === "Edit" ? 'Rename' : 'Add New'} Phase</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -410,7 +422,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="${phaseData.title.toLowerCase()}PhaseButton" data-bs-dismiss="modal">Save
+                            <button type="submit" class="btn btn-primary" id="${phaseData.title.toLowerCase()}PhaseButton" data-bs-dismiss="modal">Save
                                 Phase
                             </button>
                         </div>
@@ -418,7 +430,7 @@
                 </div>
             </div>`;
             $this.append(phaseModal);
-            $(`#${phaseData.title.toLowerCase()}PhaseButton`).on('click', phaseData.title==='Add'?savePhase:updatePhase);
+            $(`#${phaseData.title.toLowerCase()}PhaseButton`).on('click', phaseData.title === 'Add' ? savePhase : updatePhase);
 
         }
 
@@ -433,7 +445,7 @@
             const phaseData = {
                 id: null,
                 name: $(`#${addPhaseModalData.title.toLowerCase()}PhaseName`).val(),
-                projectId: 1
+                projectId: settings.projectId,
             };
             $.ajax({
                 url: '/add-phase',
@@ -456,7 +468,7 @@
      *  update Phase to Database
      * ============================================================*/
         function updatePhase() {
-            let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId,10))[0]
+            let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId, 10))[0]
             phaseData.name = $(`#${editPhaseModalData.title.toLowerCase()}PhaseName`).val();
             $.ajax({
                 url: '/update-phase',
@@ -480,7 +492,7 @@
           * ============================================================*/
         function deletePhase() {
             console.log("delete phase")
-            let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId,10))[0]
+            let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId, 10))[0]
 
             $.ajax({
                 url: '/delete-phase',
@@ -522,33 +534,33 @@
                 parent: parentId,
                 group: $('#task-group').val(),
                 type: $('#task-type').val(),
-                assignees: $('#task-assignees').val().map(val=> parseInt(val, 10)),
+                assignees: $('#task-assignees').val().map(val => parseInt(val, 10)),
                 open: true,
             };
             //check if task id exist
-            if(currentTaskId) {
+            if (currentTaskId) {
                 let currentTask = settings.tasks.filter(data => data.id === currentTaskId)[0];
-                currentTask.name= task.name
-                currentTask.description= task.description
-                currentTask.priority= task.priority
-                currentTask.start_date= task.start_date
-                currentTask.end_date= task.end_date
-                currentTask.plan_hours= task.plan_hours
-                currentTask.group= task.group
-                currentTask.type= task.type
-                currentTask.assignees= task.assignees
+                currentTask.name = task.name
+                currentTask.description = task.description
+                currentTask.priority = task.priority
+                currentTask.start_date = task.start_date
+                currentTask.end_date = task.end_date
+                currentTask.plan_hours = task.plan_hours
+                currentTask.group = task.group
+                currentTask.type = task.type
+                currentTask.assignees = task.assignees
 
                 console.log(currentTask)
 
                 updateTask(currentTask)
-            }else {
+            } else {
                 saveTask(task)
-                console.log('task assignee ',task.assignees)
+                console.log('task assignee ', task.assignees)
             }
             $("#exampleModal").modal("hide")
         }
 
-        function saveTask(task){
+        function saveTask(task) {
             $.ajax({
                 url: '/add-task',
                 method: 'POST',
@@ -558,7 +570,7 @@
                 success: function (data) {
                     settings.tasks.push(data)
                     resetTaskModal()
-                    if(document.getElementById('taskViewModal')){
+                    if (document.getElementById('taskViewModal')) {
                         console.log('taskViewModal exist')
                         renderSubtask(parentId);
                     }
@@ -570,12 +582,28 @@
                 },
             });
         }
+        // recursive function that
+        // reset start date and end date of subtasks as parent task's start date and end date
+        // if subtask start date or end date is not in range of parent task
+        function resetSubtaskDate(parentTask) {
+            settings.tasks.filter(data => data.parent === parentTask.id).forEach((item, index, array) => {
+                if (item.start_date < parentTask.start_date) {
+                    item.start_date = parentTask.start_date
+                }
+                if (item.end_date > parentTask.end_date) {
+                    item.end_date = parentTask.end_date
+                }
+                settings.tasks.filter(data => data.id === item.id)[0] = item;
+                resetSubtaskDate(item)
+            });
+        }
 
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task){
-            console.log('task',task)
+        function updateTask(task) {
+
+            console.log('task', task)
             $.ajax({
                 url: '/update-task',
                 method: 'PUT',
@@ -586,19 +614,20 @@
                     //update settings.task data
                     settings.tasks.filter(val => val.id === data.id)[0] = data;
                     settings.tasks.filter(val => val.id === data.id)[0].assignees = data.assignees;
+
+                    resetSubtaskDate(data)
                     //reload
                     render()
                     //check taskViewModal exist and check class list contain show
                     const modal = document.getElementById('taskViewModal')
-                    if(modal&& modal.classList.contains('show')){
+                    if (modal && modal.classList.contains('show')) {
                         //close offcanvas
                         $('#taskViewModal').offcanvas('hide');
-                        $('#taskViewModal').remove();
                         buildTaskViewModal(data.id);
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
-                    console.log('currentTaskId',currentTaskId)
+                    console.log('currentTaskId', currentTaskId)
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
@@ -612,8 +641,8 @@
        * ============================================================*/
         function deleteTask() {
             console.log("delete task")
-            let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId,10))[0]||simpleTask
-            taskData.assignees = taskData.assignees.map(val=>parseInt(val.id,10))
+            let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId, 10))[0] || simpleTask
+            taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10))
             console.log(taskData)
             $.ajax({
                 url: '/delete-task',
@@ -625,12 +654,12 @@
                     console.log('delete-success')
                     settings.tasks = settings.tasks.filter(val => val.id !== taskData.id);
                     settings.tasks = settings.tasks.filter(val => val.parent !== taskData.id);
-                    console.log('tasks',settings.tasks)
+                    console.log('tasks', settings.tasks)
 
                     $('#taskViewModal').offcanvas('hide');
                     $('#taskViewModal').remove();
                     $('#confirmModal').modal('hide');
-                    currentTaskId=null
+                    currentTaskId = null
                     render()
                 },
                 error: function (error) {
@@ -650,10 +679,11 @@
             $('#task-plan-hours').val("")
             $('#task-group').val("")
             $('#task-type').val("")
+            $('#task-assignees').val("").trigger('change')
         }
 
         function fillDataTaskModal(taskId) {
-            const task = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            const task = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
             $('#task-name').val(task.name)
             $('#task-description').val(task.description)
             $('#task-priority').val(task.priority)
@@ -662,12 +692,13 @@
             $('#task-plan-hours').val(task.plan_hours)
             $('#task-group').val(task.group)
             $('#task-type').val(task.type)
+            $('#task-assignees').val(task.assignees.map(val => val.id)).trigger('change')
         }
 
         /* ===========================================================
            Build completeTaskModal Function
           ============================================================*/
-        function buildCompleteTaskModal(taskId){
+        function buildCompleteTaskModal(taskId) {
             // Dynamic creation of modal with form
             let today = new Date();
             // Get the month, day, and year
@@ -678,7 +709,7 @@
             // Format the date as mm-dd-yyyy
             let formattedDate = `${year}-${month}-${day}`;
 
-            const item = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            const item = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
             console.log(taskId)
             console.log(item)
             //check completeTaskModal if already exist, remove
@@ -727,33 +758,140 @@
                 </div>
             </div>`;
             $this.append(completeTaskModal);
-            checkDatesValidation("task-start-date","task-end-date");
-            console.log('item',item)
-            const updateStatusInfo = ()=>{
+            checkDatesValidation("task-start-date", "task-end-date");
+            console.log('item', item)
+            const updateStatusInfo = () => {
                 let task = item;
                 task.actual_hours = parseFloat($('#actualHour').val());
                 task.actual_due_date = $(`#${taskId}-actual-date`).val();
                 task.status = task.actual_hours > 0;
-                task.assignees = item.assignees.map(val=> parseInt(val.id, 10));
+                task.assignees = item.assignees.map(val => parseInt(val.id, 10));
                 updateTask(task);
                 $("#completeTaskModal").modal("hide");
             }
             setupDatePicker(`#${taskId}-actual-date`);
-            formValidate('complete-task-form',updateStatusInfo)
+            formValidate('complete-task-form', updateStatusInfo)
         }
+
+
+        function buildAddTaskModal(minDate = null, maxDate = null) {
+            $('#exampleModal').remove();
+            const addTaskModal = `
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <form id="addTaskForm" autocomplete="off">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Task</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="task-body-text-layout">
+                                    <div class="form-group d-flex flex-column mb-0">
+                                        <label for="task-name" class="form-label">Enter Task Name:</label>
+                                        <input type="text" id="task-name" placeholder="Name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group d-flex flex-column mb-0">
+                                        <label for="task-description" class="form-label">Enter Description:</label>
+                                        <textarea id="task-description" placeholder="Description" class="form-control"></textarea>
+                                    </div>
+                                    <div class="d-flex gap-2 align-items-start">
+                                        <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                            <label for="task-start-date" class="form-label">Start Date:</label>
+                                            <input type="text" id="task-start-date" placeholder="Enter start date" class="form-control mb-0" required>
+                                            <div class="invalid-feedback" id="task-start-date_error"></div>
+                                        </div>
+                                        <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                            <label for="task-end-date" class="form-label">End Date:</label>
+                                            <input type="text" id="task-end-date" placeholder="Enter end date" class="form-control mb-0" required>
+                                            <div class="invalid-feedback" id="task-end-date_error"></div>
+                                        </div>
+                                        <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                            <label for="task-plan-hours" class="form-label">Plan Hours:</label>
+                                            <input type="number" step="0.1" min="0" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <div class="form-group mb-0 flex-3">
+                                            <label for="task-priority" class="form-label">Priority:</label>
+                                            <select id="task-priority" class="form-select" required>
+                                                <option value="" selected>Select task priority</option>
+                                                <option value="high">High</option>
+                                                <option value="medium">Medium</option>
+                                                <option value="low">Low</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0 flex-3">
+                                            <label for="task-group" class="form-label">Group:</label>
+                                            <select id="task-group" class="form-select" required>
+                                                <option value="" selected>Select task group</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0 flex-3">
+                                            <label for="task-type" class="form-label">Type:</label>
+                                            <select id="task-type" class="form-select" required>
+                                                <option value="" selected>Select task type</option>
+                                                <option value="task">Task</option>
+                                                <option value="milestone">Milestone</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-assignees" class="form-label" >Assignees :</label>
+                                        <select class="js-example-basic-multiple form-select" multiple id="task-assignees" style="width: 100%; height: 100%;">
+                                        </select>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="task-phase">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit"  class="btn btn-primary" id="saveTaskBtn">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            `;
+
+            $this.append(addTaskModal);
+            $.each(settings.users, function (index, value) {
+                $('#task-assignees').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+
+            setupDatePicker('#task-start-date',minDate,maxDate);
+            setupDatePicker('#task-end-date',minDate,maxDate);
+            checkDatesValidation("task-start-date", "task-end-date");
+            formValidate("addTaskForm", saveOrUpdateTask);
+            // setupSelect2('#task-assignees',settings.users);
+            $('#task-assignees').select2({
+                placeholder: 'assign users',
+                // dropdownParent: $('#exampleModal'),
+                closeOnSelect: true,
+                width: '100%'
+            });
+        }
+
 
         /*
         ================================================
         Build Task View Modal
         ================================================
          */
-        function buildTaskViewModal(taskId){
-            const task = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+        function buildTaskViewModal(taskId) {
+            $('#taskViewModal').remove();
+            const task = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
             const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
             const typeClass = task.type === 'task' ? 'type-task' : 'type-milestone';
-            const completeBtnText = task.status ? 'completed':'Mark complete';
-            const subtaskList = settings.tasks.filter(val=> val.parent === task.id);
-            const isExpandAccordion = subtaskList.length>0;
+            const completeBtnText = task.status ? 'completed' : 'Mark complete';
+            const subtaskList = settings.tasks.filter(val => val.parent === task.id);
+            const isExpandAccordion = subtaskList.length > 0;
 
             const view = `
             <div class="offcanvas offcanvas-end" tabindex="-1" id="taskViewModal" aria-labelledby="taskViewModalLabel">
@@ -768,24 +906,24 @@
                         <button id="${task.id}-edit-task-btn" class="btn btn-primary float-edit-btn"><i class="bx bx-edit-alt me-2"></i>Edit</button>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Assignee</span>
-                            <span class="col-9">${task.assignees.map(val=>val.name).join(", ")||'No assignee'}</span>
+                            <span class="col-9">${task.assignees.map(val => val.name).join(", ") || 'No assignee'}</span>
                         </div>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Start date</span>
                             <span class="col-3">
                                 ${new Date(task.start_date).toLocaleString('en-US', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                })}
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            })}
                             </span>
                             <span class="col-3 fw-bold">Due date</span>
                             <span class="col-3">
                                 ${new Date(task.end_date).toLocaleString('en-US', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric'
-                                })}
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            })}
                             </span>
                         </div>
                         <div class="d-flex col-12">
@@ -805,20 +943,20 @@
                         <div class="d-flex flex-column gap-1 col-12">
                             <span class="fw-bold">Description</span>
                             <span class="border border-1 px-3 py-1 desc-view">
-                                ${task.description||'No description'}
+                                ${task.description || 'No description'}
                             </span>
                         </div>
                         <div class="d-flex flex-column gap-1 col-12">
                             <div class="accordion mb-3" id="subtask-view-offcanvas">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button${isExpandAccordion?'':' collapsed'}" type="button" data-bs-toggle="collapse"
+                                        <button class="accordion-button${isExpandAccordion ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapseOne" aria-expanded="${isExpandAccordion}"
                                                 aria-controls="collapseOne">
                                             <span id="subtask-accordion-header" class="display-6 fs-5 fw-bold">Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span></span>
                                         </button>
                                     </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse${isExpandAccordion?' show':''}"
+                                    <div id="collapseOne" class="accordion-collapse collapse${isExpandAccordion ? ' show' : ''}"
                                          data-bs-parent="#subtask-view-offcanvas">
                                         <div class="accordion-body"></div>
                                     </div>
@@ -832,12 +970,13 @@
             `;
 
 
-            let btn = ` <button id="${task.id}-complete-btn" class="btn-sm make-complete-btn py-1 px-2 fs-6 ${task.status?'btn-complete':''}">
+            let btn = ` <button id="${task.id}-complete-btn" class="btn-sm make-complete-btn py-1 px-2 fs-6 ${task.status ? 'btn-complete' : ''}">
                                      <i class='bx bx-check fs-5 me-1'></i>${completeBtnText} 
                             </button>
                             <button id="${task.id}-delete-task-btn" class="btn btn-danger"><i class="bx bx-trash-alt"></i></button>
                             `;
             $this.append(view);
+
             //append as first child of offcanvas-header
             $(`.offcanvas-header #btn-area`).prepend(btn);
 
@@ -846,12 +985,13 @@
             renderSubtask(task.id)
 
             const addSubtaskBtn = document.getElementById(`${task.id}-add-subtask`);
-            console.log(task.id,addSubtaskBtn)
+            console.log(task.id, addSubtaskBtn)
             // Add a click event handler to add subtask btn
             addSubtaskBtn.addEventListener('click', () => {
                 console.log('clicked add btn')
                 parentId = task.id;
                 phaseId = task.phase;
+                buildAddTaskModal(task.start_date,task.end_date);
                 resetTaskModal();
                 $('#exampleModal').modal('show');
             });
@@ -867,41 +1007,42 @@
             }
 
             const completeBtn = document.getElementById(`${task.id}-complete-btn`)
-            if(completeBtn){
-                completeBtn.addEventListener('click',()=> {
-                    if(task.status){
-                        renderConfirmModal(updateTaskStatus,"Are you sure to make this task incomplete?")
+            if (completeBtn) {
+                completeBtn.addEventListener('click', () => {
+                    if (task.status) {
+                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?")
                         //show modal
                         $('#confirmModal').modal('show');
-                    }else{
+                    } else {
                         buildCompleteTaskModal(task.id)
                         $('#completeTaskModal').modal('show');
                     }
                 });
             }
-            $(`#${task.id}-edit-task-btn`).on('click',()=>{
+            $(`#${task.id}-edit-task-btn`).on('click', () => {
                 console.log('clicked edit btn')
                 currentTaskId = task.id;
+                buildAddTaskModal(task.start_date,task.end_date)
                 fillDataTaskModal(task.id);
                 $('#exampleModal').modal('show');
             });
 
-            $(`#${task.id}-delete-task-btn`).on('click',()=>{
+            $(`#${task.id}-delete-task-btn`).on('click', () => {
                 console.log('clicked edit btn')
                 currentTaskId = task.id
-                renderConfirmModal(deleteTask,"Are you sure to delete this task?")
+                renderConfirmModal(deleteTask, "Are you sure to delete this task?")
                 //show modal
                 $('#confirmModal').modal('show');
             });
         }
 
-        function renderSubtask(taskId){
+        function renderSubtask(taskId) {
             $('#subtask-accordion-header').empty();
             $(`#subtask-view-offcanvas .accordion-body`).empty();
-            const subtaskList = settings.tasks.filter(val=> val.parent === taskId);
+            const subtaskList = settings.tasks.filter(val => val.parent === taskId);
             //append subtasks
-            subtaskList.forEach((item)=>{
-                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>':'<i class="bx bx-check-circle"></i>' ;
+            subtaskList.forEach((item) => {
+                const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
                 const subtask = `
                     <div id="${item.id}-offcanvas-subtask" class="kb-subtask-body">
                             <span class="flex-1 fs-4 d-flex align-items-center justify-content-center">
@@ -910,17 +1051,18 @@
                             <span class="kb-subtask-name flex-7">${item.name}</span>
                             <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end me-3">
                                 <span style="font-size: 9px">Due date</span>
-                                <span>${new Date(item.end_date).toLocaleString('en-US', {month: 'short', day: 'numeric'})}</span>
+                                <span>${new Date(item.end_date).toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                })}</span>
                             </span>                                                             
                         </div>                   
                 `;
 
                 $(`#subtask-view-offcanvas .accordion-body`).append(subtask)
 
-                $(`#${item.id}-offcanvas-subtask`).on('click',()=>{
+                $(`#${item.id}-offcanvas-subtask`).on('click', () => {
                     $('#taskViewModal').offcanvas('hide');
-                    //remove offcanva if exist
-                    $('#taskViewModal').remove();
                     //create offcanvas
                     buildTaskViewModal(item.id);
                     //show offcanvas
