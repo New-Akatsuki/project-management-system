@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -21,14 +22,12 @@ public class ResponsibleParty implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(nullable = false)
-    private User Provider;
+    private Set<User> providers;
 
     @ManyToOne
     @JoinColumn(nullable = true)
     private Client client;
-
-
 
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class Project implements Serializable {
     @JoinColumn(nullable = false)
     private Department department;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "contract_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
@@ -57,7 +58,7 @@ public class Project implements Serializable {
     )
     private Set<User> contractMembers;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "foc_member",  // Specify the name of the join table
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
@@ -67,31 +68,19 @@ public class Project implements Serializable {
 
 
     @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "architecture_id",nullable = false)  // Column in the join table for Architecture
-    )
     private Set<Architecture> architectures;
 
     @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "system_outline_id",nullable = false)  // Column in the join table
-    )
     private Set<SystemOutline> systemOutlines;
 
     @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "deliverable_id",nullable = false)  // Column in the join table
-    )
     private Set<Deliverable> deliverables;
 
     @ManyToOne
     @JoinColumn(nullable = false)
     private Client client;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status = ProjectStatus.ONGOING;
 }

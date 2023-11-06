@@ -22,12 +22,6 @@ import java.util.List;
 public class IssueController {
     private final IssueService issueService;
 
-    @PostMapping("/issue-create")
-    public ResponseEntity<IssueViewObject> createIssue(@RequestBody IssueCreateFormInput issueCreateFormInput) {
-        log.info("create issue");
-        return ResponseEntity.ok( issueService.createIssue(issueCreateFormInput));
-    }
-
     @PostMapping("/member/create-category")
     public ResponseEntity<IssueCategory> createIssueCategory(@RequestBody IssueCategory issueCategory) {
         log.info("create issue category");

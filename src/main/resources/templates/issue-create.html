@@ -35,7 +35,7 @@
           integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
@@ -44,13 +44,16 @@
     <!-- multi-select css link -->
     <link rel="stylesheet" href="/css/multiple-select.css">
 
-
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <link rel="stylesheet" href="/css/select2.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <link rel="stylesheet" href="/css/hope.css">
     <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/select2.css">
+
+    <!--    <script src="/js/select2.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <style>
         .card .card-header {
@@ -65,44 +68,17 @@
         }
     </style>
     <style>
-
-        /* Style for the search box in the dropdown */
-        .select2-search__field {
-            width: calc(100% - 20px); /* Adjust the width to your preference */
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #3498db;
-            border-radius: 4px;
-            outline: none;
-            color: #555;
-        }
-
-        .select2-container--default .select2-results > .select2-results__options {
-            max-height: 150px;
-        }
-
-        /* Add some space between the two select boxes */
-        .select-box {
-            margin-right: 20px;
-        }
-
-        /* Style for the select boxes */
-        .js-example-basic-single {
-            width: 200px;
-            padding: 10px;
-            border: 1px solid #3498db;
-            border-radius: 4px;
-            background-color: #fff;
-            color: #555;
-            outline: none;
-        }
-
-        /* Style for the selected values */
-        #selectedValues {
-            margin-top: 20px;
-            color: #555;
+        .card-body {
+            background: white;
         }
     </style>
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            height: 100%;
+            line-height: 30px;
+        }
+    </style>
+
     <style>
         .modal {
             --bs-modal-width: 500px;
@@ -148,52 +124,57 @@
 
                     <div class="d-flex gap-3">
                         <!-- Left Set -->
-                        <div class="d-flex w-100 p-0 align-items-end gap-2">
-                            <div class="w-100">
-                                <label for="issue_category" style="display: block; margin-bottom: 8px;">Category</label>
+                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
+                            <div class="d-flex flex-column w-100 p-0">
+                                <label for="issue_category" class="form-label">Category</label>
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box form-select"
-                                        id="issue_category">
+                                        id="issue_category" style="width: 100%; height: 100%;">
                                     <option value="default" selected disabled>Select an option</option>
                                     <!-- Add more options as needed -->
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-primary btn-icon" data-bs-toggle="modal"
-                                    data-bs-target="#categoryModal"><i
+                            <button type="button" class="btn btn-primary btn-icon" id="callCategoryModal"><i
                                     class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                         </div>
 
                         <!-- Right Set -->
-                        <div class="d-flex w-100 p-0 align-items-end gap-2">
-                            <div class="w-100">
-                                <label for="issue_place" style="display: block; margin-bottom: 8px;">Issue Place</label>
+                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
+                            <div class="d-flex flex-column w-100 p-0">
+                                <label for="issue_place">Issue Place</label>
                                 <!-- Second Select Box with Default Value -->
-                                <select class="js-example-basic-single select-box1 form-select" id="issue_place">
+                                <select class="js-example-basic-single select-box1 form-select"
+                                        id="issue_place" style="width: 100%; height: 100%;">
                                     <option value="default" selected disabled>Select an option</option>
                                     <!-- Add more options as needed -->
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-primary btn-icon" data-bs-toggle="modal"
-                                    data-bs-target="#placeModal"><i
+                            <button type="button" class="btn btn-primary btn-icon" id="callPlaceModal"
+                            data-target="categoryModal"><i
                                     class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                         </div>
                     </div>
 
-                    <div class="d-flex gap-2">
-                        <div class="d-flex flex-column gap-2 col-6 p-0">
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
                             <label for="issue_pic">Issue PIC</label>
-                            <select class="js-example-basic-single select-box2 form-select" id="issue_pic">
+                            <select class="js-example-basic-single select-box2 form-select"
+                                    id="issue_pic" style="width: 100%; height: 100%;">
                                 <option value="default" selected disabled>Select an option</option>
-                                <!-- Add more options as needed -->
                             </select>
                         </div>
 
-                        <div class="d-flex flex-column gap-2 col-6 p-0">
-                            <label for="res-party" class="form-label">Responsible
-                                Party</label>
-                            <!-- Fourth Select Box with Default Value -->
-                            <select id="res-party" name="category" multiple>
-                                <!-- Add options as needed -->
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="res_party">Responsible Party</label>
+                            <select class="js-example-basic-multiple form-select" multiple="multiple"
+                                    id="res_party" style="width: 100%; height: 100%;">
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <!-- Add more options as needed -->
                             </select>
                         </div>
                     </div>
@@ -238,14 +219,14 @@
                 </div>
                 <div class="modal-body">
                     <div style="align-items: center;">
-                        <input type="text" class="form-control" id="category" name="category"/>
-                        <span id="c-hide" style="color:red; display: none;">The category must not be blank.</span>
+                        <input type="text" class="form-control" id="addCategory"/>
+                        <span class="text-danger d-none" id="addCategoryError">The category must not be blank.</span>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" onclick="addCategory()" class="btn btn-primary">Save</button>
+                    <button type="button" id="saveAddCategory" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -260,15 +241,13 @@
                 </div>
                 <div class="modal-body">
                     <div style="align-items: center;">
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="place" name="place"/>
-                            <span id="p-hide" style="color:red; display: none;">The place must not be blank.</span>
-                        </div>
+                        <input type="text" class="form-control" id="addPlace"/>
+                        <span class="text-danger d-none" id="addPlaceError">The place must not be blank.</span>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addPlace()">Save</button>
+                    <button type="button" class="btn btn-primary" id="saveAddPlace">Save</button>
                 </div>
             </div>
         </div>
@@ -276,15 +255,9 @@
     <!-- End Card -->
 </main>
 <!-- End #main -->
-
-<!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <script th:src="@{/js/text-editor.js}"></script>
-<!--Multiple Select Script File-->
-<script src="/js/multi-select.js"></script>
-<!--<script th:src="@{/js/issue-create-validation.js}"></script>-->
 
 <script>
     function clean() {
@@ -294,8 +267,7 @@
         $('#issue_category').val("default").trigger('change');
         $('#issue_place').val("default").trigger('change');
         $('#issue_pic').val("default").trigger('change');
-
-        $('#res-party').val(null).trigger('change');
+        $('#res_party').val(null).trigger('change');
     }
 
     let quillContent = new Quill("#content", aa);
@@ -349,37 +321,12 @@
             });
         }
 
-        // Simulated JSON data for the first select box
-        // var categoryData = [
-        //     {id: 1, name: 'Option 1'},
-        //     {id: 2, name: 'Option 2'},
-        //     {id: 3, name: 'Option 3'},
-        //     {id: 4, name: 'Option 1'},
-        //     {id: 5, name: 'Option 2'},
-        //     {id: 6, name: 'Option 3'},
-        //     {id: 7, name: 'Option 1'},
-        //     {id: 8, name: 'Option 2'},
-        //     {id: 9, name: 'Option 3'},
-        // ];
-
-        // Simulated JSON data for the second select box
-        // var jsonData2 = [
-        //     {id: 'A', name: 'Option A'},
-        //     {id: 'B', name: 'Option B'},
-        //     {id: 'C', name: 'Option C'}
-        // ];
-
         // Simulated JSON data for the second third box
         var jsonData3 = [
             {id: 'A', name: 'Option A'},
             {id: 'B', name: 'Option B'},
             {id: 'C', name: 'Option C'}
         ];
-        // // Populate options for the first select box
-        // populateSelect('.js-example-basic-single.select-box', categoryData);
-        // Populate options for the second select box
-        // populateSelect('.js-example-basic-single.select-box1', jsonData2);
-        // Populate options for the third select box
         populateSelect('.js-example-basic-single.select-box2', jsonData3);
 
         // Initialize Select2 for both select boxes
@@ -424,46 +371,9 @@
 
 
         })
-
-        // var selectedValue,selectedValue1,selectedValue2;
-
-        // Event handler for select change
-        // $('.js-example-basic-single.select-box').on('change', function() {
-        //     // Get selected values from both select boxes
-        //      selectedValue = $('.js-example-basic-single.select-box').val();
-        // });
-        //
-        // $('.js-example-basic-single.select-box1').on('change', function() {
-        //     // Get selected values from both select boxes
-        //      selectedValue1 = $('.js-example-basic-single.select-box1').val();
-        // });
-        //
-        // $('.js-example-basic-single.select-box2').on('change', function() {
-        //     // Get selected values from both select boxes
-        //      selectedValue2 = $('.js-example-basic-single.select-box2').val();
-        // });
-
-        // var selectedValue = $('.js-example-basic-single.select-box').val();
-        // var selectedValue1 = $('.js-example-basic-single.select-box1').val();
-        // var selectedValue2 = $('.js-example-basic-single.select-box2').val();
-        //
-        // console.log(selectedValue);
-        // console.log(selectedValue1);
-        // console.log(selectedValue2);
     });
 </script>
 <script>
-    var jsonData = [
-        {id: 1, name: 'John'},
-        {id: 2, name: 'Jimmy'},
-    ];
-
-    // Call the function to populate the select box
-    populateSelect("#res-party", jsonData);
-
-    // Initialize the custom multi-select tag
-    MultiSelectTag('res-party');
-
     function populateSelect(selector, options) {
         let select = $(selector);
         $.each(options, function (index, value) {
@@ -476,100 +386,101 @@
         select.append('<option value="' + option.id + '">' + option.name + '</option>');
     }
 
+    function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId) {
+        function toggleError() {
+            error.toggleClass('d-none', input.val().trim() !== '');
+        }
 
-    <!--start add category script-->
-    function addCategory() {
-        let category = $('#category').val();
-        if (category == null || category == "") {
-            $('#c-hide').show();
-        } else {
-            let newCategory = {
-                id: null,
-                name: category
-            }
+        function resetModal() {
+            let modalID = $('#' + modalId);
+            input.val('');
+            error.addClass('d-none');
+            modalID.modal('show');
+            // Use the 'shown.bs.modal' event to focus on the input
+            modalID.on('shown.bs.modal', function () {
+                input.focus();
+            });
+        }
+
+        function handlePostRequest(data) {
             $.ajax({
-                url: '/member/create-category',
+                url: postURL,
                 type: 'POST',
                 contentType: "application/json",
-                data: JSON.stringify(newCategory),
+                data: JSON.stringify(data),
+                success: function (responseData) {
+                    $('#' + modalId).modal('hide');
+                    updateSelect(selectBoxClass, responseData);
+                    console.log(responseData);
+                },
+                error: function (responseData) {
+                    console.log(responseData);
+                    alert("Creation failed");
+                }
+            });
+        }
+
+        input.on('input', toggleError);
+
+        modalButton.click(resetModal);
+
+        $(document).ready(function () {
+            $.ajax({
+                url: getURL,
+                type: 'GET',
                 success: function (data) {
-                    $("#categoryModal").modal('hide');
-                    updateSelect('.js-example-basic-single.select-box', data);
-                    console.log(data);
+                    populateSelect(selectBoxClass, data);
                 },
                 error: function (data) {
                     console.log(data);
-                    alert("Category creation failed");
                 }
-            })
-        }
+            });
+        });
 
+        modalSaveButton.click(function () {
+            let inputValue = input.val().trim();
+            if (inputValue !== '') {
+                handlePostRequest({ id: null, name: inputValue });
+            }else{
+                error.removeClass('d-none');
+                input.focus();
+            }
+        });
     }
 
-    <!--end create category script-->
+    // Usage for addPlace button
+    setupModalHandling(
+        $('#addPlace'),
+        $('#addPlaceError'),
+        $('#callPlaceModal'),
+        $('#saveAddPlace'),
+        '/member/get-place',
+        '/member/create-place',
+        '.js-example-basic-single.select-box1',
+        'placeModal'
+    );
 
-    <!--start display category script-->
+    // Usage for addCategory button
+    setupModalHandling(
+        $('#addCategory'),
+        $('#addCategoryError'),
+        $('#callCategoryModal'),
+        $('#saveAddCategory'),
+        '/member/get-category',
+        '/member/create-category',
+        '.js-example-basic-single.select-box',
+        'categoryModal'
+    );
+</script>
+<script>
     $(document).ready(function () {
-        $.ajax({
-            url: '/member/get-category',
-            type: 'GET',
-            success: function (data) {
-                console.log(data);
-                populateSelect('.js-example-basic-single.select-box', data);
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        })
-    })
-    <!--end display category script-->
-
-    <!--start add place script-->
-    function addPlace() {
-        let place = $('#place').val();
-        if (place == null || place == "") {
-            $('#p-hide').show();
-        } else {
-            let newPlace = {
-                id: null,
-                name: place
-            }
-            $.ajax({
-                url: '/member/create-place',
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify(newPlace),
-                success: function (data) {
-                    $("#placeModal").modal('hide');
-                    updateSelect('.js-example-basic-single.select-box1', data);
-                    console.log(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                    alert("Place creation failed");
-                }
-            })
-        }
-
-    }
-
-    <!--end add place script-->
-
-    <!--start display place script-->
-    $(document).ready(function () {
-        $.ajax({
-            url: '/member/get-place',
-            type: 'GET',
-            success: function (data) {
-                console.log(data);
-                populateSelect('.js-example-basic-single.select-box1', data);
-            },
-            error: function (data) {
-                console.log(data);
-            }
-        })
-    })
-    <!--end display place script-->
+        $('.js-example-basic-multiple').select2({
+            placeholder: '  Select options',
+            // allowClear: true,
+            closeOnSelect: true,
+            width: '100%'
+        });
+    });
 </script>
 </body>
 </html>

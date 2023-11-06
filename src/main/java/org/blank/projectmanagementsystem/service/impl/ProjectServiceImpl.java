@@ -2,19 +2,18 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
 import org.blank.projectmanagementsystem.service.ProjectService;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -97,9 +96,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectViewObject> getAllProjects() {
-//        String userRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-//                .stream().map(GrantedAuthority::getAuthority).findFirst().orElse("");
-
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username).orElseThrow();
 
@@ -110,5 +106,49 @@ public class ProjectServiceImpl implements ProjectService {
             case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
             default -> throw new IllegalStateException("Invalid user");
         };
+    }
+    @Override
+    public List<User> getProjectMembers(Long projectId) {
+        List<User> members = new ArrayList<>();
+        projectRepository.findById(projectId).
+                ifPresent(val->{
+                    members.addAll(val.getContractMembers());
+                    members.addAll(val.getFocMembers());
+                    members.add(val.getProjectManager());
+                });
+        return members;
+    }
+    @Override
+    public List<User> getUsersByOngoingProject() {
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        List<User> users = new ArrayList<>();
+        projects.ifPresent(projectList->{
+            projectList.forEach(project -> {
+               users.addAll(getProjectMembers(project.getId()));
+            });
+        });
+        return users;
+    }
+    @Override
+    public Map<String,List<Object>> getUsersAndClientByOngoingProject() {
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        Map<String,List<Object>> data = new HashMap<>();
+        List<Object> users = new ArrayList<>();
+        List<Object> clients = new ArrayList<>();
+
+        projects.ifPresent(projectList->{
+            projectList.forEach(project -> {
+                users.addAll(getProjectMembers(project.getId()));
+                clients.add(project.getClient());
+            });
+        });
+        data.put("users",users);
+        data.put("clients",clients);
+        return data;
+    }
+
+    private User getCurrentUser(){
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(username,username).orElseThrow();
     }
 }

@@ -19,40 +19,75 @@ public class ProjectManagementSystemApplication {
         SpringApplication.run(ProjectManagementSystemApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner runner(UserService userService, PasswordEncoder passwordEncoder) {
-        return args -> {
+//    @Bean
+//    CommandLineRunner runner(UserService userService, PasswordEncoder passwordEncoder) {
+//        return args -> {
+//
+//            Department department = new Department(null, "IT", true);
+//            Department department2 = new Department(null, "HR", true);
+//            userService.saveDepartment(department);
+//            userService.saveDepartment(department2);
+//
+//            // save demo data after start
+//            var user1 = userService.save(
+//                    User.builder()
+//                            .name("John")
+//                            .username("john@gmail.com")
+//                            .password(passwordEncoder.encode("1234"))
+//                            .role(Role.PM)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//            var user2 = userService.save(
+//                    User.builder()
+//                            .name("mike")
+//                            .username("mike@gmail.com")
+//                            .password(passwordEncoder.encode("1234"))
+//                            .role(Role.DH)
+//                            .department(department)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//        };
+//    }
 
-            Department department = new Department(null, "IT", true);
-            Department department2 = new Department(null, "HR", true);
-            userService.saveDepartment(department);
-            userService.saveDepartment(department2);
-
-            // save demo data after start
-            var user1 = userService.save(
-                    User.builder()
-                            .name("John")
-                            .username("john@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
-                            .role(Role.PM)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-
-            var user2 = userService.save(
-                    User.builder()
-                            .name("mike")
-                            .username("mike@gmail.com")
-                            .password(passwordEncoder.encode("1234"))
-                            .role(Role.DH)
-                            .department(department)
-                            .active(true)
-                            .build()
-            );
-
-        };
-    }
+//    @Bean
+//    CommandLineRunner runner(UserService userService, PasswordEncoder passwordEncoder) {
+//        return args -> {
+//
+//            Department department = new Department(null, "IT", true);
+//            Department department2 = new Department(null, "HR", true);
+//            userService.saveDepartment(department);
+//            userService.saveDepartment(department2);
+//
+//            // save demo data after start
+//            var user1 = userService.save(
+//                    User.builder()
+//                            .name("James")
+//                            .username("james@gmail.com")
+//                            .password(passwordEncoder.encode("1234"))
+//                            .role(Role.MEMBER)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//            var user2 = userService.save(
+//                    User.builder()
+//                            .name("Jimmy")
+//                            .username("jimmy@gmail.com")
+//                            .password(passwordEncoder.encode("1234"))
+//                            .role(Role.PM)
+//                            .department(department)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//        };
+//    }
 }
 
 

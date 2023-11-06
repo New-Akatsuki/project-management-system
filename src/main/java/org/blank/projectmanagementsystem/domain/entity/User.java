@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +33,12 @@ public class User implements Serializable,UserDetails {
     @Column(unique = true, nullable = false, length = 45)
     private String username;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String password;
+
+    @Column(unique = true, nullable = false, length = 45)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -46,6 +51,12 @@ public class User implements Serializable,UserDetails {
 
     @ManyToMany(mappedBy = "assignees")
     private Set<Task> tasks;
+
+    @ManyToMany(mappedBy = "contractMembers")
+    private List<Project> contractProjects;
+
+    @ManyToMany(mappedBy = "focMembers")
+    private List<Project> focProjects;
 
     /*
      *the following is user details for spring security

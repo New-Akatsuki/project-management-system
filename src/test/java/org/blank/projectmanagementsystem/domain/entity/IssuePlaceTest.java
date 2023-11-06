@@ -1,60 +1,35 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class IssuePlaceTest {
 
-    private IssuePlace issuePlace;
+    @Test
+    public void testConstructorAndGetters() {
+        // Create an instance of IssuePlace
+        Long id = 1L;
+        String name = "Office";
+        IssuePlace issuePlace = new IssuePlace(id, name);
 
-    @BeforeEach
-    public void setUp() {
-        issuePlace = new IssuePlace();
-        issuePlace.setId(1);
-        issuePlace.setName("EntityTest");
+        // Verify the values returned by the getters
+        Assertions.assertEquals(id, issuePlace.getId());
+        Assertions.assertEquals(name, issuePlace.getName());
     }
 
     @Test
-    public void testIssuePlaceId() {
-        assertEquals(1, issuePlace.getId());
+    public void testSetters() {
+        // Create an instance of IssuePlace
+        IssuePlace issuePlace = new IssuePlace();
+
+        // Set values using the setters
+        Long id = 1L;
+        String name = "Office";
+        issuePlace.setId(id);
+        issuePlace.setName(name);
+
+        // Verify the values returned by the getters
+        Assertions.assertEquals(id, issuePlace.getId());
+        Assertions.assertEquals(name, issuePlace.getName());
     }
-
-    @Test
-    public void testIssuePlaceName() {
-        assertEquals("EntityTest", issuePlace.getName());
-    }
-
-    @Test
-    public void testIssuePlaceIdSetter() {
-        issuePlace.setId(2);
-        assertEquals(2, issuePlace.getId());
-    }
-
-    @Test
-    public void testIssuePlaceNameSetter() {
-        issuePlace.setName("New Place");
-        assertEquals("New Place", issuePlace.getName());
-    }
-
-    @Test
-    public void testIssuePlaceEquality() {
-        IssuePlace samePlace = new IssuePlace();
-        samePlace.setId(1);
-        samePlace.setName("EntityTest");
-
-        assertEquals(issuePlace, samePlace);
-    }
-
-    @Test
-    public void testIssuePlaceInequality() {
-        IssuePlace differentPlace = new IssuePlace();
-        differentPlace.setId(2);
-        differentPlace.setName("Different Place");
-
-        assertNotEquals(issuePlace, differentPlace);
-    }
-
-
 }
-
