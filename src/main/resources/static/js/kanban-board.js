@@ -21,8 +21,8 @@
             end_date: "",
             actual_due_date: "",
             duration: null,
-            plan_hours: 0,
-            actual_hours: 0,
+            plan_hours: 0.0,
+            actual_hours: 0.0,
             status: false,
             phase: phaseId,
             parent: parentId,
@@ -354,7 +354,8 @@
                         </div>
                         <div class="modal-body">
                             <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to delete</label>
-                            <input type="text" id="confirmInput" class="form-control">
+                            <input type="text" id="confirmInput" class="form-control" autocomplete="off">
+                            
                             <div id="errorConfirmText" class="d-flex d-none text-danger align-items-center gap-1"><i class="bx bx-info-circle"></i>Please check your input</div>
                         </div>
                         <div class="modal-footer">
@@ -480,6 +481,7 @@
         function deletePhase() {
             console.log("delete phase")
             let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId,10))[0]
+
             $.ajax({
                 url: '/delete-phase',
                 method: 'DELETE',
@@ -610,7 +612,8 @@
        * ============================================================*/
         function deleteTask() {
             console.log("delete task")
-            let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId,10))[0]
+            let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId,10))[0]||simpleTask
+            taskData.assignees = taskData.assignees.map(val=>parseInt(val.id,10))
             console.log(taskData)
             $.ajax({
                 url: '/delete-task',
@@ -676,10 +679,15 @@
             let formattedDate = `${year}-${month}-${day}`;
 
             const item = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
+            console.log(taskId)
+            console.log(item)
+            //check completeTaskModal if already exist, remove
+            $('#completeTaskModal').remove();
+
             const completeTaskModal = `
               <div class="modal fade" id="completeTaskModal" tabindex="-1" aria-labelledby="completeTaskModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                  <form id="complete-task-form">
+                  <form id="complete-task-form" autocomplete="off">
                     <div class="modal-content">
                         <div class="modal-header border-0">
                             <h1 class="modal-title fs-5" id="completeTaskModalLabel">Make Complete Task</h1>
@@ -701,8 +709,8 @@
                             <div class="row" style="padding:10px">
                                <div class="col-6">
                                 <label for="actualHour">Actual Hour :</label>
-                                <input type="number" id="actualHour" class="inputmodalbox" min="0"
-                                placeholder="Enter actual hour" value="${item.actual_hours !== null ? item.actual_hours : ''}">
+                                <input type="number" id="actualHour" class="inputmodalbox" min="0" autocomplete="off" step="0.1"
+                                placeholder="Enter actual hour" value="${item.actual_hours !== null ? item.actual_hours : '0.0'}">
                               </div>
                               <div class="col-6">
                                 <label for="actualHour">Actual Date :</label>
@@ -734,7 +742,6 @@
             formValidate('complete-task-form',updateStatusInfo)
         }
 
-
         /*
         ================================================
         Build Task View Modal
@@ -743,6 +750,7 @@
         function buildTaskViewModal(taskId){
             const task = settings.tasks.filter(data => data.id === taskId)[0]||simpleTask;
             const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+            const typeClass = task.type === 'task' ? 'type-task' : 'type-milestone';
             const completeBtnText = task.status ? 'completed':'Mark complete';
             const subtaskList = settings.tasks.filter(val=> val.parent === task.id);
             const isExpandAccordion = subtaskList.length>0;
@@ -782,10 +790,17 @@
                         </div>
                         <div class="d-flex col-12">
                             <span class="col-3 fw-bold">Priority</span>
-                            <span class="col-3"><span class="${priorityClass}">${task.priority}</span></span>
+                            <span class="col-3"><span class="${priorityClass} text-block">${task.priority}</span></span>
                         
                             <span class="col-3 fw-bold">Task Group</span>
                             <span class="col-3">${task.group}</span>
+                        </div>
+                        <div class="d-flex col-12">
+                            <span class="col-3 fw-bold">Task Type</span>
+                            <span class="col-3"><span class="${typeClass} text-block">${task.type}</span></span>
+                        
+                            <span class="col-3 fw-bold">Plan Hour</span>
+                            <span class="col-3">${task.plan_hours} hours</span>
                         </div>
                         <div class="d-flex flex-column gap-1 col-12">
                             <span class="fw-bold">Description</span>

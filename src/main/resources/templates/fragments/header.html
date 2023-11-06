@@ -74,7 +74,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6 sec:authentication="principal.username"></h6>
-                        <span sec:authentication="principal.authorities[0]"></span>
+                        <span id="role" sec:authentication="principal.authorities[0]"></span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

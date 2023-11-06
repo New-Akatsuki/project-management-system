@@ -3,6 +3,7 @@ package org.blank.projectmanagementsystem.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class MainController {
         return "index";
     }
 
+    @PreAuthorize("hasAuthority('MEMBER')")
     @GetMapping("/task-view")
     public String task(){
         return "task-view";

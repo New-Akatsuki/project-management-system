@@ -245,7 +245,7 @@
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <form id="addTaskForm">
+            <form id="addTaskForm" autocomplete="off">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Task</h1>
@@ -274,7 +274,7 @@
                                 </div>
                                 <div class="form-group mb-0 flex-3 d-flex flex-column">
                                     <label for="task-plan-hours" class="form-label">Plan Hours:</label>
-                                    <input type="number" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
+                                    <input type="number" step="0.1" min="0" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
                                 </div>
                             </div>
                             <div class="d-flex gap-2">

@@ -470,29 +470,33 @@ input[type="checkbox"] {
     overflow-y: scroll;
     text-align: justify;
 }
-.priority-high{
+
+.text-block{
     padding: 3px 5px;
     border-radius: 5px;
+    color: white;
+    vertical-align: middle;
+}
+.priority-high{
     background: #ff3535;
     border: 1px solid #ff3535;
-    color: white;
-    font-size: 12px;
 }
 .priority-medium{
-    padding: 3px 5px;
-    border-radius: 5px;
     background: #ff9f35;
     border: 1px solid #ff9f35;
-    color: white;
-    font-size: 12px;
 }
 .priority-low{
-    padding: 3px 5px;
-    border-radius: 5px;
     background: #ffdd35;
     border: 1px solid #ffdd35;
-    color: white;
-    font-size: 12px;
+}
+
+.type-task{
+    background: #3577ff;
+    border: 1px solid #3577ff;
+}
+.type-milestone{
+    background: #ffdd35;
+    border: 1px solid #ffdd35;
 }
 
 .offcanvas-body .y-scroll{

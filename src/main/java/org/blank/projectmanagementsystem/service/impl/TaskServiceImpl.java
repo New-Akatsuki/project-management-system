@@ -12,6 +12,7 @@ import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.hibernate.annotations.OnDelete;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,6 +101,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.mapToTaskViewObject(taskRepository.save(task));
     }
 
+
     @Override
     @Transactional
     public void deleteTask(Long id) {
@@ -112,7 +114,6 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.deleteById(id);
     }
-
 
 
     //create recursive function to get all subtask and clear assignees
