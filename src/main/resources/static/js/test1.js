@@ -86,7 +86,7 @@ function addDeliverable() {
         success: function (data) {
             $("#addDeliverablesModal").modal('hide');
             console.log("SUCCESS: ", data);
-            updateDeliverableUI(data); // Use the data returned from the server response
+           // updateDeliverableUI(data); // Use the data returned from the server response
         },
         error: function (xhr, status, error) {
             console.log("ERROR: ", xhr.responseText);
@@ -207,7 +207,7 @@ function addArchitecture() {
         success: function (data) {
             $("#addArchitectureModal").modal('hide');
             console.log('SUCCESS:', data);
-            updateArchitectureUI(data); // Call the updateArchitectureUI function to update the UI with new data
+            //updateArchitectureUI(data); // Call the updateArchitectureUI function to update the UI with new data
         },
         error: function (xhr, status, error) {
             console.log('ERROR:', xhr.responseText);

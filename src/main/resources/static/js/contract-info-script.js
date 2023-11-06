@@ -16,6 +16,7 @@ $(document).ready(function () {
             renderClientTable(data.clients);
             renderDeliverableTable(data.deliverables);
             renderArchitectureTable(data.architectures);
+            renderSystemOutlineTable(data.systems);
         },
         error: function (error) {
             console.log('Error fetching data:', error);
@@ -47,8 +48,8 @@ $(document).ready(function () {
                     data: 'id',
                     render: function (data, type, row, meta) {
                         return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openCli(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleCli(${row.id})">Delete</button>
+                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditClientModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteClient(${row.id})">Delete</button>
                                 `;
                     }
                 },
@@ -112,6 +113,7 @@ $(document).ready(function () {
                     }
                 },
                 {data: 'name'},
+                {data: 'type'},
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
@@ -401,14 +403,14 @@ $(document).ready(function () {
           update architecture to database
    ===================================================*/
     function updateArchitecture() {
-        // Get updated deliverable information from modal fields
+        // Get updated architecture information from modal fields
         let id = $('#editArchitectureId').val();
         let name = $('#editArchitectureName').val();
         let type = $('#editArchitectureType').val();
 
 
         // Prepare updated deliverable object
-        let updatedClient = {
+        let updatedArchitecture = {
             id: id,
             name: name,
             type: type,
@@ -427,7 +429,7 @@ $(document).ready(function () {
                 console.log("SUCCESS: ", data);
 
                 console.log("contractINfo", contractInfo);
-                // Update the deliverable in the contractInfo object
+                // Update the architectures in the contractInfo object
                 contractInfo.architectures = contractInfo.architectures.map(architecture => {
                     if (architecture.id === data.id) {
                         return data;
@@ -455,11 +457,11 @@ $(document).ready(function () {
    ===================================================*/
     function updateSystemOutline() {
         // Get updated deliverable information from modal fields
-        let id = $('#editSystemOutlineId').val();
-        let name = $('#editSystemOutlineName').val();
+        let id = $('#editOutlineId').val();
+        let name = $('#editOutlineName').val();
 
         // Prepare updated deliverable object
-        let updatedClient = {
+        let updatedSystemOutline = {
             id: id,
             name: name,
 
@@ -478,7 +480,7 @@ $(document).ready(function () {
                 console.log("SUCCESS: ", data);
 
                 console.log("contractINfo", contractInfo);
-                // Update the deliverable in the contractInfo object
+                // Update the systemOutline in the contractInfo object
                 contractInfo.systems = contractInfo.systems.map(systemOutline => {
                     if (systemOutline.id === data.id) {
                         return data;
@@ -506,94 +508,170 @@ $(document).ready(function () {
     /*===================================================
             delete deliverable to database
     ===================================================*/
-    function deleteDeliverable(deliverableId) {
-        // Make a DELETE request to delete the deliverable data
+
+    function updateDeliverableStatus(deliverableId, isActive) {
+        // Set the deliverableId to a data attribute of the confirmation button
+        $("#confirmDeleteDeliverableButton").data("deliverable-id", deliverableId);
+
+        // Set the isActive flag to a data attribute of the confirmation button
+        $("#confirmDeleteDeliverableButton").data("is-active", isActive);
+
+        // Open the confirmation modal
+        $("#confirmDeleteDeliverableModal").modal("show");
+    }
+
+
+// When the user confirms deletion in the modal, proceed with the deletion
+    $("#confirmDeleteDeliverableButton").click(function() {
+        // Disable the delete button to prevent multiple clicks
+        $(this).prop("disabled", true);
+
+        var deliverableId = $(this).data("deliverable-id");
+        var isActive = $(this).data("is-active");
+
+        var url = isActive ? `/pm/deliverable/active/${deliverableId}` : `/pm/deliverable/disable/${deliverableId}`;
+
         $.ajax({
-            type: "DELETE",
-            url: `/pm/deliverable/delete/${deliverableId}`, // Endpoint to delete deliverable data by ID
+            type: "POST",
+            url: url, // Endpoint to update deliverable status by ID
             contentType: "application/json",
             dataType: 'json',
             success: function (data) {
-                // Update the deliverable in the contractInfo object
-                contractInfo.deliverables = contractInfo.deliverables.filter(deliverable => deliverable.id !== data);
+                // Update the deliverables in the contractInfo object
+                contractInfo.deliverables = contractInfo.deliverables.filter(deliverable => deliverable.id !== data.id);
+                contractInfo.deliverables.push(data); // Add the updated deliverable
 
-                //reload Table
+                // Reload Table
                 renderDeliverableTable(contractInfo.deliverables);
-
             },
             error: function () {
+                // Handle error if necessary
+            },
+            complete: function() {
+                // Enable the delete button after the request is completed (success or error)
+                $("#confirmDeleteDeliverableButton").prop("disabled", false);
             }
         });
+
+        // Close the confirmation modal
+        $("#confirmDeleteDeliverableModal").modal("hide");
+    });
+
+
+
+
+    // Function to initiate action confirmation for a client
+    function confirmClientAction(clientId) {
+        $("#activateClientButton").data("client-id", clientId);
+        $("#disableClientButton").data("client-id", clientId);
+        $("#confirmClientActionModal").modal("show");
     }
 
 
-    /*===================================================
-           delete client to database
-   ===================================================*/
-    function deleteClient(clientId) {
-        // Make a DELETE request to delete the deliverable data
+// Event handler for activating client button click
+    $("#activateClientButton").click(function() {
+        var clientId = $(this).data("client-id");
+        // Perform logic to activate client using AJAX request
         $.ajax({
-            type: "DELETE",
-            url: `/pm/client/delete/${clientId}`, // Endpoint to delete deliverable data by ID
+            type: "POST",
+            url: `/pm/client/activate/${clientId}`, // Endpoint to activate client data by ID
             contentType: "application/json",
             dataType: 'json',
             success: function (data) {
-                // Update the deliverable in the contractInfo object
-                contractInfo.clients = contractInfo.clients.filter(client => client.id !== data);
-
-                //reload Table
-                renderClientTable(contractInfo.clients);
-
+                console.log("Client activated successfully!");
+                // Perform any additional UI updates if needed
             },
             error: function () {
+                console.error("Error activating client.");
             }
         });
-    }
 
+        // Close the confirmation modal
+        $("#confirmClientActionModal").modal("hide");
+    });
+
+// Event handler for disabling client button click
+    $("#disableClientButton").click(function() {
+        var clientId = $(this).data("client-id");
+        // Perform logic to disable client using AJAX request
+        $.ajax({
+            type: "POST",
+            url: `/pm/client/disable/${clientId}`, // Endpoint to disable client data by ID
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (data) {
+                console.log("Client disabled successfully!");
+                // Perform any additional UI updates if needed
+            },
+            error: function () {
+                console.error("Error disabling client.");
+            }
+        });
+
+        // Close the confirmation modal
+        $("#confirmClientActionModal").modal("hide");
+    });
     /*===================================================
          delete architecture to database
  ===================================================*/
+    // Function to initiate delete confirmation
     function deleteArchitecture(architectureId) {
-        // Make a DELETE request to delete the deliverable data
+        $("#confirmDeleteArchitectureButton").data("architecture-id", architectureId);
+        $("#confirmDeleteArchitectureModal").modal("show");
+    }
+    $("#confirmDeleteArchitectureButton").click(function() {
+        var architectureId = $(this).data("architecture-id");
         $.ajax({
             type: "DELETE",
-            url: `/pm/architecture/delete/${architectureId}`, // Endpoint to delete deliverable data by ID
+            url: `/pm/architecture/delete/${architectureId}`, // Endpoint to delete architecture data by ID
             contentType: "application/json",
             dataType: 'json',
             success: function (data) {
-                // Update the deliverable in the contractInfo object
-                contractInfo.architectures = contractInfo.architectures.filter(architecture => architecture.id !== data);
-
-                //reload Table
+               contractInfo.architectures = contractInfo.architectures.filter(architecture => architecture.id !== data);
                 renderArchitectureTable(contractInfo.architectures);
-
             },
             error: function () {
-            }
+               }
         });
-    }
+        $("#confirmDeleteArchitectureModal").modal("hide");
+    });
+
 
     /*===================================================
          delete systemOutline to database
      ===================================================*/
+    // Function to initiate delete confirmation
     function deleteSystemOutline(systemOutlineId) {
-        // Make a DELETE request to delete the deliverable data
+        $("#confirmDeleteButton").data("system-outline-id", systemOutlineId);
+        // Open the confirmation modal
+        $("#confirmDeleteModal").modal("show");
+    }
+
+// When user confirms deletion, perform the deletion and update UI
+    $("#confirmDeleteButton").click(function() {
+        var systemOutlineId = $(this).data("system-outline-id");
         $.ajax({
             type: "DELETE",
-            url: `/pm/system-outline/delete/${systemOutlineId}`, // Endpoint to delete deliverable data by ID
+            url: `/pm/system-outline/delete/${systemOutlineId}`, // Endpoint to delete system outline by ID
             contentType: "application/json",
             dataType: 'json',
             success: function (data) {
-                // Update the deliverable in the contractInfo object
+                // Update the system outlines in the contractInfo object
                 contractInfo.systems = contractInfo.systems.filter(systemOutline => systemOutline.id !== data);
 
-                //reload Table
+                // Reload the table
                 renderSystemOutlineTable(contractInfo.systems);
             },
             error: function () {
+                // Handle error if necessary
             }
         });
-    }
+
+        // Close the confirmation modal
+        $("#confirmDeleteModal").modal("hide");
+    });
+
+
 
     /*===================================================
             open edit deliverable modal
@@ -638,19 +716,19 @@ $(document).ready(function () {
         $('#editArchitectureName').val(architecture.name);
         $('#editArchitectureType').val(architecture.type);
         // Show the edit deliverable modal
-        $('#editDeliverableModal').modal('show');
+        $('#editArchitectureModal').modal('show');
     }
 
     /*===================================================
            open edit systemOutline modal
    ===================================================*/
     function openEditSystemOutlineModal(systemOutlineId) {
-
+        console.log("systemOutlineId", systemOutlineId);
         const systemOutline = contractInfo.systems.filter(systemOutline => systemOutline.id === systemOutlineId)[0];
 
         // Populate modal fields with deliverable data
-        $('#editSystemOutlineId').val(systemOutlineId.id);
-        $('#editSystemOutlineIdName').val(systemOutlineId.name);
+        $('#editOutlineId').val(systemOutline.id);
+        $('#editOutlineName').val(systemOutline.name);
         // Show the edit deliverable modal
         $('#editSystemOutlineModal').modal('show');
     }
@@ -661,7 +739,7 @@ $(document).ready(function () {
     $.fn.addDeliverable = addDeliverable;
     $.fn.openEditDeliverableModal = openEditDeliverableModal;
     $.fn.updateDeliverable = updateDeliverable;
-    $.fn.deleteDeliverable = deleteDeliverable;
+    $.fn.updateDeliverableStatus = updateDeliverableStatus;
 
     /*===================================================
        export client functions to global scope
@@ -671,7 +749,8 @@ $(document).ready(function () {
     $.fn.addClient = addClient;
     $.fn.openEditClientModal = openEditClientModal;
     $.fn.updateClient = updateClient;
-    $.fn.deleteClient = deleteClient;
+    $.fn.confirmClientAction = confirmClientAction;
+
 
     /*===================================================
       export architecture functions to global scope

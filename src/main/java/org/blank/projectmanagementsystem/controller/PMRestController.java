@@ -103,12 +103,40 @@ public class PMRestController {
         }
     }
 
-    @DeleteMapping("/pm/deliverable/delete/{id}")
+   /* @DeleteMapping("/pm/deliverable/delete/{id}")
     public ResponseEntity<Long> deleteDeliverable(@PathVariable Long id) {
         deliverableService.deleteDeliverable(id);
         //return 2xx if successful
         return ResponseEntity.ok(id);
+    }*/
+
+    @PostMapping("/pm/deliverable/active/{id}")
+    public ResponseEntity<Deliverable> activateDeliverable(@PathVariable Long id) {
+        Deliverable deliverable = deliverableService.getDeliverableById(id);
+        if (deliverable != null) {
+            deliverable.setActive(true);
+            Deliverable updatedDeliverable = deliverableService.save(deliverable);
+            return ResponseEntity.ok(updatedDeliverable);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+    @PostMapping("/pm/deliverable/disable/{id}")
+    public ResponseEntity<Deliverable> disableDeliverable(@PathVariable Long id) {
+        Deliverable deliverable = deliverableService.getDeliverableById(id);
+        if (deliverable != null) {
+            deliverable.setActive(false);
+            Deliverable updatedDeliverable = deliverableService.save(deliverable);
+            return ResponseEntity.ok(updatedDeliverable);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+
+
 
 
     @GetMapping("/pm/clients")
@@ -153,11 +181,34 @@ public class PMRestController {
     }
 
 
-    @DeleteMapping("/pm/client/delete/{id}")
+   /* @DeleteMapping("/pm/client/delete/{id}")
     public ResponseEntity<Long> deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
         //return 2xx if successful
         return ResponseEntity.ok(id);
+    }*/
+
+    @PostMapping("/pm/client/active/{id}")
+    public ResponseEntity<Client> activateClient(@PathVariable Long id) {
+        Client client = clientService.getClientById(id);
+        if (client != null) {
+            client.setActive(true);
+            Client updatedClient = clientService.save(client);
+            return ResponseEntity.ok(updatedClient);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/pm/client/disable/{id}")
+    public ResponseEntity<Client> disableClient(@PathVariable Long id) {
+        Client client = clientService.getClientById(id);
+        if (client != null) {
+            client.setActive(false);
+            Client updatedClient = clientService.save(client);
+            return ResponseEntity.ok(updatedClient);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

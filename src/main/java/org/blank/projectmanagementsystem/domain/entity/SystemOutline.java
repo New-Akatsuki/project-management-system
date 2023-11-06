@@ -26,4 +26,5 @@ public class SystemOutline implements Serializable {
     @Column(unique = true,nullable = false, length =45)
 
     private String name;
+    private boolean active=true;
 }
