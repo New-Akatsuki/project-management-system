@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -18,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Client implements Serializable {
+public class Login {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -26,11 +24,9 @@ public class Client implements Serializable {
     @Column(unique = true, nullable = false,length = 30)
     private String name;
 
+    @Column(unique = true, nullable = false,length = 30)
+    private String password;
+
     @Column(unique = true, nullable = false,length = 50)
     private String email;
-
-    @Column(unique = true, nullable = false,length = 15)
-
-    private String phoneNumber;
-
 }

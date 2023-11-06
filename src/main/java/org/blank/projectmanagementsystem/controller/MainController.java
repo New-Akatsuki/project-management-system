@@ -60,8 +60,9 @@ public class MainController {
 
     @GetMapping("/issue-display-page")
     public String issuessdsdffView(){
-        return "issue-display-page";
+        return "issue-display";
     }
+
 
     @GetMapping("/gantt")
     public String ganttView(){
@@ -73,9 +74,10 @@ public class MainController {
         return "project-details-info";
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "test-single-select";
+    @GetMapping("/change-password")
+    public String detailssd(){
+        return "change-password";
     }
+
 }
 

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -22,6 +24,7 @@ public class Deliverable implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
 
     @Column(unique = true,nullable = false, length =45)
     private String name;

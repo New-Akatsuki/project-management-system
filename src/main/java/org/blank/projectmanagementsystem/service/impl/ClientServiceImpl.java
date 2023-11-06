@@ -43,4 +43,24 @@ public class ClientServiceImpl implements ClientService {
     public Optional<Optional<Client>> findByPhoneNumber(String phoneNumber) {
         return Optional.ofNullable(clientRepository.findByPhoneNumber(phoneNumber));
     }
+
+    @Override
+    public List<Client> findAll() {
+        return null;
+    }
+
+    @Override
+    public Client findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
+
+    }
+
+    @Override
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
 }

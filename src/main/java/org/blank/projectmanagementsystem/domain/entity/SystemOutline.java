@@ -24,6 +24,7 @@ public class SystemOutline implements Serializable {
     private Long id;
 
     @Column(unique = true,nullable = false, length =45)
+
     private String name;
 
 }

@@ -30,10 +30,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
         return architectureRepository.findAll();
     }
 
-    @Override
-    public Architecture saveArchitecture(Architecture architecture) {
-        return architectureRepository.save(architecture);
-    }
+
 
     @Override
     public void deleteArchitecture(Long id) {
@@ -47,6 +44,11 @@ public class ArchitectureServiceImpl implements ArchitectureService {
             return architectureRepository.save(architecture);
         }
         return null;
+    }
+
+    @Override
+    public Architecture save(Architecture architecture) {
+        return architectureRepository.save(architecture);
     }
 
 

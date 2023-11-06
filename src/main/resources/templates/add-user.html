@@ -1,158 +1,227 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <!-- Bootstrap CSS for modal box -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap JS and Popper.js for Modal Box -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
-  <meta content="" name="description" />
-  <meta content="" name="keywords" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
   <link
           href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
           rel="stylesheet"
   />
-  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+  />
+
+  <!-- Hope Ui Design System Css -->
+  <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+  <!-- Library / Plugin Css Build -->
+  <link rel="stylesheet" href="/css/libs.min.css">
+  <!-- Single Select -->
+  <link rel="stylesheet" href="/css/single-select.css">
+
   <!--    icon-->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-  <!-- Favicons -->
-  <link th:href="@{/images/favicon.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-  <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet" />
-  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
 
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+  <!--    selectbox-->
+  <link rel="stylesheet" href="/css/multiple-select.css">
   <!-- Template Main CSS File -->
-  <link href="/css/style.css" rel="stylesheet" />
-  <link href="/css/single-select.css" rel="stylesheet" />
-
-  <!-- Modal CSS File -->
-  <link href="/css/modal.css" rel="stylesheet" />
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet"/>
 
 </head>
 <body>
-<!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
+
   <div class="pagetitle">
+    <h1>Create Member Account</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">AddUser</li>
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Users</li>
+        <li class="breadcrumb-item active">Create</li>
       </ol>
     </nav>
-  </div>
-  <!-- End Page Title -->
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h1>User Registration</h1>
-      </div>
-    </div>
+  </div><!-- End Page Title -->
 
-    <form id="user-form" th:action="@{/pm/adduser}" method="POST" th:object="${addUserFormInput}" enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="userName" class="form-label">Username</label>
-        <input type="text" class="form-control" id="userName" name="userName" placeholder="Enter your username" required>
-        <div id="userName_error" class="invalid-feedback"></div>
-      </div>
+    <div>
+      <div class="row">
+        <div class="form-control">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <div class="header-title">
+                <h4 class="card-title">Create Member</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="new-user-info">
+                <form  id="memberForm">
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="text" class="form-control" id="email" name="email"  placeholder="Enter your email" required>
-        <div id="email_error" class="invalid-feedback"></div>
-      </div>
+                <div class="row">
+                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
+                               required minlength="3" maxlength="25">
+                        <div class="invalid-feedback" id="name_error">
+                        </div>
+                      </div>
+                    </div>
 
-      <div class="mb-3">
-        <label for="role" class="form-label">Role</label>
-        <select class="form-select"  id="role" name="role" required>
-          <option value="PMO">PMO</option>
-          <option value="SDQC">SDQC</option>
-          <option value="DH">DH</option>
-          <option value="PM">PM</option>
-          <option value="member">Member</option>
-          <!-- Add more role options as needed -->
-        </select>
-        <div id="role_error" class="invalid-feedback">
-          Please select a valid role.
-        </div>
-      </div>
-      <div>
-        <div>
-          <label for="department">Department</label>
-        </div>
-        <div class="d-flex align-items-center gap-2">
-          <div id="department" class="w-100"></div>
-          <a id="addDepartmentButton" class="icon-add-btn" data-toggle="modal" data-target="#addDepartmentModal">
-            <i class='bx bx-plus m-0 p-0'></i>
-          </a>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Create User</button>
-    </form>
-  </div>
-</main>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="email" name="email"  placeholder="example@gmail.com" required>
+                      <div id="email_error" class="invalid-feedback"></div>
+                      </div>
+                    </div>
 
-<!--modal box-->
-<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your form fields for adding a new member here -->
-        <form>
-          <div class="form-group">
-            <label for="departmentName">Department Name</label>
-            <input type="text" class="form-control" id="departmentName" placeholder="Enter department name">
+                    <div class="col-md-6">
+                      <label for="role" class="form-label">Role</label>
+                      <select class="form-select"  id="role" name="role" required>
+                        <option value="PMO">PMO</option>
+                        <option value="SDQC">SDQC</option>
+                        <option value="DH">DH</option>
+                        <option value="PM">PM</option>
+                        <option value="MEMBER">Member</option>
+                        <!-- Add more role options as needed -->
+                      </select>
+                      <div id="role_error" class="invalid-feedback">
+                        Please select a valid role.
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label  class="form-label" for="department">Department</label>
+                        <select class="form-select"  id="department" name="department" required>
+                          <option value="1">ACE</option>
+                          <option value="2">DAT</option>
+                          <option value="3">Ace Plus</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="button" onclick="addNewMember()" class="btn btn-primary">Create New Member</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Vendor JS Files -->
+</main><!-- End #main -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<script src="/js/single-select.js" ></script>
-<script src="/js/validation.js" ></script>
-<script>
-  // Add validation to specific fields
-  checkInputValidation("name", "Name");
-  checkInputValidation("username", "Username",3,25);
-  checkInputValidation("role", "Role");
-  checkInputValidation("department", "Department");
-  checkInputValidation("image","Image");
-  // Validate the entire form
-  formValidate("form-wizard1");
-</script>
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<!--<script th:src="@{/js/single-select.js}"></script>-->
+
+<!--selectbox-->
+<script src="/js/multi-select.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
 
 <!--Single Select-->
+<!--<script>-->
+
+<!--  const data2 = ['ACE', 'DAT', 'Ace Plus']-->
+<!--  const id2 = init("department")-->
+<!--  const department_wrapperUpdateName = singleSelect(id2, data2);-->
+
+<!--</script>-->
 <script>
 
-  const data2 = ['ACE', 'DAT', 'Ace Plus']
-  const id2 = init("department")
-  const department_wrapperUpdateName = singleSelect(id2, data2);
+    function addNewMember() {
+      let addMember ={
+        id: null,
+        name: $("#name").val(),
+        email: $("#email").val(),
+        role: $("#role").val(),
+        department: $("#department").val()
+      };
+      $.ajax({
+        type: "POST",
+        url: "/pm/add-users",
+        contentType: "application/json",
+        data: JSON.stringify(addMember),
+        dataType: 'json',
+        success: function (data) {
+          console.log("SUCCESS: ", data);
+        },
+        error: function (xhr, status, error) {
+          console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.', error);
+        }
+      })
+    }
+
+      $.ajax({
+        type: "GET",
+        url: "/pm/user-list",
+
+        success: function (data) {
+
+        },
+        error:function(xhr,status,error){
+          console.log("ERROR: ", xhr.responseText);
+          alert('Error! Please try again.',error);
+        }
+
+      })
+
+
+
 </script>
-<!-- Bootstrap JS and Popper.js -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

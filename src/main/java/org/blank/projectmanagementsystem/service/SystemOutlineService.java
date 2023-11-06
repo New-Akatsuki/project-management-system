@@ -2,9 +2,19 @@ package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 
+import java.util.List;
+
 public interface SystemOutlineService {
-    SystemOutline save(SystemOutline systemOutline);
-    void saveName(String name);
+    List<SystemOutline> getAllSystemOutlines();
+
+    SystemOutline saveName(String name);
+
     void updateSystemOutline(SystemOutline systemOutline);
-    void deleteSystemOutline();
+
+     SystemOutline findById(Integer id);
+    SystemOutline save(SystemOutline systemOutline);
+    void delete(Integer id);
+
+
+    void addSystemOutline(String newSystemOutline);
 }

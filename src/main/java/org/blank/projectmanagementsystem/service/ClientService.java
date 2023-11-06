@@ -11,4 +11,12 @@ public interface ClientService {
     Optional<Client> findByName(String name);
     Optional<Optional<Client>> findByEmail(String email);
     Optional<Optional<Client>> findByPhoneNumber(String phoneNumber);
+
+    List<Client> findAll();
+
+    Client findById(Integer id);
+
+    void delete(int id);
+
+    List<Client> getAllClients();
 }

@@ -13,7 +13,4 @@ public interface ArchitectureService {
     void deleteArchitecture(Long id);
     Architecture updateArchitecture(Long id, Architecture architecture);
 
-
-
-
 }
