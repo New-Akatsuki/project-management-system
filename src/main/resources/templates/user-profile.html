@@ -1,261 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>DIR-ACE TECHNOLOGY</title>
-    <meta content="" name="description"/>
-    <meta content="" name="keywords"/>
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet"
-    />
-    <link  href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <!-- Bootstrap CSS for modal box -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Favicons -->
-    <link th:href="@{/images/DAT.png}" rel="icon">
-    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-    <link
-            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-            rel="stylesheet"
-    />
-    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+  <!-- Bootstrap JS and Popper.js for Modal Box -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet" />
-    <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="/css/core/libs.min.css">
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-    <!-- Dark Css -->
-    <link rel="stylesheet" href="/css/dark.min.css">
-    <!-- Customizer Css -->
-    <link rel="stylesheet" href="/css/customizer.min.css">
 
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="/css/rtl.min.css">
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
-            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+  />
+
+
+  <!-- Hope Ui Design System Css -->
+  <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+  <!-- Library / Plugin Css Build -->
+  <link rel="stylesheet" href="/css/libs.min.css">
+  <!-- Single Select -->
+  <link rel="stylesheet" href="/css/single-select.css">
+
+  <!--    icon-->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+  <!--    selectbox-->
+  <link rel="stylesheet" href="/css/multiple-select.css">
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet"/>
 
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
 <main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <h1>Users</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">User-Profile</li>
-            </ol>
-        </nav>
-    </div>
 
-<div class="tabs">
-    <input type="radio" class="tabs__radio" name="user-profile" id="overview" checked>
-    <label for="overview" class="tabs__label">Overview</label>
-    <div class="tabs__content">
-        <br>
-        <div class="d-flex">
-            <div class="flex-3">photo</div>
-            <form class="flex-7 me-md-3">
-                <div class="mb-3">
-                    <label for="userName" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="userName" name="userName" >
-                </div>
+  <div class="pagetitle">
+    <h1>Profile</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Users</li>
+        <li class="breadcrumb-item active">Profile</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email" >
-                </div>
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
 
-                <div class="mb-3">
-                    <label for="role" class="form-label">Role</label>
-                    <input type="text" class="form-control" id="role" name="role" >
-                </div>
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                <div>
-                    <div>
-                        <label for="department">Department</label>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <input type="text" class="form-control" id="department" name="department" >
-                    </div>
-                </div>
-            </form>
+            <img src="/images/kokhun.jpg" alt="Profile" class="rounded-circle">
+            <h2>Ko Khun</h2>
+            <h3>Web Designer</h3>
+          </div>
         </div>
-    </div>
-    <input type="radio" class="tabs__radio" name="user-profile" id="edit">
-    <label for ="edit" class="tabs__label">Edit</label>
-    <div class="tabs__content">
-    </div>
-    <input type="radio" class="tabs__radio" name="user-profile" id="change-password">
-    <label for ="change-password" class="tabs__label">Change Password</label>
-    <div class="tabs__content">
-        <br>
-        <div class="container-fluid content-inner mt-n5 py-0">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card shadow-none main-bg">
-                        <div class="card-body shadow-none">
-                            <form th:action="@{/member/change-password}" th:object="${changePasswordFormInput}" method="post" id="form-wizard1" class="row g-3 needs-validation" novalidate>
-                                <div class="form-card text-start shadow-none">
-                                    <div class="row">
-                                        <div class="col-12 text-center mb-4">
-                                            <h3>Change Password:</h3>
-                                        </div>
-                                    </div>
-                                    <div class="row">
 
-                                        <div class="col-md-12">
+      </div>
 
-                                            <div class="form-group">
-                                                <label for="confirmPassword" class="form-label">
-                                                    Current Password
-                                                </label>
+      <div class="col-xl-8">
 
-                                                <div class="input-group">
-                                                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Enter confirm password" required minlength="8">
-                                                    <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i id="currentPasswordIcon" class="bi bi-eye-slash"></i>
-                                                </span>
-                                                    </div>
-                                                </div>
-                                                <div class="invalid-feedback" id="currentPassword_error"></div>
-                                            </div>
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
 
-                                            <div class="form-group">
-                                                <label for="newPassword" class="form-label">
-                                                    New Password
-                                                </label>
-                                                <div class="input-group">
-                                                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter new password" required minlength="8">
-                                                    <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i id="newPasswordIcon" class="bi bi-eye-slash"></i>
-                                                </span>
-                                                    </div>
-                                                </div>
-                                                <div class="invalid-feedback" id="newPassword_error"></div>
-                                            </div>
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              </li>
 
-                                            <div class="form-group">
-                                                <label for="confirmPassword" class="form-label">
-                                                    Confirm Password
-                                                </label>
-                                                <div class="input-group">
-                                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Enter confirm password" required minlength="8">
-                                                    <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i id="confirmPasswordIcon" class="bi bi-eye-slash"></i>
-                                                </span>
-                                                    </div>
-                                                </div>
-                                                <div class="invalid-feedback" id="confirmPassword_error"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12 text-end mt-3">
-                                        <button type="button" class="btn btn-primary" id="cancelButton">Cancel</button>
-                                        <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
-                                    </div>
-                                </div>
-                            </form>
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                <h5 class="card-title">Profile Details</h5>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                  <div class="col-lg-9 col-md-8">Unknown</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Username</div>
+                  <div class="col-lg-9 col-md-8">Unknown</div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Role</div>
+                  <div class="col-lg-9 col-md-8">Web Designer</div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Department</div>
+                  <div class="col-lg-9 col-md-8">Unknown</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Phone</div>
+                  <div class="col-lg-9 col-md-8">Unknown Number</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Email</div>
+                  <div class="col-lg-9 col-md-8">Unknown Email</div>
+                </div>
+
+              </div>
+
+              <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                <!-- Profile Edit Form -->
+                <form>
+                  <div class="row mb-3">
+                    <label for class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                    <div class="col-md-8 col-lg-9">
+                      <img src="/images/kokhun.jpg"alt="Profile">
+                      <div class="pt-2">
+                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="fullName" type="text" class="form-control" id="fullName" placeholder="Kevin Anderson">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="userName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="userName" type="text" class="form-control" id="userName" placeholder="Kevin Anderson">
+                    </div>
+                  </div>
+
+
+
+
+                  <div class="row mb-3">
+                    <label for="role" class="col-md-4 col-lg-3 col-form-label">Role</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="fullName" type="text" class="form-control" id="role" placeholder="Web Designer">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="phone" type="text" class="form-control" id="Phone" placeholder="Unknown">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="email" class="form-control" id="Email" placeholder="Unknown Mail">
+                    </div>
+                  </div>
+
+
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </form><!-- End Profile Edit Form -->
+
+              </div>
+
+              <div class="tab-pane fade pt-3" id="profile-settings">
+
+
+
+              </div>
+
+              <div class="tab-pane fade pt-3" id="profile-change-password">
+                <!-- Change Password Form -->
+                <form>
+
+                  <div class="row">
+
+
+                    <div class="col-md-12">
+
+                      <div class="mb-3">
+                        <div class="input-group">
+                          <div class="form-floating">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
+                            <label id="password-label" for="password" class="form-label d-flex align-items-center">
+                              <i class="bx bx-lock-alt me-2"></i>Enter Old Password
+                            </label>
+                          </div>
+                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                            <i id="passwordIcon" class="bi bi-eye-slash"></i>
+                          </button>
                         </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <div class="input-group">
+                          <div class="form-floating">
+                            <input type="password" class="form-control" id="newPassword" name="password" placeholder="Password"/>
+                            <label id="password-label2" for="newPassword" class="form-label d-flex align-items-center">
+                              <i class="bx bx-lock-alt me-2"></i>Enter New Password
+                            </label>
+                          </div>
+                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
+                            <i id="passwordIcon2" class="bi bi-eye-slash"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <div class="input-group">
+                          <div class="form-floating">
+                            <input type="password" class="form-control" id="confirmPassword" name="password" placeholder="Password"/>
+                            <label id="password-label3" for="confirmPassword" class="form-label d-flex align-items-center">
+                              <i class="bx bx-lock-alt me-2"></i>Confirm Reset Password
+                            </label>
+                          </div>
+                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle3">
+                            <i id="passwordIcon3" class="bi bi-eye-slash"></i>
+                          </button>
+                        </div>
+                      </div>
+
                     </div>
-                </div>
-            </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                  </div>
+
+                </form><!-- End Change Password Form -->
+
+              </div>
+
+            </div><!-- End Bordered Tabs -->
+
+          </div>
         </div>
+
+      </div>
     </div>
-</div>
-</main>
+  </section>
+
+</main><!-- End #main -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-    <script th:src="@{/js/form-wizard.js}"></script>
-    <script th:src="@{/js/validation.js}"></script>
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/single-select.js}"></script>
 
-    <script>
+<!--selectbox-->
+<script src="/js/multi-select.js"></script>
 
-        $(document).ready(function () {
-            const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-            const currentPass = checkInputValidation("currentPassword", "Current Password", password_pattern);
-            const newPass = checkInputValidation("newPassword", "New Password", password_pattern);
-            const confirmPass = checkInputValidation("confirmPassword", "Confirm Password", password_pattern);
-            // Usage
-            checkPasswordsMatch(newPass, confirmPass);
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            // Initialize form validatio
-            formValidate("form-wizard1");
-        });
-    </script>
+<script>
 
-    <script>
-        $(document).ready(function() {
-            $("#passwordIcon").on('click', function() {
-                var passwordField = $("#currentPassword");
-                var passwordIcon = $("#passwordIcon");
-                // Toggle password visibility
-                if (passwordField.attr('type') === 'password') {
-                    passwordField.attr('type', 'text');
-                    passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-                } else {
-                    passwordField.attr('type', 'password');
-                    passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#passwordIcon").on('click', function() {
-                var passwordField = $("#newPassword");
-                var passwordIcon = $("#passwordIcon");
+  $(document).ready(function () {
+    const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    const currentPass = checkInputValidation("currentPassword", "Current Password", password_pattern);
+    const newPass = checkInputValidation("newPassword", "New Password", password_pattern);
+    const confirmPass = checkInputValidation("confirmPassword", "Confirm Password", password_pattern);
+    // Usage
+    checkPasswordsMatch(newPass, confirmPass);
 
-                // Toggle password visibility
-                if (passwordField.attr('type') === 'password') {
-                    passwordField.attr('type', 'text');
-                    passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-                } else {
-                    passwordField.attr('type', 'password');
-                    passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-                }
-            });
-        });
-    </script>
+    // Initialize form validatio
+    formValidate("form-wizard1");
+  });
+</script>
 
-    <script>
-        $(document).ready(function() {
-            $("#passwordIcon").on('click', function() {
-                var passwordField = $("#confirmPassword");
-                var passwordIcon = $("#passwordIcon");
+<script>
+  $(document).ready(function() {
+    $("#passwordIcon").on('click', function() {
+      var passwordField = $("#currentPassword");
+      var passwordIcon = $("#passwordIcon");
+      // Toggle password visibility
+      if (passwordField.attr('type') === 'password') {
+        passwordField.attr('type', 'text');
+        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+      } else {
+        passwordField.attr('type', 'password');
+        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $("#passwordIcon").on('click', function() {
+      var passwordField = $("#newPassword");
+      var passwordIcon = $("#passwordIcon");
 
-                // Toggle password visibility
-                if (passwordField.attr('type') === 'password') {
-                    passwordField.attr('type', 'text');
-                    passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-                } else {
-                    passwordField.attr('type', 'password');
-                    passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-                }
-            });
-        });
-    </script>
+      // Toggle password visibility
+      if (passwordField.attr('type') === 'password') {
+        passwordField.attr('type', 'text');
+        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+      } else {
+        passwordField.attr('type', 'password');
+        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    $("#passwordIcon").on('click', function() {
+      var passwordField = $("#confirmPassword");
+      var passwordIcon = $("#passwordIcon");
+
+      // Toggle password visibility
+      if (passwordField.attr('type') === 'password') {
+        passwordField.attr('type', 'text');
+        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+      } else {
+        passwordField.attr('type', 'password');
+        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+      }
+    });
+  });
+</script>
+<!--Single Select-->
+<script>
+
+  const data2 = ['ACE', 'DAT', 'Ace Plus']
+  const id2 = init("department")
+  const department_wrapperUpdateName = singleSelect(id2, data2);
+
+</script>
+
+<script>
+
+  // Password toggle logic
+  const passwordToggle = document.getElementById('passwordToggle');
+  const passwordInput = document.getElementById('password');
+  const passwordIcon = document.getElementById('passwordIcon');
+
+  passwordToggle.addEventListener('click', function () {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      passwordIcon.classList.remove('bi-eye-slash');
+      passwordIcon.classList.add('bi-eye');
+    } else {
+      passwordInput.type = 'password';
+      passwordIcon.classList.remove('bi-eye');
+      passwordIcon.classList.add('bi-eye-slash');
+    }
+  });
+
+  const passwordToggle2 = document.getElementById('passwordToggle2');
+  const passwordInput2 = document.getElementById('newPassword');
+  const passwordIcon2 = document.getElementById('passwordIcon2');
+
+  passwordToggle2.addEventListener('click', function () {
+    if (passwordInput2.type === 'newPassword') {
+      passwordInput2.type = 'text';
+      passwordIcon2.classList.remove('bi-eye-slash');
+      passwordIcon2.classList.add('bi-eye');
+    } else {
+      passwordInput2.type = 'newPassword';
+      passwordIcon2.classList.remove('bi-eye');
+      passwordIcon2.classList.add('bi-eye-slash');
+    }
+  });
+
+  const passwordToggle3 = document.getElementById('passwordToggle3');
+  const passwordInput3 = document.getElementById('confirmPassword');
+  const passwordIcon3 = document.getElementById('passwordIcon3');
+
+  passwordToggle3.addEventListener('click', function () {
+    if (passwordInput3.type === 'confirmPassword') {
+      passwordInput3.type = 'text';
+      passwordIcon3.classList.remove('bi-eye-slash');
+      passwordIcon3.classList.add('bi-eye');
+    } else {
+      passwordInput3.type = 'confirmPassword';
+      passwordIcon3.classList.remove('bi-eye');
+      passwordIcon3.classList.add('bi-eye-slash');
+    }
+  });
+</script>
 
 </body>
 </html>

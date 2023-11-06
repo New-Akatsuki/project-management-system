@@ -1,13 +1,13 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"projectManager","contractMembers","focMembers","architectures","systemOutlines","deliverables","client"})
 public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -36,10 +37,10 @@ public class Project implements Serializable {
     private String duration;
 
     @Column(nullable = false)
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private Date endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -55,7 +56,7 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "contract_member_id", nullable = false)  // Column in the join table for Architecture
     )
-    private Set<User> contractMembers;
+    private Set<User> contractMembers = new HashSet<>();
 
     @OneToMany
     @JoinTable(
@@ -63,32 +64,17 @@ public class Project implements Serializable {
             joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
             inverseJoinColumns = @JoinColumn(name = "foc_member_id")  // Column in the join table for Architecture
     )
-    private Set<User> focMembers;
+    private Set<User> focMembers = new HashSet<>();
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "architecture_id",nullable = false)  // Column in the join table for Architecture
-    )
-    private Set<Architecture> architectures;
+    @OneToMany
+    private Set<Architecture> architectures = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "system_outline_id",nullable = false)  // Column in the join table
-    )
-    private Set<SystemOutline> systemOutlines;
+    @OneToMany
+    private Set<SystemOutline> systemOutlines = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "contract_info",  // Specify the name of the join table
-            joinColumns = @JoinColumn(name = "project_id"),  // Column in the join table for Project
-            inverseJoinColumns = @JoinColumn(name = "deliverable_id",nullable = false)  // Column in the join table
-    )
-    private Set<Deliverable> deliverables;
+    @OneToMany
+    private Set<Deliverable> deliverables = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(nullable = false)

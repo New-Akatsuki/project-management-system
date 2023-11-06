@@ -1,40 +1,42 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Deliverable;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
-import org.blank.projectmanagementsystem.service.*;
+import org.blank.projectmanagementsystem.service.DeliverableService;
+import org.blank.projectmanagementsystem.service.SystemOutlineService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/pm")
 public class PMController {
     private final UserService userService;
     private final SystemOutlineService systemOutlineService;
-    private final ClientService clientService;
-    private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
 
     @GetMapping("/project-list")
     public String ProjectList() {
         return "project-list";
     }
+
+
     @GetMapping("/user-list")
     public String userList() {
         return "user-list";
@@ -55,10 +57,10 @@ public class PMController {
         return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
     }
 
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-        return "redirect:/";
-    }
+//    @PostMapping("/add-user")
+//    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
+//        return "redirect:/";
+//    }
 
     @GetMapping("/edit-user")
     public ModelAndView editUser() {
@@ -87,6 +89,7 @@ public class PMController {
         return "edit-project";
     }
 
+
     @GetMapping("/contract-info")
     public String ContractInfo(Model model) {
         List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
@@ -98,20 +101,9 @@ public class PMController {
         return "contract-info";
     }
 
-//    @PostMapping("/contract-info")
-//    public String addSystemOutline(@ModelAttribute SystemOutline systemOutline,
-//                                   @ModelAttribute Deliverable deliverable){
-//        // Add logic to save the new SystemOutline with the given name
-//        systemOutlineService.save(systemOutline);
-//        deliverableService.save(deliverable);
-//        return "redirect:/pm/contract-info";
-//    }
-
     @GetMapping("/department")
     public String Department() {
         return "department";
     }
-
-
 }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.ArchitectureType;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -27,5 +28,6 @@ public class Architecture implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ArchitectureType type;
+  
     private boolean active = true;
 }

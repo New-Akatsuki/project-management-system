@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,51 +36,55 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper = new ProjectMapper();
 
     @Override
-    public Project saveProject(ProjectFormInput projectFormInput) {
+    public Project saveProject(ProjectFormInput projectFormInput, String pmUsername) {
         //get project manager data
-        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User projectManager = userRepository.findByUsername(pmUsername).orElseThrow();
+//        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
         Client client = clientRepository.findById(projectFormInput.getClient()).orElseThrow();
 
         //get contract memebers
         List<Long> contractMembersIds = projectFormInput.getContractMembers();
-        List<User> contractMembers = new ArrayList<>();
+        Set<User> contractMembers = new HashSet<>();
         if(contractMembersIds!=null && contractMembersIds.size() > 0){
             contractMembers = contractMembersIds.stream()
-                    .map(id -> userRepository.findById(id).orElse(null)).toList();
+                    .map(id -> userRepository.findById(id).orElse(null)).collect(Collectors.toSet());
         }
 
         //get foc members
         List<Long> focMembersIds = projectFormInput.getFocMembers();
-        List<User> focMembers = new ArrayList<>();
+        Set<User> focMembers = new HashSet<>();
         if(focMembersIds!=null && focMembersIds.size() > 0){
             focMembers = focMembersIds.stream().map(id -> userRepository.findById(id)
-                    .orElse(null)).toList();
+                    .orElse(null)).collect(Collectors.toSet());
         }
 
         //get SystemOutlines
-        List<Integer> systemOutlineIDs = projectFormInput.getSystemOutlines();
-        List<SystemOutline> systemOutlines = new ArrayList<>();
+        List<Long> systemOutlineIDs = projectFormInput.getSystemOutlines();
+        Set<SystemOutline> systemOutlines = new HashSet<>();
         if(systemOutlineIDs!=null && systemOutlineIDs.size() > 0){
             systemOutlines = systemOutlineIDs.stream().map(id-> systemOutlineRepository.findById(id)
-                    .orElse(null)).toList();
+                    .orElse(null)).collect(Collectors.toSet());
         }
 
         //get Architecture outlines
         List<Long> architectureIds = projectFormInput.getArchitectureOutlines();
-        List<Architecture> architectures = new ArrayList<>();
+
+        Set<Architecture> architectures = new HashSet<>();
+
         if(architectureIds!=null && architectureIds.size() > 0){
             architectures = architectureIds.stream().map(id-> architectureRepository.findById(id)
-                    .orElse(null)).toList();
+                    .orElse(null)).collect(Collectors.toSet());
         }
         //get Deliverables
         List<Long> deliverablesIds = projectFormInput.getDeliverables();
-        List<Deliverable> deliverables = new ArrayList<>();
+
+        Set<Deliverable> deliverables = new HashSet<>();
+
         if(deliverablesIds!=null && deliverablesIds.size() > 0){
             deliverables = deliverablesIds.stream().map(id-> deliverableRepository.findById(id)
-                    .orElse(null)).toList();
+                    .orElse(null)).collect(Collectors.toSet());
         }
 
         Project project = projectMapper.mapToProject(projectFormInput);
@@ -85,11 +92,11 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProjectManager(projectManager);
         //set client to project
         project.setClient(client);
-        project.getContractMembers().addAll(contractMembers);
-        project.getFocMembers().addAll(focMembers);
-        project.getArchitectures().addAll(architectures);
-        project.getSystemOutlines().addAll(systemOutlines);
-        project.getDeliverables().addAll(deliverables);
+        project.setContractMembers(contractMembers);
+        project.setFocMembers(focMembers);
+        project.setArchitectures(architectures);
+        project.setSystemOutlines(systemOutlines);
+        project.setDeliverables(deliverables);
         project.setDepartment(projectManager.getDepartment());
 
         return projectRepository.save(project);
@@ -101,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService {
 //                .stream().map(GrantedAuthority::getAuthority).findFirst().orElse("");
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsernameOrEmail(username,username).orElseThrow();
 
         return switch (user.getRole()) {
             case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();
@@ -110,5 +117,17 @@ public class ProjectServiceImpl implements ProjectService {
             case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
             default -> throw new IllegalStateException("Invalid user");
         };
+    }
+
+    @Override
+    public List<User> getProjectMembers(Long projectId) {
+        List<User> members = new ArrayList<>();
+        projectRepository.findById(projectId).
+                ifPresent(val->{
+                    members.addAll(val.getContractMembers());
+                    members.addAll(val.getFocMembers());
+                    members.add(val.getProjectManager());
+                });
+        return members;
     }
 }

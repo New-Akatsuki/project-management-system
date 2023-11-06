@@ -37,7 +37,6 @@ public class ArchitectureServiceImpl implements ArchitectureService {
 
     @Override
     public void deleteArchitecture(Long id) {
-
         architectureRepository.deleteById(id);
     }
 

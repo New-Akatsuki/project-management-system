@@ -5,6 +5,7 @@ import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.springframework.security.core.parameters.P;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,43 +28,46 @@ public class ProjectMapper {
     }
 
     //calculate duration by month and day from start date and end date like 1 month 2 days
-    public String calculateDuration(Date startDate, Date endDate){
+    public String calculateDuration(LocalDate startDate, LocalDate endDate){
         int startYear = startDate.getYear();
-        int startMonth = startDate.getMonth();
-        int startDay = startDate.getDay();
+        int startMonth = startDate.getMonthValue();
+        int startDay = startDate.getDayOfMonth();
         int endYear = endDate.getYear();
-        int endMonth = endDate.getMonth();
-        int endDay = endDate.getDay();
-        int durationYear = endYear - startYear;
-        int durationMonth = endMonth - startMonth;
-        int durationDay = endDay - startDay;
-        if(durationDay < 0){
-            durationDay += 30;
-            durationMonth -= 1;
+        int endMonth = endDate.getMonthValue();
+        int endDay = endDate.getDayOfMonth();
+        int year = endYear - startYear;
+        int month = endMonth - startMonth;
+        int day = endDay - startDay;
+        if(day < 0){
+            month--;
+            day += startDate.lengthOfMonth();
         }
-        if(durationMonth < 0){
-            durationMonth += 12;
-            durationYear -= 1;
+        if(month < 0){
+            year--;
+            month += 12;
         }
+        //check if year or month or day is 0, don't show it in duration
         StringBuilder duration = new StringBuilder();
-        if(durationYear == 1){
-            duration.append(durationYear).append(" Year ");
+        if(year != 0){
+            duration.append(year).append(" year");
+            if(year > 1) duration.append("s");
         }
-        if (durationYear > 1){
-            duration.append(durationYear).append(" Years ");
+        if(month != 0){
+            if(year != 0) duration.append(" ");
+            duration.append(month).append(" month");
+            if(month > 1) duration.append("s");
         }
-        if(durationMonth == 1){
-            duration.append(durationMonth).append(" Month ");
-        }
-        if (durationMonth > 1){
-            duration.append(durationMonth).append(" Months ");
-        }
-        if(durationDay == 1){
-            duration.append(durationDay).append(" Day ");
-        }
-        if (durationDay > 1){
-            duration.append(durationDay).append(" Days ");
+        if(day != 0){
+            if(year != 0 || month != 0) duration.append(" ");
+            duration.append(day).append(" day");
+            if(day > 1) duration.append("s");
         }
         return duration.toString();
+
+    }
+
+    public static void main(String[] args) {
+        ProjectMapper projectMapper = new ProjectMapper();
+        System.out.println(projectMapper.calculateDuration(LocalDate.of(2021,1,1),LocalDate.of(2023,5,5)));
     }
 }

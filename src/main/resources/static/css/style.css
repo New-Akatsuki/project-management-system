@@ -466,6 +466,11 @@ h6 {
   color: #012970;
   margin-right: 25px;
   position: relative;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+.header-nav .nav-icon:hover{
+  background: #d1dfff;
 }
 
 .header-nav .nav-profile {
@@ -1376,7 +1381,16 @@ h6 {
 .bg-gray-color{
     background-color: #ccc;
 }
-
+/*create flex-n (n is 1 to 10) */
+.flex-1{
+  flex:1;
+}
+.flex-2{
+  flex:2;
+}
+.flex-3{
+  flex:3;
+}
 .flex-4{
   flex:4;
 }

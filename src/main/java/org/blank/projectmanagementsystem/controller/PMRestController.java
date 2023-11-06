@@ -2,10 +2,9 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.entity.Architecture;
-import org.blank.projectmanagementsystem.domain.entity.Client;
-import org.blank.projectmanagementsystem.domain.entity.Deliverable;
-import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
+import org.blank.projectmanagementsystem.domain.entity.*;
+import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,12 +102,6 @@ public class PMRestController {
         }
     }
 
-   /* @DeleteMapping("/pm/deliverable/delete/{id}")
-    public ResponseEntity<Long> deleteDeliverable(@PathVariable Long id) {
-        deliverableService.deleteDeliverable(id);
-        //return 2xx if successful
-        return ResponseEntity.ok(id);
-    }*/
 
     @PostMapping("/pm/deliverable/active/{id}")
     public ResponseEntity<Deliverable> activateDeliverable(@PathVariable Long id) {
@@ -121,6 +114,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+  
     @PostMapping("/pm/deliverable/disable/{id}")
     public ResponseEntity<Deliverable> disableDeliverable(@PathVariable Long id) {
         Deliverable deliverable = deliverableService.getDeliverableById(id);
@@ -132,11 +126,6 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-
-
-
 
 
     @GetMapping("/pm/clients")
@@ -180,13 +169,6 @@ public class PMRestController {
         }
     }
 
-
-   /* @DeleteMapping("/pm/client/delete/{id}")
-    public ResponseEntity<Long> deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
-        //return 2xx if successful
-        return ResponseEntity.ok(id);
-    }*/
 
     @PostMapping("/pm/client/active/{id}")
     public ResponseEntity<Client> activateClient(@PathVariable Long id) {
@@ -259,7 +241,17 @@ public class PMRestController {
         return ResponseEntity.ok(id);
     }
 
+    @PostMapping("/pm/add-users")
+    public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
+        User newUser = userService.registerUser(addUserFormInput);
+        return ResponseEntity.ok(addUserFormInput);
+    }
 
+    @GetMapping("/pm/users")
+    public ResponseEntity<List<UserViewObject>> getUserList() {
+        List<UserViewObject> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
    }
 
 

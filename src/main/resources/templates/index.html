@@ -31,6 +31,24 @@
 
   <!-- Template Main CSS File -->
   <link href="/css/style.css" rel="stylesheet" />
+
+
+    <style>
+        .count-box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .count-icon {
+            font-size: 48px;
+            color: #007bff; /* Change the color as needed */
+        }
+
+
+
+    </style>
 </head>
 
 <body>
@@ -52,6 +70,68 @@
 
       <!-- Main Content -->
 
+        <!-- DashBoard MM Header Start -->
+        <div class="container mt-4">
+            <p>Welcome, <span th:text="${username}"></span>!</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Users: <span th:text="${userCount}"></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Clients: <span th:text="${clientCount}"></span></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="count-box">
+                        <i class='bx bxs-user count-icon' ></i>
+                        <p>Number of Departments: <span th:text="${departmenetCount}"></span></p>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+
+        <!-- DashBoard MM Header End -->
+
+
+
+
+
+        <!-- DashBoard MM Body Start -->
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <h4>Monthly Productivity Ratio</h4>
+                    <div class="chartBox">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <h4>Monthly Man Month</h4>
+                    <div class="chartBox">
+                        <canvas id="pieChart"></canvas>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>KPI Report</h1>
+
+            <div class="chart-container">
+                <canvas id="kpiChart"></canvas>
+            </div>
+        </div>
+
         <!-- End Main Content-->
     </main>
     <!-- End #main -->
@@ -61,7 +141,173 @@
 
     <!-- Template Main JS File -->
     <script src="/js/main.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<!--jquery cdn-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    const plannedProductivity = [140, 130, 155, 160, 165, 150, 139, 147, 152, 131, 149, 154];
+    const actualProductivity = [120, 110, 135, 140, 145, 130, 119, 127, 132, 150, 129, 134];
+    const targetProductivityRatio = [85, 84, 87, 88, 89, 86, 84, 85, 86, 83, 85, 87];
 
+    // Calculate actual productivity ratio
+    const actualProductivityRatio = plannedProductivity.map((planned, index) => {
+        const actual = actualProductivity[index];
+        return ((actual / planned) * targetProductivityRatio[index]).toFixed(2);
+    });
+
+    const data = {
+        labels: [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ],
+        datasets: [
+            {
+                label: 'Actual Productivity Ratio (%)',
+                data: actualProductivityRatio,
+                backgroundColor: 'rgba(255, 99, 71, 0.5)',
+                borderColor: 'rgba(255, 99, 71, 1)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Target Productivity Ratio (%)',
+                data: targetProductivityRatio,
+                backgroundColor: 'rgba(60, 179, 113, 0.5)',
+                borderColor: 'rgba(60, 179, 113, 1)',
+                borderWidth: 1,
+            }
+        ],
+    };
+
+    // config
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    };
+
+    // render init block
+    const myChart = new Chart(document.getElementById('myChart'), config);
+</script>
+
+
+
+<script th:inline="javascript">
+    var departmentNames = /*[[${departmentNames}]]*/ [];
+    var userCounts = /*[[${userCounts}]]*/ [];
+
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: departmentNames,
+            datasets: [{
+                label: 'User Count',
+                data: userCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 71, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(36, 122, 252, 0.5)',
+                    'rgba(153, 102, 255, 0.5)',
+                    'rgba(255, 159, 64, 0.5)'
+                    // Add more colors as needed
+                ],
+                borderColor: 'rgba(255, 99, 71, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
+
+<!--<script>-->
+<!--    // Sample data (replace with your actual data)-->
+<!--    const reviewData = [-->
+<!--        {-->
+<!--            ProjectID: 'ProjectA',-->
+<!--            Tasks: 'Task1',-->
+<!--            DevelopingPhase: 'Basic Design',-->
+<!--            Amount: 100,-->
+<!--            InternalLeaderReviews: 5,-->
+<!--            ExternalReviews: 3,-->
+<!--        },-->
+<!--        {-->
+<!--            ProjectID: 'ProjectA',-->
+<!--            Tasks: 'Task1',-->
+<!--            DevelopingPhase: 'Detail Design',-->
+<!--            Amount: 150,-->
+<!--            InternalLeaderReviews: 8,-->
+<!--            ExternalReviews: 4,-->
+<!--        },-->
+<!--        // Add more data entries-->
+<!--    ];-->
+
+<!--    // Calculate Review Counts-->
+<!--    const reviewCounts = {};-->
+
+<!--    reviewData.forEach((entry) => {-->
+<!--        const { ProjectID, Tasks, DevelopingPhase, Amount } = entry;-->
+<!--        const key = `${ProjectID}-${Tasks}-${DevelopingPhase}`;-->
+
+<!--        if (reviewCounts[key]) {-->
+<!--            reviewCounts[key] += Amount;-->
+<!--        } else {-->
+<!--            reviewCounts[key] = Amount;-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Calculate KPIs based on Review Counts-->
+<!--    const kpiScreenCounts = Object.values(reviewCounts); // You can add more logic to calculate screen counts KPI-->
+<!--    const kpiTestCases = Object.values(reviewCounts); // You can add more logic to calculate test cases KPI-->
+<!--    const kpiKSTEP = Object.values(reviewCounts).map((amount) => amount / 1000); // Divide by 1000 for KSTEP-->
+
+<!--    // Create a bar chart-->
+<!--    const ctx = document.getElementById('kpiChart').getContext('2d');-->
+<!--    new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: Object.keys(reviewCounts), // X-axis labels-->
+<!--            datasets: [-->
+<!--                {-->
+<!--                    label: 'Screen Counts',-->
+<!--                    data: kpiScreenCounts, // Screen Counts KPI-->
+<!--                    backgroundColor: 'rgba(75, 192, 192, 0.5)',-->
+<!--                    borderColor: 'rgba(75, 192, 192, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--                {-->
+<!--                    label: 'Test Cases',-->
+<!--                    data: kpiTestCases, // Test Cases KPI-->
+<!--                    backgroundColor: 'rgba(255, 99, 71, 0.5)',-->
+<!--                    borderColor: 'rgba(255, 99, 71, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--                {-->
+<!--                    label: 'KSTEP/Review Counts',-->
+<!--                    data: kpiKSTEP,-->
+<!--                    backgroundColor: 'rgba(60, 179, 113, 0.5)',-->
+<!--                    borderColor: 'rgba(60, 179, 113, 1)',-->
+<!--                    borderWidth: 1,-->
+<!--                },-->
+<!--            ],-->
+<!--        },-->
+<!--        options: {-->
+<!--            scales: {-->
+<!--                y: {-->
+<!--                    beginAtZero: true,-->
+<!--                },-->
+<!--            },-->
+<!--        },-->
+<!--    });-->
+<!--</script>-->
   </body>
 
 </html>

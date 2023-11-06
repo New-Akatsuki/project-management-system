@@ -12,7 +12,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class IssueCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true,nullable = false, length = 50)
     private String name;

@@ -11,6 +11,7 @@ import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueSolveFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,10 +57,12 @@ public class MemberController {
 
         return "redirect:/";
     }
+
     @GetMapping("/task-name")
     public String taskname() {
         return "task-name";
     }
+
     @PostMapping("/task-name")
     public String taskname(@ModelAttribute TaskFormInput taskFormInput){
         log.info("================================================");
@@ -69,9 +72,6 @@ public class MemberController {
         SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         return "redirect:/";
     }
-
-
-
 
     @GetMapping("/create-issue")
     public ModelAndView createIssue(){
@@ -91,4 +91,8 @@ public class MemberController {
         return new ModelAndView("issue-display", "IssueSolveFormInput", new IssueSolveFormInput());
     }
 
+    @GetMapping("/projects")
+    public String projects(){
+        return "project-view";
+    }
 }

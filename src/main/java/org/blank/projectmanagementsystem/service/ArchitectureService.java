@@ -8,11 +8,10 @@ import java.util.List;
 @Service
 public interface ArchitectureService {
     Architecture getById(Long id);
-   List<Architecture> getAllArchitectures();
-
+    List<Architecture> getAllArchitectures();
+    Architecture saveArchitecture(Architecture architecture);
     void deleteArchitecture(Long id);
     Architecture updateArchitecture(Long id, Architecture architecture);
     Architecture save(Architecture architecture);
-
     Architecture getArchitectureById(Long id);
 }

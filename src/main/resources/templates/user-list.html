@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DIR-ACE TECHNOLOGY</title>
-  <meta content="" name="description" />
-  <meta content="" name="keywords" />
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect" />
-  <link
-          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"
-  />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
-  <!-- Favicons -->
-  <link th:href="@{/images/DAT.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
-  <link
-          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-          rel="stylesheet"
-  />
-  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
-
-  <!-- Template Main CSS File -->
-  <link href="/css/style.css" rel="stylesheet" />
-  <!-- Library / Plugin Css Build -->
-  <link rel="stylesheet" href="/css/core/libs.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
 
 
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
 
-  <!-- Custom Css -->
-  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Dark Css -->
+    <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
 
-  <!-- Dark Css -->
-  <link rel="stylesheet" href="/css/dark.min.css">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
 
-  <!-- Customizer Css -->
-  <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Single Select -->
+    <!--  <link rel="stylesheet" href="/css/single-select.css">-->
 
-  <!-- RTL Css -->
-  <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!--    <link rel="stylesheet" href="/css/datatable.css"/>-->
+    <!--    <script src="/js/ajax-jquery.js"></script>-->
+    <!--    <script src="/js/datatable.js"></script>-->
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 </head>
 
 <body>
@@ -53,110 +61,205 @@
 
 
 <main id="main" class="main">
-  <!-- Breadcrumb part-->
-  <div class="pagetitle">
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">userlist</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- End Page Title -->
-
-  <!-- Main Content -->
-  </div>
-  <div class="conatiner-fluid content-inner mt-n5 py-0">
-    <div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <div class="header-title">
-                <h4 class="card-title">User List</h4>
-                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" th:href="@{/pm/add-user}">Add User</a>
-
-              </div>
-            </div>
-            <div class="card-body px-">
-              <div class="table-responsive">
-                <table id="user-list-table" class="table table-striped" role="grid" data-bs-toggle="data-table">
-                  <thead>
-                  <tr class="ligth">
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Role</th>
-                    <th style="min-width: 100px">Action</th>
-
-                  </tr>
-                  </thead>
-
-                  <!-- Delete when data is inputted -->
-                  <tbody>
-
-                  <tr>
-                    <td>M001</td>
-                    <td>Ko Khun Chaw</td>
-                    <td>Banking</td>
-                    <td>Junior Software Engineer</td>
-                    <td>
-                      <div class="flex align-items-center list-user-action">
-
-                        <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"  th:href="@{/pm/edit-user}">
-                                    <span class="btn-inner">
-                                       <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M15.1655 4.60254L19.7315 9.16854" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                       </svg>
-                                    </span>
-                        </a>
-                        <a class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"  href="#">
-                                    <span class="btn-inner">
-                                       <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
-                                          <path d="M19.3248 9.46826C19.3248 9.46826 18.7818 16.2033 18.4668 19.0403C18.3168 20.3953 17.4798 21.1893 16.1088 21.2143C13.4998 21.2613 10.8878 21.2643 8.27979 21.2093C6.96079 21.1823 6.13779 20.3783 5.99079 19.0473C5.67379 16.1853 5.13379 9.46826 5.13379 9.46826" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M20.708 6.23975H3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                          <path d="M17.4406 6.23973C16.6556 6.23973 15.9796 5.68473 15.8256 4.91573L15.5826 3.69973C15.4326 3.13873 14.9246 2.75073 14.3456 2.75073H10.1126C9.53358 2.75073 9.02558 3.13873 8.87558 3.69973L8.63258 4.91573C8.47858 5.68473 7.80258 6.23973 7.01758 6.23973" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                                       </svg>
-                                    </span>
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">userlist</li>
+            </ol>
+        </nav>
     </div>
-  </div>
+    <!-- End Page Title -->
 
+    <!-- Main Content -->
 
+    <div class="conatiner-fluid content-inner mt-n5 py-0">
+        <div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">User List</h4>
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4"
+                                   th:href="@{/pm/add-user}">Add User</a>
 
-  <!-- End Main Content-->
+                            </div>
+                        </div>
+                        <div class="card-body px-">
+                            <div class="table-responsive">
+                                <table id="user-list-table" class="display" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Content-->
 </main>
-<!-- End #main -->
-
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 
-</body>
-</html>
-</title>
-</head>
-<body>
+<script th:src="@{/js/single-select.js}"></script>
 
-</body>
-</html></title>
-</head>
-<body>
+
+<!-- Edit User Modal-->
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Edit User Role And Department</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editName">Name</label>
+                        <input type="text" class="form-control" id="editName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">Role</label>
+                        <input type="text" class="form-control" id="editRole">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDepartment">Department</label>
+                        <input type="text" class="form-control" id="editDepartment">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="editUser" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--&lt;!&ndash;Single Select&ndash;&gt;-->
+<!--<script>-->
+
+<!--    const data2 = ['ACE', 'DAT', 'Ace Plus']-->
+<!--    const id2 = init("department")-->
+<!--    const department_wrapperUpdateName = singleSelect(id2, data2);-->
+
+<!--</script>-->
+<script>
+    let userList = [];
+    $(document).ready(function () {
+
+        // Make an AJAX request to fetch data from the REST API endpoint
+        $.ajax({
+            url: '/pm/users', // Replace with your actual API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Data received:', data);
+                userList = data;
+                // Initialize DataTable with the received data
+                let table = $('#user-list-table').DataTable({
+                    data: data,
+                    columns: [
+                        {data: 'id'},
+                        {data: 'name'},
+                        {data: 'department'},
+                        {data: 'role'},
+                        {
+                            data: 'id',
+                            render: function (data, type, row, meta) {
+                                return `
+                                <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleCli(${row.id})">Delete</button>
+                                `;
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    });
+
+    function displayEditUserModal(userId) {
+        const user = userList.find(user => user.id === userId);
+        // Populate modal fields with user data
+        $('#editName').val(user.name);
+        $('#editRole').val(user.role);
+        $('#editDepartment').val(user.department);
+        // Disable the "name" field
+        $('#editName').prop('disabled', true);
+
+        // Show the modal
+        $('#userEditModal').modal('show');
+    }
+    function editUser(){
+        //Capture the data from the modal fields
+        var name=$('#editName').val();
+        var role=$('#editRole').val();
+        var department=$('#editDepartment').val();
+        //Perform an AJAX request to update the user on the server
+        $.ajax({
+            url: '/pm/users', // Replace with your actual API endpoint
+            method: 'PUT',
+            data: JSON.stringify(editUser),
+            dataType: 'json',
+
+            success: function (data) {
+                console.log('Data received:', data);
+                // Hide the modal
+                $('#userEditModal').modal('hide');
+                // Reload the DataTable with new data
+                $('#user-list-table').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+    }
+
+</script>
+<script>
+function deleteMember (id){
+    $.ajax({
+        url: '/pm/users', // Replace with your actual API endpoint
+        method: 'DELETE',
+        data: JSON.stringify(deleteMember),
+        dataType: 'json',
+
+        success: function (data) {
+            console.log('Data received:', data);
+            // Hide the modal
+            $('#userEditModal').modal('hide');
+            // Reload the DataTable with new data
+            $('#user-list-table').DataTable().ajax.reload();
+        },
+        error: function (error) {
+            console.log('Error fetching data:', error);
+        }
+    });
+}
+
+</script>
+
 
 </body>
 </html>

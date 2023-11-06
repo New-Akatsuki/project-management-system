@@ -2,7 +2,9 @@ package org.blank.projectmanagementsystem.domain.viewobject;
 
 import lombok.Data;
 import org.blank.projectmanagementsystem.domain.entity.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +14,8 @@ public class ProjectViewObject {
     private String client;
     private String projectManager;
     private String department;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String duration;
     private List<String> contractMembers;
     private List<String> focMembers;

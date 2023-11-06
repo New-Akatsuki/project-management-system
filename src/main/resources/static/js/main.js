@@ -128,9 +128,4 @@
   })
 
 
-  // // Toast logic
-  // $(document).ready(function () {
-  //   $('.toast').toast('show');
-  // });
-
 })();

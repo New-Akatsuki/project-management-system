@@ -1,20 +1,17 @@
 package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.blank.projectmanagementsystem.domain.entity.TestEntityClass;
-import org.blank.projectmanagementsystem.domain.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
-
-public class HomeController {
+@Slf4j
+public class MainController {
 
     private final UserService userService;
     @GetMapping("/")
@@ -22,6 +19,7 @@ public class HomeController {
         return "index";
     }
 
+    @PreAuthorize("hasAuthority('MEMBER')")
     @GetMapping("/task-view")
     public String task(){
         return "task-view";
@@ -33,7 +31,7 @@ public class HomeController {
     }
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
-        return "test";
+        return "project-view";
     }
 
     @GetMapping("/user-list")
@@ -62,6 +60,24 @@ public class HomeController {
 
     @GetMapping("/issue-display-page")
     public String issuessdsdffView(){
-        return "issue-display-page";
+        return "issue-display";
     }
+
+
+    @GetMapping("/gantt")
+    public String ganttView(){
+        return "gantt-chart";
+    }
+
+    @GetMapping("/project-details-view")
+    public String details(){
+        return "project-details-info";
+    }
+
+    @GetMapping("/change-password")
+    public String detailssd(){
+        return "change-password";
+    }
+
 }
+

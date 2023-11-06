@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -20,16 +23,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Deliverable implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
 
     @Column(unique = true,nullable = false, length =45)
     private String name;
 
-
     private boolean active=true;
-
-
 
 }

@@ -15,7 +15,27 @@
             rel="stylesheet"
     />
 
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Single Select -->
+    <link rel="stylesheet" href="/css/single-select.css">
+
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
 
     <!-- Favicons -->
     <link th:href="@{/images/favicon.png}" rel="icon">
@@ -28,51 +48,31 @@
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
+    <!--  gantt chart cdn link -->
+    <link th:href="@{/sources/dhtmlxgantt.css}" rel="stylesheet"/>
+    <link th:href="@{/sources/skins/dhtmlxgantt_material.css}" rel="stylesheet"/>
+    <script th:src="@{/sources/dhtmlxgantt.js}"></script>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- CSS for datepicker -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
     <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/kanban.css">
+
+    <link rel="stylesheet" href="/css/multiple-select.css">
     <style>
-        .card-container {
-            margin: 20px; /* Adjust the margin value as needed */
-        }
-
-
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            font-family: sans-serif;
-        }
-
-        .tabs__label {
-            padding: 10px 16px;
-            cursor: pointer;
-        }
-
-        .tabs__radio {
-            display: none;
-        }
-
-        .tabs__content {
-            order: 1;
-            line-height: 1.5;
-            font-size: 0.9em;
-            display: none;
-        }
-
-        .tabs__radio:checked + .tabs__label {
-            /*font-weight: bold;*/
-            color: #1DA1F2;
-            border-bottom: 2px solid #1DA1F2;
-        }
-
-        .tabs__radio:checked + .tabs__label + .tabs__content {
-            display: initial;
-        }
-
-        .tabs__button {
-            margin-left: auto; /* Move the button to the right */
-        }
-
         /* Custom styles for the model div */
+        #exampleModal{
+            --bs-modal-width: 700px;
+        }
         .modal-content {
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -127,52 +127,50 @@
             opacity: 1; /* Fade in the modal when it is shown */
         }
     </style>
+
 </head>
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+<!-- End Header -->
 
 <!-- Start #main -->
 <main id="main" class="main">
-    <div class="page-title">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Project</a></li>
-                <li class="breadcrumb-item active">Tasks</li>
-            </ol>
-        </nav>
-    </div>
+
     <!-- End Page Title -->
     <div class="card">
-        <div class="card-container">
-            <h3><i class='bx bx-task'></i> Project View</h3>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="d-flex align-items-center"><i class='bx bx-package me-1'></i> Project View</h3>
+            <div>
+                <button type="button" class="btn btn-primary tabs__button" data-bs-toggle="modal" data-bs-target="#taskModal">
+                KPI</button>
+
+                <button type="button" class="btn btn-primary tabs__button1" style="margin-left: 10px;">
+                    Project Detail</button>
+            </div>
         </div>
         <div class="container">
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
                 <label for="tab1" class="tabs__label">Kanban</label>
-                <div class="tabs__content container">
+                <div class="tabs__content py-0">
                     <br>
-                    <!-- Container for Pending Task Cards -->
-                    <i>KanBan</i>
+                    <!-- Kanban Board -->
+                    <div>
+                        <div id="kanban" class="px-3">
+                        </div>
+                    </div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
                 <label for="tab2" class="tabs__label">Gantt Chart</label>
-                <div class="tabs__content container">
+                <div class="tabs__content py-0">
                     <br>
-                    <!-- Container for Overdue Task Cards -->
-                    <i>Gantt</i>
+                    <!-- Gantt Chart -->
+                    <div id="gantt" style="width: 100%; height: 70vh"></div>
                 </div>
-
-                <button type="button" class="btn btn-primary tabs__button" data-bs-toggle="modal" data-bs-target="#taskModal">
-                    KPI</button>
-
-                <button type="button" class="btn btn-primary tabs__button1" style="margin-left: 10px;">
-                    Project Detail</button>
-
             </div>
 
         </div>
@@ -245,22 +243,164 @@
         </div>
     </div>
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="addTaskForm" autocomplete="off">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Task</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="task-body-text-layout">
+                            <div class="form-group d-flex flex-column mb-0">
+                                <label for="task-name" class="form-label">Enter Task Name:</label>
+                                <input type="text" id="task-name" placeholder="Name" class="form-control" required>
+                            </div>
+                            <div class="form-group d-flex flex-column mb-0">
+                                <label for="task-description" class="form-label">Enter Description:</label>
+                                <textarea id="task-description" placeholder="Description" class="form-control"></textarea>
+                            </div>
+                            <div class="d-flex gap-2 align-items-start">
+                                <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                    <label for="task-start-date" class="form-label">Start Date:</label>
+                                    <input type="text" id="task-start-date" placeholder="Enter start date" class="form-control mb-0" required>
+                                    <div class="invalid-feedback" id="task-start-date_error"></div>
+                                </div>
+                                <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                    <label for="task-end-date" class="form-label">End Date:</label>
+                                    <input type="text" id="task-end-date" placeholder="Enter end date" class="form-control mb-0" required>
+                                    <div class="invalid-feedback" id="task-end-date_error"></div>
+                                </div>
+                                <div class="form-group mb-0 flex-3 d-flex flex-column">
+                                    <label for="task-plan-hours" class="form-label">Plan Hours:</label>
+                                    <input type="number" step="0.1" min="0" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <div class="form-group mb-0 flex-3">
+                                    <label for="task-priority" class="form-label">Priority:</label>
+                                    <select id="task-priority" class="form-select" required>
+                                        <option value="" selected>Select task priority</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-0 flex-3">
+                                    <label for="task-group" class="form-label">Group:</label>
+                                    <select id="task-group" class="form-select" required>
+                                        <option value="" selected>Select task group</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-0 flex-3">
+                                    <label for="task-type" class="form-label">Type:</label>
+                                    <select id="task-type" class="form-select" required>
+                                        <option value="" selected>Select task type</option>
+                                        <option value="task">Task</option>
+                                        <option value="milestone">Milestone</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-assignees" class="form-label" >Assignees :</label>
+                                <select id="task-assignees" name="assignees" multiple >
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" id="task-phase">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit"  class="btn btn-primary" id="saveTaskBtn">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </main>
 <!-- End #main -->
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/multi-select.js"></script>
+<script src="/js/validation.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
+
+<script>
+    // Add fade animation to the modal
+    $('#taskModal').on('show.bs.modal', function() {
+        $(this).find('.modal-dialog').addClass('fade');
+    });
+
+    function setupDatePicker(elementId,minDate,maxDate) {
+        $(elementId).datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: minDate,
+            maxDate: maxDate,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
+        });
+    }
+
+    setupDatePicker("#task-start-date");
+    setupDatePicker("#task-end-date");
+
+</script>
+
 <!-- Custom JavaScript -->
+<script type="text/javascript" src="/js/kanban-board.js"></script>
+<script th:src="@{/js/gantt-chart.js}"></script>
+
 <script>
     $(document).ready(function() {
-        // Add fade animation to the modal
-        $('#taskModal').on('show.bs.modal', function() {
-            $(this).find('.modal-dialog').addClass('fade');
+
+        //get phase from server with request param of project id
+        $.ajax({
+            url: "/get-phase-data?projectId=1",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                //insert option to task-assignees select
+                $.each(data.projectMembers, function (index, value) {
+                    $('#task-assignees').append($('<option>', {
+                        value: value.id,
+                        text: value.name
+                    }));
+                });
+
+                new MultiSelectTag('task-assignees')
+
+                $('#kanban').kanban({
+                    phases: data.phases,
+                    tasks: data.tasks,
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
+
+        const addTask = ()=>{
+            $.fn.kanban.saveOrUpdateTask();
+        }
+
+        checkDatesValidation("task-start-date","task-end-date");
+        formValidate("addTaskForm", addTask);
     });
 </script>
 </body>

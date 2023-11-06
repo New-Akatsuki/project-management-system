@@ -37,7 +37,7 @@ public class DeliverableServiceImpl implements DeliverableService {
     }
 
     @Override
-    public Deliverable getDeliverable(long id) {
+    public Deliverable getDeliverable(Long id) {
         return deliverableRepository.findById(id).orElse(null);
     }
 
@@ -55,10 +55,7 @@ public class DeliverableServiceImpl implements DeliverableService {
     @Override
     public Deliverable getDeliverableById(Long id) {
         Optional<Deliverable> optionalDeliverable = deliverableRepository.findById(id);
-
-        // If deliverable is found, return it; otherwise, return null
         return optionalDeliverable.orElse(null);
-
     }
 
 

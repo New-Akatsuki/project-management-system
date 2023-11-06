@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.domain.entity;
+package org.blank.projectmanagementsystem.domain.Enum;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

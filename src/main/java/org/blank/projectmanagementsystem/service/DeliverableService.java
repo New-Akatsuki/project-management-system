@@ -13,7 +13,8 @@ public interface DeliverableService {
 
     Deliverable findById(long id);
     Deliverable saveName(String name);
-
+    void deleteDeliverable(Long id);
+    Deliverable getDeliverable(Long id);
 
     List<Deliverable> getAllDeliverables();
 

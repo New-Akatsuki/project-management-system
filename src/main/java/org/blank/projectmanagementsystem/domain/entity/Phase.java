@@ -19,6 +19,16 @@ public class Phase {
     @Column(nullable = false, length = 25)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
+    public PhaseDto mapToDto() {
+        return PhaseDto.builder()
+                .id(id)
+                .name(name)
+                .projectId(project.getId())
+                .build();
+    }
 
 }

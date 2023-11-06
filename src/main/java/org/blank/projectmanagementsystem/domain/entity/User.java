@@ -1,14 +1,15 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -26,12 +27,16 @@ public class User implements Serializable,UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(unique = true, nullable = false, length = 45)
+    @Column(unique = true, length = 45)
     private String username;
 
+    @Column(unique = true, nullable = false, length = 45)
+    private String email;
+
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String password;
 
@@ -42,10 +47,19 @@ public class User implements Serializable,UserDetails {
     @JoinColumn(nullable = false)
     private Department department;
 
+    private String imgUrl;
+
+    private String userRole;
+
+    private String phone;
+
     private boolean active = true;
 
-    @ManyToMany(mappedBy = "assignees")
+    private boolean defaultPassword = true;
+
+    @ManyToMany
     private Set<Task> tasks;
+
 
     /*
      *the following is user details for spring security
@@ -57,7 +71,8 @@ public class User implements Serializable,UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        //if username is null return email
+        return username == null ? email : username;
     }
 
     @Override
@@ -78,5 +93,8 @@ public class User implements Serializable,UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    public void setDepartment(String department) {
     }
 }
