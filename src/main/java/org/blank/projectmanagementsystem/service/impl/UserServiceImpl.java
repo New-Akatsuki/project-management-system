@@ -9,11 +9,13 @@ import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
+import org.blank.projectmanagementsystem.service.MailService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Override
     public User save(User user) {
@@ -66,6 +69,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
+    private String generateDefaultPassword() {
+        // Generate a random alphanumeric password with a length of 8 characters
+        return RandomStringUtils.randomAlphanumeric(8);
+    }
+
     @Override
     public User registerUser(AddUserFormInput addUserFormInput) {
 //        // Check if the name is already taken
@@ -84,6 +92,14 @@ public class UserServiceImpl implements UserService {
                 .role(Role.valueOf(addUserFormInput.getRole()))
                 .department(department)
                 .build();
+
+        User savedUser = userRepository.save(user);
+
+        // Generate a default password for the user (you can modify this part)
+        String defaultPassword = generateDefaultPassword();
+
+        // Send the default password to the user's email using MailService
+        sendDefaultPasswordEmail(savedUser, defaultPassword);
         // Set other user properties as needed
         // Save the user
         return userRepository.save(user);
@@ -99,6 +115,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.countByDepartment(department);
     }
 
+    private void sendDefaultPasswordEmail(User user, String password) {
+        // Call the MailService to send the default password email
+        mailService.sendDefaultPassword(user, password);
+    }
 
     @Override
     public List<UserViewObject> getAllUsers() {
