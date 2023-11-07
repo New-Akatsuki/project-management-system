@@ -2,13 +2,18 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Project;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.service.ClientService;
 import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,12 +23,16 @@ public class MainController {
     private final UserService userService;
     private final ClientService clientService;
     private final DepartmentService departmentService;
+    private final ProjectService projectService;
 
     @GetMapping("/")
     public String index(ModelMap model){
         long userCount = userService.getAllUsers().size();
         long clientCount = clientService.getAllClients().size();
         long departmentCount = departmentService.getAllDepartments().size();
+
+        List<ProjectViewObject> projects = projectService.getAllProjects();
+        model.addAttribute("projects", projects);
         model.addAttribute("userCount", userCount);
         model.addAttribute("clientCount", clientCount);
         model.addAttribute("departmentCount", departmentCount);
@@ -89,6 +98,11 @@ public class MainController {
     @GetMapping("/change-password")
     public String detailssd(){
         return "change-password";
+    }
+
+    @GetMapping("/man-month")
+    public String manMonthView(){
+        return "man-month";
     }
 
 }

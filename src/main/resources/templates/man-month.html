@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="en">
 <head>
   <title>Man-Month Filter</title>
 </head>
@@ -20,26 +20,113 @@
   <option value="11">November</option>
   <option value="12">December</option>
 </select>
-<button id="calculateButton">Calculate Man-Month</button>
+
+<button id="productivityRatioBtn">Calculate Productivity Ratio</button>
 <div id="result"></div>
 
+<div>
+  <canvas id="barChart" width="400px" height="400px"></canvas>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
-  // Function to calculate man-month based on the selected month
-  function calculateManMonth(selectedMonth) {
-    // Your man-month calculation logic here based on the selected month
-    // For example, you can fetch data from the server using AJAX and update the result on the page.
-    // Replace this example with your actual calculation logic.
-    // The selectedMonth is in the format "MM" (e.g., "01" for January).
 
-    const result = `Man-Month for ${selectedMonth} is: 123.45`; // Replace with your calculated value
-    document.getElementById('result').textContent = result;
-  }
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
 
-  // Event listener for the Calculate Man-Month button
-  document.getElementById('calculateButton').addEventListener('click', function() {
-    const selectedMonth = document.getElementById('monthSelector').value;
-    calculateManMonth(selectedMonth);
+  // Fetch the actual task data using AJAX
+  $.get("/get-task-data", function(data) {
+    // Filter main tasks (tasks with parent set to null)
+    const mainTasks = data.filter(task => task.parent === null);
+
+    // Function to calculate man-months for a specific month
+    function calculatePlanManMonth(tasks, selectedMonth) {
+      let planManMonth = 0;
+
+      // Iterate through the main tasks
+      for (const task of tasks) {
+        // Check if the task has start_date or end_date in the selected month
+        if (
+                (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
+                (task.end_date && task.end_date.startsWith(`2023-${selectedMonth}`))
+        )
+
+        {
+          // Calculate man-months based on planned hours
+          planManMonth += task.plan_hours / (8 * 20); // Assuming 8 working hours per day and 20 working days per month
+        }
+      }
+
+      return planManMonth;
+
+
+    }
+
+
+
+    function calculateActualManMonth(tasks, selectedMonth){
+      let actualManMonth = 0;
+
+      for(const task of tasks){
+        if(
+                (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
+                (task.actual_due_date && task.actual_due_date.startsWith(`2023-${selectedMonth}`))
+        )
+        {
+          actualManMonth += task.actual_hours / (8 * 20);
+        }
+      }
+      return actualManMonth;
+    }
+
+
+
+    //target productivity ratio for each month
+    function calculateProductivityRatio(plan, actual) {
+      return (actual / plan) * 100;
+    }
+
+    // Add a click event listener to the calculate button
+    // Add an event listener to the monthSelector dropdown
+    document.getElementById("monthSelector").addEventListener("change", function() {
+      const selectedMonth = this.value;
+      const taskPlanManMonth = calculatePlanManMonth(mainTasks, selectedMonth);
+      const taskActualManMonth = calculateActualManMonth(mainTasks, selectedMonth);
+
+
+      document.getElementById("result").textContent = `
+        Plan Man Month in ${monthNames[selectedMonth - 1]}: ${taskPlanManMonth}
+        Actual Man Month in ${monthNames[selectedMonth - 1]}: ${taskActualManMonth}
+      `;
+
+    });
+    document.getElementById("productivityRatioBtn").addEventListener("click", function() {
+      const selectedMonth = document.getElementById("monthSelector").value;
+      const planManMonth = calculatePlanManMonth(mainTasks, selectedMonth);
+      const actualManMonth = calculateActualManMonth(mainTasks, selectedMonth);
+      const productivityRatio = calculateProductivityRatio(planManMonth, actualManMonth);
+      document.getElementById("result").textContent = `Productivity Ratio in ${monthNames[selectedMonth - 1]}: ${productivityRatio.toFixed(2)}%`;
+    });
   });
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
