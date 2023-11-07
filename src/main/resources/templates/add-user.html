@@ -117,8 +117,8 @@
 
                     <div class="col-md-6">
                       <label for="role" class="form-label">Role</label>
-                      <select class="form-select"  id="role" name="role" required>
-                        <option value="PMO">PMO</option>
+                      <select class="form-select"  id="userRole" name="role" required>
+                        <option value="PMO" selected>PMO</option>
                         <option value="SDQC">SDQC</option>
                         <option value="DH">DH</option>
                         <option value="PM">PM</option>
@@ -186,7 +186,7 @@
         id: null,
         name: $("#name").val(),
         email: $("#email").val(),
-        role: $("#role").val(),
+        role: $("#userRole").val(),
         department: $("#department").val()
       };
       $.ajax({

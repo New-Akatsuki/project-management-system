@@ -6,7 +6,6 @@ import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -243,9 +242,12 @@ public class PMRestController {
 
     @PostMapping("/pm/add-users")
     public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-        User newUser = userService.registerUser(addUserFormInput);
+        User newUser = userService.createMember(addUserFormInput);
         return ResponseEntity.ok(addUserFormInput);
     }
+
+
+    @PreAuthorize("hasAuthority('PMO')")
     @GetMapping("/pm/users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();
