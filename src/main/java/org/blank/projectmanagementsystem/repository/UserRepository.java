@@ -21,5 +21,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Long countByDepartment(Department department);
 
 
-//    Optional<User> findByUserId(Long userId);
+
 }

@@ -49,7 +49,7 @@ $(document).ready(function () {
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditClientModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteClient(${row.id})">Delete</button>
+                                
                                 `;
                     }
                 },
@@ -83,7 +83,7 @@ $(document).ready(function () {
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditDeliverableModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteDeliverable(${row.id})">Delete</button>
+                                
                                 `;
                     }
                 },
@@ -119,7 +119,7 @@ $(document).ready(function () {
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteArchitecture(${row.id})">Delete</button>
+                                
                                 `;
                     }
                 },
@@ -154,7 +154,7 @@ $(document).ready(function () {
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditSystemOutlineModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteSystemOutline(${row.id})">Delete</button>
+                                
                                 `;
                     }
                 },
@@ -264,6 +264,8 @@ $(document).ready(function () {
          save SystemOutline to database
      ===================================================*/
     function addSystemOutline() {
+
+        console.log("addSystemOutline function called");
         let newSystemOutline = {
             id: null,
             name: $('#OutlineName').val(),
@@ -671,8 +673,6 @@ $(document).ready(function () {
         $("#confirmDeleteModal").modal("hide");
     });
 
-
-
     /*===================================================
             open edit deliverable modal
     ===================================================*/
@@ -749,7 +749,7 @@ $(document).ready(function () {
     $.fn.addClient = addClient;
     $.fn.openEditClientModal = openEditClientModal;
     $.fn.updateClient = updateClient;
-    $.fn.confirmClientAction = confirmClientAction;
+
 
 
     /*===================================================

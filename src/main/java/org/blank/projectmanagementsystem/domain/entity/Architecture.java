@@ -29,5 +29,5 @@ public class Architecture implements Serializable {
     @Column(nullable = false)
     private ArchitectureType type;
   
-    private boolean active = true;
+    private boolean status;
 }

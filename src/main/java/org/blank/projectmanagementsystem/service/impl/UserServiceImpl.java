@@ -11,6 +11,7 @@ import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.MailService;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,21 +72,20 @@ public class UserServiceImpl implements UserService {
     }
 
     private String generateDefaultPassword() {
+        String password = String.valueOf((int) (Math.random() * 100000000));
+        log.info("generateDefaultPassword: {} \n\n\n\n\n", password);
         // Generate a random alphanumeric password with a length of 8 characters
-        return RandomStringUtils.randomAlphanumeric(8);
+        return password;
     }
 
     @Override
-    public User registerUser(AddUserFormInput addUserFormInput) {
-//        // Check if the name is already taken
-//        if (userRepository.findByName(addUserFormInput.getName()).isPresent()) {
-//            // Handle username already exists
-//            throw new RuntimeException("Name already exists");
-//        }
+    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
+    public User createMember(AddUserFormInput addUserFormInput) {
         Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
         Department department = (Department) departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
+        log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
         // Create a new User object based on the addUserFormInput
         User user =  User.builder()
                 .name(addUserFormInput.getName())
@@ -94,11 +94,11 @@ public class UserServiceImpl implements UserService {
                 .department(department)
                 .build();
 
-        User savedUser = userRepository.save(user);
-
         // Generate a default password for the user (you can modify this part)
         String defaultPassword = generateDefaultPassword();
+        user.setPassword(passwordEncoder.encode(defaultPassword));
 
+        User savedUser = userRepository.save(user);
         // Send the default password to the user's email using MailService
         sendDefaultPasswordEmail(savedUser, defaultPassword);
         // Set other user properties as needed
@@ -112,6 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PMO')")
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
     }

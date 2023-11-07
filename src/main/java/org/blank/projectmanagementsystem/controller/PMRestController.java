@@ -6,8 +6,8 @@ import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +22,13 @@ public class PMRestController {
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
 
+
+    @PreAuthorize("hasAuthority('PM')")
     @GetMapping("/pm/system-outlines") // Changed endpoint
     public ResponseEntity<List<SystemOutline>> getSystemOutlines() {
         List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
         return ResponseEntity.ok(systemOutlines);
     }
-
     @PostMapping("/pm/add-system-outline") // Changed endpoint
     public ResponseEntity<SystemOutline> addSystemOutline(@RequestBody SystemOutline systemOutline) {
         SystemOutline newSystemOutline = systemOutlineService.save(systemOutline);
@@ -107,7 +108,7 @@ public class PMRestController {
     public ResponseEntity<Deliverable> activateDeliverable(@PathVariable Long id) {
         Deliverable deliverable = deliverableService.getDeliverableById(id);
         if (deliverable != null) {
-            deliverable.setActive(true);
+            deliverable.setStatus(true);
             Deliverable updatedDeliverable = deliverableService.save(deliverable);
             return ResponseEntity.ok(updatedDeliverable);
         } else {
@@ -119,7 +120,7 @@ public class PMRestController {
     public ResponseEntity<Deliverable> disableDeliverable(@PathVariable Long id) {
         Deliverable deliverable = deliverableService.getDeliverableById(id);
         if (deliverable != null) {
-            deliverable.setActive(false);
+            deliverable.setStatus(false);
             Deliverable updatedDeliverable = deliverableService.save(deliverable);
             return ResponseEntity.ok(updatedDeliverable);
         } else {
@@ -157,7 +158,6 @@ public class PMRestController {
         Client existingClient = clientService.getClientById(client.getId());
 
         if (existingClient != null) {
-            // Update the existing client's information
             existingClient.setName(client.getName());
             existingClient.setEmail(client.getEmail());
             existingClient.setPhoneNumber(client.getPhoneNumber());
@@ -174,7 +174,7 @@ public class PMRestController {
     public ResponseEntity<Client> activateClient(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
         if (client != null) {
-            client.setActive(true);
+            client.setStatus(true);
             Client updatedClient = clientService.save(client);
             return ResponseEntity.ok(updatedClient);
         } else {
@@ -185,7 +185,7 @@ public class PMRestController {
     public ResponseEntity<Client> disableClient(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
         if (client != null) {
-            client.setActive(false);
+            client.setStatus(false);
             Client updatedClient = clientService.save(client);
             return ResponseEntity.ok(updatedClient);
         } else {
@@ -197,7 +197,6 @@ public class PMRestController {
     @GetMapping("/pm/architectures")
     public ResponseEntity<List<Architecture>> getArchitectures() {
         List<Architecture> architectures = architectureService.getAllArchitectures();
-
         return ResponseEntity.ok(architectures);
     }
 
@@ -243,10 +242,12 @@ public class PMRestController {
 
     @PostMapping("/pm/add-users")
     public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-        User newUser = userService.registerUser(addUserFormInput);
+        User newUser = userService.createMember(addUserFormInput);
         return ResponseEntity.ok(addUserFormInput);
     }
 
+
+    @PreAuthorize("hasAuthority('PMO')")
     @GetMapping("/pm/users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();

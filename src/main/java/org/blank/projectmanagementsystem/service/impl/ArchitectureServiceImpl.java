@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.blank.projectmanagementsystem.domain.entity.Architecture;
@@ -20,6 +21,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     private final ArchitectureRepository architectureRepository;
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture getById(Long id) {
 
         return architectureRepository.findById(id).orElse(null);
@@ -29,6 +31,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
 
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public List<Architecture> getAllArchitectures() {
         return architectureRepository.findAll();
     }
@@ -36,11 +39,13 @@ public class ArchitectureServiceImpl implements ArchitectureService {
 
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public void deleteArchitecture(Long id) {
         architectureRepository.deleteById(id);
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture updateArchitecture(Long id, Architecture architecture) {
         if (architectureRepository.existsById(id)) {
             architecture.setId(id);
@@ -50,11 +55,13 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture save(Architecture architecture) {
         return architectureRepository.save(architecture);
     }
 
     @Override
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture getArchitectureById(Long id) {
         return architectureRepository.findById(id).orElse(null);
     }
