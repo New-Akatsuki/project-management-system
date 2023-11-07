@@ -33,5 +33,5 @@ public class Client implements Serializable {
 
     private String phoneNumber;
 
-    private boolean active=true;
+    private boolean status;
 }
