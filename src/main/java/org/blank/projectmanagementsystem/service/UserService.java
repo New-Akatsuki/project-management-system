@@ -19,4 +19,7 @@ public interface UserService {
     void changePassword(String currentPassword, String newPassword);
     User registerUser(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
+
+    User getLoginUser();
+    Optional<User> getEmail(String email);
 }

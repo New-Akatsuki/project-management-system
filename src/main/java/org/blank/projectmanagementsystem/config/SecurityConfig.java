@@ -45,7 +45,9 @@ public class SecurityConfig {
                                         "/fragments/**",
                                         "/report-file/**",
                                         "/skins/**",
-                                        "/static/**"
+                                        "/static/**",
+                                        "/forgot-password/**",
+                                        "/reset-password/**"
                                 )
                                 .permitAll()
                                 .anyRequest()

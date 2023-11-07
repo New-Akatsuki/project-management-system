@@ -9,6 +9,7 @@ import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
+import org.blank.projectmanagementsystem.service.MailService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Override
     public User save(User user) {
@@ -100,16 +103,29 @@ public class UserServiceImpl implements UserService {
         sendDefaultPasswordEmail(savedUser, defaultPassword);
         // Set other user properties as needed
         // Save the user
-        return userRepository.save(user);
+        return savedUser;
     }
 
     private void sendDefaultPasswordEmail(User user, String password) {
         // Call the MailService to send the default password email
-//        mailService.sendDefaultPassword(user, password);
+        mailService.sendDefaultPassword(user, password);
     }
 
     @Override
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
+    }
+
+    private String getUsername(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    @Override
+    public User getLoginUser() {
+        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
+    }
+
+    @Override
+    public Optional<User> getEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
