@@ -31,8 +31,8 @@ public class MainController {
         long clientCount = clientService.getAllClients().size();
         long departmentCount = departmentService.getAllDepartments().size();
 
-        List<ProjectViewObject> projects = projectService.getAllProjects();
-        model.addAttribute("projects", projects);
+
+
         model.addAttribute("userCount", userCount);
         model.addAttribute("clientCount", clientCount);
         model.addAttribute("departmentCount", departmentCount);
@@ -101,7 +101,10 @@ public class MainController {
     }
 
     @GetMapping("/man-month")
-    public String manMonthView(){
+    public String manMonthView(ModelMap model){
+
+        List<ProjectViewObject> projects = projectService.getAllProjects();
+        model.addAttribute("projects", projects);
         return "man-month";
     }
 
