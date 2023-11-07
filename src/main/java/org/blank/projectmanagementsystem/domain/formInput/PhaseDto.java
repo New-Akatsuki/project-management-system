@@ -14,6 +14,4 @@ public class PhaseDto {
     private Long id;
     private String name;
     private long projectId;
-
-
 }

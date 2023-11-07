@@ -16,4 +16,6 @@ public interface ProjectService {
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
+
+    Project getProject(long projectId);
 }

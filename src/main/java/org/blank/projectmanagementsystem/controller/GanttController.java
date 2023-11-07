@@ -30,7 +30,13 @@ public class GanttController {
         var phaseList =  phaseService.getPhases(projectId);
         var taskList = taskService.getAllTasks();
         var projectMembers = projectService.getProjectMembers(projectId);
-        return ResponseEntity.ok(new HashMap<>(Map.of("phases", phaseList, "tasks", taskList, "projectMembers", projectMembers)));
+        var project = projectService.getProject(projectId);
+        return ResponseEntity.ok(
+                new HashMap<>(Map.of("phases", phaseList, "tasks", taskList,
+                        "members", projectMembers,"startDate",project.getStartDate(),
+                        "endDate",project.getEndDate())
+                )
+        );
     }
 
     @PostMapping("/add-phase")

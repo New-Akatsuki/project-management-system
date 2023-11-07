@@ -157,6 +157,11 @@ public class ProjectServiceImpl implements ProjectService {
         return data;
     }
 
+    @Override
+    public Project getProject(long projectId) {
+        return projectRepository.getReferenceById(projectId);
+    }
+
     private User getCurrentUser(){
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElseThrow();
