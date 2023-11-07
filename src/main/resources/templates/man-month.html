@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <title>Man-Month Filter</title>
+</head>
+<body>
+<h1>Man-Month Filter</h1>
+<label for="monthSelector">Select a month:</label>
+<select id="monthSelector">
+  <option value="01">January</option>
+  <option value="02">February</option>
+  <option value="03">March</option>
+  <option value="04">April</option>
+  <option value="05">May</option>
+  <option value="06">June</option>
+  <option value="07">July</option>
+  <option value="08">August</option>
+  <option value="09">September</option>
+  <option value="10">October</option>
+  <option value="11">November</option>
+  <option value="12">December</option>
+</select>
+<button id="calculateButton">Calculate Man-Month</button>
+<div id="result"></div>
+
+<script>
+  // Function to calculate man-month based on the selected month
+  function calculateManMonth(selectedMonth) {
+    // Your man-month calculation logic here based on the selected month
+    // For example, you can fetch data from the server using AJAX and update the result on the page.
+    // Replace this example with your actual calculation logic.
+    // The selectedMonth is in the format "MM" (e.g., "01" for January).
+
+    const result = `Man-Month for ${selectedMonth} is: 123.45`; // Replace with your calculated value
+    document.getElementById('result').textContent = result;
+  }
+
+  // Event listener for the Calculate Man-Month button
+  document.getElementById('calculateButton').addEventListener('click', function() {
+    const selectedMonth = document.getElementById('monthSelector').value;
+    calculateManMonth(selectedMonth);
+  });
+</script>
+</body>
+</html>

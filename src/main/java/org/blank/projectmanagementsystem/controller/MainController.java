@@ -2,6 +2,8 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.service.ClientService;
+import org.blank.projectmanagementsystem.service.DepartmentService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,18 @@ import org.springframework.web.bind.annotation.*;
 public class MainController {
 
     private final UserService userService;
+    private final ClientService clientService;
+    private final DepartmentService departmentService;
+
     @GetMapping("/")
-    public String index(){
+    public String index(ModelMap model){
+        long userCount = userService.getAllUsers().size();
+        long clientCount = clientService.getAllClients().size();
+        long departmentCount = departmentService.getAllDepartments().size();
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("clientCount", clientCount);
+        model.addAttribute("departmentCount", departmentCount);
+
         return "index";
     }
 
