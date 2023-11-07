@@ -62,6 +62,10 @@ public class PMController {
     public String userList() {
         return "user-list";
     }
+    @GetMapping("/user-list-pm")
+    public String userListPM() {
+        return "user-list-pm";
+    }
 
     @GetMapping("/user-profile")
     public ModelAndView userprofile() {
@@ -78,10 +82,6 @@ public class PMController {
         return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
     }
 
-//    @PostMapping("/add-user")
-//    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-//        return "redirect:/";
-//    }
 
     @GetMapping("/edit-user")
     public ModelAndView editUser() {

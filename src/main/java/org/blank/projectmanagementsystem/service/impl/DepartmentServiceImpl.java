@@ -13,15 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
-
     private final DepartmentRepository departmentRepository;
-
     @Override
     public Department save(Department department) {
         return departmentRepository.save(department);
     }
-
-
     @Override
     public Department updateDepartment(Department department) {
         //check if department exists

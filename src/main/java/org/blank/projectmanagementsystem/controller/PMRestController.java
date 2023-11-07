@@ -240,14 +240,15 @@ public class PMRestController {
         return ResponseEntity.ok(id);
     }
 
-    @PostMapping("/pm/add-users")
-    public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-        User newUser = userService.createMember(addUserFormInput);
-        return ResponseEntity.ok(addUserFormInput);
+    @PostMapping("/pm/member-create")
+    public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
+
+            return ResponseEntity.ok(userService.createMember(addUserFormInput));
+
     }
 
 
-    @PreAuthorize("hasAuthority('PMO')")
+    @PreAuthorize("hasAnyAuthority('PMO', 'PM')")
     @GetMapping("/pm/users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();

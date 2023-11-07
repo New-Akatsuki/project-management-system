@@ -12,6 +12,6 @@ public interface UserService {
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
     void changePassword(String currentPassword, String newPassword);
-    User createMember(AddUserFormInput addUserFormInput);
+    UserViewObject createMember(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
 }

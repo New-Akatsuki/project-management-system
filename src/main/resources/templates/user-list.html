@@ -11,7 +11,6 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"
     />
-
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
@@ -23,7 +22,6 @@
     />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
@@ -82,9 +80,7 @@
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
                                 <h4 class="card-title">User List</h4>
-                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4"
-                                   th:href="@{/pm/add-user}">Add User</a>
-
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add User</a>
                             </div>
                         </div>
                         <div class="card-body px-">
@@ -111,11 +107,9 @@
 </main>
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
 <!-- Template Main JS File -->
-<script src="/js/main.js"></script>
 
+<script src="/js/main.js"></script>
 <script th:src="@{/js/single-select.js}"></script>
 
 
@@ -143,16 +137,46 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" onclick="editUser" class="btn btn-primary">Save</button>
+                <button type="submit" onclick="editUser()" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Create New Member Modal-->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Create New Member</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
 
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <input type="text" class="form-control" id="department">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <input type="text" class="form-control" id="role">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="addNewMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!--&lt;!&ndash;Single Select&ndash;&gt;-->
 <!--<script>-->
 
@@ -162,6 +186,7 @@
 
 <!--</script>-->
 <script>
+    // User DataTable
     let userList = [];
     $(document).ready(function () {
 
@@ -199,6 +224,7 @@
         });
     });
 
+// For Edit User Modal
     function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);
         // Populate modal fields with user data
@@ -213,16 +239,17 @@
     }
     function editUser(){
         //Capture the data from the modal fields
-        var name=$('#editName').val();
-        var role=$('#editRole').val();
-        var department=$('#editDepartment').val();
-        //Perform an AJAX request to update the user on the server
+        // Capture the data from the modal fields
+        var name = $('#editName').val();
+        var role = $('#editRole').val();
+        var department = $('#editDepartment').val();
+
+// Perform an AJAX request to update the user on the server
         $.ajax({
             url: '/pm/users', // Replace with your actual API endpoint
             method: 'PUT',
-            data: JSON.stringify(editUser),
+            data: JSON.stringify({ name: name, role: role, department: department }),
             dataType: 'json',
-
             success: function (data) {
                 console.log('Data received:', data);
                 // Hide the modal
@@ -233,33 +260,55 @@
             error: function (error) {
                 console.log('Error fetching data:', error);
             }
+
         });
     }
 
 </script>
 <script>
-function deleteMember (id){
-    $.ajax({
-        url: '/pm/users', // Replace with your actual API endpoint
-        method: 'DELETE',
-        data: JSON.stringify(deleteMember),
-        dataType: 'json',
-
-        success: function (data) {
-            console.log('Data received:', data);
-            // Hide the modal
-            $('#userEditModal').modal('hide');
-            // Reload the DataTable with new data
-            $('#user-list-table').DataTable().ajax.reload();
-        },
-        error: function (error) {
-            console.log('Error fetching data:', error);
-        }
-    });
-}
-
+    // For Delete User
+    function deleteUser(userId) {
+        $.ajax({
+            url: '/pm/users/' + userId, // Replace with your actual delete API endpoint
+            method: 'DELETE',
+            dataType: 'json',
+            success: function (data) {
+                console.log('Data received:', data);
+                // Reload the DataTable with new data
+                $('#user-list-table').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.log('Error deleting user:', error);
+            }
+        });
+    }
 </script>
+<!--Create New Member-->
+<script>
+    function addNewMember() {
+        let addMember = {
+            id: null,
+            name: $("#name").val(),
+            role: $("#userRole").val(),
+            department: $("#department").val()
+        };
+        $.ajax({
+           type: "POST",
+              contentType: "application/json",
+                url: "/pm/member-create",
+                data: JSON.stringify(addMember),
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Data received:', data);
+                    // Reload the DataTable with new data
+                    $('#user-list-table').DataTable().ajax.reload();
+                },
+                error: function (error) {
+                    console.log('Error deleting user:', error);
+                }
+        });
+    }
 
-
+    </script>
 </body>
 </html>

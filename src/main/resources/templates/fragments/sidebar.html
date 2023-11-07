@@ -59,10 +59,10 @@
                     <span>Projects</span>
                 </a>
             </li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('DH','PM')">
-                <a class="nav-link"  th:href="@{/pm/add-user}">
+            <li class="nav-item" sec:authorize="hasAuthority('PM')">
+                <a class="nav-link"  th:href="@{/pm/user-list-pm}">
                     <i class="bi bi-person-video3"></i>
-                    <span>Create member account</span>
+                    <span>User Management</span>
                 </a>
             </li>
             <li class="nav-item">
