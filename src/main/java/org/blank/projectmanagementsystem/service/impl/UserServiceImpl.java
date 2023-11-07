@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
+    @Override
+    public void updatePassword(String id, String newPassword) {
+        //get user from database
+        User user = userRepository.findByUsernameOrEmail(id, id).orElse(null);
+        //change password
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setDefaultPassword(false);
+            userRepository.save(user);
+        }
+    }
+
     private String generateDefaultPassword() {
         String password = String.valueOf((int) (Math.random() * 100000000));
         log.info("generateDefaultPassword: {} \n\n\n\n\n", password);

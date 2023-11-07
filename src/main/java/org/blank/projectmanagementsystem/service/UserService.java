@@ -18,4 +18,5 @@ public interface UserService {
 
     User getLoginUser();
     Optional<User> getEmail(String email);
+    void updatePassword(String id, String newPassword);
 }
