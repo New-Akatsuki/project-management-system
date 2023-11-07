@@ -122,7 +122,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-primary" th:href="@{/issue-display-page}">Create Issue</a>
+                <a class="btn btn-primary" th:href="@{/issue-create}">Create Issue</a>
             </div>
         </div>
         <!-- Search Box -->
@@ -333,15 +333,8 @@
         const filteredIssues = (lowerCaseStatus === 'all') ? issues : issues.filter(issue => issue.status.toLowerCase() === lowerCaseStatus);
         displayIssues(filteredIssues, 1);
     }
-
-
 </script>
-
-<!-- ... (existing code) ... -->
-
 <script>
-    // Your existing script content
-
     // Function to sort issues by month and year
     function sortIssuesByMonthAndYear(month, year) {
         const filteredIssues = (month === 'all' && year === 'all') ? issues : issues.filter(issue => {

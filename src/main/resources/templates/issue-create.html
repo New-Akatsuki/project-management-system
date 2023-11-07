@@ -313,21 +313,8 @@
 
 <script>
     $(document).ready(function () {
-        // Function to populate options from JSON data
-        function populateSelect(selector, jsonData) {
-            var select = $(selector);
-            $.each(jsonData, function (index, value) {
-                select.append('<option value="' + value.id + '">' + value.name + '</option>');
-            });
-        }
 
-        // Simulated JSON data for the second third box
-        var jsonData3 = [
-            {id: 'A', name: 'Option A'},
-            {id: 'B', name: 'Option B'},
-            {id: 'C', name: 'Option C'}
-        ];
-        populateSelect('.js-example-basic-single.select-box2', jsonData3);
+        // Function to populate options from JSON data
 
         // Initialize Select2 for both select boxes
         $('.js-example-basic-single').select2();
@@ -471,6 +458,17 @@
         '.js-example-basic-single.select-box',
         'categoryModal'
     );
+
+    setupModalHandling(
+        $('#addResParty'),
+        $('#addResPartyError'),
+        $('#addResPartyModal'),
+        null,
+        '/get-responsible-party',
+        null,
+        '.js-example-basic-single.select-box2',
+        null
+    );
 </script>
 <script>
     $(document).ready(function () {
@@ -481,6 +479,23 @@
             width: '100%'
         });
     });
+</script>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/get-responsible-party",
+            type: 'GET',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+
 </script>
 </body>
 </html>

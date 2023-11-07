@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -16,6 +19,7 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,10 +36,12 @@ public class Issue implements Serializable {
     private String content;
 
     @Column(nullable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private OffsetDateTime modifyAt = OffsetDateTime.now();
+    @LastModifiedDate
+    private LocalDateTime modifyAt;
 
     private boolean solved=false;
 

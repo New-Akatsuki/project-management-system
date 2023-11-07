@@ -44,25 +44,10 @@ public class MainController {
         return "user-profile";
     }
   
-    @GetMapping("/issues")
-    public String issuesView(){
-        return "issue-page";
-    }
-  
     @GetMapping("/department")
     public String departmentView(){
         return "department";
     }
-    @GetMapping("/create-issue-page")
-    public String issuessdfView(){
-        return "create-issue-page";
-    }
-
-    @GetMapping("/issue-display-page")
-    public String issuessdsdffView(){
-        return "issue-display";
-    }
-
 
     @GetMapping("/gantt")
     public String ganttView(){
@@ -77,6 +62,16 @@ public class MainController {
     @GetMapping("/change-password")
     public String detailssd(){
         return "change-password";
+    }
+
+    @GetMapping("/all-issues")
+    public String allIssue(){
+        return "issue-all-display";
+    }
+
+    @GetMapping("/issue-create")
+    public String issueCreate(){
+        return "issue-create";
     }
 
 }
