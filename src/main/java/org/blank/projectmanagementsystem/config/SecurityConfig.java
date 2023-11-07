@@ -19,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.*;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -58,7 +59,22 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .loginProcessingUrl("/process-login")
                                 .successHandler((request, response, authentication) -> {
-                                    response.sendRedirect("/");
+
+                                    var username = authentication.getName();
+                                    userRepository.findByUsernameOrEmail(username, username).ifPresent(
+                                            user->{
+                                                try {
+                                                    if (user.isDefaultPassword()) {
+                                                        response.sendRedirect("/change-default-password");
+                                                    }else{
+                                                        response.sendRedirect("/");
+                                                    }
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            }
+                                    );
+
                                 })
                                 .permitAll()
                 )

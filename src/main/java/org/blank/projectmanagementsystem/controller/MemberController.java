@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping
 @Slf4j
 public class MemberController {
     private final UserService userService;

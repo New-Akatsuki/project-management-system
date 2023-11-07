@@ -74,10 +74,7 @@ public class MainController {
         return "project-details-info";
     }
 
-    @GetMapping("/change-password")
-    public String detailssd(){
-        return "change-password";
-    }
+
 
 }
 
