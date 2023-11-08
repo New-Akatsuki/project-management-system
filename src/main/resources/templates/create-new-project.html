@@ -108,7 +108,10 @@
     </div>
     <div class="card" style="border-radius: 10px;">
       <div class="card-body">
+        <form th:action="@{/pm/create-project}" method="post" th:object="${ProjectFormInput}"
+              id="create-project">
         <div class="row">
+
           <div class="col-md-6">
             <div class="form-group">
               <label for="name" class="form-label">Name</label>
@@ -241,7 +244,7 @@
           </div>
           <br>
 
-          <div class= "col-md-6">
+          <div class= "col-md-6 mt-4">
             <div class="form-floating">
                                                 <textarea class="form-control" placeholder="Objective" id="obj"
                                                           name="obj" required></textarea>
@@ -252,7 +255,7 @@
 
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-6 mt-4">
             <div class="form-floating">
                                                 <textarea class="form-control" placeholder="Background" id="bg"
                                                           name="bg" required></textarea>
@@ -263,13 +266,16 @@
           </div>
           <br>
 
-          <div class="button-div">
+          <div class="d-flex justify-content-end mt-4">
+            <div class="button-div">
+              <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
             <button type="submit" class="btn btn-primary">Submit</button>
-            <button class="btn btn-danger">Cancel</button>
+            </div>
           </div>
 
 
         </div>
+        </form>
       </div>
     </div>
 

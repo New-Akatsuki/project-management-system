@@ -84,14 +84,6 @@ public class MemberController {
         return new ModelAndView("issue-create", "issueCreateFormInput", new IssueCreateFormInput());
     }
 
-    @PostMapping("/create-issue")
-    public String createIssue(@ModelAttribute IssueCreateFormInput issueCreateFormInput){
-        log.info("========================================================");
-        log.info("issue: {}", issueCreateFormInput);
-        log.info("========================================================\n");
-        return "redirect:/";
-    }
-
     @GetMapping("/display-issue")
     public ModelAndView displayIssue(){
         return new ModelAndView("issue-details", "IssueSolveFormInput", new IssueSolveFormInput());

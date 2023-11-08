@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.IssueFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class PMRestController {
     private final ClientService clientService;
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
+    private final ProjectService projectService;
 
 
     @PreAuthorize("hasAuthority('PM')")
@@ -253,7 +256,15 @@ public class PMRestController {
         List<UserViewObject> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-   }
+
+    @PostMapping("/pm/create-project")
+    public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projFormInput) {
+        log.info("create project {} \n\n", projFormInput);
+        return ResponseEntity.ok(projectService.saveProject(projFormInput, "pm"));
+    }
+}
+
+
 
 
 

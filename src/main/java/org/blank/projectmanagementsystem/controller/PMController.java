@@ -54,6 +54,7 @@ public class PMController {
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
 
+
     @GetMapping("/project-list")
     public String projectList() {
         return "project-list";

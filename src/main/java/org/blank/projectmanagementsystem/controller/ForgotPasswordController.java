@@ -29,6 +29,7 @@ public class ForgotPasswordController {
     private final UserService userService;
     private final ForgotPasswordRepository fwRepo;
     private final ForgotPasswordService fwService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/forgot-password")
     public String PasswordForget(){
@@ -75,7 +76,7 @@ public class ForgotPasswordController {
         String token=(String) session.getAttribute("token");
         ForgotPasswordToken fwToken=fwRepo.findByToken(token);
         User user=fwToken.getUser();
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         fwToken.setUsed(true);
         userService.save(user);
         fwRepo.save(fwToken);
