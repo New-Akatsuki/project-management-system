@@ -17,5 +17,6 @@ public interface IssueService {
     IssuePlace createIssuePlace(IssuePlace issuePlace);
     List<IssuePlace> getAllPlace();
     List<User> getAllUser();
+    List<Issue> getAllIssue();
 
 }

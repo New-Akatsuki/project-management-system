@@ -269,34 +269,9 @@
         $('#issue-pic').val("default").trigger('change');
         $('#multiSelect').val(null).trigger('change');
     }
-
     let quillContent = new Quill("#content", aa);
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
-    // document.getElementById('create-issue').addEventListener('submit', function (e) {
-    //     // Get the Quill content
-    //     var quillContentHTML = quillContent.root.innerHTML;
-    //     var quillDirCauseHTML = quillDirCause.root.innerHTML;
-    //     var quillRootCauseHTML = quillRootCause.root.innerHTML;
-    //
-    //     // Validation check
-    //     if (!isValidQuillContent(quillContentHTML) || isValidQuillContent(quillDirCauseHTML) || !isValidQuillContent(quillRootCauseHTML)) {
-    //         // If validation fails, prevent the form submission
-    //         e.preventDefault();
-    //         alert("Quill content cannot be empty.");
-    //     } else {
-    //         // Update hidden input fields
-    //         document.getElementById('contentInput').value = quillContentHTML;
-    //         document.getElementById('dirCauseInput').value = quillDirCauseHTML;
-    //         document.getElementById('rootCauseInput').value = quillRootCauseHTML;
-    //     }
-    // });
-
-    // Function to check if Quill content is valid
-    // function isValidQuillContent(html) {
-    //     // You can modify this condition based on your specific validation requirements
-    //     return html.trim() !== '' && html.trim() !== '<p><br></p>';
-    // }
     //document element ready
     document.addEventListener('DOMContentLoaded', function () {
         const containers = document.querySelectorAll('.ql-container');
@@ -490,28 +465,10 @@
         console.log('cArray:', cArray);
         console.log('uArray:', uArray);
 
-        // Make the AJAX request with the modified data
-//         $.ajax({
-//             url: '/save-res-party',
-//             type: 'POST',
-//             contentType: 'application/json',
-//             data: JSON.stringify({
-//                 cArray: cArray,
-//                 uArray: uArray
-//             }),
-//             success: function (responseData) {
-//                 console.log(responseData);
-//             },
-//             error: function (responseData) {
-//                 console.log('Error');
-//                 alert('Creation failed');
-//             }
-//         });
         return {
             id: null,
             providerIds: uArray,
             clientId: cArray[0]
-
         }
     }
 </script>
@@ -573,7 +530,7 @@
         if (isNaN(issuePic) || issuePic === 'default' || issuePic === null) {
             errors.push('#picError');
         }
-        if (resParty === null || resParty.length === 0) {
+        if (resParty.providerIds.length === 0) {
             errors.push('#resPartyError');
         }
         if (content === '' || content === '<p><br></p>') {
@@ -627,71 +584,9 @@
             }
         });
     });
-
-
-    // const issueObj = {
-    //     id: null,
-    //     title: issueTitle,
-    //     content: content,
-    //     directCause: dirCause,
-    //     rootCause: rootCause,
-    //     responsibleParty: resParty,
-    //     issuePlace: issuePlace,
-    //     issueCategory: issueCategory,
-    //     pic: issuePic
-    // };
-    //
-    // // Convert to JSON string
-    // const jsonString = JSON.stringify(issueObj);
-    // console.log(jsonString);
-    //
-    // $.ajax({
-    //     url: '/create-issue',
-    //     type: 'POST',
-    //     contentType: "application/json",
-    //     data: jsonString,
-    //     success: function (response) {
-    //         alert("Issue created successfully");
-    //         window.location.href = "/all-issues";
-    //     },
-    //     error: function (response) {
-    //         alert("Issue creation failed");
-    //     }
-    // })
-</script>
-<script>
-    // $(document).ready(function () {
-    //     $('#titleError').hide();
-    //     $('#categoryError').hide();
-    //     $('#issueError').hide();
-    //     $('#picError').hide();
-    //     $('#resPartyError').hide();
-    //     $('#contentError').hide();
-    //     $('#dirCauseError').hide();
-    //     $('#rootCauseError').hide();
-    //
-    //     let titleError = false;
-    //
-    //     $('#title').keyup(function () {
-    //         validateTitle();
-    //     });
-    //
-    //     function validateTitle() {
-    //         let titleValue = $('#title').val();
-    //         if (titleValue.length == '') {
-    //             $('#titleError').show();
-    //             titleError = false;
-    //             return false;
-    //         } else {
-    //             $('#titleError').hide();
-    //             titleError = true;
-    //         }
-    //     }
-    // });
 </script>
 <script>
     $('.text-danger').hide();
-
     // Function to hide the relevant error message when user interacts with input/select
     function hideErrorOnInteraction(input, error) {
         input.on('input', function () {
@@ -722,9 +617,6 @@
     quillRootCause.on('text-change', function () {
         $('#rootCauseError').hide();
     });
-
-    // Rest of your script...
-
 </script>
 </body>
 </html>

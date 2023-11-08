@@ -26,12 +26,6 @@ public class IssueServiceImpl implements IssueService {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
     private final ResponsiblePartyRepository responsiblePartyRepository;
-//    @Override
-//    public IssueViewObject createIssue(IssueCreateFormInput issueCreateFormInput) {
-//        return issueRepository.save(issueCreateFormInput.toIssue()).toIssueViewObject();
-//        return null;
-//    }
-
 
     @Override
     public Issue createIssue(IssueFormInput issueFormInput) {
@@ -89,6 +83,11 @@ public class IssueServiceImpl implements IssueService {
     private User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username, username).orElse(null);
+    }
+
+    @Override
+    public List<Issue> getAllIssue() {
+        return issueRepository.findAll();
     }
 
 }
