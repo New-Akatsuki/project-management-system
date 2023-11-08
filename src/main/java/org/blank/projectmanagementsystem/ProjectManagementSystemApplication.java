@@ -25,7 +25,7 @@ import java.util.Set;
 
 @SpringBootApplication
 @Slf4j
-@EnableJpaAuditing
+//@EnableJpaAuditing
 public class ProjectManagementSystemApplication {
 
     public static void main(String[] args) {
