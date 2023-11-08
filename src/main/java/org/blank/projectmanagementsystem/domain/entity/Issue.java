@@ -35,29 +35,29 @@ public class Issue implements Serializable {
     @Column(length = 700, nullable = false)
     private String content;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @LastModifiedDate
     private LocalDateTime modifyAt;
 
     private boolean solved=false;
 
-    @Column(nullable = false, length = 700)
+    @Column(length = 700)
     private String impact;
 
     @Column(length = 700, nullable = false)
-    private String direct_cause;
+    private String directCause;
 
     @Column(length = 700, nullable = false)
-    private String root_cause;
+    private String rootCause;
 
-    @Column(length = 700, nullable = false)
+    @Column(length = 700)
     private String correctiveAction;
 
-    @Column(length = 700, nullable = false)
+    @Column(length = 700)
     private String preventiveAction;
 
     @OneToOne
@@ -66,7 +66,7 @@ public class Issue implements Serializable {
 
     @OneToOne
     @JoinColumn(nullable = false)
-    private IssuePlace issue_place;
+    private IssuePlace issuePlace;
 
     @OneToOne
     @JoinColumn(nullable = false)
