@@ -81,7 +81,6 @@ To use dhtmlxGantt in non-GPL projects (and get Pro version of the product), ple
 }
 .gantt_grid .gantt_grid_scale .gantt_grid_head_cell {
   color: rgba(0, 0, 0, 0.54);
-  border: none;
   text-transform: uppercase;
   font-weight: 500;
 }
@@ -108,7 +107,7 @@ div.gantt_scale_line:last-child::after {
 }
 .gantt_grid_data .gantt_cell {
   border-right: none;
-  border-left: none;
+  border-right: 1px solid #ccc;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 400;
 }
@@ -642,10 +641,15 @@ label.gantt_resource_row select {
 .gantt_scale_line:first-child {
   border-top: none;
 }
+.gantt_grid_head_name{
+  text-align: left!important;
+  padding-left: 20px;
+}
 .gantt_grid_head_cell {
   display: inline-block;
   vertical-align: top;
-  border-right: 1px solid #D7D7D7;
+  border-right: 1px solid #ccc!important;
+  font-weight: bold!important;
   text-align: center;
   position: relative;
   cursor: default;
@@ -802,7 +806,7 @@ label.gantt_resource_row select {
 .gantt_grid_data .gantt_last_cell,
 .gantt_task .gantt_task_scale .gantt_scale_cell.gantt_last_cell,
 .gantt_task_bg .gantt_last_cell {
-  border-right-width: 0px;
+  border-right-width: 0;
 }
 .gantt_task .gantt_task_scale .gantt_scale_cell.gantt_last_cell {
   border-right-width: 1px;
@@ -875,6 +879,7 @@ label.gantt_resource_row select {
   height: 100%;
   white-space: nowrap;
   min-width: 0;
+
 }
 .gantt_tree_icon.gantt_open {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAACXBIWXMAAAuUAAALlAF37bb0AAAAIGNIUk0AAHolAACAgwAA+f8AAIDoAABSCAABFVgAADqXAAAXb9daH5AAAAH/SURBVHgBAO8BEP4B////AAAAAAB1dXWV2NjYa+7u7gAJCQkA////AAAAAAAAAAAAvb29AAAAAAACAAAAAAAAAAAGBgZqKysrvREREQD7+/sACAgIAAgICAAICAgAAAAAAAAAAAACAAAAAAAAAAD6+vr1BAQEQisrK8YQEBAA9vb2AP39/QD9/f0AAAAAAAAAAAACAAAAAAAAAAABAQEA+fn5AAUFBTkqKirWCAgIBPLy8gD5+fkAAAAAAAAAAAACAAAAAAAAAAAAAAAAAQEBAPn5+QADAwMpMjIy3xkZGRsEBAQAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAEBAQD4+PgABQUFHCQkJKoVFRUwAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAP///wAICAgA+/v76N3d3Vvx8fHgAAAAAAAAAAAEAAAAAAAAAAAAAAAA////AAcHBwD9/f3b0dHRLfDw8PkGBgYAAAAAAAAAAAAEAAAAAAAAAAD///8ABwcHAPv7+8vY2Ng29/f3AA4ODgAAAAAAAAAAAAAAAAACAAAAAAAAAAAGBgYL+/v7w9LS0jbu7u4ACAgIAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAD4+Pia2traPvj4+AAMDAwA////AAAAAAAAAAAAAAAAAAAAAAABAAD//z9HdQMRW/QpAAAAAElFTkSuQmCC);

@@ -64,10 +64,7 @@ public class MainController {
     }
 
 
-    @GetMapping("/gantt")
-    public String ganttView(){
-        return "gantt-chart";
-    }
+
 
     @GetMapping("/project-details-view")
     public String details(){

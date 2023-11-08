@@ -37,7 +37,7 @@
                 phases: [],
                 tasks: [],
                 users: [],
-                stateDate: null,
+                startDate: null,
                 endDate: null,
                 projectId: null,
                 onChange: function (e, ui) {
@@ -48,7 +48,6 @@
             options
         );
 
-        console.log(settings)
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
@@ -97,15 +96,17 @@
              * ============================================================*/
         function initKanban() {
             $this.addClass(classes.kanban_board_class);
+            $('#add-phase-button').remove()
             $this.append(`<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
                             data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
                                 Add Phase +
                            </button>`);
             //check if element exist, make empty
-            if ($this.find('.' + classes.kanban_board_blocks_class).length) {
-                $this.find('.' + classes.kanban_board_blocks_class).empty();
-            }
+            $this.find('.' + classes.kanban_board_blocks_class).remove();
+
+
             $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
+
             build_section();
             build_tasks();
             build_subtask();
@@ -124,11 +125,12 @@
             if ($this.find('.' + classes.kanban_board_blocks_class).length) {
                 $this.find('.' + classes.kanban_board_blocks_class).empty();
             }
-            //$this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
+            // $this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
             build_section();
             build_tasks();
             build_subtask();
             enableDragAndDrop();
+            console.log()
         }
 
         /* ===========================================================
@@ -270,7 +272,7 @@
                         const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                         subtaskBlock.classList.toggle('hide');
                         //for animation
-                        task.style.height = subtaskBlock.classList.contains('hide') ? '155px' : `${height + 145}px`;
+                        task.style.height = subtaskBlock.classList.contains('hide') ? '145' : `${height + 145}px`;
                         subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                     });
                 }
@@ -325,12 +327,32 @@
         function enableDragAndDrop() {
             $('.' + classes.kb_section_body_class).sortable({
                 connectWith: '.' + classes.kb_section_body_class,
-                placeholder: '.' + classes.kanban_board_item_placeholder_class,
+                placeholder: classes.kanban_board_item_placeholder_class,
                 items: '.' + classes.kb_task_class,
                 start: function (e, ui) {
                     ui.item.data('originalSection', ui.item.closest('.' + classes.kb_section_class));
+                    placeholderHeight = ui.item.outerHeight();
+                    ui.placeholder.height(placeholderHeight + 15);
+                    $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
                 },
-                update: function (e, ui) {
+                change: function (e, ui) {
+                    ui.placeholder.stop().height(0).animate({
+                        height: ui.item.outerHeight() + 15
+                    }, 300);
+
+                    placeholderAnimatorHeight = parseInt($(".slide-placeholder-animator").attr("data-height"));
+
+                    $(".slide-placeholder-animator").stop().height(placeholderAnimatorHeight + 15).animate({
+                        height: 0
+                    }, 300, function() {
+                        $(this).remove();
+                        placeholderHeight = ui.item.outerHeight();
+                        $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
+                    });
+                },
+                stop: function(e, ui) {
+                    $(".slide-placeholder-animator").remove();
+
                     const task = ui.item;
                     const originalSection = ui.item.data('originalSection');
                     const newSection = task.closest('.' + classes.kb_section_class);
@@ -339,9 +361,11 @@
                     const originalSectionId = originalSection.attr('id');
                     const newSectionId = newSection.attr('id');
 
+
                     let taskData = settings.tasks.filter(data => data.id === taskId).at(0);
-                    taskData.phase = newSectionId.split('-')[0];
+                    taskData.phase = parseInt(newSectionId.split('-')[0],10);
                     taskData.parent = null;
+                    taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
                     updateTask(taskData)
                 },
             }).disableSelection();
@@ -375,7 +399,7 @@
                     </div>
                 </div>
             </div>`;
-            $this.append(modal);
+            $('#phaseModalPlace').append(modal);
             $('#confirmButton').on('click', () => {
                 if ($('#confirmInput').val() === 'CONFIRM') {
                     action();
@@ -429,7 +453,7 @@
                     </div>
                 </div>
             </div>`;
-            $this.append(phaseModal);
+            $('#phaseModalPlace').append(phaseModal);
             $(`#${phaseData.title.toLowerCase()}PhaseButton`).on('click', phaseData.title === 'Add' ? savePhase : updatePhase);
 
         }
@@ -457,6 +481,7 @@
                     resetPhaseModal(addPhaseModalData)
                     settings.phases.push(data)
                     render()
+                    $.fn.refreshGantt();
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
@@ -479,6 +504,7 @@
                 success: function (data) {
                     resetPhaseModal(editPhaseModalData)
                     settings.phases.filter(val => val.id === phaseData.id)[0].name = data.name;
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (xhr, status, error) {
@@ -503,6 +529,7 @@
                 success: function (data) {
                     settings.tasks = settings.tasks.filter(val => val.phase !== phaseData.id);
                     settings.phases = settings.phases.filter(val => val.id !== phaseData.id);
+                    $.fn.refreshGantt()
                     render()
                     $('#confirmModal').modal('hide');
                 },
@@ -574,6 +601,7 @@
                         console.log('taskViewModal exist')
                         renderSubtask(parentId);
                     }
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (xhr, status, error) {
@@ -602,8 +630,6 @@
         *  update Task to Database
         * ============================================================*/
         function updateTask(task) {
-
-            console.log('task', task)
             $.ajax({
                 url: '/update-task',
                 method: 'PUT',
@@ -617,6 +643,7 @@
 
                     resetSubtaskDate(data)
                     //reload
+                    $.fn.refreshGantt()
                     render()
                     //check taskViewModal exist and check class list contain show
                     const modal = document.getElementById('taskViewModal')
@@ -660,6 +687,7 @@
                     $('#taskViewModal').remove();
                     $('#confirmModal').modal('hide');
                     currentTaskId = null
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (error) {
@@ -757,7 +785,7 @@
                   </form> 
                 </div>
             </div>`;
-            $this.append(completeTaskModal);
+            $('#phaseModalPlace').append(completeTaskModal);
             checkDatesValidation("task-start-date", "task-end-date");
             console.log('item', item)
             const updateStatusInfo = () => {
@@ -857,7 +885,7 @@
             </div>
             `;
 
-            $this.append(addTaskModal);
+            $('#phaseModalPlace').append(addTaskModal);
             $.each(settings.users, function (index, value) {
                 $('#task-assignees').append($('<option>', {
                     value: value.id,
@@ -872,7 +900,7 @@
             // setupSelect2('#task-assignees',settings.users);
             $('#task-assignees').select2({
                 placeholder: 'assign users',
-                // dropdownParent: $('#exampleModal'),
+                dropdownParent: '#exampleModal',
                 closeOnSelect: true,
                 width: '100%'
             });
@@ -975,7 +1003,7 @@
                             </button>
                             <button id="${task.id}-delete-task-btn" class="btn btn-danger"><i class="bx bx-trash-alt"></i></button>
                             `;
-            $this.append(view);
+            $('#phaseModalPlace').append(view);
 
             //append as first child of offcanvas-header
             $(`.offcanvas-header #btn-area`).prepend(btn);
@@ -1022,7 +1050,15 @@
             $(`#${task.id}-edit-task-btn`).on('click', () => {
                 console.log('clicked edit btn')
                 currentTaskId = task.id;
-                buildAddTaskModal(task.start_date,task.end_date)
+                let minDate=settings.startDate;
+                let maxDate=settings.endDate;
+                if(task.parent){
+                    const parentTask = settings.tasks.filter(val=>val.id === task.parent)[0]
+                    minDate = parentTask.start_date;
+                    maxDate = parentTask.end_date;
+                }
+                console.log(minDate,settings.start_date,maxDate,settings.end_date)
+                buildAddTaskModal(minDate,maxDate)
                 fillDataTaskModal(task.id);
                 $('#exampleModal').modal('show');
             });
@@ -1077,14 +1113,21 @@
             $(`#${data.title.toLowerCase()}PhaseName`).val("")
         }
 
+        function setPhaseAndParentIds(phase, parent){
+            parentId = parent;
+            phaseId = phase;
+            console.log('data',parent,phase)
+            console.log(parentId,phaseId)
+        }
 
         // Export your saveTask function for usage elsewhere
         $.fn.kanban.savePhase = savePhase;
         $.fn.kanban.saveOrUpdateTask = saveOrUpdateTask;
+        $.fn.kanban.buildAddPhaseModal = buildAddTaskModal;
+        $.fn.kanban.buildTaskViewModal =  buildTaskViewModal;
+        $.fn.kanban.resetTaskModal = resetTaskModal;
+        $.fn.kanban.setPhaseAndParentIds = setPhaseAndParentIds;
 
         initKanban();
-        return {
-            render: render,
-        };
     };
 })(jQuery);

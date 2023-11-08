@@ -81,6 +81,9 @@
 .cd_kanban_board_block_item_placeholder{
     width: 100%;
     height: 60px;
+    border: 10px dot-dash #0d6efd;
+    border-radius: 5px;
+    background: #cae0fc;
     margin: 0 0 10px;
     display: block;
     clear: both;
@@ -129,11 +132,13 @@
     padding-block: 0.5rem;
     margin-top: 10px;
     min-height: 50px;
+    height: 100%;
     overflow-y: scroll;
 }
 
 .kb-task {
-    height: 155px;
+    min-height: 145px;
+    height: 145px;
     padding: 10px 20px;
     background-color: #fff;
     transition: height 0.3s ease-out;
@@ -512,8 +517,13 @@ input[type="checkbox"] {
 .move-top{
     position: absolute;
     top: 85px;
-    left: 250px;
+    left: 240px;
     z-index: 1;
+    animation: floatOutSubtask;
+}
+.full-move-phase-btn{
+    left: 290px!important;
+    animation: floatOutSubtask;
 }
 
 .float-edit-btn{
@@ -522,3 +532,4 @@ input[type="checkbox"] {
     right: 25px;
     z-index: 1;
 }
+
