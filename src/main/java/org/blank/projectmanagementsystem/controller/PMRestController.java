@@ -61,11 +61,17 @@ public class PMRestController {
     }
 
 
-    @DeleteMapping("/pm/system-outline/delete/{id}")
-    public ResponseEntity<Long> deleteSystemOutline(@PathVariable Long id) {
-        systemOutlineService.deleteSystemOutline(id);
-        //return 2xx if successful
-        return ResponseEntity.ok(id);
+    @PutMapping("/pm/system-outline/status/{id}")
+    public ResponseEntity<SystemOutline> updateSystemOutlineStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
+        SystemOutline systemOutline = systemOutlineService.getSystemOutlineById(id);
+        if (systemOutline != null) {
+            systemOutline.setStatus(newStatus);
+            SystemOutline updatedSystemOutline = systemOutlineService.save(systemOutline);
+
+            return ResponseEntity.ok(updatedSystemOutline);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/pm/deliverables") // Changed endpoint
@@ -105,24 +111,13 @@ public class PMRestController {
     }
 
 
-    @PostMapping("/pm/deliverable/active/{id}")
-    public ResponseEntity<Deliverable> activateDeliverable(@PathVariable Long id) {
+    @PutMapping("/pm/deliverable/status/{id}")
+    public ResponseEntity<Deliverable> updateDeliverableStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
         Deliverable deliverable = deliverableService.getDeliverableById(id);
         if (deliverable != null) {
-            deliverable.setStatus(true);
+            deliverable.setStatus(newStatus);
             Deliverable updatedDeliverable = deliverableService.save(deliverable);
-            return ResponseEntity.ok(updatedDeliverable);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-  
-    @PostMapping("/pm/deliverable/disable/{id}")
-    public ResponseEntity<Deliverable> disableDeliverable(@PathVariable Long id) {
-        Deliverable deliverable = deliverableService.getDeliverableById(id);
-        if (deliverable != null) {
-            deliverable.setStatus(false);
-            Deliverable updatedDeliverable = deliverableService.save(deliverable);
+
             return ResponseEntity.ok(updatedDeliverable);
         } else {
             return ResponseEntity.notFound().build();
@@ -170,23 +165,11 @@ public class PMRestController {
         }
     }
 
-
-    @PostMapping("/pm/client/active/{id}")
-    public ResponseEntity<Client> activateClient(@PathVariable Long id) {
+    @PutMapping("/pm/client/status/{id}")
+    public ResponseEntity<Client> updateClientStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
         Client client = clientService.getClientById(id);
         if (client != null) {
-            client.setStatus(true);
-            Client updatedClient = clientService.save(client);
-            return ResponseEntity.ok(updatedClient);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    @PostMapping("/pm/client/disable/{id}")
-    public ResponseEntity<Client> disableClient(@PathVariable Long id) {
-        Client client = clientService.getClientById(id);
-        if (client != null) {
-            client.setStatus(false);
+            client.setStatus(newStatus);
             Client updatedClient = clientService.save(client);
             return ResponseEntity.ok(updatedClient);
         } else {
@@ -234,11 +217,17 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-    @DeleteMapping("/pm/architecture/delete/{id}")
-    public ResponseEntity<Long> deleteArchitecture(@PathVariable Long id) {
-        architectureService.deleteArchitecture(id);
-        //return 2xx if successful
-        return ResponseEntity.ok(id);
+    @PutMapping("/pm/architecture/status/{id}")
+    public ResponseEntity<Architecture> updateArchitectureStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
+        Architecture architecture = architectureService.getArchitectureById(id);
+        if (architecture != null) {
+            architecture.setStatus(newStatus);
+            Architecture updatedArchitecture = architectureService.save(architecture);
+
+            return ResponseEntity.ok(updatedArchitecture);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/pm/add-users")

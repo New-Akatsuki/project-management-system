@@ -1,4 +1,5 @@
 package org.blank.projectmanagementsystem.service.impl;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,41 +28,19 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public List<Client> getallClients() {
-        return  clientRepository.findAll();
-    }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public Optional<Client> findByName(String name) {
-        return clientRepository.findByName(name);
+    @Transactional
+    public Client updateClientStatus(Long id, boolean status) {
+        Client client = clientRepository.findById(id).orElse(null);
+        if (client != null) {
+            client.setStatus(status);
+            clientRepository.save(client);
+        }
+        return client;
     }
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public Optional<Optional<Client>> findByEmail(String email) {
-        return Optional.ofNullable(clientRepository.findByEmail(email));
-    }
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public Optional<Optional<Client>> findByPhoneNumber(String phoneNumber) {
-        return Optional.ofNullable(clientRepository.findByPhoneNumber(phoneNumber));
-    }
-
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public List<Client> findAll() {
-        return null;
-    }
-
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public Client findById(Integer id) {
-        return null;
-    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
@@ -83,9 +62,5 @@ public class ClientServiceImpl implements ClientService {
 
     }
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public void deleteClient(Long id) {
-        clientRepository.deleteById(id);
-    }
+
 }

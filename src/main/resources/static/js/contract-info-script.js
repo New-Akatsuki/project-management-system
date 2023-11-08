@@ -27,11 +27,10 @@ $(document).ready(function () {
     Build the client table
     ===================================================*/
     function renderClientTable(items) {
-        //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#client')) {
             $('#client').DataTable().destroy();
         }
-        console.log('contractInfo', contractInfo);
+
         return $('#client').DataTable({
             data: items,
             columns: [
@@ -41,27 +40,45 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                {data: 'name'},
-                {data: 'email'},
-                {data: 'phoneNumber'},
+                { data: 'name' },
+                { data: 'email' },
+                { data: 'phoneNumber' },
+                {
+                    data: 'status',
+                    render: function (data, type, row) {
+                        const statusText = data ? 'Active' : 'Disabled';
+                        const statusClass = data ? 'success' : 'secondary';
+
+                        const toggleButtonHtml = data
+                            ? `<button type="button" onclick="toggleClientStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
+                            : `<button type="button" onclick="toggleClientStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
+
+                        return `
+                        <div class="btn-group" role="group" aria-label="Client Status">
+                            ${toggleButtonHtml}
+                        </div>
+                    `;
+                    }
+                },
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
                         return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditClientModal(${row.id})">Edit</button>
-                                
-                                `;
+                        <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditClientModal(${row.id})">Edit</button>
+                    `;
                     }
                 },
-
             ]
         });
     }
+
+
 
     /*===================================================
     Build the deliverable table
      ===================================================*/
     function renderDeliverableTable(items) {
+        console.log(items);
 
         //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#deliverable')) {
@@ -79,11 +96,29 @@ $(document).ready(function () {
                 },
                 {data: 'name'},
                 {
+                    data: 'status',
+                    render: function (data, type, row) {
+                        // const statusText = data ? 'Active' : 'Disabled';
+                        // const statusClass = data ? 'success' : 'secondary';
+
+                        const toggleButtonHtml = data
+                            ? `<button type="button" onclick="toggleDeliverableStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
+                            : `<button type="button" onclick="toggleDeliverableStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
+
+                        return `
+                        <div class="btn-group" role="group" aria-label="Client Status">
+                            ${toggleButtonHtml}
+                        </div>
+                    `;
+                    }
+                },
+
+                {
                     data: 'id',
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditDeliverableModal(${row.id})">Edit</button>
-                                
+
                                 `;
                     }
                 },
@@ -91,6 +126,8 @@ $(document).ready(function () {
             ]
         });
     }
+
+
 
     /*===================================================
     Build the architecture table
@@ -114,6 +151,23 @@ $(document).ready(function () {
                 },
                 {data: 'name'},
                 {data: 'type'},
+                {
+                    data: 'status',
+                    render: function (data, type, row) {
+                        // const statusText = data ? 'Active' : 'Disabled';
+                        // const statusClass = data ? 'success' : 'secondary';
+
+                        const toggleButtonHtml = data
+                            ? `<button type="button" onclick="toggleArchitectureStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
+                            : `<button type="button" onclick="toggleArchitectureStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
+
+                        return `
+                        <div class="btn-group" role="group" aria-label="Architecture Status">
+                            ${toggleButtonHtml}
+                        </div>
+                    `;
+                    }
+                },
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
@@ -149,6 +203,23 @@ $(document).ready(function () {
                     }
                 },
                 {data: 'name'},
+                {
+                    data: 'status',
+                    render: function (data, type, row) {
+                        // const statusText = data ? 'Active' : 'Disabled';
+                        // const statusClass = data ? 'success' : 'secondary';
+
+                        const toggleButtonHtml = data
+                            ? `<button type="button" onclick="toggleSystemOutlineStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
+                            : `<button type="button" onclick="toggleSystemOutlineStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
+
+                        return `
+                        <div class="btn-group" role="group" aria-label="SystemOutline Status">
+                            ${toggleButtonHtml}
+                        </div>
+                    `;
+                    }
+                },
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
@@ -560,59 +631,6 @@ $(document).ready(function () {
     });
 
 
-
-
-    // Function to initiate action confirmation for a client
-    function confirmClientAction(clientId) {
-        $("#activateClientButton").data("client-id", clientId);
-        $("#disableClientButton").data("client-id", clientId);
-        $("#confirmClientActionModal").modal("show");
-    }
-
-
-// Event handler for activating client button click
-    $("#activateClientButton").click(function() {
-        var clientId = $(this).data("client-id");
-        // Perform logic to activate client using AJAX request
-        $.ajax({
-            type: "POST",
-            url: `/pm/client/activate/${clientId}`, // Endpoint to activate client data by ID
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (data) {
-                console.log("Client activated successfully!");
-                // Perform any additional UI updates if needed
-            },
-            error: function () {
-                console.error("Error activating client.");
-            }
-        });
-
-        // Close the confirmation modal
-        $("#confirmClientActionModal").modal("hide");
-    });
-
-// Event handler for disabling client button click
-    $("#disableClientButton").click(function() {
-        var clientId = $(this).data("client-id");
-        // Perform logic to disable client using AJAX request
-        $.ajax({
-            type: "POST",
-            url: `/pm/client/disable/${clientId}`, // Endpoint to disable client data by ID
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (data) {
-                console.log("Client disabled successfully!");
-                // Perform any additional UI updates if needed
-            },
-            error: function () {
-                console.error("Error disabling client.");
-            }
-        });
-
-        // Close the confirmation modal
-        $("#confirmClientActionModal").modal("hide");
-    });
     /*===================================================
          delete architecture to database
  ===================================================*/
@@ -690,7 +708,7 @@ $(document).ready(function () {
     /*===================================================
             open edit Client modal
     ===================================================*/
-    function openEditClientModal(clientId) {
+   function openEditClientModal(clientId) {
 
         const client = contractInfo.clients.filter(client => client.id === clientId)[0];
 
@@ -703,6 +721,9 @@ $(document).ready(function () {
         // Show the edit deliverable modal
         $('#editClientModal').modal('show');
     }
+
+
+
 
     /*===================================================
            open edit Architecture modal
@@ -749,6 +770,7 @@ $(document).ready(function () {
     $.fn.addClient = addClient;
     $.fn.openEditClientModal = openEditClientModal;
     $.fn.updateClient = updateClient;
+    // $.fn.toggleClientStatus= toggleClientStatus;
 
 
 
@@ -774,3 +796,142 @@ $(document).ready(function () {
     $.fn.deleteSystemOutline = deleteSystemOutline;
 
 });
+
+/*function toggleClientStatus(id, newStatus) {
+    $.ajax({
+        url: `/pm/client/status/${id}?newStatus=${newStatus}`,
+        type: 'PUT',
+        success: function(response) {
+            // Handle success response, update UI if necessary
+            console.log('Client status updated successfully:', response);
+            // Refresh the client table after updating the status
+            // Call the function that fetches data and re-renders the table
+        },
+        error: function(error) {
+            // Handle error response
+            console.error('Error updating client status:', error);
+        }
+    });
+}*/
+function toggleClientStatus(id, newStatus) {
+    // Show Bootstrap modal for confirmation
+    const actionText = newStatus ?  'disable' : 'enable';
+    $('#confirmationClientAction').text(actionText);
+
+    $('#confirmationClientModal').modal('show');
+
+    // Set event listener for modal confirm button
+    $('#confirmClientButton').on('click', function() {
+        // Close the modal
+        $('#confirmationClientModal').modal('hide');
+
+        // Make the AJAX request
+        $.ajax({
+            url: `/pm/client/status/${id}?newStatus=${newStatus}`,
+            type: 'PUT',
+            success: function(response) {
+                // Handle success response, update UI if necessary
+                console.log('Client status updated successfully:', response);
+                // Refresh the client table after updating the status
+                // Call the function that fetches data and re-renders the table
+            },
+            error: function(error) {
+                // Handle error response
+                console.error('Error updating client status:', error);
+            }
+        });
+
+        // Remove event listener to prevent multiple clicks
+        $('#confirmClientButton').off('click');
+    });
+}
+
+function toggleDeliverableStatus(id, newStatus) {
+    // Show Bootstrap modal for confirmation
+    const actionText = newStatus ? 'disable' : 'enable';
+    $('#confirmationDeliverableAction').text(actionText);
+    $('#confirmationDeliverableModal').modal('show');
+
+    // Set event listener for modal confirm button
+    $('#confirmDeliverableButton').on('click', function () {
+        // Close the modal
+        $('#confirmationDeliverableModal').modal('hide');
+
+        // Make the AJAX request
+        $.ajax({
+            url: `/pm/deliverable/status/${id}?newStatus=${newStatus}`,
+            type: 'PUT',
+            success: function (response) {
+                // Handle success response, update UI if necessary
+                console.log('Deliverable status updated successfully:', response);
+                // Refresh the deliverable table after updating the status
+                // Call the function that fetches data and re-renders the table
+            },
+            error: function (error) {
+                // Handle error response
+                console.error('Error updating Deliverable status:', error);
+            }
+        });
+        $('#confirmDeliverableButton').off('click');
+    });
+}
+function toggleArchitectureStatus(id, newStatus) {
+    // Show Bootstrap modal for confirmation
+    const actionText = newStatus ? 'disable' : 'enable';
+    $('#confirmationArchitectureAction').text(actionText);
+    $('#confirmationArchitectureModal').modal('show');
+
+    // Set event listener for modal confirm button
+    $('#confirmArchitectureButton').on('click', function () {
+        // Close the modal
+        $('#confirmationArchitectureModal').modal('hide');
+
+        // Make the AJAX request
+        $.ajax({
+            url: `/pm/architecture/status/${id}?newStatus=${newStatus}`,
+            type: 'PUT',
+            success: function (response) {
+                // Handle success response, update UI if necessary
+                console.log('Architecture status updated successfully:', response);
+                // Refresh the deliverable table after updating the status
+                // Call the function that fetches data and re-renders the table
+            },
+            error: function (error) {
+                // Handle error response
+                console.error('Error updating Architecture status:', error);
+            }
+        });
+        $('#confirmArchitectureButton').off('click');
+    });
+}
+
+function toggleSystemOutlineStatus(id, newStatus) {
+    // Show Bootstrap modal for confirmation
+    const actionText = newStatus ? 'disable' : 'enable';
+    $('#confirmationSystemOutlineAction').text(actionText);
+    $('#confirmationSystemOutlineModal').modal('show');
+
+    // Set event listener for modal confirm button
+    $('#confirmSystemOutlineButton').on('click', function () {
+        // Close the modal
+        $('#confirmationSystemOutlineModal').modal('hide');
+
+        // Make the AJAX request
+        $.ajax({
+            url: `/pm/system-outline/status/${id}?newStatus=${newStatus}`,
+            type: 'PUT',
+            success: function (response) {
+                // Handle success response, update UI if necessary
+                console.log('SystemOutline status updated successfully:', response);
+                // Refresh the deliverable table after updating the status
+                // Call the function that fetches data and re-renders the table
+            },
+            error: function (error) {
+                // Handle error response
+                console.error('Error updating SystemOutline status:', error);
+            }
+        });
+        $('#confirmSystemOutlineButton').off('click');
+    });
+}
+
