@@ -62,58 +62,16 @@ public class IssueAPI {
         return pic;
     }
 
-
-//    @PostMapping("/save-res-party")
-//    public String saveResponsibleParty(@RequestBody String resParty) {
-//        System.out.println("Received responsible party data: " + resParty);
-//
-//        // Return a response, you can customize this based on your requirements
-//        return "Responsible party data saved successfully!";
-//    }
-
-
-//    @PostMapping("/save-res-party")
-//    public ResponseEntity<String> saveResponsibleParty(@RequestBody String[] resParty) {
-//        List<Long> cArray = new ArrayList<>();
-//        List<Long> uArray = new ArrayList<>();
-//
-//        for (String party : resParty) {
-//            if (party.startsWith("c")) {
-//                // Remove the 'c' prefix and parse the remaining part as a long
-//                String numericPart = party.substring(1);
-//                try {
-//                    long numericValue = Long.parseLong(numericPart);
-//                    cArray.add(numericValue);
-//                } catch (NumberFormatException e) {
-//                    // Handle parsing error if needed
-//                    System.err.println("Error parsing numeric part for 'c': " + numericPart);
-//                }
-//            } else if (party.startsWith("u")) {
-//                // Remove the 'u' prefix and parse the remaining part as a long
-//                String numericPart = party.substring(1);
-//                try {
-//                    long numericValue = Long.parseLong(numericPart);
-//                    uArray.add(numericValue);
-//                } catch (NumberFormatException e) {
-//                    // Handle parsing error if needed
-//                    System.err.println("Error parsing numeric part for 'u': " + numericPart);
-//                }
-//            }
-//        }
-//
-//        // Log or process the arrays as needed
-//        System.out.println("cArray: " + cArray);
-//        System.out.println("uArray: " + uArray);
-//
-//        // Return a response if needed
-//        return ResponseEntity.ok("Data received successfully");
-//    }
-
     @PostMapping("/create-issue")
     public ResponseEntity<Issue> createIssue(@RequestBody IssueFormInput issueFormInput) {
         log.info("create issue {} \n\n", issueFormInput);
         return ResponseEntity.ok(issueService.createIssue(issueFormInput));
     }
 
-
+    @GetMapping("/get-all-issue")
+    public ResponseEntity<List<Issue>> getAllIssue() {
+        List<Issue> issues = issueService.getAllIssue();
+        log.info("get all issue {} \n\n", issues);
+        return ResponseEntity.ok(issues);
+    }
 }
