@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
                 .email(addUserFormInput.getEmail())
                 .role(Role.valueOf(addUserFormInput.getRole()))
                 .department(department)
+                .active(true)
                 .build();
 
         // Generate a default password for the user (you can modify this part)

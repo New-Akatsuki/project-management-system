@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -242,9 +243,9 @@ public class PMRestController {
 
     @PostMapping("/pm/member-create")
     public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-
+        log.info("===================");
+log.info("User: {}", addUserFormInput);
             return ResponseEntity.ok(userService.createMember(addUserFormInput));
-
     }
 
 

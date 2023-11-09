@@ -56,22 +56,19 @@
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
-
-
 <main id="main" class="main">
     <!-- Breadcrumb part-->
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">userlist</li>
+                <li class="breadcrumb-item active">member list</li>
             </ol>
         </nav>
     </div>
     <!-- End Page Title -->
 
     <!-- Main Content -->
-
     <div class="conatiner-fluid content-inner mt-n5 py-0">
         <div>
             <div class="row">
@@ -79,8 +76,8 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">User List</h4>
-                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add User</a>
+                                <h4 class="card-title">Member List</h4>
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
                             </div>
                         </div>
                         <div class="card-body px-">
@@ -90,9 +87,11 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
+                                        <th>Email</th>
                                         <th>Department</th>
                                         <th>Role</th>
                                         <th>Action</th>
+                                        <th>Status</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -110,7 +109,6 @@
 <!-- Template Main JS File -->
 
 <script src="/js/main.js"></script>
-<script th:src="@{/js/single-select.js}"></script>
 
 
 <!-- Edit User Modal-->
@@ -159,14 +157,17 @@
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name">
                     </div>
-
+                    <div class="form-group">
+                        <label for="name">Email</label>
+                        <input type="text" class="form-control" id="email">
+                    </div>
                     <div class="form-group">
                         <label for="department">Department</label>
                         <input type="text" class="form-control" id="department">
                     </div>
                     <div class="form-group">
-                        <label for="role">Role</label>
-                        <input type="text" class="form-control" id="role">
+                        <label for="newUserRole">Role</label>
+                        <input type="text" class="form-control" id="newUserRole"/>
                     </div>
                 </div>
             </div>
@@ -185,11 +186,11 @@
 <!--    const department_wrapperUpdateName = singleSelect(id2, data2);-->
 
 <!--</script>-->
+
+<!--For Member List Table-->
 <script>
-    // User DataTable
     let userList = [];
     $(document).ready(function () {
-
         // Make an AJAX request to fetch data from the REST API endpoint
         $.ajax({
             url: '/pm/users', // Replace with your actual API endpoint
@@ -198,31 +199,58 @@
             success: function (data) {
                 console.log('Data received:', data);
                 userList = data;
-                // Initialize DataTable with the received data
-                let table = $('#user-list-table').DataTable({
-                    data: data,
-                    columns: [
-                        {data: 'id'},
-                        {data: 'name'},
-                        {data: 'department'},
-                        {data: 'role'},
-                        {
-                            data: 'id',
-                            render: function (data, type, row, meta) {
-                                return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleCli(${row.id})">Delete</button>
-                                `;
-                            }
-                        }
-                    ]
-                });
+                // Render the data into the DataTable
+                renderMemberListTable(data);
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
             }
         });
     });
+
+
+    function renderMemberListTable(items) {
+        //check if deliverable table is already initialized, if so, refresh the table with new data
+        if ($.fn.DataTable.isDataTable('#user-list-table')) {
+            $('#user-list-table').DataTable().destroy();
+        }
+        console.log('contractInfo', userList);
+        return $('#user-list-table').DataTable({
+            data: items,
+            columns: [
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {data: 'name'},
+                {data: 'department'},
+                {data: 'role'},
+                {
+                    data: 'status',
+                    render: function (data, type, row) {
+
+                        return `
+                        <div id="toggleBtnMemberGp" class="btn-group" role="group" aria-label="Member Status">
+                           ${buildToggleMemberBtn(data, row.id)}
+                        </div>
+                    `;
+                    }
+                },
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return `
+                    <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteUser(${row.id})">Delete</button>
+                                `;
+                    }
+                },
+
+            ]
+        });
+    }
 
 // For Edit User Modal
     function displayEditUserModal(userId) {
@@ -255,7 +283,7 @@
                 // Hide the modal
                 $('#userEditModal').modal('hide');
                 // Reload the DataTable with new data
-                $('#user-list-table').DataTable().ajax.reload();
+                $(document).ajax.reload();
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
@@ -283,15 +311,17 @@
         });
     }
 </script>
+
 <!--Create New Member-->
 <script>
     function addNewMember() {
         let addMember = {
-            id: null,
             name: $("#name").val(),
-            role: $("#userRole").val(),
-            department: $("#department").val()
+            email: $("#email").val(),
+            role: $("#newUserRole").val(),
+            department: parseInt($("#department").val())
         };
+        console.log(addMember);
         $.ajax({
            type: "POST",
               contentType: "application/json",
@@ -299,9 +329,9 @@
                 data: JSON.stringify(addMember),
                 dataType: 'json',
                 success: function (data) {
-                    console.log('Data received:', data);
-                    // Reload the DataTable with new data
-                    $('#user-list-table').DataTable().ajax.reload();
+                    userList.push(data)
+                    console.log(userList);
+                    renderMemberListTable(userList);
                 },
                 error: function (error) {
                     console.log('Error deleting user:', error);
@@ -310,5 +340,54 @@
     }
 
     </script>
+
+
+<!--Build Toggle Member Btn-->
+<script>
+    function buildToggleUserBtn(status,id){
+        $('#toggleMemberBtn').remove();
+        const statusText = status ? 'Disabled' : 'Active';
+        const statusClass = status ? 'secondary' : 'success';
+        const btn = `<button id="toggleMemberBtn" type="button" onclick="toggleMemberStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+        $('#toggleBtnMemberGp').append(btn)
+        return btn;
+    }
+    function toggleMemberStatus(id, newStatus) {
+        // Show Bootstrap modal for confirmation
+        const actionText = newStatus ? 'disable' : 'enable';
+        $('#confirmationMemberAction').text(actionText);
+
+        $('#confirmationMemberModal').modal('show');
+
+        // Set event listener for modal confirm button
+        $('#confirmMemberButton').on('click', function(event) {
+            // Prevent form submission and page refresh
+            event.preventDefault();
+
+            // Close the modal
+            $('#confirmationMemberModal').modal('hide');
+
+            // Make the AJAX request
+            $.ajax({
+                url: `/pm/member/status/${id}?newStatus=${newStatus}`,
+                type: 'PUT',
+                success: function(contractInfo) {
+                    // Handle success response, update UI if necessary
+                    console.log('Client status updated successfully:', contractInfo);
+                    buildToggleMemberBtn(contractInfo.status, contractInfo.id);
+                    // Assuming 'renderClientTable' updates the client table with new data
+                },
+                error: function(error) {
+                    // Handle error response
+                    console.error('Error updating client status:', error);
+                }
+            });
+            $('#confirmMemberButton').off('click');
+        });
+    }
+    $.fn.buildToggleMemberBtn = buildToggleMemberBtn;
+
+
+</script>
 </body>
 </html>

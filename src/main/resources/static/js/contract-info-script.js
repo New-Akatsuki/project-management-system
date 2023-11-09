@@ -49,7 +49,7 @@ $(document).ready(function () {
                     render: function (data, type, row, meta) {
                         return `
                                 <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditClientModal(${row.id})">Edit</button>
-                                
+                             
                                 `;
                     }
                 },
