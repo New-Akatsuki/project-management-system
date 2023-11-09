@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet"/>
+  <!-- Library / Plugin Css Build -->
+  <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+  <!-- Dark Css -->
+  <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+  <!-- Single Select -->
+  <!--  <link rel="stylesheet" href="/css/single-select.css">-->
+
+
+  <!--    <link rel="stylesheet" href="/css/datatable.css"/>-->
+  <!--    <script src="/js/ajax-jquery.js"></script>-->
+  <!--    <script src="/js/datatable.js"></script>-->
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+
+<main id="main" class="main">
+  <!-- Breadcrumb part-->
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">userlist</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Main Content -->
+
+  <div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <div class="header-title">
+                <h4 class="card-title">User List</h4>
+                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4"
+                   th:href="@{/pm/add-user}">Add User</a>
+
+              </div>
+            </div>
+            <div class="card-body px-">
+              <div class="table-responsive">
+                <table id="user-list-table" class="display" style="width: 100%;">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Main Content-->
+</main>
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<script th:src="@{/js/single-select.js}"></script>
+
+
+<!-- Edit User Modal-->
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Edit User Role And Department</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="editName">Name</label>
+            <input type="text" class="form-control" id="editName">
+          </div>
+          <div class="form-group">
+            <label for="editRole">Role</label>
+            <input type="text" class="form-control" id="editRole">
+          </div>
+          <div class="form-group">
+            <label for="editDepartment">Department</label>
+            <input type="text" class="form-control" id="editDepartment">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" onclick="editUser" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--&lt;!&ndash;Single Select&ndash;&gt;-->
+<!--<script>-->
+
+<!--    const data2 = ['ACE', 'DAT', 'Ace Plus']-->
+<!--    const id2 = init("department")-->
+<!--    const department_wrapperUpdateName = singleSelect(id2, data2);-->
+
+<!--</script>-->
+<script>
+  let userList = [];
+  $(document).ready(function () {
+    // Make an AJAX request to fetch data from the REST API endpoint
+    $.ajax({
+      url: '/pm/users', // Replace with your actual API endpoint
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log('Data received:', data);
+        userList = data;
+        // Render the data into the DataTable
+        renderClientTable(data);
+      },
+      error: function (error) {
+        console.log('Error fetching data:', error);
+      }
+    });
+  });
+
+
+  function renderClientTable(items) {
+    //check if deliverable table is already initialized, if so, refresh the table with new data
+    if ($.fn.DataTable.isDataTable('#user-list-table')) {
+      $('#user-list-table').DataTable().destroy();
+    }
+    console.log('contractInfo', userList);
+    return $('#user-list-table').DataTable({
+      data: items,
+      columns: [
+        {
+          data: 'id',
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          }
+        },
+        {data: 'name'},
+        {data: 'department'},
+        {data: 'role'},
+        {
+          data: 'id',
+          render: function (data, type, row, meta) {
+            return `
+                    <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
+                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleCli(${row.id})">Delete</button>
+                                `;
+          }
+        },
+
+      ]
+    });
+  }
+
+  function displayEditUserModal(userId) {
+    const user = userList.find(user => user.id === userId);
+    // Populate modal fields with user data
+    $('#editName').val(user.name);
+    $('#editRole').val(user.role);
+    $('#editDepartment').val(user.department);
+    // Disable the "name" field
+    $('#editName').prop('disabled', true);
+
+    // Show the modal
+    $('#userEditModal').modal('show');
+  }
+  function editUser(){
+    //Capture the data from the modal fields
+    // Capture the data from the modal fields
+    var name = $('#editName').val();
+    var role = $('#editRole').val();
+    var department = $('#editDepartment').val();
+
+// Perform an AJAX request to update the user on the server
+    $.ajax({
+      url: '/pm/users', // Replace with your actual API endpoint
+      method: 'PUT',
+      data: JSON.stringify({ name: name, role: role, department: department }),
+      dataType: 'json',
+      success: function (data) {
+        console.log('Data received:', data);
+        // Hide the modal
+        $('#userEditModal').modal('hide');
+        // Reload the DataTable with new data
+        $('#user-list-table').DataTable().ajax.reload();
+      },
+      error: function (error) {
+        console.log('Error fetching data:', error);
+      }
+
+    });
+  }
+
+</script>
+<script>
+  function deleteMember (id){
+    $.ajax({
+      url: '/pm/users/' + id, // Append the user ID to the endpoint
+      method: 'DELETE',
+      dataType: 'json',
+
+      success: function (data) {
+        console.log('Data received:', data);
+        // Hide the modal
+        $('#userEditModal').modal('hide');
+        // Reload the DataTable with new data
+        $('#user-list-table').DataTable().ajax.reload();
+      },
+      error: function (error) {
+        console.log('Error fetching data:', error);
+      }
+    });
+  }
+
+</script>
+
+
+</body>
+</html>
