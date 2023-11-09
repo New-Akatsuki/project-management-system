@@ -104,13 +104,15 @@
             //check if element exist, make empty
             $this.find('.' + classes.kanban_board_blocks_class).remove();
 
-
             $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
 
             build_section();
             build_tasks();
             build_subtask();
             enableDragAndDrop();
+            $('#addPhaseModal').remove()
+            $('#editPhaseModal').remove()
+            console.log('in initKanban() line 97')
             buildPhaseModal(addPhaseModalData);
             buildPhaseModal(editPhaseModalData);
         }
@@ -432,6 +434,7 @@
         *  Build phase modals Function
         * ============================================================*/
         function buildPhaseModal(phaseData = {title: 'Add', modalId: 'addPhaseModal'}) {
+            console.log('in buildPhaseModal() line 434')
             const phaseModal = `
               <div class="modal fade" id="${phaseData.modalId}" tabindex="-1" aria-labelledby="${phaseData.modalId}Label" aria-hidden="true">
                 <div class="modal-dialog">
@@ -493,6 +496,7 @@
      *  update Phase to Database
      * ============================================================*/
         function updatePhase() {
+            console.log('in updatePhase() line 495')
             let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId, 10))[0]
             phaseData.name = $(`#${editPhaseModalData.title.toLowerCase()}PhaseName`).val();
             $.ajax({
@@ -817,11 +821,11 @@
                                 <div class="task-body-text-layout">
                                     <div class="form-group d-flex flex-column mb-0">
                                         <label for="task-name" class="form-label">Enter Task Name:</label>
-                                        <input type="text" id="task-name" placeholder="Name" class="form-control" required>
+                                        <input type="text" id="task-name" placeholder="Name" class="form-control" minlength="3" maxlength="50" required>
                                     </div>
                                     <div class="form-group d-flex flex-column mb-0">
                                         <label for="task-description" class="form-label">Enter Description:</label>
-                                        <textarea id="task-description" placeholder="Description" class="form-control"></textarea>
+                                        <textarea id="task-description" placeholder="Description" class="form-control" maxlength="500"></textarea>
                                     </div>
                                     <div class="d-flex gap-2 align-items-start">
                                         <div class="form-group mb-0 flex-3 d-flex flex-column">

@@ -89,7 +89,7 @@
 
 
             mapForGantt(phases)
-
+            //config gantt chart
             gantt.templates.task_text = function (start, end, task) {
                 return task.name + ' : ' + end.toLocaleString('en-US', {
                     month: 'short',
@@ -99,6 +99,12 @@
             gantt.config.bar_height = 30;
             gantt.templates.date_format = "%Y-%m-%d";
             gantt.config.xml_date = "%Y-%m-%d";
+            // gantt.config.resize_rows = true;
+            gantt.config.sort = true;
+            gantt.config.columns[1].sort = false;
+            gantt.config.columns[2].sort = false;
+
+            //render gantt chart
             gantt.init('gantt');
             gantt.parse({data: vendor.tasks, links: []});
 
@@ -106,9 +112,15 @@
             var colHeader = '<a data-bs-toggle="modal" data-bs-target="#addPhaseModal"><i class="bx bx-plus align-middle fs-5"></i></a>';
 
             gantt.config.columns = [
+                {name:"wbs", label:"WBS", width:40, template:gantt.getWBSCode },
                 {name: "name", label: 'Task Name', tree: true, width: '*', resize: true},
-                {name: "start_date", label: 'Start date', width: 100, align: "center", resize: true},
-                {name: "duration", label: 'Duration', width: 80, align: "center"},
+                {name: "priority", label: 'Pri', width: 50, align: "center",template: function (task) {
+                        const priorityClass = task.priority === 'high' ? 'priority-high' :
+                            task.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                        return task.priority===''?'':`<span class="col-3"><span class="${priorityClass} text-block fs-sx min-w-50px">${task.priority}</span></span>`;
+                    },
+                },
+                {name: "duration", label: 'Dur', width: 50, align: "center"},
                 {
                     name: "buttons", label: colHeader, width: 44, align: "center", template: function (task) {
                         return (
@@ -131,6 +143,16 @@
                     $.fn.kanban.buildTaskViewModal(parseInt(id));
                     $('#taskViewModal').offcanvas('show');
                 }
+            });
+
+            gantt.attachEvent("onAfterTaskUpdate", function (id, item) {
+                console.log('onAfterTaskUpdate clicked ', id, item);
+            });
+            gantt.attachEvent("onRowDragEnd", function (id, item) {
+                console.log('onRowDragEnd clicked ', id, item);
+            });
+            gantt.attachEvent("onRowDragEnd", function (id, item) {
+                console.log('onRowDragEnd clicked ', id, item);
             });
 
 

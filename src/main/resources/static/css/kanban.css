@@ -482,6 +482,14 @@ input[type="checkbox"] {
     color: white;
     vertical-align: middle;
 }
+.fs-sx{
+    font-size: 8px;
+}
+
+.min-w-50px{
+    width: 50px;
+}
+
 .priority-high{
     background: #ff3535;
     border: 1px solid #ff3535;
