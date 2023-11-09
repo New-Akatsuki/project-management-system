@@ -20,6 +20,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -143,4 +144,14 @@ public class UserServiceImpl implements UserService {
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
     }
+
+    @Override
+    public User getUserById(Long id) {
+        // Assuming you have a UserRepository or a database query to fetch the user by ID
+        Optional<User> userOptional = userRepository.findById(id);
+        // For this example, we return null if the user is not found
+        return userOptional.orElse(null);
+    }
+
+
 }

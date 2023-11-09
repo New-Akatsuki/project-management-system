@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -255,7 +254,27 @@ log.info("User: {}", addUserFormInput);
         List<UserViewObject> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-   }
+
+    @PutMapping("/pm/member/status/{id}")
+    public ResponseEntity<User> updateMemberStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
+        User user = userService.getUserById(id); // Change this to retrieve a specific user by id
+
+        if (user != null) {
+            user.setActive(newStatus);
+            User updatedUser = userService.save(user); // Change Client to User since it seems like a typo
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+}
+
+
+
+
+
+
 
 
 

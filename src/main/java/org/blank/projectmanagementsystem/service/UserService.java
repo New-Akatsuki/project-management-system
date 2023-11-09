@@ -14,4 +14,6 @@ public interface UserService {
     void changePassword(String currentPassword, String newPassword);
     UserViewObject createMember(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
+
+    User getUserById(Long id);
 }

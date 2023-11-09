@@ -87,11 +87,10 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th>Email</th>
                                         <th>Department</th>
                                         <th>Role</th>
-                                        <th>Action</th>
                                         <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -178,6 +177,33 @@
         </div>
     </div>
 </div>
+
+
+<!--Confirmation Modal-->
+<div class="modal fade" id="confirmationMemberModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalMemberLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalMemberLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationMemberAction"></span> this member?
+                <div id="confirmationMemberMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"  id="confirmMemberButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <!--&lt;!&ndash;Single Select&ndash;&gt;-->
 <!--<script>-->
 
@@ -233,7 +259,7 @@
 
                         return `
                         <div id="toggleBtnMemberGp" class="btn-group" role="group" aria-label="Member Status">
-                           ${buildToggleMemberBtn(data, row.id)}
+                           ${$.fn.buildToggleMemberBtn(data, row.id)}
                         </div>
                     `;
                     }
@@ -243,7 +269,7 @@
                     render: function (data, type, row, meta) {
                         return `
                     <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
-                                <button class="btn btn-sm btn-danger mx-2" onclick="$.fn.deleteUser(${row.id})">Delete</button>
+
                                 `;
                     }
                 },
@@ -344,14 +370,7 @@
 
 <!--Build Toggle Member Btn-->
 <script>
-    function buildToggleUserBtn(status,id){
-        $('#toggleMemberBtn').remove();
-        const statusText = status ? 'Disabled' : 'Active';
-        const statusClass = status ? 'secondary' : 'success';
-        const btn = `<button id="toggleMemberBtn" type="button" onclick="toggleMemberStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-        $('#toggleBtnMemberGp').append(btn)
-        return btn;
-    }
+
     function toggleMemberStatus(id, newStatus) {
         // Show Bootstrap modal for confirmation
         const actionText = newStatus ? 'disable' : 'enable';
@@ -371,19 +390,26 @@
             $.ajax({
                 url: `/pm/member/status/${id}?newStatus=${newStatus}`,
                 type: 'PUT',
-                success: function(contractInfo) {
+                success: function(memberInfo) {
                     // Handle success response, update UI if necessary
-                    console.log('Client status updated successfully:', contractInfo);
-                    buildToggleMemberBtn(contractInfo.status, contractInfo.id);
-                    // Assuming 'renderClientTable' updates the client table with new data
+                    console.log('Member status updated successfully:', memberInfo);
+                    buildToggleMemberBtn(memberInfo.status, memberInfo.id);
                 },
                 error: function(error) {
                     // Handle error response
-                    console.error('Error updating client status:', error);
+                    console.error('Error updating member status:', error);
                 }
             });
             $('#confirmMemberButton').off('click');
         });
+    }
+    function buildToggleMemberBtn(status,id){
+        $('#toggleMemberBtn').remove();
+        const statusText = status ? 'Disabled' : 'Active';
+        const statusClass = status ? 'secondary' : 'success';
+        const btn = `<button id="toggleMemberBtn" type="button" onclick="toggleMemberStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+        $('#toggleBtnMemberGp').append(btn)
+        return btn;
     }
     $.fn.buildToggleMemberBtn = buildToggleMemberBtn;
 
