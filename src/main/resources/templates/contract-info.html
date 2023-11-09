@@ -306,21 +306,26 @@
       </div>
       <div class="modal-body">
         <!-- Form for adding a new client -->
-        <form class="mt-4">
+        <form class="mt-4" id="addClientForm">
           <div class="form-group">
             <label for="clientName" class="form-label">Client Name</label>
             <input type="text" class="form-control" id="clientName" name="name" required placeholder="Enter client name">
+            <div class="invalid-feedback" id="name-error">Please enter a valid client name.</div>
+
           </div>
           <div class="form-group">
             <label for="clientEmail" class="form-label">Email</label>
             <input type="email" class="form-control" id="clientEmail" name="email" required placeholder="Enter email">
+            <div class="invalid-feedback" id="email-error">Please enter a valid email address.</div>
+
           </div>
           <div class="form-group">
             <label for="clientPhoneNumber" class="form-label">Phone Number</label>
             <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
+            <div class="invalid-feedback" id="phoneNumber-error">Please enter a valid phone number.</div>
           </div>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" onclick="$.fn.addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+          <button type="button" id="addClientBtn" onclick="$.fn.addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
 
         </form>
        </div>

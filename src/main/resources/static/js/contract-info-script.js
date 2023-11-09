@@ -46,16 +46,10 @@ $(document).ready(function () {
                 {
                     data: 'status',
                     render: function (data, type, row) {
-                        const statusText = data ? 'Active' : 'Disabled';
-                        const statusClass = data ? 'success' : 'secondary';
-
-                        const toggleButtonHtml = data
-                            ? `<button type="button" onclick="toggleClientStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
-                            : `<button type="button" onclick="toggleClientStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
 
                         return `
-                        <div class="btn-group" role="group" aria-label="Client Status">
-                            ${toggleButtonHtml}
+                        <div id="toggleBtnGp" class="btn-group" role="group" aria-label="Client Status">
+                           ${buildToggleUserBtn(data, row.id)}
                         </div>
                     `;
                     }
@@ -78,9 +72,6 @@ $(document).ready(function () {
     Build the deliverable table
      ===================================================*/
     function renderDeliverableTable(items) {
-        console.log(items);
-
-        //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#deliverable')) {
             $('#deliverable').DataTable().destroy();
         }
@@ -94,38 +85,31 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                {data: 'name'},
+                { data: 'name' },
+
                 {
                     data: 'status',
                     render: function (data, type, row) {
-                        // const statusText = data ? 'Active' : 'Disabled';
-                        // const statusClass = data ? 'success' : 'secondary';
-
-                        const toggleButtonHtml = data
-                            ? `<button type="button" onclick="toggleDeliverableStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
-                            : `<button type="button" onclick="toggleDeliverableStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
 
                         return `
-                        <div class="btn-group" role="group" aria-label="Client Status">
-                            ${toggleButtonHtml}
+                        <div id="toggleBtndeliverableGp" class="btn-group" role="group" aria-label="Deliverable Status">
+                           ${buildToggleDeliverableBtn(data, row.id)}
                         </div>
                     `;
                     }
                 },
-
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
                         return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditDeliverableModal(${row.id})">Edit</button>
-
-                                `;
+                        <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditDeliverableModal(${row.id})">Edit</button>
+                    `;
                     }
                 },
-
             ]
         });
     }
+
 
 
 
@@ -133,62 +117,52 @@ $(document).ready(function () {
     Build the architecture table
      ===================================================*/
 
-    function renderArchitectureTable(items) {
 
-        //check if deliverable table is already initialized, if so, refresh the table with new data
-        if ($.fn.DataTable.isDataTable('#architecture')) {
-            $('#architecture').DataTable().destroy();
-        }
+        function renderArchitectureTable(items) {
+            if ($.fn.DataTable.isDataTable('#architecture')) {
+                $('#architecture').DataTable().destroy();
+            }
 
-        return $('#architecture').DataTable({
-            data: items,
-            columns: [
-                {
-                    data: 'id',
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                },
-                {data: 'name'},
-                {data: 'type'},
-                {
-                    data: 'status',
-                    render: function (data, type, row) {
-                        // const statusText = data ? 'Active' : 'Disabled';
-                        // const statusClass = data ? 'success' : 'secondary';
+            return $('#architecture').DataTable({
+                data: items,
+                columns: [
+                    {
+                        data: 'id',
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    { data: 'name' },
+                    { data: 'type' },
 
-                        const toggleButtonHtml = data
-                            ? `<button type="button" onclick="toggleArchitectureStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
-                            : `<button type="button" onclick="toggleArchitectureStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
+                    {
+                        data: 'status',
+                        render: function (data, type, row) {
 
-                        return `
-                        <div class="btn-group" role="group" aria-label="Architecture Status">
-                            ${toggleButtonHtml}
+                            return `
+                        <div id="toggleBtnArchitectureGp" class="btn-group" role="group" aria-label="Architecture Status">
+                           ${buildToggleArchitectureBtn(data, row.id)}
                         </div>
                     `;
-                    }
-                },
-                {
-                    data: 'id',
-                    render: function (data, type, row, meta) {
-                        return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
-                                
-                                `;
-                    }
-                },
-
-            ]
-        });
-    }
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function (data, type, row, meta) {
+                            return `
+                        <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
+                    `;
+                        }
+                    },
+                ]
+            });
+        }
 
     /*===================================================
    Build the SystemOutline table
     ===================================================*/
 
     function renderSystemOutlineTable(items) {
-
-        //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#systemOutline')) {
             $('#systemOutline').DataTable().destroy();
         }
@@ -202,20 +176,15 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                {data: 'name'},
+                { data: 'name' },
+
                 {
                     data: 'status',
                     render: function (data, type, row) {
-                        // const statusText = data ? 'Active' : 'Disabled';
-                        // const statusClass = data ? 'success' : 'secondary';
-
-                        const toggleButtonHtml = data
-                            ? `<button type="button" onclick="toggleSystemOutlineStatus(${row.id}, false)" class="btn btn-secondary">Disable</button>`
-                            : `<button type="button" onclick="toggleSystemOutlineStatus(${row.id}, true)" class="btn btn-success">Active</button>`;
 
                         return `
-                        <div class="btn-group" role="group" aria-label="SystemOutline Status">
-                            ${toggleButtonHtml}
+                        <div id="toggleBtnSystemOutlineGp" class="btn-group" role="group" aria-label="SystemOutline Status">
+                           ${buildToggleSystemOutlineBtn(data, row.id)}
                         </div>
                     `;
                     }
@@ -224,12 +193,10 @@ $(document).ready(function () {
                     data: 'id',
                     render: function (data, type, row, meta) {
                         return `
-                                <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditSystemOutlineModal(${row.id})">Edit</button>
-                                
-                                `;
+                        <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditSystemOutlineModal(${row.id})">Edit</button>
+                    `;
                     }
                 },
-
             ]
         });
     }
@@ -363,9 +330,6 @@ $(document).ready(function () {
             }
         });
     }
-
-
-
     /*===================================================
             update deliverable to database
      ===================================================*/
@@ -582,114 +546,13 @@ $(document).ready(function () {
             delete deliverable to database
     ===================================================*/
 
-    function updateDeliverableStatus(deliverableId, isActive) {
-        // Set the deliverableId to a data attribute of the confirmation button
-        $("#confirmDeleteDeliverableButton").data("deliverable-id", deliverableId);
-
-        // Set the isActive flag to a data attribute of the confirmation button
-        $("#confirmDeleteDeliverableButton").data("is-active", isActive);
-
-        // Open the confirmation modal
-        $("#confirmDeleteDeliverableModal").modal("show");
-    }
-
-
-// When the user confirms deletion in the modal, proceed with the deletion
-    $("#confirmDeleteDeliverableButton").click(function() {
-        // Disable the delete button to prevent multiple clicks
-        $(this).prop("disabled", true);
-
-        var deliverableId = $(this).data("deliverable-id");
-        var isActive = $(this).data("is-active");
-
-        var url = isActive ? `/pm/deliverable/active/${deliverableId}` : `/pm/deliverable/disable/${deliverableId}`;
-
-        $.ajax({
-            type: "POST",
-            url: url, // Endpoint to update deliverable status by ID
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (data) {
-                // Update the deliverables in the contractInfo object
-                contractInfo.deliverables = contractInfo.deliverables.filter(deliverable => deliverable.id !== data.id);
-                contractInfo.deliverables.push(data); // Add the updated deliverable
-
-                // Reload Table
-                renderDeliverableTable(contractInfo.deliverables);
-            },
-            error: function () {
-                // Handle error if necessary
-            },
-            complete: function() {
-                // Enable the delete button after the request is completed (success or error)
-                $("#confirmDeleteDeliverableButton").prop("disabled", false);
-            }
-        });
-
-        // Close the confirmation modal
-        $("#confirmDeleteDeliverableModal").modal("hide");
-    });
 
 
     /*===================================================
          delete architecture to database
  ===================================================*/
-    // Function to initiate delete confirmation
-    function deleteArchitecture(architectureId) {
-        $("#confirmDeleteArchitectureButton").data("architecture-id", architectureId);
-        $("#confirmDeleteArchitectureModal").modal("show");
-    }
-    $("#confirmDeleteArchitectureButton").click(function() {
-        var architectureId = $(this).data("architecture-id");
-        $.ajax({
-            type: "DELETE",
-            url: `/pm/architecture/delete/${architectureId}`, // Endpoint to delete architecture data by ID
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (data) {
-               contractInfo.architectures = contractInfo.architectures.filter(architecture => architecture.id !== data);
-                renderArchitectureTable(contractInfo.architectures);
-            },
-            error: function () {
-               }
-        });
-        $("#confirmDeleteArchitectureModal").modal("hide");
-    });
 
 
-    /*===================================================
-         delete systemOutline to database
-     ===================================================*/
-    // Function to initiate delete confirmation
-    function deleteSystemOutline(systemOutlineId) {
-        $("#confirmDeleteButton").data("system-outline-id", systemOutlineId);
-        // Open the confirmation modal
-        $("#confirmDeleteModal").modal("show");
-    }
-
-// When user confirms deletion, perform the deletion and update UI
-    $("#confirmDeleteButton").click(function() {
-        var systemOutlineId = $(this).data("system-outline-id");
-        $.ajax({
-            type: "DELETE",
-            url: `/pm/system-outline/delete/${systemOutlineId}`, // Endpoint to delete system outline by ID
-            contentType: "application/json",
-            dataType: 'json',
-            success: function (data) {
-                // Update the system outlines in the contractInfo object
-                contractInfo.systems = contractInfo.systems.filter(systemOutline => systemOutline.id !== data);
-
-                // Reload the table
-                renderSystemOutlineTable(contractInfo.systems);
-            },
-            error: function () {
-                // Handle error if necessary
-            }
-        });
-
-        // Close the confirmation modal
-        $("#confirmDeleteModal").modal("hide");
-    });
 
     /*===================================================
             open edit deliverable modal
@@ -760,7 +623,8 @@ $(document).ready(function () {
     $.fn.addDeliverable = addDeliverable;
     $.fn.openEditDeliverableModal = openEditDeliverableModal;
     $.fn.updateDeliverable = updateDeliverable;
-    $.fn.updateDeliverableStatus = updateDeliverableStatus;
+    $.fn.buildToggleDeliverable= buildToggleDeliverableBtn;
+
 
     /*===================================================
        export client functions to global scope
@@ -771,6 +635,7 @@ $(document).ready(function () {
     $.fn.openEditClientModal = openEditClientModal;
     $.fn.updateClient = updateClient;
     // $.fn.toggleClientStatus= toggleClientStatus;
+    $.fn.buildToggleUserBtn = buildToggleUserBtn;
 
 
 
@@ -782,7 +647,8 @@ $(document).ready(function () {
     $.fn.addArchitecture = addArchitecture;
     $.fn.openEditArchitectureModal = openEditArchitectureModal;
     $.fn.updateArchitecture = updateArchitecture;
-    $.fn.deleteArchitecture = deleteArchitecture;
+    $.fn.buildToggleArchitectureBtn = buildToggleArchitectureBtn;
+
 
 
     /*===================================================
@@ -793,35 +659,24 @@ $(document).ready(function () {
     $.fn.addSystemOutline= addSystemOutline;
     $.fn.openEditSystemOutlineModal = openEditSystemOutlineModal;
     $.fn.updateSystemOutline = updateSystemOutline;
-    $.fn.deleteSystemOutline = deleteSystemOutline;
+    $.fn.buildToggleSystemOutlineBtn = buildToggleSystemOutlineBtn;
+
 
 });
 
-/*function toggleClientStatus(id, newStatus) {
-    $.ajax({
-        url: `/pm/client/status/${id}?newStatus=${newStatus}`,
-        type: 'PUT',
-        success: function(response) {
-            // Handle success response, update UI if necessary
-            console.log('Client status updated successfully:', response);
-            // Refresh the client table after updating the status
-            // Call the function that fetches data and re-renders the table
-        },
-        error: function(error) {
-            // Handle error response
-            console.error('Error updating client status:', error);
-        }
-    });
-}*/
+
 function toggleClientStatus(id, newStatus) {
     // Show Bootstrap modal for confirmation
-    const actionText = newStatus ?  'disable' : 'enable';
+    const actionText = newStatus ? 'disable' : 'enable';
     $('#confirmationClientAction').text(actionText);
 
     $('#confirmationClientModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmClientButton').on('click', function() {
+    $('#confirmClientButton').on('click', function(event) {
+        // Prevent form submission and page refresh
+        event.preventDefault();
+
         // Close the modal
         $('#confirmationClientModal').modal('hide');
 
@@ -829,31 +684,34 @@ function toggleClientStatus(id, newStatus) {
         $.ajax({
             url: `/pm/client/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function(response) {
+            success: function(contractInfo) {
                 // Handle success response, update UI if necessary
-                console.log('Client status updated successfully:', response);
-                // Refresh the client table after updating the status
-                // Call the function that fetches data and re-renders the table
+                console.log('Client status updated successfully:', contractInfo);
+                buildToggleUserBtn(contractInfo.status, contractInfo.id);
+                // Assuming 'renderClientTable' updates the client table with new data
             },
             error: function(error) {
                 // Handle error response
                 console.error('Error updating client status:', error);
             }
         });
-
-        // Remove event listener to prevent multiple clicks
         $('#confirmClientButton').off('click');
     });
 }
+
 
 function toggleDeliverableStatus(id, newStatus) {
     // Show Bootstrap modal for confirmation
     const actionText = newStatus ? 'disable' : 'enable';
     $('#confirmationDeliverableAction').text(actionText);
+
     $('#confirmationDeliverableModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmDeliverableButton').on('click', function () {
+    $('#confirmDeliverableButton').on('click', function(event) {
+        // Prevent form submission and page refresh
+        event.preventDefault();
+
         // Close the modal
         $('#confirmationDeliverableModal').modal('hide');
 
@@ -861,28 +719,33 @@ function toggleDeliverableStatus(id, newStatus) {
         $.ajax({
             url: `/pm/deliverable/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function (response) {
+            success: function(contractInfo) {
                 // Handle success response, update UI if necessary
-                console.log('Deliverable status updated successfully:', response);
-                // Refresh the deliverable table after updating the status
-                // Call the function that fetches data and re-renders the table
+                console.log('Deliverable status updated successfully:', contractInfo);
+                buildToggleDeliverableBtn(contractInfo.status, contractInfo.id);
+                // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function (error) {
+            error: function(error) {
                 // Handle error response
-                console.error('Error updating Deliverable status:', error);
+                console.error('Error updating deliverable status:', error);
             }
         });
         $('#confirmDeliverableButton').off('click');
     });
 }
+
 function toggleArchitectureStatus(id, newStatus) {
     // Show Bootstrap modal for confirmation
     const actionText = newStatus ? 'disable' : 'enable';
     $('#confirmationArchitectureAction').text(actionText);
+
     $('#confirmationArchitectureModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmArchitectureButton').on('click', function () {
+    $('#confirmArchitectureButton').on('click', function(event) {
+        // Prevent form submission and page refresh
+        event.preventDefault();
+
         // Close the modal
         $('#confirmationArchitectureModal').modal('hide');
 
@@ -890,29 +753,35 @@ function toggleArchitectureStatus(id, newStatus) {
         $.ajax({
             url: `/pm/architecture/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function (response) {
+            success: function(contractInfo) {
                 // Handle success response, update UI if necessary
-                console.log('Architecture status updated successfully:', response);
-                // Refresh the deliverable table after updating the status
-                // Call the function that fetches data and re-renders the table
+                console.log('Architecture status updated successfully:', contractInfo);
+                buildToggleArchitectureBtn(contractInfo.status, contractInfo.id);
+                // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function (error) {
+            error: function(error) {
                 // Handle error response
-                console.error('Error updating Architecture status:', error);
+                console.error('Error updating architecture status:', error);
             }
         });
         $('#confirmArchitectureButton').off('click');
     });
 }
 
+
+
 function toggleSystemOutlineStatus(id, newStatus) {
     // Show Bootstrap modal for confirmation
     const actionText = newStatus ? 'disable' : 'enable';
     $('#confirmationSystemOutlineAction').text(actionText);
+
     $('#confirmationSystemOutlineModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmSystemOutlineButton').on('click', function () {
+    $('#confirmSystemOutlineButton').on('click', function(event) {
+        // Prevent form submission and page refresh
+        event.preventDefault();
+
         // Close the modal
         $('#confirmationSystemOutlineModal').modal('hide');
 
@@ -920,18 +789,56 @@ function toggleSystemOutlineStatus(id, newStatus) {
         $.ajax({
             url: `/pm/system-outline/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function (response) {
+            success: function(contractInfo) {
                 // Handle success response, update UI if necessary
-                console.log('SystemOutline status updated successfully:', response);
-                // Refresh the deliverable table after updating the status
-                // Call the function that fetches data and re-renders the table
+                console.log('SystemOutline status updated successfully:', contractInfo);
+                buildToggleSystemOutlineBtn(contractInfo.status, contractInfo.id);
+                // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function (error) {
+            error: function(error) {
                 // Handle error response
                 console.error('Error updating SystemOutline status:', error);
             }
         });
         $('#confirmSystemOutlineButton').off('click');
     });
+}
+
+
+/*===================================================
+        build toggle button
+  ====================================================*/
+function buildToggleUserBtn(status,id){
+    $('#toggleUserBtn').remove();
+    const statusText = status ? 'Disabled' : 'Active';
+    const statusClass = status ? 'secondary' : 'success';
+    const btn = `<button id="toggleUserBtn" type="button" onclick="toggleClientStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $('#toggleBtnGp').append(btn)
+    return btn;
+}
+function buildToggleDeliverableBtn(status,id){
+    $('#toggleDeliverableBtn').remove();
+    const statusText = status ? 'Disabled' : 'Active';
+    const statusClass = status ? 'secondary' : 'success';
+    const btn = `<button id="toggleDeliverableBtn" type="button" onclick="toggleDeliverableStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $('#toggleBtndeliverableGp').append(btn)
+    return btn;
+}
+function buildToggleArchitectureBtn(status,id){
+    $('#toggleArchitectureBtn').remove();
+    const statusText = status ? 'Disabled' : 'Active';
+    const statusClass = status ? 'secondary' : 'success';
+    const btn = `<button id="toggleArchitectureBtn" type="button" onclick="toggleArchitectureStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $('#toggleBtnArchitectureGp').append(btn)
+    return btn;
+}
+
+function buildToggleSystemOutlineBtn(status,id){
+    $('#toggleSystemOutlineBtn').remove();
+    const statusText = status ? 'Disabled' : 'Active';
+    const statusClass = status ? 'secondary' : 'success';
+    const btn = `<button id="toggleSystemOutlineBtn" type="button" onclick="toggleSystemOutlineStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $('#toggleBtnSystemOutlineGp').append(btn)
+    return btn;
 }
 
