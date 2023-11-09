@@ -257,11 +257,13 @@ public class PMRestController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/pm/create-project")
-    public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projFormInput) {
-        log.info("create project {} \n\n", projFormInput);
-        return ResponseEntity.ok(projectService.saveProject(projFormInput, "pm"));
+    @PostMapping("/pm/create-proj")
+    public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projectFormInput) {
+        log.info("create project {} \n\n", projectFormInput);
+        return ResponseEntity.ok(projectService.saveProject(projectFormInput, projectFormInput.getName()));
     }
+
+
 }
 
 

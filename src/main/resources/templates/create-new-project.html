@@ -108,8 +108,9 @@
     </div>
     <div class="card" style="border-radius: 10px;">
       <div class="card-body">
-        <form th:action="@{/pm/create-project}" method="post" th:object="${ProjectFormInput}"
-              id="create-project">
+        <form th:action="@{/pm/create-new-project}" method="post" th:object="${projectFormInput}"
+              id="create-issue">
+
         <div class="row">
 
           <div class="col-md-6">
@@ -152,11 +153,7 @@
             <div class="d-flex gap-2 align-items-center">
               <select class="form-control" name="member" id="member" multiple
                       required>
-                <option value="1">Sar Sar</option>
-                <option value="2">ADar Dar</option>
-                <option value="3">SAndy</option>
-                <option value="4">Olivia</option>
-                <option value="5">Martin</option>
+
               </select>
             </div>
             <div class="invalid-feedback" id="member_error"></div>
@@ -169,11 +166,7 @@
             <div class="d-flex gap-2 align-items-center">
               <select class="form-control" name="member" id="focmember" multiple
                       required>
-                <option value="1">Sar Sar</option>
-                <option value="2">ADar Dar</option>
-                <option value="3">SAndy</option>
-                <option value="4">Olivia</option>
-                <option value="5">Martin</option>
+
               </select>
 
             </div>
@@ -185,17 +178,27 @@
             <label for="so" class="form-label">System Outline</label>
             <div class="d-flex gap-2">
               <select class="form-control" name="so" id="so" multiple required>
-                <option value="1">Afghanistan</option>
-                <option value="2">Australia</option>
-                <option value="3">Germany</option>
-                <option value="4">Canada</option>
-                <option value="5">Russia</option>
               </select>
               <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
                 <i class='bx bx-plus m-0 p-0'></i>
               </a>
             </div>
             <div class="invalid-feedback" id="so_error"></div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="issue_category" class="mb-0">Category</label>
+            <div class="d-flex gap-2 w-100 p-0">
+              <!-- First Select Box with Default Value -->
+              <select class="js-example-basic-single select-box form-select"
+                      id="issue_category" style="width: 100%; height: 100%;">
+                <option value="default" selected disabled>Select an option</option>
+                <!-- Add more options as needed -->
+              </select>
+              <button type="button" class="btn btn-primary btn-icon" id="callCategoryModal"><i
+                      class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+            </div>
+            <span class="text-danger" id="categoryError">Category must be selected.</span>
           </div>
 
           <div class ="col-md-6">
@@ -344,7 +347,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        <button type="button" onclick="$.fn.addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Save</button>
       </div>
     </div>
   </div>
@@ -469,6 +472,107 @@
   const id2 = init("department")
   const department_wrapperUpdateName = singleSelect(id2, data2);
 
+</script>
+
+<script src="/js/contract-info-script.js"></script>
+<script>
+  function populateSelect(selector, options) {
+    let select = $(selector);
+    $.each(options, function (index, value) {
+      select.append('<option value="' + value.id + '">' + value.name + '</option>');
+    });
+  }
+
+  function updateSelect(selector, option) {
+    let select = $(selector);
+    select.append('<option value="' + option.id + '">' + option.name + '</option>');
+  }
+
+  function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId) {
+    function toggleError() {
+      error.toggleClass('d-none', input.val().trim() !== '');
+    }
+
+    function resetModal() {
+      let modalID = $('#' + modalId);
+      input.val('');
+      error.addClass('d-none');
+      modalID.modal('show');
+      // Use the 'shown.bs.modal' event to focus on the input
+      modalID.on('shown.bs.modal', function () {
+        input.focus();
+      });
+    }
+
+    function handlePostRequest(data) {
+      $.ajax({
+        url: postURL,
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (responseData) {
+          $('#' + modalId).modal('hide');
+          updateSelect(selectBoxClass, responseData);
+          console.log(responseData);
+        },
+        error: function (responseData) {
+          console.log(responseData);
+          alert("Creation failed");
+        }
+      });
+    }
+
+    input.on('input', toggleError);
+
+    modalButton.click(resetModal);
+
+    $(document).ready(function () {
+      $.ajax({
+        url: getURL,
+        type: 'GET',
+        success: function (data) {
+          populateSelect(selectBoxClass, data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+    modalSaveButton.click(function () {
+      let inputValue = input.val().trim();
+      if (inputValue !== '') {
+        handlePostRequest({id: null, name: inputValue});
+      } else {
+        error.removeClass('d-none');
+        input.focus();
+      }
+    });
+  }
+
+  // Usage for addPlace button
+  setupModalHandling(
+          $('#addPlace'),
+          $('#addPlaceError'),
+          $('#callPlaceModal'),
+          $('#saveAddPlace'),
+          '/member/get-place',
+          '/member/create-place',
+          '.js-example-basic-single.select-box1',
+          'placeModal'
+  );
+
+  // Usage for addCategory button
+  setupModalHandling(
+          $('#addCategory'),
+          $('#addCategoryError'),
+          $('#callCategoryModal'),
+          $('#saveAddCategory'),
+          '/member/get-category',
+          '/member/create-category',
+          '.js-example-basic-single.select-box',
+          'categoryModal'
+  );
 </script>
 
 </body>
