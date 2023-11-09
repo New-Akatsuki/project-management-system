@@ -126,6 +126,9 @@
         const actualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth);
         updateManMonthChart([selectedProjectId], [planManMonths], [actualManMonths]);
 
+        const actualProductivityRatio = calculateManMonthProductivity(actualManMonths, planManMonths);
+        updateManMonthProductivity(selectedProjectId, actualProductivityRatio);
+
       });
     } else if (selectedDepartmentId && selectedMonth) {
       $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
@@ -149,6 +152,12 @@
               console.log("All Projects Processed. Updating Chart.");
               updateManMonthChart(projectLabels, planManMonths, actualManMonths);
             }
+
+            const departmentActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
+            const departmentPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
+            const departmentProductivityRatio = calculateManMonthProductivity(departmentActualManMonths, departmentPlanManMonths);
+
+            updateManMonthProductivity(selectedDepartmentId, departmentProductivityRatio);
           });
         }
 
@@ -195,6 +204,12 @@
                   if (departmentsProcessed === departments.length) {
                     updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
                   }
+
+                  const allDepartmentsActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
+                  const allDepartmentsPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
+                  const allDepartmentsProductivityRatio = calculateManMonthProductivity(allDepartmentsActualManMonths, allDepartmentsPlanManMonths);
+
+                  updateManMonthProductivity("All Departments", allDepartmentsProductivityRatio);
                 }
               });
             }
@@ -237,13 +252,12 @@
     return actualManMonth;
   }
 
-  function calculateManMonthProdutivity(actualManMonths, planManMonths){
-      if(planManMonths === 0){
-        return 0;
-      }
-      return (actualManMonths / planManMonths)  * 100;
+  function calculateManMonthProductivity(actualManMonths, planManMonths) {
+    if (planManMonths === 0) {
+      return 0;
+    }
+    return (actualManMonths / planManMonths) * 100;
   }
-
   function updateManMonthChart(labels, planManMonths, actualManMonths) {
     if (manMonthChart) {
       manMonthChart.destroy();
@@ -282,37 +296,37 @@
     });
   }
 
-  function updateManMonthProductivity(label,  actualProductivityRatio){
-    if(manMonthProductivityChart){
-        manMonthProductivityChart.destroy();
+  function updateManMonthProductivity(label, actualProductivityRatio) {
+    if (manMonthProductivityChart) {
+      manMonthProductivityChart.destroy();
     }
+
     const chartData = {
       labels: [label],
       datasets: [
-
         {
           label: 'Actual Productivity Ratio',
           data: [actualProductivityRatio],
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }
-      ]
+          borderWidth: 1,
+        },
+      ],
     };
+
     manMonthProductivityChart = new Chart(ctxManMonthProductivity, {
       type: 'bar',
       data: chartData,
       options: {
         scales: {
           y: {
-            beginAtZero: true
-          }
-        }
-      }
+            beginAtZero: true,
+          },
+        },
+      },
     });
-
   }
-  // Initial update when the page loads
+
   updateCharts();
 
 </script>
