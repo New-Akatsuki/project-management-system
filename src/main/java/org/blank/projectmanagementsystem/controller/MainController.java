@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.service.ClientService;
@@ -101,10 +102,8 @@ public class MainController {
     }
 
     @GetMapping("/man-month")
-    public String manMonthView(ModelMap model){
+    public String manMonthView(){
 
-        List<ProjectViewObject> projects = projectService.getAllProjects();
-        model.addAttribute("projects", projects);
         return "man-month";
     }
 

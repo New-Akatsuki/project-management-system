@@ -30,6 +30,7 @@ public class TaskViewObject {
     private int progress;
     private boolean status;
     private Long phase;
+    private Long projectId;
     private Long parent;
     private String group;
     private String type;

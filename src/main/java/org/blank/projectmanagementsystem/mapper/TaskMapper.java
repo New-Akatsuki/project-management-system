@@ -36,6 +36,7 @@ public class TaskMapper {
                 .actual_hours(task.getActualHours())
                 .progress(task.isStatus()?1:0)
                 .status(task.isStatus())
+                .projectId(task.getProject()==null?null:task.getProject().getId())
                 .phase(task.getPhase().getId())
                 .parent(task.getParentTask()==null?null:task.getParentTask().getId())
                 .group(task.getGroup().name())

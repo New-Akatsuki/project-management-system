@@ -157,6 +157,11 @@ public class ProjectServiceImpl implements ProjectService {
         return data;
     }
 
+    @Override
+    public List<ProjectViewObject> getProjectsByDepartment(Long departmentId) {
+        return projectRepository.findByDepartmentId(departmentId).stream().map(ProjectViewObject::new).toList();
+    }
+
     private User getCurrentUser(){
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElseThrow();
