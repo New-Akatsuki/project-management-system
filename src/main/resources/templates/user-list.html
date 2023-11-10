@@ -106,32 +106,52 @@
 <script src="/js/main.js"></script>
 
 <!-- Edit User Modal-->
-<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Edit User Role And Department</h1>
+                <h5 class="modal-title fs-5">Edit User Role And Department</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-body">
                     <div class="form-group">
+
+                        <input type="hidden" class="form-control" id="editId">
                         <label for="editName">Name</label>
                         <input type="text" class="form-control" id="editName">
                     </div>
+
                     <div class="form-group">
-                        <label for="editRole">Role</label>
-                        <input type="text" class="form-control" id="editRole">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="email">
                     </div>
+
                     <div class="form-group">
-                        <label for="editDepartment">Department</label>
-                        <input type="text" class="form-control" id="editDepartment">
+                        <label  class="form-label" for="editDepartment"> Department </label>
+                        <select class="form-select"  id="editDepartment" name="editDepartment" required>
+                            <option value="1">IT</option>
+                            <option value="2">HR</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editUserRole" class="form-label">Role</label>
+                        <select class="form-select"  id="editUserRole" name="editUserRole" required>
+                            <option value="PMO" >PMO</option>
+                            <option value="SDQC"> SDQC </option>
+                            <option value="SDQC"> SDQC </option>
+                            <option value="DH">DH</option>
+                            <option value="PM">PM</option>
+                            <option value="MEMBER">Member</option>
+                            <!-- Add more role options as needed -->
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" onclick="editUser()" class="btn btn-primary">Save</button>
+                <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
             </div>
         </div>
     </div>
@@ -158,9 +178,8 @@
                     <div class="form-group">
                         <label  class="form-label" for="department"> Department </label>
                                                 <select class="form-select"  id="department" name="department" required>
-                                                  <option value="1">ACE</option>
-                                                  <option value="2">DAT</option>
-                                                  <option value="3">Ace Plus</option>
+                                                  <option value="1">IT</option>
+                                                  <option value="2">HR</option>
                                                 </select>
 
                     </div>
@@ -209,10 +228,61 @@
 
 
 
+ <script>
+     function editUserRoleAndDepartment(){
+         //Get updated user information form modal fields
+         let id= $('#editId').val();
+         let name = $('#editName').val();
+         let email = $('#editEmail').val();
+         let department = $('#editDepartment').val();
+         let role= $('#editUserRole').val();
+         // Prepare updated user object
+         let updatedUser = {
+             id: id,
+             name: name,
+             email: email,
+             department: department,
+             role: role
+         };
+         console.log("updatedUser", updatedUser);
+         //Make a PUT request to update the user data
+         $.ajax({
+             url: '/pm/user-edit', // Replace with your actual API endpoint
+             method: 'PUT',
+             data: JSON.stringify(updatedUser),
+             dataType: 'json',
+             success: function (data) {
+                 console.log('Data received:', data);
+                 // Hide the modal
+                 $('#userEditModal').modal('hide');
+                 // Reload the DataTable with new data
+                 $(document).ajax.reload();
+             },
+             error: function (error) {
+                 console.log('Error fetching data:', error);
+             }
+
+         });
+     }
+     //For display edit user modal
+     function displayEditUserModal(userId){
+         const user = userList.find(user => user.id === userId);
+         // Populate modal fields with user data
+         $('#editId').val(user.id);
+         $('#editName').val(user.name);
+         $('#editEmail').val(user.email);
+         $('#editDepartment').val(user.department);
+         $('#editUserRole').val(user.role);
+         // Disable the "name" field
+         $('#editName').prop('disabled', true);
+         // Show the modal
+         $('#userEditModal').modal('show');
+     }
 
 
 
 
+</script>
 
 <script src="/js/member-list-view.js"></script>
 

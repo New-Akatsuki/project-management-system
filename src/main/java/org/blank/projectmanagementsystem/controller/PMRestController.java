@@ -267,6 +267,22 @@ log.info("User: {}", addUserFormInput);
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/pm/user-edit")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        User exitingUser = userService.getUserById(user.getId());
+        if (exitingUser != null) {
+            exitingUser.setName(user.getName());
+            exitingUser.setEmail(user.getEmail());
+            exitingUser.setDepartment(user.getDepartment());
+            exitingUser.setRole(user.getRole());
+            exitingUser.setActive(user.isActive());
+            User updatedUser = userService.save(exitingUser);
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 }
 
