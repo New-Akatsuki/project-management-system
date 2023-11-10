@@ -140,23 +140,26 @@
         function processProject(project) {
           const projectId = project.id;
           $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}`, function (tasks) {
-            const projectPlanManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth);
-            const projectActualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth);
+            const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth);
+            const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth);
             projectLabels.push(project.name);
-            planManMonths.push(projectPlanManMonths);
-            actualManMonths.push(projectActualManMonths);
+            planManMonths.push(projectPlanManMonth);
+            actualManMonths.push(projectActualManMonth);
+
             projectsProcessed++;
 
             if (projectsProcessed === projects.length) {
               console.log("All Projects Processed. Updating Chart.");
               updateManMonthChart(projectLabels, planManMonths, actualManMonths);
+
+              const departmentProductivityRatios = projects.map((proj, index) => {
+                const projActualManMonths = actualManMonths[index];
+                const projPlanManMonths = planManMonths[index];
+                return calculateManMonthProductivity(projActualManMonths, projPlanManMonths);
+              });
+
+              updateManMonthProductivity(projectLabels, departmentProductivityRatios);
             }
-
-            const departmentActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
-            const departmentPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
-            const departmentProductivityRatio = calculateManMonthProductivity(departmentActualManMonths, departmentPlanManMonths);
-
-            updateManMonthProductivity(selectedDepartmentId, departmentProductivityRatio);
           });
         }
 
@@ -164,7 +167,7 @@
       });
     } else if (selectedMonth) {
       $.get(`/api/get-department-data`, function (departments) {
-         const departmentLabels = [];
+        const departmentLabels = [];
         const planManMonths = [];
         const actualManMonths = [];
 
@@ -202,13 +205,15 @@
 
                   if (departmentsProcessed === departments.length) {
                     updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
+
+                    const allDepartmentsProductivityRatios = departments.map((dept, index) => {
+                      const deptActualManMonths = actualManMonths[index];
+                      const deptPlanManMonths = planManMonths[index];
+                      return calculateManMonthProductivity(deptActualManMonths, deptPlanManMonths);
+                    });
+
+                    updateManMonthProductivity(departmentLabels, allDepartmentsProductivityRatios);
                   }
-
-                  const allDepartmentsActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
-                  const allDepartmentsPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
-                  const allDepartmentsProductivityRatio = calculateManMonthProductivity(allDepartmentsActualManMonths, allDepartmentsPlanManMonths);
-
-                  updateManMonthProductivity("All Departments", allDepartmentsProductivityRatio);
                 }
               });
             }
@@ -219,10 +224,8 @@
 
         departments.forEach(processDepartment);
       });
-
     }
   }
-
   let workingDayPerHour = 7.5;
   let workingDayPerMonth = 20;
 
@@ -296,17 +299,17 @@
     });
   }
 
-  function updateManMonthProductivity(label, actualProductivityRatio) {
+  function updateManMonthProductivity(labels, actualProductivityRatio) {
     if (manMonthProductivityChart) {
       manMonthProductivityChart.destroy();
     }
 
     const chartData = {
-      labels: [label],
+      labels: labels,
       datasets: [
         {
           label: 'Actual Productivity Ratio',
-          data: [actualProductivityRatio],
+          data: actualProductivityRatio,
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor: 'rgba(255, 99, 132, 1)',
           borderWidth: 1,
