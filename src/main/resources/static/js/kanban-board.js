@@ -229,6 +229,7 @@
 
                 // Add a click event handler to add subtask btn
                 $(`#${item.id}-add-subtask-btn`).on('click', () => {
+                    currentTaskId = null
                     parentId = item.id;
                     phaseId = item.phase;
                     buildAddTaskModal(item.start_date, item.end_date)
@@ -346,13 +347,13 @@
 
                     $(".slide-placeholder-animator").stop().height(placeholderAnimatorHeight + 15).animate({
                         height: 0
-                    }, 300, function() {
+                    }, 300, function () {
                         $(this).remove();
                         placeholderHeight = ui.item.outerHeight();
                         $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
                     });
                 },
-                stop: function(e, ui) {
+                stop: function (e, ui) {
                     $(".slide-placeholder-animator").remove();
 
                     const task = ui.item;
@@ -365,7 +366,7 @@
 
 
                     let taskData = settings.tasks.filter(data => data.id === taskId).at(0);
-                    taskData.phase = parseInt(newSectionId.split('-')[0],10);
+                    taskData.phase = parseInt(newSectionId.split('-')[0], 10);
                     taskData.parent = null;
                     taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
                     updateTask(taskData)
@@ -548,6 +549,8 @@
             Save Task to Database
            ============================================================*/
         function saveOrUpdateTask() {
+
+            console.log('c, par, pha', currentTaskId, parentId, phaseId)
             // Initialize the task object
             const task = {
                 id: currentTaskId,
@@ -564,7 +567,7 @@
                 phase: phaseId,
                 parent: parentId,
                 group: $('#task-group').val(),
-                type: $('#task-type').val(),
+                type: 'task',
                 assignees: $('#task-assignees').val().map(val => parseInt(val, 10)),
                 open: true,
             };
@@ -614,6 +617,7 @@
                 },
             });
         }
+
         // recursive function that
         // reset start date and end date of subtasks as parent task's start date and end date
         // if subtask start date or end date is not in range of parent task
@@ -630,10 +634,14 @@
             });
         }
 
+
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task) {
+        function updateTask(task, refresh = true) {
+
+            console.log('start date', task.start_date)
+            console.log('end date', task.end_date)
             $.ajax({
                 url: '/update-task',
                 method: 'PUT',
@@ -647,7 +655,9 @@
 
                     resetSubtaskDate(data)
                     //reload
-                    $.fn.refreshGantt()
+                    if (refresh) {
+                        $.fn.refreshGantt()
+                    }
                     render()
                     //check taskViewModal exist and check class list contain show
                     const modal = document.getElementById('taskViewModal')
@@ -807,6 +817,7 @@
 
 
         function buildAddTaskModal(minDate = null, maxDate = null) {
+            console.log("build example modal")
             $('#exampleModal').remove();
             const addTaskModal = `
               <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -862,14 +873,6 @@
                                                 <option value="C">C</option>
                                             </select>
                                         </div>
-                                        <div class="form-group mb-0 flex-3">
-                                            <label for="task-type" class="form-label">Type:</label>
-                                            <select id="task-type" class="form-select" required>
-                                                <option value="" selected>Select task type</option>
-                                                <option value="task">Task</option>
-                                                <option value="milestone">Milestone</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="task-assignees" class="form-label" >Assignees :</label>
@@ -897,8 +900,8 @@
                 }));
             });
 
-            setupDatePicker('#task-start-date',minDate,maxDate);
-            setupDatePicker('#task-end-date',minDate,maxDate);
+            setupDatePicker('#task-start-date', minDate, maxDate);
+            setupDatePicker('#task-end-date', minDate, maxDate);
             checkDatesValidation("task-start-date", "task-end-date");
             formValidate("addTaskForm", saveOrUpdateTask);
             // setupSelect2('#task-assignees',settings.users);
@@ -916,9 +919,9 @@
         Build Task View Modal
         ================================================
          */
-        function buildTaskViewModal(taskId) {
+        function buildTaskViewModal(taskId, item = null) {
             $('#taskViewModal').remove();
-            const task = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
+            const task = item ? item : settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
             const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
             const typeClass = task.type === 'task' ? 'type-task' : 'type-milestone';
             const completeBtnText = task.status ? 'completed' : 'Mark complete';
@@ -966,8 +969,8 @@
                             <span class="col-3">${task.group}</span>
                         </div>
                         <div class="d-flex col-12">
-                            <span class="col-3 fw-bold">Task Type</span>
-                            <span class="col-3"><span class="${typeClass} text-block">${task.type}</span></span>
+                            <span class="col-3 fw-bold">Duration</span>
+                            <span class="col-3">${task.duration + (task.duration > 1 ? ' days' : ' day')}</span>
                         
                             <span class="col-3 fw-bold">Plan Hour</span>
                             <span class="col-3">${task.plan_hours} hours</span>
@@ -1020,10 +1023,11 @@
             console.log(task.id, addSubtaskBtn)
             // Add a click event handler to add subtask btn
             addSubtaskBtn.addEventListener('click', () => {
-                console.log('clicked add btn')
+                currentTaskId = null
                 parentId = task.id;
                 phaseId = task.phase;
-                buildAddTaskModal(task.start_date,task.end_date);
+                console.log('c, par, pha', currentTaskId, parentId, phaseId)
+                buildAddTaskModal(task.start_date, task.end_date);
                 resetTaskModal();
                 $('#exampleModal').modal('show');
             });
@@ -1054,15 +1058,16 @@
             $(`#${task.id}-edit-task-btn`).on('click', () => {
                 console.log('clicked edit btn')
                 currentTaskId = task.id;
-                let minDate=settings.startDate;
-                let maxDate=settings.endDate;
-                if(task.parent){
-                    const parentTask = settings.tasks.filter(val=>val.id === task.parent)[0]
+                let minDate = settings.startDate;
+                let maxDate = settings.endDate;
+                console.log('c,par,pha', currentTaskId, parentId, phaseId)
+                if (task.parent && !task.parent.toString().includes('p')) {
+                    const parentTask = settings.tasks.filter(val => val.id === task.parent)[0]
                     minDate = parentTask.start_date;
                     maxDate = parentTask.end_date;
                 }
-                console.log(minDate,settings.start_date,maxDate,settings.end_date)
-                buildAddTaskModal(minDate,maxDate)
+                console.log(minDate, settings.start_date, maxDate, settings.end_date)
+                buildAddTaskModal(minDate, maxDate)
                 fillDataTaskModal(task.id);
                 $('#exampleModal').modal('show');
             });
@@ -1117,20 +1122,25 @@
             $(`#${data.title.toLowerCase()}PhaseName`).val("")
         }
 
-        function setPhaseAndParentIds(phase, parent){
+        function setPhaseAndParentIds(phase, parent) {
             parentId = parent;
             phaseId = phase;
-            console.log('data',parent,phase)
-            console.log(parentId,phaseId)
+            console.log('data', parent, phase)
+            console.log(parentId, phaseId)
+        }
+
+        function setCurrentTaskId(id) {
+            currentTaskId = id;
         }
 
         // Export your saveTask function for usage elsewhere
         $.fn.kanban.savePhase = savePhase;
         $.fn.kanban.saveOrUpdateTask = saveOrUpdateTask;
         $.fn.kanban.buildAddPhaseModal = buildAddTaskModal;
-        $.fn.kanban.buildTaskViewModal =  buildTaskViewModal;
+        $.fn.kanban.buildTaskViewModal = buildTaskViewModal;
         $.fn.kanban.resetTaskModal = resetTaskModal;
         $.fn.kanban.setPhaseAndParentIds = setPhaseAndParentIds;
+        $.fn.kanban.updateTask = updateTask;
 
         initKanban();
     };

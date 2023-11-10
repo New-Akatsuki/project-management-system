@@ -229,6 +229,7 @@ div.gantt_scale_line:last-child::after {
   width: 15px;
   border-radius: 100%;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  display: none!important;
 }
 .gantt_task_line .gantt_link_control {
   top: -1px;
@@ -1190,7 +1191,7 @@ div.dhx_modal_cover {
 .gantt_task_line {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
-  border-radius: 50px;
+  border-radius: 0;
   position: absolute;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -2457,3 +2458,6 @@ div.dhx_modal_cover {
   opacity: 0;
 }
 
+.gantt_task_progress_drag{
+  display: none!important;
+}
