@@ -28,8 +28,10 @@
   />
   <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
   <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
 
-  <!-- Template Main CSS File -->
+
+    <!-- Template Main CSS File -->
   <link href="/css/style.css" rel="stylesheet" />
 
 
@@ -101,30 +103,37 @@
 
         <!-- DashBoard MM Body Start -->
         <div class="container mt-5">
-            <label for="yearSelector">Select a year:</label>
-            <select id="yearSelector"></select>
-
-            <label for="monthSelector">Select a month:</label>
-            <select id="monthSelector">
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            <label for="departmentSelector">Select a department:</label>
-            <select id="departmentSelector">
-            </select>
-            <label for="projectSelector">Select a project:</label>
-            <select id="projectSelector">
-            </select>
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label" for="yearSelector">Year</label>
+                    <select class="form-select year-select" id="yearSelector"></select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="monthSelector">Month</label>
+                    <select class="form-select month-select" id="monthSelector">
+                        <option value="01">January</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="departmentSelector">Select a department:</label>
+                    <select class="form-select department-select" id="departmentSelector"></select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="projectSelector">Select a project:</label>
+                    <select class="form-select project-select" id="projectSelector"></select>
+                </div>
+            </div>
         </div>
         <div class="container mt-4">
             <div class="row">
@@ -159,6 +168,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
 
@@ -446,6 +456,13 @@
     }
 
     updateCharts();
+
+    $(document).ready(function() {
+        $('.year-select').select2();
+        $('.month-select').select2();
+        $('.department-select').select2();
+        $('.project-select').select2();
+    });
 
 </script>
 </body>
