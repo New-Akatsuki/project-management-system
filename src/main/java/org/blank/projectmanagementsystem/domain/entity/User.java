@@ -54,7 +54,7 @@ public class User implements Serializable,UserDetails {
 
     private String phone;
 
-    private boolean active = true;
+    private boolean active;
 
     private boolean defaultPassword = true;
 

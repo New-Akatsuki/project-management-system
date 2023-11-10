@@ -68,7 +68,7 @@ public class ProjectManagementSystemApplication {
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.DH)
                             .department(department)
-                            .active(true)
+                            .active(false)
                             .build()
             );
             var pm = userService.save(

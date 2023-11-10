@@ -16,8 +16,7 @@
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-    <link
-            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
             rel="stylesheet"
     />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
@@ -43,14 +42,10 @@
     <!--  <link rel="stylesheet" href="/css/single-select.css">-->
 
 
-    <!--    <link rel="stylesheet" href="/css/datatable.css"/>-->
-    <!--    <script src="/js/ajax-jquery.js"></script>-->
-    <!--    <script src="/js/datatable.js"></script>-->
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-</head>
+    </head>
 
 <body>
 <!-- ======= Header ======= -->
@@ -87,6 +82,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
+                                        <th>Email</th>
                                         <th>Department</th>
                                         <th>Role</th>
                                         <th>Status</th>
@@ -161,12 +157,24 @@
                         <input type="text" class="form-control" id="email">
                     </div>
                     <div class="form-group">
-                        <label for="department">Department</label>
-                        <input type="text" class="form-control" id="department">
+                        <label  class="form-label" for="department"> Department </label>
+                                                <select class="form-select"  id="department" name="department" required>
+                                                  <option value="1">ACE</option>
+                                                  <option value="2">DAT</option>
+                                                  <option value="3">Ace Plus</option>
+                                                </select>
+
                     </div>
                     <div class="form-group">
-                        <label for="newUserRole">Role</label>
-                        <input type="text" class="form-control" id="newUserRole"/>
+                        <label for="newUserRole" class="form-label">Role</label>
+                        <select class="form-select"  id="newUserRole" name="role" required>
+                                                <option value="PMO" selected>PMO</option>
+                                                <option value="SDQC"> SDQC </option>
+                                                <option value="DH">DH</option>
+                                                <option value="PM">PM</option>
+                                                <option value="MEMBER">Member</option>
+                                                <!-- Add more role options as needed -->
+                                              </select>
                     </div>
                 </div>
             </div>
@@ -201,18 +209,6 @@
 </div>
 
 
-
-
-
-<!--&lt;!&ndash;Single Select&ndash;&gt;-->
-<!--<script>-->
-
-<!--    const data2 = ['ACE', 'DAT', 'Ace Plus']-->
-<!--    const id2 = init("department")-->
-<!--    const department_wrapperUpdateName = singleSelect(id2, data2);-->
-
-<!--</script>-->
-
 <!--For Member List Table-->
 <script>
     let userList = [];
@@ -223,7 +219,7 @@
             method: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log('Data received:', data);
+                console.log('All user list:', data);
                 userList = data;
                 // Render the data into the DataTable
                 renderMemberListTable(data);
@@ -234,13 +230,11 @@
         });
     });
 
-
     function renderMemberListTable(items) {
         //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#user-list-table')) {
             $('#user-list-table').DataTable().destroy();
         }
-        console.log('contractInfo', userList);
         return $('#user-list-table').DataTable({
             data: items,
             columns: [
@@ -251,22 +245,22 @@
                     }
                 },
                 {data: 'name'},
+                {data:'email'},
                 {data: 'department'},
                 {data: 'role'},
                 {
-                    data: 'status',
+                    data: 'active',
                     render: function (data, type, row) {
-
+                        console.log('data', data ,row.id)
                         return `
-                        <div id="toggleBtnMemberGp" class="btn-group" role="group" aria-label="Member Status">
-                           ${$.fn.buildToggleMemberBtn(data, row.id)}
-                        </div>
+                            <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}">${data ? 'Disabled' : 'Active'}</button>
+
                     `;
                     }
                 },
                 {
                     data: 'id',
-                    render: function (data, type, row, meta) {
+                    render: function (data, type, row) {
                         return `
                     <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
 
@@ -278,7 +272,7 @@
         });
     }
 
-// For Edit User Modal
+    // For Edit User Modal
     function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);
         // Populate modal fields with user data
@@ -344,8 +338,8 @@
         let addMember = {
             name: $("#name").val(),
             email: $("#email").val(),
+            department: parseInt($("#department").val()),
             role: $("#newUserRole").val(),
-            department: parseInt($("#department").val())
         };
         console.log(addMember);
         $.ajax({
@@ -393,7 +387,8 @@
                 success: function(memberInfo) {
                     // Handle success response, update UI if necessary
                     console.log('Member status updated successfully:', memberInfo);
-                    buildToggleMemberBtn(memberInfo.status, memberInfo.id);
+                    userList.filter(user=>user.id===memberInfo.id)[0].active = memberInfo.active;
+                    renderMemberListTable(userList)
                 },
                 error: function(error) {
                     // Handle error response
@@ -403,15 +398,15 @@
             $('#confirmMemberButton').off('click');
         });
     }
-    function buildToggleMemberBtn(status,id){
-        $('#toggleMemberBtn').remove();
-        const statusText = status ? 'Disabled' : 'Active';
-        const statusClass = status ? 'secondary' : 'success';
-        const btn = `<button id="toggleMemberBtn" type="button" onclick="toggleMemberStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-        $('#toggleBtnMemberGp').append(btn)
-        return btn;
-    }
-    $.fn.buildToggleMemberBtn = buildToggleMemberBtn;
+    // function buildToggleMemberBtn(status,id){
+    //     $(`#toggleMemberBtn${id}`).remove();
+    //     console.log('status',id, status);
+    //     const statusText = status ? 'Disabled' : 'Active';
+    //     const statusClass = status ? 'secondary' : 'success';
+    //     const btn = `<button id="toggleMemberBtn${id}" type="button" onclick="toggleMemberStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    //     $(`#toggleBtnMemberGp${id}`).append(btn)
+    // }
+    // $.fn.buildToggleMemberBtn = buildToggleMemberBtn;
 
 
 </script>
