@@ -104,32 +104,47 @@
 
 
         <!-- DashBoard MM Body Start -->
+        <div>
+            <h1>Man-Month Filter</h1>
+            <label for="monthSelector">Select a month:</label>
+            <select id="monthSelector">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+            <label for="departmentSelector">Select a department:</label>
+            <select id="departmentSelector">
+            </select>
+            <label for="projectSelector">Select a project:</label>
+            <select id="projectSelector">
+            </select>
+        </div>
         <div class="container mt-4">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-12">
-                    <h4>Monthly Productivity Ratio</h4>
+                <div class="col-md-8 col-sm-12">
+                    <h4>Man Month</h4>
                     <div class="chartBox">
-                        <canvas id="myChart"></canvas>
+                        <canvas id="manMonthChart"></canvas>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-4 col-sm-12">
-                    <h4>Monthly Man Month</h4>
+                <div class="col-md-4 col-sm-12">
+                    <h4>Man Month Productivity Ratio</h4>
                     <div class="chartBox">
-                        <canvas id="pieChart"></canvas>
-
+                        <canvas id="manMonthProductivityChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container">
-            <h1>KPI Report</h1>
-
-            <div class="chart-container">
-                <canvas id="kpiChart"></canvas>
-            </div>
-        </div>
 
         <!-- End Main Content-->
     </main>
@@ -143,170 +158,287 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 <!--jquery cdn-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    const plannedProductivity = [140, 130, 155, 160, 165, 150, 139, 147, 152, 131, 149, 154];
-    const actualProductivity = [120, 110, 135, 140, 145, 130, 119, 127, 132, 150, 129, 134];
-    const targetProductivityRatio = [85, 84, 87, 88, 89, 86, 84, 85, 86, 83, 85, 87];
 
-    // Calculate actual productivity ratio
-    const actualProductivityRatio = plannedProductivity.map((planned, index) => {
-        const actual = actualProductivity[index];
-        return ((actual / planned) * targetProductivityRatio[index]).toFixed(2);
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+<script>
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const ctxManMonth = document.getElementById('manMonthChart').getContext('2d');
+    const ctxManMonthProductivity = document.getElementById('manMonthProductivityChart').getContext('2d');
+
+    let manMonthChart;
+    let manMonthProductivityChart;
+
+
+
+    function updateDepartmentSelector(data) {
+        let html = "<option value=''>Select a department</option>";
+        for (const department of data) {
+            html += `<option value="${department.id}">${department.name}</option>`;
+        }
+        $("#departmentSelector").html(html);
+    }
+
+    $.get("/api/get-department-data", function (data) {
+        updateDepartmentSelector(data);
     });
 
-    const data = {
-        labels: [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-        ],
-        datasets: [
-            {
-                label: 'Actual Productivity Ratio (%)',
-                data: actualProductivityRatio,
-                backgroundColor: 'rgba(255, 99, 71, 0.5)',
-                borderColor: 'rgba(255, 99, 71, 1)',
-                borderWidth: 1,
-            },
-            {
-                label: 'Target Productivity Ratio (%)',
-                data: targetProductivityRatio,
-                backgroundColor: 'rgba(60, 179, 113, 0.5)',
-                borderColor: 'rgba(60, 179, 113, 1)',
-                borderWidth: 1,
-            }
-        ],
-    };
-
-    // config
-    const config = {
-        type: 'bar',
-        data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    };
-
-    // render init block
-    const myChart = new Chart(document.getElementById('myChart'), config);
-</script>
-
-
-
-<script th:inline="javascript">
-    var projects = /*[[${projects}]]*/ [];
-    const ctx = document.getElementById('pieChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: projects.map(function (e) {
-                return e.project.name;
-            }),
-            datasets: [{
-                label: 'User Count',
-                // data: userCounts,
-                backgroundColor: [
-                    'rgba(255, 99, 71, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)',
-                    'rgba(36, 122, 252, 0.5)',
-                    'rgba(153, 102, 255, 0.5)',
-                    'rgba(255, 159, 64, 0.5)'
-                    // Add more colors as needed
-                ],
-                borderColor: 'rgba(255, 99, 71, 1)',
-                borderWidth: 1,
-            }]
-        },
-        options: {
-            responsive: true
+    $("#departmentSelector").on("change", function () {
+        const selectedDepartmentId = $(this).val();
+        if (selectedDepartmentId) {
+            $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
+                updateProjectSelector(projects);
+                updateCharts();
+            });
+        } else {
+            updateProjectSelector([]);
+            updateCharts();
         }
     });
+
+    function updateProjectSelector(projects) {
+        let html = "<option value=''>Select a project</option>";
+        for (const project of projects) {
+            html += `<option value="${project.id}">${project.name}</option>`;
+        }
+        $("#projectSelector").html(html);
+    }
+
+    $("#monthSelector").on("change", function () {
+        updateCharts();
+    });
+
+    $("#projectSelector").on("change", function () {
+        updateCharts();
+    });
+
+    function updateCharts() {
+        const selectedProjectId = $("#projectSelector").val();
+        const selectedDepartmentId = $("#departmentSelector").val();
+        const selectedMonth = $("#monthSelector").val();
+
+
+
+        if (selectedProjectId) {
+            $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}`, function (tasks) {
+                const planManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth);
+                const actualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth);
+                updateManMonthChart([selectedProjectId], [planManMonths], [actualManMonths]);
+
+                const actualProductivityRatio = calculateManMonthProductivity(actualManMonths, planManMonths);
+                updateManMonthProductivity(selectedProjectId, actualProductivityRatio);
+
+
+            });
+        } else if (selectedDepartmentId && selectedMonth) {
+            $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
+                const projectLabels = [];
+                const planManMonths = [];
+                const actualManMonths = [];
+
+                let projectsProcessed = 0;
+
+                function processProject(project) {
+                    const projectId = project.id;
+                    $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}`, function (tasks) {
+                        const projectPlanManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth);
+                        const projectActualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth);
+                        projectLabels.push(project.name);
+                        planManMonths.push(projectPlanManMonths);
+                        actualManMonths.push(projectActualManMonths);
+                        projectsProcessed++;
+
+                        if (projectsProcessed === projects.length) {
+                            console.log("All Projects Processed. Updating Chart.");
+                            updateManMonthChart(projectLabels, planManMonths, actualManMonths);
+                        }
+
+                        const departmentActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
+                        const departmentPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
+                        const departmentProductivityRatio = calculateManMonthProductivity(departmentActualManMonths, departmentPlanManMonths);
+
+                        updateManMonthProductivity(selectedDepartmentId, departmentProductivityRatio);
+                    });
+                }
+
+                projects.forEach(processProject);
+            });
+        } else if (selectedMonth) {
+            $.get(`/api/get-department-data`, function (departments) {
+                const departmentLabels = [];
+                const planManMonths = [];
+                const actualManMonths = [];
+
+                let departmentsProcessed = 0;
+
+                function processDepartment(department) {
+                    const departmentId = department.id;
+                    $.get(`/api/get-projects?departmentId=${departmentId}`, function (projects) {
+                        const projectLabels = [];
+                        const projectPlanManMonths = [];
+                        const projectActualManMonths = [];
+
+                        let projectsProcessed = 0;
+
+                        function processProject(project) {
+                            const projectId = project.id;
+                            $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}`, function (tasks) {
+                                const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth);
+                                const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth);
+                                projectLabels.push(project.name);
+                                projectPlanManMonths.push(projectPlanManMonth);
+                                projectActualManMonths.push(projectActualManMonth);
+
+                                projectsProcessed++;
+
+                                if (projectsProcessed === projects.length) {
+                                    const departmentPlanManMonth = projectPlanManMonths.reduce((sum, val) => sum + val, 0);
+                                    const departmentActualManMonth = projectActualManMonths.reduce((sum, val) => sum + val, 0);
+
+                                    departmentLabels.push(department.name);
+                                    planManMonths.push(departmentPlanManMonth);
+                                    actualManMonths.push(departmentActualManMonth);
+
+                                    departmentsProcessed++;
+
+                                    if (departmentsProcessed === departments.length) {
+                                        updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
+                                    }
+
+                                    const allDepartmentsActualManMonths = actualManMonths.reduce((sum, val) => sum + val, 0);
+                                    const allDepartmentsPlanManMonths = planManMonths.reduce((sum, val) => sum + val, 0);
+                                    const allDepartmentsProductivityRatio = calculateManMonthProductivity(allDepartmentsActualManMonths, allDepartmentsPlanManMonths);
+
+                                    updateManMonthProductivity("All Departments", allDepartmentsProductivityRatio);
+                                }
+                            });
+                        }
+
+                        projects.forEach(processProject);
+                    });
+                }
+
+                departments.forEach(processDepartment);
+            });
+
+        }
+    }
+
+    let workingDayPerHour = 7.5;
+    let workingDayPerMonth = 20;
+
+    function calculatePlanManMonthForTasks(tasks, selectedMonth) {
+        let planManMonth = 0;
+        for (const task of tasks) {
+            if (
+                (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
+                (task.end_date && task.end_date.startsWith(`2023-${selectedMonth}`))
+            ) {
+                planManMonth += task.plan_hours / (workingDayPerHour * workingDayPerMonth);
+            }
+        }
+        return planManMonth;
+    }
+
+    function calculateActualManMonthForTasks(tasks, selectedMonth) {
+        let actualManMonth = 0;
+        for (const task of tasks) {
+            if (
+                (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
+                (task.actual_due_date && task.actual_due_date.startsWith(`2023-${selectedMonth}`))
+            ) {
+                actualManMonth += task.actual_hours / (workingDayPerHour * workingDayPerMonth);
+            }
+        }
+        return actualManMonth;
+    }
+
+    function calculateManMonthProductivity(actualManMonths, planManMonths) {
+        if (planManMonths === 0) {
+            return 0;
+        }
+        return (actualManMonths / planManMonths) * 100;
+    }
+    function updateManMonthChart(labels, planManMonths, actualManMonths) {
+        if (manMonthChart) {
+            manMonthChart.destroy();
+        }
+
+        const chartData = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Plan Man Months',
+                    data: planManMonths,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Actual Man Months',
+                    data: actualManMonths,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        manMonthChart = new Chart(ctxManMonth, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    function updateManMonthProductivity(label, actualProductivityRatio) {
+        if (manMonthProductivityChart) {
+            manMonthProductivityChart.destroy();
+        }
+
+        const chartData = {
+            labels: [label],
+            datasets: [
+                {
+                    label: 'Actual Productivity Ratio',
+                    data: [actualProductivityRatio],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                },
+            ],
+        };
+
+        manMonthProductivityChart = new Chart(ctxManMonthProductivity, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    }
+
+    updateCharts();
+
 </script>
-
-<!--<script>-->
-<!--    // Sample data (replace with your actual data)-->
-<!--    const reviewData = [-->
-<!--        {-->
-<!--            ProjectID: 'ProjectA',-->
-<!--            Tasks: 'Task1',-->
-<!--            DevelopingPhase: 'Basic Design',-->
-<!--            Amount: 100,-->
-<!--            InternalLeaderReviews: 5,-->
-<!--            ExternalReviews: 3,-->
-<!--        },-->
-<!--        {-->
-<!--            ProjectID: 'ProjectA',-->
-<!--            Tasks: 'Task1',-->
-<!--            DevelopingPhase: 'Detail Design',-->
-<!--            Amount: 150,-->
-<!--            InternalLeaderReviews: 8,-->
-<!--            ExternalReviews: 4,-->
-<!--        },-->
-<!--        // Add more data entries-->
-<!--    ];-->
-
-<!--    // Calculate Review Counts-->
-<!--    const reviewCounts = {};-->
-
-<!--    reviewData.forEach((entry) => {-->
-<!--        const { ProjectID, Tasks, DevelopingPhase, Amount } = entry;-->
-<!--        const key = `${ProjectID}-${Tasks}-${DevelopingPhase}`;-->
-
-<!--        if (reviewCounts[key]) {-->
-<!--            reviewCounts[key] += Amount;-->
-<!--        } else {-->
-<!--            reviewCounts[key] = Amount;-->
-<!--        }-->
-<!--    });-->
-
-<!--    // Calculate KPIs based on Review Counts-->
-<!--    const kpiScreenCounts = Object.values(reviewCounts); // You can add more logic to calculate screen counts KPI-->
-<!--    const kpiTestCases = Object.values(reviewCounts); // You can add more logic to calculate test cases KPI-->
-<!--    const kpiKSTEP = Object.values(reviewCounts).map((amount) => amount / 1000); // Divide by 1000 for KSTEP-->
-
-<!--    // Create a bar chart-->
-<!--    const ctx = document.getElementById('kpiChart').getContext('2d');-->
-<!--    new Chart(ctx, {-->
-<!--        type: 'bar',-->
-<!--        data: {-->
-<!--            labels: Object.keys(reviewCounts), // X-axis labels-->
-<!--            datasets: [-->
-<!--                {-->
-<!--                    label: 'Screen Counts',-->
-<!--                    data: kpiScreenCounts, // Screen Counts KPI-->
-<!--                    backgroundColor: 'rgba(75, 192, 192, 0.5)',-->
-<!--                    borderColor: 'rgba(75, 192, 192, 1)',-->
-<!--                    borderWidth: 1,-->
-<!--                },-->
-<!--                {-->
-<!--                    label: 'Test Cases',-->
-<!--                    data: kpiTestCases, // Test Cases KPI-->
-<!--                    backgroundColor: 'rgba(255, 99, 71, 0.5)',-->
-<!--                    borderColor: 'rgba(255, 99, 71, 1)',-->
-<!--                    borderWidth: 1,-->
-<!--                },-->
-<!--                {-->
-<!--                    label: 'KSTEP/Review Counts',-->
-<!--                    data: kpiKSTEP,-->
-<!--                    backgroundColor: 'rgba(60, 179, 113, 0.5)',-->
-<!--                    borderColor: 'rgba(60, 179, 113, 1)',-->
-<!--                    borderWidth: 1,-->
-<!--                },-->
-<!--            ],-->
-<!--        },-->
-<!--        options: {-->
-<!--            scales: {-->
-<!--                y: {-->
-<!--                    beginAtZero: true,-->
-<!--                },-->
-<!--            },-->
-<!--        },-->
-<!--    });-->
-<!--</script>-->
-  </body>
+</body>
 
 </html>
