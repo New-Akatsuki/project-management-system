@@ -4,9 +4,8 @@ import org.blank.projectmanagementsystem.domain.entity.Issue;
 import org.blank.projectmanagementsystem.domain.entity.IssueCategory;
 import org.blank.projectmanagementsystem.domain.entity.IssuePlace;
 import org.blank.projectmanagementsystem.domain.entity.User;
-import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueFormInput;
-import org.blank.projectmanagementsystem.domain.viewobject.IssueViewObject;
+import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
 
 import java.util.List;
 
@@ -18,5 +17,6 @@ public interface IssueService {
     List<IssuePlace> getAllPlace();
     List<User> getAllUser();
     List<Issue> getAllIssue();
+    List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject();
 
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.IssueFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ResPartyFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
 import org.blank.projectmanagementsystem.service.IssueService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.http.ResponseEntity;
@@ -69,9 +70,9 @@ public class IssueAPI {
     }
 
     @GetMapping("/get-all-issue")
-    public ResponseEntity<List<Issue>> getAllIssue() {
-        List<Issue> issues = issueService.getAllIssue();
-        log.info("get all issue {} \n\n", issues);
-        return ResponseEntity.ok(issues);
+    public ResponseEntity<List<AllIssueDisplayViewObject>> getAllIssue() {
+        List<AllIssueDisplayViewObject> allIssuesViewObject = issueService.getAllIssueDisplayViewObject();
+        log.info("get all issue {} \n\n", allIssuesViewObject);
+        return ResponseEntity.ok(allIssuesViewObject);
     }
 }

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.IssueViewObject;
 import org.blank.projectmanagementsystem.repository.*;
 import org.blank.projectmanagementsystem.service.IssueService;
@@ -51,7 +52,6 @@ public class IssueServiceImpl implements IssueService {
         issue.setCreatedBy(getCurrentUser());
         issue.setPic(userRepository.findById(issueFormInput.getPic()).orElseThrow());
         issue.setResponsibleParty(responsibleParty);
-
         return issueRepository.save(issue);
     }
 
@@ -88,6 +88,11 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<Issue> getAllIssue() {
         return issueRepository.findAll();
+    }
+
+    @Override
+    public List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject() {
+        return issueRepository.findAll().stream().map(AllIssueDisplayViewObject::new).collect(Collectors.toList());
     }
 
 }

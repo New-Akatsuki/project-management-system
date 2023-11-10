@@ -74,5 +74,10 @@ public class MainController {
         return "issue-create";
     }
 
+    @GetMapping("/issue-display")
+    public String issueDetails(){
+        return "issue-all-display-test";
+    }
+
 }
 

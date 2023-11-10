@@ -61,14 +61,14 @@ public class Issue implements Serializable {
     private String preventiveAction;
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false,unique = true)
     private ResponsibleParty responsibleParty;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private IssuePlace issuePlace;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private IssueCategory issueCategory;
 
