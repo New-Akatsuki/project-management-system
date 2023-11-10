@@ -11,6 +11,10 @@
 <body>
 <div>
   <h1>Man-Month Filter</h1>
+
+  <label for="yearSelector">
+    <select id="yearSelector"></select>
+  </label>
   <label for="monthSelector">Select a month:</label>
   <select id="monthSelector">
     <option value="01">January</option>
@@ -57,10 +61,7 @@
         crossorigin="anonymous"></script>
 
 <script>
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+
 
   const ctxManMonth = document.getElementById('manMonthChart').getContext('2d');
   const ctxManMonthProductivity = document.getElementById('manMonthProductivityChart').getContext('2d');
@@ -69,6 +70,15 @@
   let manMonthProductivityChart;
 
 
+  function updateYearSelector() {
+    const currentYear = new Date().getFullYear();
+    let html = "<option value=''>Select a year</option>";
+    for (let year = 2010; year <= currentYear; year++) {
+      html += `<option value="${year}">${year}</option>`;
+    }
+    $("#yearSelector").html(html);
+  }
+  updateYearSelector();
 
   function updateDepartmentSelector(data) {
     let html = "<option value=''>Select a department</option>";
@@ -81,6 +91,12 @@
   $.get("/api/get-department-data", function (data) {
     updateDepartmentSelector(data);
   });
+
+
+  $("#yearSelector").on("change", function () {
+    updateCharts();
+  });
+
 
   $("#departmentSelector").on("change", function () {
     const selectedDepartmentId = $(this).val();
@@ -112,6 +128,7 @@
     });
 
   function updateCharts() {
+    const selectedYear = $("#yearSelector").val();
     const selectedProjectId = $("#projectSelector").val();
     const selectedDepartmentId = $("#departmentSelector").val();
     const selectedMonth = $("#monthSelector").val();
@@ -119,15 +136,13 @@
 
 
     if (selectedProjectId) {
-      $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}`, function (tasks) {
-        const planManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth);
-        const actualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth);
+      $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
+        const planManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
+        const actualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
         updateManMonthChart([selectedProjectId], [planManMonths], [actualManMonths]);
 
         const actualProductivityRatio = calculateManMonthProductivity(actualManMonths, planManMonths);
-        updateManMonthProductivity(selectedProjectId, actualProductivityRatio);
-
-
+        updateManMonthProductivity([selectedProjectId], [actualProductivityRatio]);
       });
     } else if (selectedDepartmentId && selectedMonth) {
       $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
@@ -139,9 +154,9 @@
 
         function processProject(project) {
           const projectId = project.id;
-          $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}`, function (tasks) {
-            const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth);
-            const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth);
+          $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
+            const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
+            const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
             projectLabels.push(project.name);
             planManMonths.push(projectPlanManMonth);
             actualManMonths.push(projectActualManMonth);
@@ -184,9 +199,9 @@
 
             function processProject(project) {
               const projectId = project.id;
-              $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}`, function (tasks) {
-                const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth);
-                const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth);
+              $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
+                const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
+                const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
                 projectLabels.push(project.name);
                 projectPlanManMonths.push(projectPlanManMonth);
                 projectActualManMonths.push(projectActualManMonth);
@@ -229,12 +244,12 @@
   let workingDayPerHour = 7.5;
   let workingDayPerMonth = 20;
 
-  function calculatePlanManMonthForTasks(tasks, selectedMonth) {
+  function calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear) {
     let planManMonth = 0;
     for (const task of tasks) {
       if (
-              (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
-              (task.end_date && task.end_date.startsWith(`2023-${selectedMonth}`))
+              (task.start_date && task.start_date.startsWith(`${selectedYear}-${selectedMonth}`)) ||
+              (task.end_date && task.end_date.startsWith(`${selectedYear}-${selectedMonth}`))
       ) {
         planManMonth += task.plan_hours / (workingDayPerHour * workingDayPerMonth);
       }
@@ -242,12 +257,12 @@
     return planManMonth;
   }
 
-  function calculateActualManMonthForTasks(tasks, selectedMonth) {
+  function calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear) {
     let actualManMonth = 0;
     for (const task of tasks) {
       if (
-              (task.start_date && task.start_date.startsWith(`2023-${selectedMonth}`)) ||
-              (task.actual_due_date && task.actual_due_date.startsWith(`2023-${selectedMonth}`))
+              (task.start_date && task.start_date.startsWith(`${selectedYear}-${selectedMonth}`)) ||
+              (task.actual_due_date && task.actual_due_date.startsWith(`${selectedYear}-${selectedMonth}`))
       ) {
         actualManMonth += task.actual_hours / (workingDayPerHour * workingDayPerMonth);
       }
