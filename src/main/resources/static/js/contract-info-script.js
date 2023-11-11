@@ -12,6 +12,7 @@ $(document).ready(function () {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             contractInfo = data;
             renderClientTable(data.clients);
             renderDeliverableTable(data.deliverables);
@@ -250,13 +251,11 @@ $(document).ready(function () {
             data: JSON.stringify(newClient),
             dataType: 'json',
             success: function (data) {
-                $("#addClientModal").modal('hide');
-
+                $('#addClientModal').modal('hide');
                 // Update the deliverable in the contractInfo object
                 contractInfo.clients.push(data);
                 //reload Table
                 renderClientTable(contractInfo.clients);
-
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
@@ -832,7 +831,6 @@ function buildToggleArchitectureBtn(status,id){
     $('#toggleBtnArchitectureGp').append(btn)
     return btn;
 }
-
 function buildToggleSystemOutlineBtn(status,id){
     $('#toggleSystemOutlineBtn').remove();
     const statusText = status ? 'Disabled' : 'Active';
