@@ -27,16 +27,16 @@ public class DynamicQueueManager {
     public void createQueueForUser(String username) {
 
         // create queue name
-        String queueName = "ecommerce" + '.' + username + '.' + "queue";
+        String queueName = "pms" + '.' + username + '.' + "queue";
 
         // create binding key
-        String routingKey = "ecommerce" + '.' + username + '.' + "key";
+        String routingKey = "pms" + '.' + username + '.' + "key";
 
         Queue queue = new Queue(queueName, true, false, false);
         rabbitAdmin.declareQueue(queue);
 
         // find customer
-        User user = userRepository.getReferenceByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
         // save the queue info
         queueInfoRepository.save(QueueInfo.builder()

@@ -26,16 +26,12 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void saveNotification(Notification notification) {
-        String username = getUsername();
-        notification.setUsername(username);
-        notification.setDate(LocalDate.now());
         notificationRepo.save(notification);
     }
 
     @Transactional(readOnly = true)
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public List<Notification> getNotificationByUsername(String username) {
-        return notificationRepo.findByUsername(username);
+    public List<Notification> getNotifications() {
+        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
     }
 }

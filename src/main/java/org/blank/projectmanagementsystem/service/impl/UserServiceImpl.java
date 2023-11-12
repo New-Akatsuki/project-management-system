@@ -9,6 +9,7 @@ import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
+import org.blank.projectmanagementsystem.service.DynamicQueueManager;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,15 +29,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final DynamicQueueManager dynamicQueueManager;
 
     @Override
-    public User save(User user) {
+    public User
+    save(User user) {
         //create 8 number random password for user
         if(user.getPassword() == null) {
             String password = String.valueOf((int) (Math.random() * 100000000));
             user.setPassword(passwordEncoder.encode(password));
         }
-        return userRepository.save(user);
+        var savedUser = userRepository.save(user);
+        //create queue for user
+        dynamicQueueManager.createQueueForUser(savedUser.getEmail());
+        return savedUser;
     }
 
     @Override

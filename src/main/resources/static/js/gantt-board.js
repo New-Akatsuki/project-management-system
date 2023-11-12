@@ -2,16 +2,6 @@
     $.fn.ganttChart = function (options, phases = []) {
         let $this = $(this);
 
-        //current phase and parent ids
-        let phaseId = null;
-        let parentId = null;
-        let currentTaskId = null;
-
-        //modal data object
-        let addPhaseModalData = {title: 'Add', modalId: 'addPhaseModal',};
-        let editPhaseModalData = {title: 'Edit', modalId: 'editPhaseModal'};
-
-
         let vendor = $.extend(
             {
                 tasks: [],
@@ -64,8 +54,10 @@
 
         function initGantt() {
 
+            gantt.clearAll()
+
             mapForGantt(phases)
-            console.log('vendor.tasks', vendor)
+
             //config gantt chart
             gantt.templates.task_text = function (start, end, task) {
                 return task.name + ' : ' + end.toLocaleString('en-US', {
@@ -117,6 +109,7 @@
             let task = gantt.getTask(id)
             if (id.includes('p')) {
                 console.log('it is phase')
+                // $('#deleteBtnPlaceInEditPhaseModal').append(`<button id="deleteBtnInEditPhaseModal" type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-trash-alt"></i></button>`);
                 $(`#editPhaseName`).val(task.name)
                 $.fn.kanban.setPhaseAndParentIds(task.id.replace("p", ""), null)
                 //show modal
@@ -128,17 +121,11 @@
             }
         });
 
-        gantt.attachEvent("onBeforeTaskDrag", function (id, mode, e) {
-            console.log('onAfterTaskDrag clicked ', id, mode, e);
-            return false
-        })
-
-
-        var els = document.querySelectorAll("input[name='scale']");
-        for (var i = 0; i < els.length; i++) {
+        let els = document.querySelectorAll("input[name='scale']");
+        for (let i = 0; i < els.length; i++) {
             els[i].onclick = function (e) {
-                var el = e.target;
-                var value = el.value;
+                let el = e.target;
+                let value = el.value;
                 setScaleConfig(value);
                 gantt.render();
             };
@@ -147,8 +134,6 @@
 
         /*================= update task ==================*/
         gantt.attachEvent("onAfterTaskUpdate", function (id, item) {
-            console.log('onAfterTaskUpdate clicked ', item.assignees);
-
             let task = {...item};
             task.assignees = task.assignees.map(val => parseInt(val.id))
             task.parent = task.parent.toString().includes('p') ? null : task.parent;
@@ -156,7 +141,6 @@
             task.start_date = formatDateToYYYYMMDD(task.start_date)
             task.end_date = formatDateToYYYYMMDD(task.end_date)
             $.fn.kanban.updateTask(task, false);
-            console.log('onAfterTaskUpdate clicked 1 ', item.assignees);
             gantt.render()
         });
 
@@ -199,39 +183,39 @@
     };
 })(jQuery);
 
-// function setScaleConfig(level) {
-//     switch (level) {
-//         case "day":
-//             gantt.config.scales = [
-//                 {unit: "day", step: 1, format: "%d %M"}
-//             ];
-//             gantt.config.scale_height = 27;
-//             break;
-//         case "week":
-//             var weekScaleTemplate = function (date) {
-//                 var dateToStr = gantt.date.date_to_str("%d %M");
-//                 var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
-//                 return dateToStr(date) + " - " + dateToStr(endDate);
-//             };
-//             gantt.config.scales = [
-//                 {unit: "week", step: 1, format: weekScaleTemplate},
-//                 {unit: "day", step: 1, format: "%D"}
-//             ];
-//             gantt.config.scale_height = 50;
-//             break;
-//         case "month":
-//             gantt.config.scales = [
-//                 {unit: "month", step: 1, format: "%F, %Y"},
-//                 {unit: "day", step: 1, format: "%j, %D"}
-//             ];
-//             gantt.config.scale_height = 50;
-//             break;
-//         case "year":
-//             gantt.config.scales = [
-//                 {unit: "year", step: 1, format: "%Y"},
-//                 {unit: "month", step: 1, format: "%M"}
-//             ];
-//             gantt.config.scale_height = 90;
-//             break;
-//     }
-// }
+function setScaleConfig(level) {
+    switch (level) {
+        case "day":
+            gantt.config.scales = [
+                {unit: "day", step: 1, format: "%d %M"}
+            ];
+            gantt.config.scale_height = 27;
+            break;
+        case "week":
+            var weekScaleTemplate = function (date) {
+                var dateToStr = gantt.date.date_to_str("%d %M");
+                var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+                return dateToStr(date) + " - " + dateToStr(endDate);
+            };
+            gantt.config.scales = [
+                {unit: "week", step: 1, format: weekScaleTemplate},
+                {unit: "day", step: 1, format: "%D"}
+            ];
+            gantt.config.scale_height = 50;
+            break;
+        case "month":
+            gantt.config.scales = [
+                {unit: "month", step: 1, format: "%F, %Y"},
+                {unit: "day", step: 1, format: "%j, %D"}
+            ];
+            gantt.config.scale_height = 50;
+            break;
+        case "year":
+            gantt.config.scales = [
+                {unit: "year", step: 1, format: "%Y"},
+                {unit: "month", step: 1, format: "%M"}
+            ];
+            gantt.config.scale_height = 90;
+            break;
+    }
+}

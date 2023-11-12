@@ -10,6 +10,7 @@ import org.blank.projectmanagementsystem.service.ClientService;
 import org.blank.projectmanagementsystem.service.DeliverableService;
 import org.blank.projectmanagementsystem.service.SystemOutlineService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

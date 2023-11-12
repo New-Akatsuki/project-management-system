@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.blank.projectmanagementsystem.domain.entity.Notification;
+import org.blank.projectmanagementsystem.domain.entity.User;
+import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.QueueInfoService;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,7 @@ import java.util.Map;
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationAspect {
 
     private final NotificationService notificationService;
@@ -33,36 +38,30 @@ public class NotificationAspect {
 
     private final DirectExchange directExchange;
 
-//    @AfterReturning(
-//            pointcut = "execution(* com.project.ecommerce.api.OrderApi.addOrder(..)) && args(orderDto)",
-//            argNames = "result, orderDto",
-//            returning = "result"
-//    )
-//    public void sendNotificationAfterOrderCreation(Object result, OrderDetailDto orderDto) throws JsonProcessingException {
-//        if (result instanceof ResponseEntity) {
-//            ResponseEntity<OrderDetailVo> responseEntity = (ResponseEntity<OrderDetailVo>) result;
-//
-//            // Check if the status code indicates success (e.g., 2xx range)
-//            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-//                OrderDetailVo orderVo = responseEntity.getBody();
-//                // Send a notification using the notificationService
-//                assert orderVo != null;
-//                sendNotification(orderVo.getOrderId(), "New Order Arrived!", getAdminRoutingKey());
-//            }
-//        }
-//    }
-
-
-    private String getAdminRoutingKey() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return queueInfoService.getRoutingKeyByUsername(username);
+    @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.UserServiceImpl.save(..)) && args(user)",
+            argNames = "user, saveUser",
+            returning = "saveUser"
+    )
+    public void sendNotificationAfterOrderCreation(User user, User saveUser) throws JsonProcessingException {
+        // Check if the user is not null
+        log.info("user from aop: {}", user);
+        if (user != null) {
+            // Send a notification using the notificationService
+            sendNotification(saveUser.getId(), String.format("New User (%s) is arrived!",saveUser.getName()), getUserRoutingKey(saveUser.getId()),saveUser);
+        }
     }
 
-    private void sendNotification(long itemId, String message, String routingKey) throws JsonProcessingException {
+
+    private String getUserRoutingKey(Long id) {
+        return queueInfoService.getRoutingKeyById(id);
+    }
+
+    private void sendNotification(long taskId, String message, String routingKey, User user) throws JsonProcessingException {
         // send notification to admin
         Map<String, Object> notification = new HashMap<>();
         notification.put("message", message);
-        notification.put("orderId", itemId);
+        notification.put("userId", taskId);
 
         // change map to json
         ObjectMapper objectMapper = new ObjectMapper();
@@ -70,10 +69,19 @@ public class NotificationAspect {
         String jsonNotification = objectMapper.writeValueAsString(notification);
 
         // save notification to database
-        notificationService.saveNotification(Notification.builder().taskId(itemId).message(message).date(LocalDate.now()).build());
+        notificationService.saveNotification(Notification.builder().taskId(taskId).message(message).recipient(user).date(LocalDate.now()).build());
 
-        // send notification to admins using topic exchange
-        rabbitTemplate.convertAndSend(directExchange.getName(), routingKey, jsonNotification);
+        log.info("Routing key: {}", routingKey);
+
+        try {
+            // send notification to admins using topic exchange
+            rabbitTemplate.convertAndSend(directExchange.getName(), routingKey, jsonNotification);
+
+            log.info("Notification sent to the admin: {}", jsonNotification);
+        } catch (AmqpException e) {
+            log.error("Error sending notification to RabbitMQ: {}", e.getMessage());
+        }
     }
+
 
 }

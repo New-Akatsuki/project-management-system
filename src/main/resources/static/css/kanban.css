@@ -16,9 +16,11 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;
-    gap: 15px;
-    padding: 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     height: 75vh;
+    margin-bottom: 12px;
 }
 .cd_kanban_board > .cd_kanban_board_blocks:after{
     content: '';
@@ -26,7 +28,7 @@
     clear: both;
 }
 .cd_kanban_board > .cd_kanban_board_blocks .kb-section{
-    margin:10px 10px 10px 0;
+    margin:0 10px 0 0;
     flex: 1;
     background: rgb(232, 237, 246);
     max-width: 360px;
@@ -525,12 +527,8 @@ input[type="checkbox"] {
 .move-top{
     position: absolute;
     top: 85px;
-    left: 240px;
+    left: 270px;
     z-index: 1;
-    animation: floatOutSubtask;
-}
-.full-move-phase-btn{
-    left: 290px!important;
     animation: floatOutSubtask;
 }
 

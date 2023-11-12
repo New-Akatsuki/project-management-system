@@ -1346,7 +1346,7 @@ h6 {
 }
 
 .tabs__label {
-  padding: 10px 16px;
+  padding: 8px 10px;
   cursor: pointer;
 }
 
@@ -1364,8 +1364,10 @@ h6 {
 
 .tabs__radio:checked + .tabs__label {
   font-weight: bold;
-  color: #0019fd;
-  border-bottom: 2px solid #0019fd;
+  color: #3577ff;
+  background: #f5f7fc;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 5px solid #3577ff;
 }
 
 .tabs__radio:checked + .tabs__label + .tabs__content {
