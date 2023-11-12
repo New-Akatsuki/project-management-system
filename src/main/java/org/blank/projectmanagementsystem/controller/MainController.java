@@ -64,8 +64,6 @@ public class MainController {
     }
 
 
-
-
     @GetMapping("/project-details-view")
     public String details(){
         return "project-details-info";
@@ -74,6 +72,11 @@ public class MainController {
     @GetMapping("/change-password")
     public String detailssd(){
         return "change-password";
+    }
+
+    @GetMapping("/notification")
+    public String notification(){
+        return "notification";
     }
 
 }
