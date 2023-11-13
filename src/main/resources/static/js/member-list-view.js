@@ -17,14 +17,13 @@
         }
     });
 });
-    function renderMemberListTable(items) {
+    function renderMemberListTable(items,role) {
         //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#user-list-table')) {
             $('#user-list-table').DataTable().destroy();
         }
-        return $('#user-list-table').DataTable({
-            data: items,
-            columns: [
+       let columns =[
+
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
@@ -33,7 +32,6 @@
                 },
                 {data: 'name'},
                 {data:'email'},
-                {data: 'department'},
                 {data: 'role'},
                 {
                     data: 'active',
@@ -55,18 +53,32 @@
                     }
                 },
 
-            ]
-        });
+            ];
+                if(role === 'PM'){
+                    columns.splice(3,0,{data:'department'})
+
+                }
+                return $('#user-list-table').DataTable({
+                    data: items,
+                    columns: columns,
+
+                });
+
     }
+    renderMemberListTable(items,'PMO');
+
 
     // For Create New Member
      function addNewMember() {
         let addMember = {
             name: $("#name").val(),
             email: $("#email").val(),
-            department: parseInt($("#department").val()),
             role: $("#newUserRole").val(),
         };
+        //Check if the role is 'PM' and include the 'department' field
+         if($("#newUserRole").val() === 'PM'){
+             addMember.department=parseInt($("#department").val());
+         }
         console.log(addMember);
         $.ajax({
             type: "POST",
@@ -80,7 +92,7 @@
                 renderMemberListTable(userList);
             },
             error: function (error) {
-                console.log('Error deleting user:', error);
+                console.log('Error adding new member:', error);
             }
         });
     }
@@ -150,7 +162,7 @@
                 // Hide the modal
                 $('#userEditModal').modal('hide');
                 // Reload the DataTable with new data
-                renderMemberListTable(userList.updatedUser);
+                // renderMemberListTable(data.updatedUser);
             },
             error: function (xhr,error) {
                 console.log(xhr.responseText)
@@ -160,7 +172,7 @@
         });
     }
     //For display edit user modal
-    function displayEditUserModal(userId){
+    function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);
         // Populate modal fields with user data
         $('#editId').val(user.id);
@@ -173,4 +185,6 @@
         // Show the modal
         $('#userEditModal').modal('show');
     }
+
+
 

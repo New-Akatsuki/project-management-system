@@ -82,18 +82,6 @@ public class PMController {
         return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
     }
 
-
-    @GetMapping("/edit-user")
-    public ModelAndView editUser() {
-        return new ModelAndView("edit-user", "editUserFormInput", new EditUserFormInput());
-
-    }
-
-    @PostMapping("/edit-user")
-    public String editUser(@ModelAttribute EditUserFormInput editUserFormInput) {
-        return "/user-list";
-    }
-
     @GetMapping("/project-detail")
     public String ProjectDetail() {
         return "project-detail";
