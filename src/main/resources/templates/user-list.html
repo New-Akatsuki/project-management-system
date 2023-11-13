@@ -151,7 +151,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
@@ -225,65 +225,6 @@
         </div>
     </div>
 </div>
-
-
-
- <script>
-     function editUserRoleAndDepartment(){
-         //Get updated user information form modal fields
-         let id= $('#editId').val();
-         let name = $('#editName').val();
-         let email = $('#editEmail').val();
-         let department = $('#editDepartment').val();
-         let role= $('#editUserRole').val();
-         // Prepare updated user object
-         let updatedUser = {
-             id: id,
-             name: name,
-             email: email,
-             department: department,
-             role: role
-         };
-         console.log("updatedUser", updatedUser);
-         //Make a PUT request to update the user data
-         $.ajax({
-             url: '/pm/user-edit', // Replace with your actual API endpoint
-             method: 'PUT',
-             data: JSON.stringify(updatedUser),
-             dataType: 'json',
-             success: function (data) {
-                 console.log('Data received:', data);
-                 // Hide the modal
-                 $('#userEditModal').modal('hide');
-                 // Reload the DataTable with new data
-                 $(document).ajax.reload();
-             },
-             error: function (error) {
-                 console.log('Error fetching data:', error);
-             }
-
-         });
-     }
-     //For display edit user modal
-     function displayEditUserModal(userId){
-         const user = userList.find(user => user.id === userId);
-         // Populate modal fields with user data
-         $('#editId').val(user.id);
-         $('#editName').val(user.name);
-         $('#editEmail').val(user.email);
-         $('#editDepartment').val(user.department);
-         $('#editUserRole').val(user.role);
-         // Disable the "name" field
-         $('#editName').prop('disabled', true);
-         // Show the modal
-         $('#userEditModal').modal('show');
-     }
-
-
-
-
-</script>
-
 <script src="/js/member-list-view.js"></script>
 
 </body>

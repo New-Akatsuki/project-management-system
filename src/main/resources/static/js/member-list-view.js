@@ -119,3 +119,58 @@
         $('#confirmMemberButton').off('click');
     });
     }
+
+
+    <!--Build Edit Member Modal-->
+    function editUserRoleAndDepartment(){
+        //Get updated user information form modal fields
+        let id = $('#editId').val();
+        let name = $('#editName').val();
+        let email = $('#editEmail').val();
+        let department = $('#editDepartment').val();
+        let role= $('#editUserRole').val();
+        // Prepare updated user object
+        let updatedUser = {
+            id:id,
+            name: name,
+            email: email,
+            department: department,
+            role: role,
+        };
+        console.log("updatedUser", updatedUser);
+        //Make a PUT request to update the user data
+        $.ajax({
+            url: `/pm/user-edit/${id}`, // Replace with your actual API endpoint
+            method: 'PUT',
+            data: JSON.stringify(updatedUser),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                console.log('Data received:', data);
+                // Hide the modal
+                $('#userEditModal').modal('hide');
+                // Reload the DataTable with new data
+                renderMemberListTable(userList.updatedUser);
+            },
+            error: function (xhr,error) {
+                console.log(xhr.responseText)
+                console.log('Error fetching data:', error);
+            }
+
+        });
+    }
+    //For display edit user modal
+    function displayEditUserModal(userId){
+        const user = userList.find(user => user.id === userId);
+        // Populate modal fields with user data
+        $('#editId').val(user.id);
+        $('#editName').val(user.name);
+        $('#editEmail').val(user.email);
+        $('#editDepartment').val(user.department);
+        $('#editUserRole').val(user.role);
+        // Disable the "name" field
+        $('#editName').prop('disabled', true);
+        // Show the modal
+        $('#userEditModal').modal('show');
+    }
+

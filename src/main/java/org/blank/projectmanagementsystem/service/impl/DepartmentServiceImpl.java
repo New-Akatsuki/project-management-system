@@ -31,14 +31,22 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.save(existingDepartment);
     }
 
+
     @Override
-    public Department getDepartmentById(Department department) {
-        return departmentRepository.findById(department.getId()).orElse(null);
+    public Department getDepartmentById(Integer id) {
+        return departmentRepository.findById(id).orElse(null);
     }
+
+
 
     @Override
     public void delete(Department department) {
         departmentRepository.deleteById(department.getId());
+    }
+
+    @Override
+    public Department getDepartmentByName(String departmentName) {
+        return departmentRepository.findDepartmentByName(departmentName);
     }
 
     @Override

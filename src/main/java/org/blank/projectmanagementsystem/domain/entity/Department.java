@@ -22,10 +22,8 @@ public class Department implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
-    @Column(unique = true,nullable = false,length = 50)
+    @Column(unique = true,nullable = false,length = 100)
     private String name;
-
-
 
     private boolean active=true;
 

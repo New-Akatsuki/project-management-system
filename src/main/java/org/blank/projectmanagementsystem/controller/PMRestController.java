@@ -2,8 +2,10 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.UpdateUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class PMRestController {
     private final ClientService clientService;
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
+    private final DepartmentService departmentService;
 
 
     @PreAuthorize("hasAuthority('PM')")
@@ -267,23 +270,23 @@ log.info("User: {}", addUserFormInput);
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/pm/user-edit")
-    public ResponseEntity<User> updateUser(@RequestBody User user){
-        User exitingUser = userService.getUserById(user.getId());
-        if (exitingUser != null) {
-            exitingUser.setName(user.getName());
-            exitingUser.setEmail(user.getEmail());
-            exitingUser.setDepartment(user.getDepartment());
-            exitingUser.setRole(user.getRole());
-            exitingUser.setActive(user.isActive());
-            User updatedUser = userService.save(exitingUser);
-            return ResponseEntity.ok(updatedUser);
+    @PutMapping("/pm/user-edit/{id}")
+    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user){
+//        System.out.println("Received user for update: " + user);
+           User existingUser = userService.getUserById(user.getId());
+           Department department = departmentService.getDepartmentById(user.getDepartment());
+//        System.out.println("Existing user: " + existingUser);
+        if (existingUser != null) {
+            existingUser.setName(user.getName());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setDepartment(department);
+            existingUser.setRole(Role.valueOf(user.getRole()));
+            User updatedUser = userService.save(existingUser);
+            return ResponseEntity.ok(new UserViewObject(updatedUser));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }
 
 

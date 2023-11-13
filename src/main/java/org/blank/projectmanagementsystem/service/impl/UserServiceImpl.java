@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
     @Override
     public void changeDefaultPassword(String password) {
         //get current username from security context
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
     public UserViewObject createMember(AddUserFormInput addUserFormInput){
 
         Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
-        Department department = (Department) departmentRepository.findById(departmentId)
+        Department department = (Department) departmentRepository.findById(Math.toIntExact(departmentId))
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
         log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
