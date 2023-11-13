@@ -53,8 +53,6 @@
   <link href="/css/style.css" rel="stylesheet"/>
   <link rel="stylesheet" href="/css/select2.css">
 
-  <!--    <script src="/js/select2.js"></script>-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
   <style>
     .card .card-header {
@@ -135,15 +133,6 @@
           </div>
 
           <div class="d-flex gap-3">
-<!--            <div class="d-flex flex-column w-100 p-0">-->
-<!--              <label for="issue-pic">Issue PIC</label>-->
-<!--              <select class="js-example-basic-single select-box2 form-select"-->
-<!--                      id="issue-pic" style="width: 100%; height: 100%;">-->
-<!--                <option value="default" selected disabled>Select an option</option>-->
-<!--              </select>-->
-<!--              <span class="text-danger" id="picError">Issue PIC must be selected.</span>-->
-<!--            </div>-->
-
             <div class="d-flex flex-column w-100 p-0">
               <label for="member">Add Member</label>
               <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
@@ -173,6 +162,22 @@
             </div>
           </div>
           <div class="d-flex gap-3">
+            <div class="d-flex flex-column w-100 p-0">
+              <label for="ao">Architecture Outlines</label>
+              <select id="ao" multiple="multiple" style="width: 100%; height: 100%;"></select>
+
+              <div class="replace" style="height: 100%;"></div>
+            </div>
+
+
+            <div class="d-flex flex-column w-100 p-0">
+              <label for="so">System Outlines</label>
+              <select id="so" multiple="multiple" style="width: 100%; height: 100%;"></select>
+
+              <div class="replace" style="height: 100%;"></div>
+            </div>
+          </div>
+          <div class="d-flex gap-3">
             <!-- Left Set -->
             <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
               <label for="client" class="mb-0">Client</label>
@@ -187,6 +192,13 @@
                         class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
               </div>
               <span class="text-danger" id="clientError">You must choose a Client</span>
+            </div>
+
+            <div class="d-flex flex-column w-100 p-0">
+              <label for="deli">Choose Deliverables</label>
+              <select id="deli" multiple="multiple" style="width: 100%; height: 100%;"></select>
+
+              <div class="replace" style="height: 100%;"></div>
             </div>
 
 
@@ -257,6 +269,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
         integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--    <script src="/js/select2.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
 
 <script>
   // Function to toggle the toolbar
@@ -379,84 +394,149 @@
           'clientModal'
   );
 </script>
+
 <script>
-  $(document).ready(function () {
-    $('#member').select2({
-      placeholder: '  Select options',
-      // allowClear: true,
-      closeOnSelect: true,
-      width: '100%'
-    });
-  });
-</script>
-<script>
-  // Function to fetch data from the server
-  function fetchData(url, successCallback) {
     $.ajax({
-      url: url,
+      url:'/get-member',
       method: 'GET',
       dataType: 'json',
-      success: successCallback,
+      success: function (data) {
+          console.log('data',data)
+          $.each(data, function (index, value) {
+              $('#member,#foc').append($('<option>', {
+                  value: value.id,
+                  text: value.name
+              }));
+          });
+      },
       error: function (error) {
         console.error('Error fetching data:', error);
       }
     });
-  }
 
-  // Populate the select box with options from the server
-  function populateSelectBox(data) {
-    const $member = $('#member');
-    Object.keys(data).forEach(key => {
-      const optgroup = $('<optgroup>', {label: key});
-      data[key].forEach(option => {
-        const prefixedId = key.charAt(0).toLowerCase() + (option.id);
-        optgroup.append($('<option>', {value: prefixedId, text: option.name}));
-      });
-      $member.append(optgroup);
-    });
-    $member.select2();
-  }
-
-  // Fetch data from the REST controller
-  const restUrl = '/get-member';
-  fetchData(restUrl, populateSelectBox);
-</script>
-<script>
-  // When Submit Button Clicked
-  function saveMember() {
-    let member = $('#member').val();
-    let cArray = [];
-    let uArray = [];
-
-    // Process each value in the resParty array
-    member.forEach(function (party) {
-      if (party.startsWith('c')) {
-        // Remove the 'c' prefix and parse the remaining part as a long
-        let numericPart = party.substring(1);
-        let numericValue = parseInt(numericPart, 10);
-        if (!isNaN(numericValue)) {
-          cArray.push(numericValue);
-        }
-      } else if (party.startsWith('u')) {
-        // Remove the 'u' prefix and parse the remaining part as a long
-        let numericPart = party.substring(1);
-        let numericValue = parseInt(numericPart, 10);
-        if (!isNaN(numericValue)) {
-          uArray.push(numericValue);
-        }
+    $.ajax({
+      url:'/get-deliverables',
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log('data',data)
+        $.each(data, function (index, value) {
+          $('#deli').append($('<option>', {
+            value: value.id,
+            text: value.name
+          }));
+        });
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
       }
     });
 
-    // Log or process the arrays as needed
-    console.log('cArray:', cArray);
-    console.log('uArray:', uArray);
+    $.ajax({
+      url:'/get-architecture-outlines',
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log('data',data)
+        $.each(data, function (index, value) {
+          $('#ao').append($('<option>', {
+            value: value.id,
+            text: value.name
+          }));
+        });
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
 
-    return {
-      id: null,
-      providerIds: uArray,
-      clientId: cArray[0]
-    }
-  }
+    $.ajax({
+      url:'/get-systemoutlines',
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log('data',data)
+        $.each(data, function (index, value) {
+          $('#so').append($('<option>', {
+            value: value.id,
+            text: value.name
+          }));
+        });
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+
+</script>
+<script>
+    $('#member').select2({
+        placeholder: 'Choose Member',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+    $('#foc').select2({
+      placeholder: 'Choose FOC Member',
+      closeOnSelect: true,
+      width: '100%'
+    });
+
+    $('#deli').select2({
+      placeholder: 'Choose Deliverables ',
+      closeOnSelect: true,
+      width: '100%'
+    });
+
+    $('#ao').select2({
+      placeholder: 'Choose Architecture Outlines ',
+      closeOnSelect: true,
+      width: '100%'
+    });
+
+    $('#so').select2({
+      placeholder: 'Choose System Outlines ',
+      closeOnSelect: true,
+      width: '100%'
+    });
+
+</script>
+<script>
+  // When Submit Button Clicked
+  // function saveMember() {
+  //   let member = $('#member').val();
+  //   let cArray = [];
+  //   let uArray = [];
+  //
+  //   // Process each value in the resParty array
+  //   member.forEach(function (party) {
+  //     if (party.startsWith('c')) {
+  //       // Remove the 'c' prefix and parse the remaining part as a long
+  //       let numericPart = party.substring(1);
+  //       let numericValue = parseInt(numericPart, 10);
+  //       if (!isNaN(numericValue)) {
+  //         cArray.push(numericValue);
+  //       }
+  //     } else if (party.startsWith('u')) {
+  //       // Remove the 'u' prefix and parse the remaining part as a long
+  //       let numericPart = party.substring(1);
+  //       let numericValue = parseInt(numericPart, 10);
+  //       if (!isNaN(numericValue)) {
+  //         uArray.push(numericValue);
+  //       }
+  //     }
+  //   });
+  //
+  //   // Log or process the arrays as needed
+  //   console.log('cArray:', cArray);
+  //   console.log('uArray:', uArray);
+  //
+  //   return {
+  //     id: null,
+  //     providerIds: uArray,
+  //     clientId: cArray[0]
+  //   }
+  // }
 
 </script>
 <script>
@@ -488,9 +568,8 @@
     let department= parseInt($('#department').val());
     let member = saveMember();
     let foc= saveFoc();
-    let content = quillContent.root.innerHTML;
-    let dirCause = quillDirCause.root.innerHTML;
-    let rootCause = quillRootCause.root.innerHTML;
+    let dirCause = quillObjective.root.innerHTML;
+    let rootCause = quillBackground.root.innerHTML;
 
     console.log("Issue title : ", issueTitle);
     console.log("Department : ", department);
@@ -507,26 +586,17 @@
     if (isNaN(issueCategory) || issueCategory === 'default' || issueCategory === null) {
       errors.push('#categoryError');
     }
-    if (isNaN(issuePlace) || issuePlace === 'default' || issuePlace === null) {
-      errors.push('#issueError');
-    }
-    if (isNaN(issuePic) || issuePic === 'default' || issuePic === null) {
-      errors.push('#picError');
-    }
     if (isNaN(department) || department === 'default' || department === null) {
       errors.push('#departmentError');
     }
     if (member.providerIds.length === 0) {
       errors.push('#memberError');
     }
-    if (content === '' || content === '<p><br></p>') {
-      errors.push('#contentError');
+    if (objective === '' || objective === '<p><br></p>') {
+      errors.push('#objectiveError');
     }
-    if (dirCause === '' || dirCause === '<p><br></p>') {
-      errors.push('#dirCauseError');
-    }
-    if (rootCause === '' || rootCause === '<p><br></p>') {
-      errors.push('#rootCauseError');
+    if (quillBackground === '' || quillBackground === '<p><br></p>') {
+      errors.push('#BackgroundError');
     }
 
     // Display all errors at once
@@ -543,7 +613,6 @@
     const issueObj = {
       id: null,
       title: issueTitle,
-      content: content,
       member: member,
       foc: foc,
       department: department
@@ -589,16 +658,16 @@
   hideErrorOnInteraction($('#member'), $('#memberError'));
   hideErrorOnInteraction($('#client'), $('#clientError'));
   hideErrorOnInteraction($('#objective'), $('#objectiveError'));
-    hideErrorOnInteraction($('#background'), $('#backgroundError'));
+  hideErrorOnInteraction($('#background'), $('#backgroundError'));
 
   // Event listeners for Quill text editors
 
 
-  quillDirCause.on('text-change', function () {
+  quillObjective.on('text-change', function () {
     $('#objectiveError').hide();
   });
 
-  quillRootCause.on('text-change', function () {
+  quillBackground.on('text-change', function () {
     $('#backgroundError').hide();
   });
 </script>

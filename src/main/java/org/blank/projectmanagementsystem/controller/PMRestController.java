@@ -272,16 +272,36 @@ public class PMRestController {
 
     @GetMapping("/get-member")
     public List<UserViewObject> getMember() {
-        List<UserViewObject> user = userService.getAllUsers();
-        log.info("get user{} \n\n", user);
-        return user;
+        List<UserViewObject> member = userService.getAllUsers();
+        log.info("get user{} \n\n", member);
+        return member;
+    }
+
+    @GetMapping("/get-deliverables")
+    public List<Deliverable> getDeli() {
+        List<Deliverable> deli= deliverableService.getAllDeliverables();
+        log.info("get deli {} \n\n", deli);
+        return deli;
+    }
+
+    @GetMapping("/get-architecture-outlines")
+    public List<Architecture> getArchi() {
+        List<Architecture> archi= architectureService.getAllArchitectures();
+        log.info("get archi{} \n\n", archi);
+        return archi;
+    }
+
+    @GetMapping("/get-systemoutlines")
+    public List<SystemOutline> getSystem() {
+        List<SystemOutline> system= systemOutlineService.getAllSystemOutlines();
+        log.info("get system{} \n\n", system);
+        return system;
     }
 
 
 
 
 }
-
 
 
 

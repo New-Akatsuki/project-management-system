@@ -106,6 +106,30 @@ public class ProjectManagementSystemApplication {
                             .build()
             );
 
+            var sar = userService.save(
+                    User.builder()
+                            .name("Sar")
+                            .username("sar")
+                            .email("sar@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.MEMBER)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
+            var dar = userService.save(
+                    User.builder()
+                            .name("Dar")
+                            .username("dar")
+                            .email("membear@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.MEMBER)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
             var client = clientRepository.save(
                     Client.builder()
                             .name("DAT")
