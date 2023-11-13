@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
-import org.blank.projectmanagementsystem.domain.formInput.IssueFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
@@ -24,6 +23,7 @@ public class PMRestController {
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
     private final ProjectService projectService;
+    private final DepartmentService departmentService;
 
 
     @PreAuthorize("hasAuthority('PM')")
@@ -262,6 +262,22 @@ public class PMRestController {
         log.info("create project {} \n\n", projectFormInput);
         return ResponseEntity.ok(projectService.saveProject(projectFormInput, projectFormInput.getName()));
     }
+
+    @GetMapping("/get-department")
+    public List<Department> getDepartment() {
+        List<Department> department = departmentService.getAllDepartments();
+        log.info("get department {} \n\n", department);
+        return department;
+    }
+
+    @GetMapping("/get-member")
+    public List<UserViewObject> getMember() {
+        List<UserViewObject> user = userService.getAllUsers();
+        log.info("get user{} \n\n", user);
+        return user;
+    }
+
+
 
 
 }

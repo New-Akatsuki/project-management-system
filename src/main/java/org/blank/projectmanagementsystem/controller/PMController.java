@@ -113,8 +113,8 @@ public class PMController {
         return "department";
     }
 
-    @GetMapping("/create-prooo")
-    public String Departmsfgent() {
+    @GetMapping("/create-proo")
+    public String Departmsfgedfdgnt() {
         return "create-new-project";
     }
 
