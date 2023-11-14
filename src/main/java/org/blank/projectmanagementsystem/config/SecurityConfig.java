@@ -45,7 +45,8 @@ public class SecurityConfig {
                                         "/fragments/**",
                                         "/report-file/**",
                                         "/skins/**",
-                                        "/static/**"
+                                        "/static/**",
+                                        "handler-view/**"
                                 )
                                 .permitAll()
                                 .anyRequest()

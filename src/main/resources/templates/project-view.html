@@ -20,8 +20,6 @@
     <link rel="stylesheet" href="/css/hope.css">
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
-    <!-- Single Select -->
-    <link rel="stylesheet" href="/css/single-select.css">
 
     <!--    icon-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -167,7 +165,7 @@
                         data-bs-target="#taskModal">
                     KPI
                 </button>
-                <button type="button" class="border-0 bg-white icon-btn-hover px-1">
+                <button type="button" class="border-0 bg-white icon-btn-hover px-1" onclick="window.location.href='/projects/1/details'">
                     <i class="bx bx-detail "></i></button>
                 <button type="button" id="fullscreen_button" class="border-0 bg-white hover-nav px-1 icon-btn-hover">
                     <i class="bx bx-expand "></i></button>
@@ -290,12 +288,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="/js/jquery-ui.js"></script>
-<!--<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"-->
-<!--        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="-->
-<!--        crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
 
-<!--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
 <script src="/js/select2.js"></script>
 
 <!-- Vendor JS Files -->
@@ -333,9 +326,7 @@
 <script>
     $(document).ready(function () {
 
-
         let projectId = 1;
-        //get phase from server with request param of project id
 
         fetchKanbanData()
         fetchGanttData()

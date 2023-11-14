@@ -421,9 +421,9 @@ input[type="checkbox"] {
     border-radius: 5px;
     background: #dfe9ff;
 }
-.dropdown-toggle{
-    display: none!important;
-}
+/*.dropdown-toggle{*/
+/*    display: none!important;*/
+/*}*/
 .dropdown-item:hover{
     background: #dfe9ff!important;
 }
@@ -501,8 +501,8 @@ input[type="checkbox"] {
     border: 1px solid #ff9f35;
 }
 .priority-low{
-    background: #ffdd35;
-    border: 1px solid #ffdd35;
+    background: #3fc068;
+    border: 1px solid #3fc068;
 }
 
 .type-task{
