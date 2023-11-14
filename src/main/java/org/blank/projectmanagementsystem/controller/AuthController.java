@@ -30,6 +30,6 @@ public class AuthController {
 
     @GetMapping("/access-denied")
     public String accessDenied() {
-        return "access-denied";
+        return "not-found";
     }
 }

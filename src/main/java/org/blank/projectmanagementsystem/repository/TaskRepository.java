@@ -13,4 +13,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>{
     //get all task by parentTask
     Iterable<Task> findAllByParentTask(Task parentTask);
     Iterable<Task> findAllByPhase(Phase phase);
+    //get all task by assginee id
+    List<Task> findAllByAssignees_Id(Long id);
 }

@@ -37,7 +37,7 @@
                 phases: [],
                 tasks: [],
                 users: [],
-                stateDate: null,
+                startDate: null,
                 endDate: null,
                 projectId: null,
                 onChange: function (e, ui) {
@@ -48,7 +48,6 @@
             options
         );
 
-        console.log(settings)
 
         let classes = {
             kanban_board_class: "cd_kanban_board",
@@ -97,19 +96,36 @@
              * ============================================================*/
         function initKanban() {
             $this.addClass(classes.kanban_board_class);
-            $this.append(`<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
+            $('#add-phase-button').remove()
+
+            //check if element exist, make empty
+            $this.find('.' + classes.kanban_board_blocks_class).remove();
+
+            $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
+            if(settings.phases.length === 0){
+                $('.'+classes.kanban_board_blocks_class)
+                    .addClass('flex-column justify-content-center align-items-center gap-2')
+                    .append(
+                    `<div class="text-center text-secondary display-6 fs-3 fw-bold">No data found!</div>
+                     <button type="submit" id="add-phase-button" class="btn btn-primary" 
+                            data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
+                                Add Phase +
+                           </button>`
+                )
+            }else{
+                $this.append(`<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
                             data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
                                 Add Phase +
                            </button>`);
-            //check if element exist, make empty
-            if ($this.find('.' + classes.kanban_board_blocks_class).length) {
-                $this.find('.' + classes.kanban_board_blocks_class).empty();
             }
-            $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
+
             build_section();
             build_tasks();
             build_subtask();
             enableDragAndDrop();
+            $('#addPhaseModal').remove()
+            $('#editPhaseModal').remove()
+
             buildPhaseModal(addPhaseModalData);
             buildPhaseModal(editPhaseModalData);
         }
@@ -120,11 +136,27 @@
         function render() {
             // Clear the kanban board and rebuild the sections and tasks
             $this.addClass(classes.kanban_board_class);
+            $('#add-phase-button').remove()
             //check if element exist, make empty
-            if ($this.find('.' + classes.kanban_board_blocks_class).length) {
-                $this.find('.' + classes.kanban_board_blocks_class).empty();
+            $this.find('.' + classes.kanban_board_blocks_class).remove();
+
+            $this.append('<div class="' + classes.kanban_board_blocks_class + '"></div>');
+            if(settings.phases.length === 0){
+                $('.'+classes.kanban_board_blocks_class)
+                    .addClass('flex-column justify-content-center align-items-center gap-2')
+                    .append(
+                    `<div class="text-center text-secondary fs-3 fw-bold">No data found!</div>
+                     <button type="submit" id="add-phase-button" class="btn btn-primary" 
+                            data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
+                                Add Phase +
+                           </button>`
+                )
+            }else{
+                $this.append(`<button type="submit" id="add-phase-button" class="btn btn-primary move-top" 
+                            data-bs-toggle="modal" data-bs-target="#${addPhaseModalData.title.toLowerCase()}PhaseModal">
+                                Add Phase +
+                           </button>`);
             }
-            //$this.append('<div class="vh-100 ' + classes.kanban_board_blocks_class + '"></div>');
             build_section();
             build_tasks();
             build_subtask();
@@ -163,6 +195,7 @@
                 $(`#${item.id}-btn`).on('click', () => {
                     phaseId = item.id;
                     parentId = null;
+                    currentTaskId = null;
                     buildAddTaskModal(settings.startDate, settings.endDate)
                     resetTaskModal();
                     //show modal
@@ -172,6 +205,7 @@
                 $(`#${item.id}-rename-btn`).on('click', () => {
                     phaseId = item.id;
                     resetPhaseModal(editPhaseModalData);
+                    $('#deleteBtnInEditPhaseModal').remove();
                     //show modal
                     $(`#${editPhaseModalData.title.toLowerCase()}PhaseModal`).modal('show');
                 });
@@ -225,6 +259,7 @@
 
                 // Add a click event handler to add subtask btn
                 $(`#${item.id}-add-subtask-btn`).on('click', () => {
+                    currentTaskId = null
                     parentId = item.id;
                     phaseId = item.phase;
                     buildAddTaskModal(item.start_date, item.end_date)
@@ -270,7 +305,7 @@
                         const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                         subtaskBlock.classList.toggle('hide');
                         //for animation
-                        task.style.height = subtaskBlock.classList.contains('hide') ? '155px' : `${height + 145}px`;
+                        task.style.height = subtaskBlock.classList.contains('hide') ? '145' : `${height + 145}px`;
                         subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                     });
                 }
@@ -325,12 +360,32 @@
         function enableDragAndDrop() {
             $('.' + classes.kb_section_body_class).sortable({
                 connectWith: '.' + classes.kb_section_body_class,
-                placeholder: '.' + classes.kanban_board_item_placeholder_class,
+                placeholder: classes.kanban_board_item_placeholder_class,
                 items: '.' + classes.kb_task_class,
                 start: function (e, ui) {
                     ui.item.data('originalSection', ui.item.closest('.' + classes.kb_section_class));
+                    placeholderHeight = ui.item.outerHeight();
+                    ui.placeholder.height(placeholderHeight + 15);
+                    $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
                 },
-                update: function (e, ui) {
+                change: function (e, ui) {
+                    ui.placeholder.stop().height(0).animate({
+                        height: ui.item.outerHeight() + 15
+                    }, 300);
+
+                    placeholderAnimatorHeight = parseInt($(".slide-placeholder-animator").attr("data-height"));
+
+                    $(".slide-placeholder-animator").stop().height(placeholderAnimatorHeight + 15).animate({
+                        height: 0
+                    }, 300, function () {
+                        $(this).remove();
+                        placeholderHeight = ui.item.outerHeight();
+                        $('<div class="slide-placeholder-animator" data-height="' + placeholderHeight + '"></div>').insertAfter(ui.placeholder);
+                    });
+                },
+                stop: function (e, ui) {
+                    $(".slide-placeholder-animator").remove();
+
                     const task = ui.item;
                     const originalSection = ui.item.data('originalSection');
                     const newSection = task.closest('.' + classes.kb_section_class);
@@ -339,9 +394,11 @@
                     const originalSectionId = originalSection.attr('id');
                     const newSectionId = newSection.attr('id');
 
+
                     let taskData = settings.tasks.filter(data => data.id === taskId).at(0);
-                    taskData.phase = newSectionId.split('-')[0];
+                    taskData.phase = parseInt(newSectionId.split('-')[0], 10);
                     taskData.parent = null;
+                    taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
                     updateTask(taskData)
                 },
             }).disableSelection();
@@ -351,7 +408,6 @@
        *  Build phase modals Function
        * ============================================================*/
         function buildConfirmModal(action = () => {
-            console.log('clicked confirm')
         }, title = 'Are you sure?') {
             const modal = `
               <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -375,7 +431,7 @@
                     </div>
                 </div>
             </div>`;
-            $this.append(modal);
+            $('#phaseModalPlace').append(modal);
             $('#confirmButton').on('click', () => {
                 if ($('#confirmInput').val() === 'CONFIRM') {
                     action();
@@ -408,6 +464,7 @@
         *  Build phase modals Function
         * ============================================================*/
         function buildPhaseModal(phaseData = {title: 'Add', modalId: 'addPhaseModal'}) {
+            $(`#${phaseData.modalId}`).remove();
             const phaseModal = `
               <div class="modal fade" id="${phaseData.modalId}" tabindex="-1" aria-labelledby="${phaseData.modalId}Label" aria-hidden="true">
                 <div class="modal-dialog">
@@ -420,16 +477,21 @@
                             <label for="phaseName">Phase Name:</label>
                             <input type="text" id="${phaseData.title.toLowerCase()}PhaseName" class="form-control" placeholder="Enter Phase Name">
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="${phaseData.title.toLowerCase()}PhaseButton" data-bs-dismiss="modal">Save
-                                Phase
-                            </button>
+                        <div id="deleteBtnPlaceInEditPhaseModal" class="modal-footer d-flex flex-row-reverse justify-content-between">
+                          
+                            <div> 
+                            
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="${phaseData.title.toLowerCase()}PhaseButton" data-bs-dismiss="modal">
+                                    Save Phase
+                                </button>
+                            </div>
+                           
                         </div>
                     </div>
                 </div>
             </div>`;
-            $this.append(phaseModal);
+            $('#phaseModalPlace').append(phaseModal);
             $(`#${phaseData.title.toLowerCase()}PhaseButton`).on('click', phaseData.title === 'Add' ? savePhase : updatePhase);
 
         }
@@ -441,7 +503,6 @@
 
         //Define savePhase function outside the kanban plugin
         function savePhase() {
-            console.log("save phase")
             const phaseData = {
                 id: null,
                 name: $(`#${addPhaseModalData.title.toLowerCase()}PhaseName`).val(),
@@ -457,6 +518,7 @@
                     resetPhaseModal(addPhaseModalData)
                     settings.phases.push(data)
                     render()
+                    $.fn.refreshGantt();
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
@@ -479,6 +541,7 @@
                 success: function (data) {
                     resetPhaseModal(editPhaseModalData)
                     settings.phases.filter(val => val.id === phaseData.id)[0].name = data.name;
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (xhr, status, error) {
@@ -491,7 +554,6 @@
           *  delete Phase to Database
           * ============================================================*/
         function deletePhase() {
-            console.log("delete phase")
             let phaseData = settings.phases.filter(data => data.id === parseInt(phaseId, 10))[0]
 
             $.ajax({
@@ -503,6 +565,7 @@
                 success: function (data) {
                     settings.tasks = settings.tasks.filter(val => val.phase !== phaseData.id);
                     settings.phases = settings.phases.filter(val => val.id !== phaseData.id);
+                    $.fn.refreshGantt()
                     render()
                     $('#confirmModal').modal('hide');
                 },
@@ -517,7 +580,7 @@
             Save Task to Database
            ============================================================*/
         function saveOrUpdateTask() {
-            // Initialize the task object
+
             const task = {
                 id: currentTaskId,
                 name: $('#task-name').val(),
@@ -533,7 +596,7 @@
                 phase: phaseId,
                 parent: parentId,
                 group: $('#task-group').val(),
-                type: $('#task-type').val(),
+                type: 'task',
                 assignees: $('#task-assignees').val().map(val => parseInt(val, 10)),
                 open: true,
             };
@@ -550,12 +613,10 @@
                 currentTask.type = task.type
                 currentTask.assignees = task.assignees
 
-                console.log(currentTask)
 
                 updateTask(currentTask)
             } else {
                 saveTask(task)
-                console.log('task assignee ', task.assignees)
             }
             $("#exampleModal").modal("hide")
         }
@@ -571,9 +632,9 @@
                     settings.tasks.push(data)
                     resetTaskModal()
                     if (document.getElementById('taskViewModal')) {
-                        console.log('taskViewModal exist')
                         renderSubtask(parentId);
                     }
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (xhr, status, error) {
@@ -582,6 +643,7 @@
                 },
             });
         }
+
         // recursive function that
         // reset start date and end date of subtasks as parent task's start date and end date
         // if subtask start date or end date is not in range of parent task
@@ -598,12 +660,12 @@
             });
         }
 
+
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task) {
+        function updateTask(task, refresh = true) {
 
-            console.log('task', task)
             $.ajax({
                 url: '/update-task',
                 method: 'PUT',
@@ -617,6 +679,9 @@
 
                     resetSubtaskDate(data)
                     //reload
+                    if (refresh) {
+                        $.fn.refreshGantt()
+                    }
                     render()
                     //check taskViewModal exist and check class list contain show
                     const modal = document.getElementById('taskViewModal')
@@ -627,7 +692,6 @@
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
-                    console.log('currentTaskId', currentTaskId)
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
@@ -640,10 +704,9 @@
        *  delete Task to Database
        * ============================================================*/
         function deleteTask() {
-            console.log("delete task")
             let taskData = settings.tasks.filter(data => data.id === parseInt(currentTaskId, 10))[0] || simpleTask
             taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10))
-            console.log(taskData)
+
             $.ajax({
                 url: '/delete-task',
                 method: 'DELETE',
@@ -651,15 +714,14 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (data) {
-                    console.log('delete-success')
                     settings.tasks = settings.tasks.filter(val => val.id !== taskData.id);
                     settings.tasks = settings.tasks.filter(val => val.parent !== taskData.id);
-                    console.log('tasks', settings.tasks)
 
                     $('#taskViewModal').offcanvas('hide');
                     $('#taskViewModal').remove();
                     $('#confirmModal').modal('hide');
                     currentTaskId = null
+                    $.fn.refreshGantt()
                     render()
                 },
                 error: function (error) {
@@ -710,8 +772,6 @@
             let formattedDate = `${year}-${month}-${day}`;
 
             const item = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
-            console.log(taskId)
-            console.log(item)
             //check completeTaskModal if already exist, remove
             $('#completeTaskModal').remove();
 
@@ -757,9 +817,8 @@
                   </form> 
                 </div>
             </div>`;
-            $this.append(completeTaskModal);
-            checkDatesValidation("task-start-date", "task-end-date");
-            console.log('item', item)
+            $('#phaseModalPlace').append(completeTaskModal);
+            // checkDatesValidation("task-start-date", "task-end-date");
             const updateStatusInfo = () => {
                 let task = item;
                 task.actual_hours = parseFloat($('#actualHour').val());
@@ -789,11 +848,11 @@
                                 <div class="task-body-text-layout">
                                     <div class="form-group d-flex flex-column mb-0">
                                         <label for="task-name" class="form-label">Enter Task Name:</label>
-                                        <input type="text" id="task-name" placeholder="Name" class="form-control" required>
+                                        <input type="text" id="task-name" placeholder="Name" class="form-control" minlength="3" maxlength="50" required>
                                     </div>
                                     <div class="form-group d-flex flex-column mb-0">
                                         <label for="task-description" class="form-label">Enter Description:</label>
-                                        <textarea id="task-description" placeholder="Description" class="form-control"></textarea>
+                                        <textarea id="task-description" placeholder="Description" class="form-control" maxlength="500"></textarea>
                                     </div>
                                     <div class="d-flex gap-2 align-items-start">
                                         <div class="form-group mb-0 flex-3 d-flex flex-column">
@@ -830,14 +889,6 @@
                                                 <option value="C">C</option>
                                             </select>
                                         </div>
-                                        <div class="form-group mb-0 flex-3">
-                                            <label for="task-type" class="form-label">Type:</label>
-                                            <select id="task-type" class="form-select" required>
-                                                <option value="" selected>Select task type</option>
-                                                <option value="task">Task</option>
-                                                <option value="milestone">Milestone</option>
-                                            </select>
-                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="task-assignees" class="form-label" >Assignees :</label>
@@ -857,7 +908,7 @@
             </div>
             `;
 
-            $this.append(addTaskModal);
+            $('#phaseModalPlace').append(addTaskModal);
             $.each(settings.users, function (index, value) {
                 $('#task-assignees').append($('<option>', {
                     value: value.id,
@@ -865,14 +916,18 @@
                 }));
             });
 
-            setupDatePicker('#task-start-date',minDate,maxDate);
-            setupDatePicker('#task-end-date',minDate,maxDate);
+            $('#task-start-date').on('input',()=>{
+                $('#task-start-date').val('');
+            })
+
+            setupDatePicker('#task-start-date', minDate, maxDate);
+            setupDatePicker('#task-end-date', minDate, maxDate);
             checkDatesValidation("task-start-date", "task-end-date");
             formValidate("addTaskForm", saveOrUpdateTask);
             // setupSelect2('#task-assignees',settings.users);
             $('#task-assignees').select2({
                 placeholder: 'assign users',
-                // dropdownParent: $('#exampleModal'),
+                dropdownParent: '#exampleModal',
                 closeOnSelect: true,
                 width: '100%'
             });
@@ -884,9 +939,9 @@
         Build Task View Modal
         ================================================
          */
-        function buildTaskViewModal(taskId) {
+        function buildTaskViewModal(taskId, item = null) {
             $('#taskViewModal').remove();
-            const task = settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
+            const task = item ? item : settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
             const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
             const typeClass = task.type === 'task' ? 'type-task' : 'type-milestone';
             const completeBtnText = task.status ? 'completed' : 'Mark complete';
@@ -934,8 +989,8 @@
                             <span class="col-3">${task.group}</span>
                         </div>
                         <div class="d-flex col-12">
-                            <span class="col-3 fw-bold">Task Type</span>
-                            <span class="col-3"><span class="${typeClass} text-block">${task.type}</span></span>
+                            <span class="col-3 fw-bold">Duration</span>
+                            <span class="col-3">${task.duration + (task.duration > 1 ? ' days' : ' day')}</span>
                         
                             <span class="col-3 fw-bold">Plan Hour</span>
                             <span class="col-3">${task.plan_hours} hours</span>
@@ -975,7 +1030,7 @@
                             </button>
                             <button id="${task.id}-delete-task-btn" class="btn btn-danger"><i class="bx bx-trash-alt"></i></button>
                             `;
-            $this.append(view);
+            $('#phaseModalPlace').append(view);
 
             //append as first child of offcanvas-header
             $(`.offcanvas-header #btn-area`).prepend(btn);
@@ -985,13 +1040,14 @@
             renderSubtask(task.id)
 
             const addSubtaskBtn = document.getElementById(`${task.id}-add-subtask`);
-            console.log(task.id, addSubtaskBtn)
+
             // Add a click event handler to add subtask btn
             addSubtaskBtn.addEventListener('click', () => {
-                console.log('clicked add btn')
+                currentTaskId = null
                 parentId = task.id;
                 phaseId = task.phase;
-                buildAddTaskModal(task.start_date,task.end_date);
+
+                buildAddTaskModal(task.start_date, task.end_date);
                 resetTaskModal();
                 $('#exampleModal').modal('show');
             });
@@ -1020,15 +1076,22 @@
                 });
             }
             $(`#${task.id}-edit-task-btn`).on('click', () => {
-                console.log('clicked edit btn')
+
                 currentTaskId = task.id;
-                buildAddTaskModal(task.start_date,task.end_date)
+                let minDate = settings.startDate;
+                let maxDate = settings.endDate;
+                if (task.parent && !task.parent.toString().includes('p')) {
+                    const parentTask = settings.tasks.filter(val => val.id === task.parent)[0]
+                    minDate = parentTask.start_date;
+                    maxDate = parentTask.end_date;
+                }
+
+                buildAddTaskModal(minDate, maxDate)
                 fillDataTaskModal(task.id);
                 $('#exampleModal').modal('show');
             });
 
             $(`#${task.id}-delete-task-btn`).on('click', () => {
-                console.log('clicked edit btn')
                 currentTaskId = task.id
                 renderConfirmModal(deleteTask, "Are you sure to delete this task?")
                 //show modal
@@ -1077,14 +1140,23 @@
             $(`#${data.title.toLowerCase()}PhaseName`).val("")
         }
 
+        function setPhaseAndParentIds(phase, parent) {
+            parentId = parent;
+            phaseId = phase;
+        }
+
+        function setCurrentTaskId(id) {
+            currentTaskId = id;
+        }
 
         // Export your saveTask function for usage elsewhere
         $.fn.kanban.savePhase = savePhase;
         $.fn.kanban.saveOrUpdateTask = saveOrUpdateTask;
-
+        $.fn.kanban.buildAddPhaseModal = buildAddTaskModal;
+        $.fn.kanban.buildTaskViewModal = buildTaskViewModal;
+        $.fn.kanban.resetTaskModal = resetTaskModal;
+        $.fn.kanban.setPhaseAndParentIds = setPhaseAndParentIds;
+        $.fn.kanban.updateTask = updateTask;
         initKanban();
-        return {
-            render: render,
-        };
     };
 })(jQuery);

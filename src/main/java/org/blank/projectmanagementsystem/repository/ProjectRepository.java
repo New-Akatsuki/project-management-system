@@ -16,6 +16,8 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project,Long> {
     Optional<List<Project>> findAllByProjectManager(User projectManager);
     Optional<List<Project>> findAllByDepartment(Department department);
+
+
     //get all project that user contains in the list of contract members or foc members
     @Query("SELECT p FROM Project p WHERE :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers")
     Optional<List<Project>> findAllProjectsByUserInMembers(@Param("user") User user);

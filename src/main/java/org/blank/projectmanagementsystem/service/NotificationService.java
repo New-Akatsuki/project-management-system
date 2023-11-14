@@ -9,5 +9,7 @@ public interface NotificationService {
 
     void saveNotification(Notification notification);
 
-    List<Notification> getNotificationByUsername(String username);
+    List<Notification> getNotifications();
+
+    public void sendNotification(Notification notification, String userName);
 }

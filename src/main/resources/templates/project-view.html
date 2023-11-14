@@ -20,8 +20,6 @@
     <link rel="stylesheet" href="/css/hope.css">
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
-    <!-- Single Select -->
-    <link rel="stylesheet" href="/css/single-select.css">
 
     <!--    icon-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -49,8 +47,8 @@
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
     <!--  gantt chart cdn link -->
-    <link th:href="@{/sources/dhtmlxgantt.css}" rel="stylesheet"/>
-    <link th:href="@{/sources/skins/dhtmlxgantt_material.css}" rel="stylesheet"/>
+<!--        <link th:href="@{/sources/dhtmlxgantt.css}" rel="stylesheet"/>-->
+    <link href="/sources/skins/dhtmlxgantt_material.css" rel="stylesheet"/>
     <script th:src="@{/sources/dhtmlxgantt.js}"></script>
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
@@ -63,17 +61,19 @@
             referrerpolicy="no-referrer"
     />
 
+
     <!-- Template Main CSS File -->
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/kanban.css">
 
     <link rel="stylesheet" href="/css/select2.css">
 
     <style>
         /* Custom styles for the model div */
-        #exampleModal{
+        #exampleModal {
             --bs-modal-width: 700px;
         }
+
         .modal-content {
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -127,8 +127,19 @@
         .modal.fade.show .modal-dialog {
             opacity: 1; /* Fade in the modal when it is shown */
         }
-        .select2-dropdown{
-            z-index: 1000000!important;
+
+        .select2-dropdown {
+            z-index: 1000000 !important;
+        }
+
+        .icon-btn-hover:hover {
+            padding: 3px;
+            background-color: #bad1e8 !important;
+            border-radius: 5px !important;
+        }
+
+        .gantt_task_drag{
+            display: none!important;
         }
 
 
@@ -136,59 +147,70 @@
 
 </head>
 
-<body>
+<body id="body" class="toggle-sidebar">
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 <!-- End Header -->
 
 <!-- Start #main -->
-<main id="main" class="main">
+<main id="main" class="main bg-white">
 
     <!-- End Page Title -->
-    <div class="card">
+    <div class="card m-0">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="d-flex align-items-center"><i class='bx bx-package me-1'></i> Project View</h3>
-            <div>
-                <button type="button" class="btn btn-primary tabs__button" data-bs-toggle="modal" data-bs-target="#taskModal">
-                KPI</button>
+            <h3 class="d-flex align-items-center"><i class='bx bx-package me-1'></i>Foodpanda</h3>
+            <div class="d-flex gap-1">
+                <button type="button" class="border-0 bg-white fw-bold icon-btn-hover " data-bs-toggle="modal"
+                        data-bs-target="#taskModal">
+                    KPI
+                </button>
+                <button type="button" class="border-0 bg-white icon-btn-hover px-1" onclick="window.location.href='/projects/1/details'">
+                    <i class="bx bx-detail "></i></button>
+                <button type="button" id="fullscreen_button" class="border-0 bg-white hover-nav px-1 icon-btn-hover">
+                    <i class="bx bx-expand "></i></button>
 
-                <button type="button" class="btn btn-primary tabs__button1" style="margin-left: 10px;">
-                    Project Detail</button>
+
             </div>
         </div>
-        <div class="container">
+        <div class="container-fluid mx-sm-0">
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
-                <label for="tab1" class="tabs__label">Kanban</label>
+                <label for="tab1" class="tabs__label d-flex align-items-center justify-content-center">
+                    <img class="me-1" width="25px" src="/images/board.svg" alt="kanban-icon">
+                    Board</label>
                 <div class="tabs__content py-0">
-                    <br>
+                    <div style="height: 10px"></div>
                     <!-- Kanban Board -->
                     <div>
-                        <div id="kanban" class="px-3">
+                        <div id="kanban" class="w-100">
                         </div>
                     </div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
-                <label for="tab2" class="tabs__label">Gantt Chart</label>
+                <label for="tab2" class="tabs__label d-flex align-items-center justify-content-center">
+                    <img class="me-1" width="25px" src="/images/gantt.svg" alt="kanban-icon">
+                    Gantt Chart</label>
                 <div class="tabs__content py-0">
-                    <br>
+                    <div style="height: 10px"></div>
                     <!-- Gantt Chart -->
-                    <div id="gantt" style="width: 100%; height: 70vh"></div>
+                    <div id="gantt" style="width: 100%; height: 85vh; margin-bottom: 10px;"></div>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <div id="phaseModalPlace"></div>
 
     <!-- Modal Form -->
     <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center" id="taskModalLabel"><i class="bi bi-bar-chart-line"></i> KPI</h5>
+                    <h5 class="modal-title text-center" id="taskModalLabel"><i class="bi bi-bar-chart-line"></i> KPI
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -265,12 +287,8 @@
 <!-- End #main -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
-        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/jquery-ui.js"></script>
 
-<!--<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>-->
 <script src="/js/select2.js"></script>
 
 <!-- Vendor JS Files -->
@@ -281,11 +299,11 @@
 
 <script>
     // Add fade animation to the modal
-    $('#taskModal').on('show.bs.modal', function() {
+    $('#taskModal').on('show.bs.modal', function () {
         $(this).find('.modal-dialog').addClass('fade');
     });
 
-    function setupDatePicker(elementId,minDate,maxDate) {
+    function setupDatePicker(elementId, minDate, maxDate) {
         $(elementId).datepicker({
             dateFormat: "yy-mm-dd",
             minDate: minDate,
@@ -303,45 +321,105 @@
 
 <!-- Custom JavaScript -->
 <script type="text/javascript" src="/js/kanban-board.js"></script>
-<script th:src="@{/js/gantt-chart.js}"></script>
+<script src="/js/gantt-board.js"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+
         let projectId = 1;
-        //get phase from server with request param of project id
-        $.ajax({
-            url: `/get-phase-data?projectId=${projectId}`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                //insert option to task-assignees select
-                // $.each(data.projectMembers, function (index, value) {
-                //     $('#task-assignees').append($('<option>', {
-                //         value: value.id,
-                //         text: value.name
-                //     }));
-                // });
 
-                $('#kanban').kanban({
-                    phases: data.phases,
-                    tasks: data.tasks,
-                    users: data.members,
-                    startDate: data.startDate,
-                    endDate: data.endDate,
-                    projectId: projectId
-                });
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+        fetchKanbanData()
+        fetchGanttData()
+        $("#tab1").click(() => {
+            fetchKanbanData()
+        })
+        $("#tab2").click(() => {
+            fetchGanttData()
+        })
 
-        // const addTask = ()=>{
-        //     $.fn.kanban.saveOrUpdateTask();
-        // }
-        // checkDatesValidation("task-start-date","task-end-date");
-        // formValidate("addTaskForm", addTask);
+        function fetchKanbanData() {
+            $.ajax({
+                url: `/get-phase-data?projectId=${projectId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    $('#kanban').kanban({
+                        phases: data.phases,
+                        tasks: data.tasks,
+                        users: data.members,
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        projectId: projectId
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function fetchGanttData() {
+            $.ajax({
+                url: `/get-phase-data?projectId=${projectId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $('#gantt').ganttChart({
+                        tasks: data.tasks,
+                        users: data.members,
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        projectId: projectId
+                    }, data.phases);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $.fn.refreshGantt = fetchGanttData;
+
     });
+</script>
+
+<script>
+    let btn = document.getElementById("fullscreen_button");
+    let toggleSidebarBtn = document.querySelector('.toggle-sidebar-btn');
+    let elem = document.getElementById("main");
+
+    btn.onclick = function toggleFullScreen() {
+
+        if (!document.fullscreenElement &&    // alternative standard method
+            !document.mozFullScreenElement &&
+            !document.webkitFullscreenElement &&
+            !document.msFullscreenElement) {  // current working methods
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+            btn.innerHTML=`<i class="bx bx-collapse"></i>`;
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+            $('#fullscreen_button').empty();
+            btn.innerHTML=`<i class="bx bx-expand"></i>`;
+        }
+    }
+
 </script>
 </body>
 </html>

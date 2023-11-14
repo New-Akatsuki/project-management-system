@@ -1,10 +1,7 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -17,7 +14,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = "username")
 public class Notification implements Serializable {
 
     @Id
@@ -32,5 +28,6 @@ public class Notification implements Serializable {
     private long taskId;
 
     @JsonIgnore
-    private String username;
+    @ManyToOne
+    private User recipient;
 }

@@ -59,10 +59,11 @@ public class GanttController {
     }
 
     @GetMapping("/get-task-data")
-    public ResponseEntity<List<TaskViewObject>> getFakeGanttData() {
+    public ResponseEntity<List<TaskViewObject>> getTaskById() {
         List<TaskViewObject> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
+
     //for add Task
     @PostMapping("/add-task")
     public ResponseEntity<TaskViewObject> addTask(@RequestBody TaskFormInput task) {
@@ -73,9 +74,13 @@ public class GanttController {
 
     @PutMapping("/update-task")
     public ResponseEntity<TaskViewObject> updateTask(@RequestBody TaskFormInput task) {
-        log.info("update task: {}", task);
-        return ResponseEntity.ok(taskService.updateTask(task));
+        log.info("\n\n\nupdate task tfi: {}\n\n\n\n", task);
+        TaskViewObject tvo = taskService.updateTask(task);
+        log.info("\n\n\nupdate task tvo: {}\n\n\n\n", tvo);
+        return ResponseEntity.ok(tvo);
+//        return null;
     }
+
 
     @DeleteMapping("/delete-task")
     public ResponseEntity<TaskFormInput> deleteTask(@RequestBody TaskFormInput task) {

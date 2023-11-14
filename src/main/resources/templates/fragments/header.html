@@ -32,6 +32,8 @@
     <!-- Template Main CSS File -->
     <link th:href="@{css/style.css}" rel="stylesheet"/>
 
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js" defer></script>
+
 </head>
 <body>
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -56,9 +58,37 @@
 
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span class="badge rounded-5 bg-danger badge-number">5</span>
+                    <span class="badge bg-primary badge-number">4</span>
                 </a><!-- End Notification Icon -->
-            </li>
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                    <li class="dropdown-header">
+                        You have 4 new notifications
+                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li class="notification-item">
+                        <i class="bi bi-exclamation-circle text-warning"></i>
+                        <div>
+                            <h4>Lorem Ipsum</h4>
+                            <p>Quae dolorem earum veritatis oditseno</p>
+                            <p>30 min. ago</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="dropdown-footer">
+                        <a href="/notification">Show all notifications</a>
+                    </li>
+
+                </ul><!-- End Notification Dropdown Items -->
+
+            </li><!-- End Notification Nav -->
 
 
 
@@ -73,7 +103,7 @@
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6 sec:authentication="principal.username"></h6>
+                        <h6 sec:authentication="principal.username" id="login-user-name"></h6>
                         <span id="role" sec:authentication="principal.authorities[0]"></span>
                     </li>
                     <li>
@@ -107,6 +137,19 @@
 <!-- Vendor JS Files -->
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/main.js}"></script>
+<script>
+
+    const loginUserName = document.querySelector("#login-user-name").innerText
+
+    const pusher = new Pusher('45b9b41cab6ad01f6264', {
+        cluster: 'ap1'
+    });
+
+    const channel = pusher.subscribe(`my-channel-${loginUserName}`);
+    channel.bind(`noti-event`, function(data) {
+        alert(JSON.stringify(data));
+    });
+</script>
 </body>
 
 </html>

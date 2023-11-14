@@ -143,10 +143,10 @@ function _checkDate() {
         const endDateValue = new Date(endDate);
 
         if ((startDateValue > endDateValue)
-            // ||
-            // (startDateValue.getFullYear()===endDateValue.getFullYear()&&
-            //     startDateValue.getMonth()===endDateValue.getMonth()&&
-            //     startDateValue.getDate()===endDateValue.getDate())
+            ||
+            (startDateValue.getFullYear()===endDateValue.getFullYear()&&
+                startDateValue.getMonth()===endDateValue.getMonth()&&
+                startDateValue.getDate()===endDateValue.getDate())
         ) {
             // Show an error message
             start_element.setCustomValidity("invalid date");

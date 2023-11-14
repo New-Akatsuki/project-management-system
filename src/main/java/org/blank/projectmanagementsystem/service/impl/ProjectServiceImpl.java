@@ -116,6 +116,12 @@ public class ProjectServiceImpl implements ProjectService {
             default -> throw new IllegalStateException("Invalid user");
         };
     }
+
+    @Override
+    public ProjectViewObject getProjectById(Long id) {
+        return new ProjectViewObject(projectRepository.getReferenceById(id));
+    }
+
     @Override
     public List<User> getProjectMembers(Long projectId) {
         List<User> members = new ArrayList<>();

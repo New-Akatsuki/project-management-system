@@ -34,13 +34,17 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
 
     @Override
-    public User save(User user) {
+    public User
+    save(User user) {
         //create 8 number random password for user
         if(user.getPassword() == null) {
             String password = String.valueOf((int) (Math.random() * 100000000));
             user.setPassword(passwordEncoder.encode(password));
         }
-        return userRepository.save(user);
+        var savedUser = userRepository.save(user);
+        //create queue for user
+//        dynamicQueueManager.createQueueForUser(savedUser.getEmail());
+        return savedUser;
     }
 
     @Override

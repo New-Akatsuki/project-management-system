@@ -15,18 +15,14 @@ public class QueueInfoServiceImpl implements QueueInfoService {
 
     private final QueueInfoRepository queueInfoRepository;
 
-    @Transactional(readOnly = true)
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public String getRoutingKeyByUsername(String username) {
-        return queueInfoRepository.findRoutingKeyByUsername(username).orElseThrow(() -> new RuntimeException("Queue not found."));
+    public String getQueueNameById(Long id) {
+        return queueInfoRepository.findQueueNameById(id);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public String getQueueNameByUsername(String username) {
-        return queueInfoRepository.findQueueNameByUsername(username);
+    public String getRoutingKeyById(Long id) {
+        return queueInfoRepository.findRoutingKeyById(id);
     }
 
 
