@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.lang.Math.toIntExact;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -109,16 +111,25 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
     public UserViewObject createMember(AddUserFormInput addUserFormInput){
 
-        Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
-        Department department = (Department) departmentRepository.findById(Math.toIntExact(departmentId))
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+        var currentUser = getCurrentUser();
+        Department department = currentUser.getDepartment();
+        Long departmentId = addUserFormInput.getDepartment();
+        Role role  = Role.valueOf(addUserFormInput.getRole());
+
+        if(departmentId!=null){ // Assuming getDepartment() returns the department ID
+            department = (Department) departmentRepository.findById(toIntExact(departmentId))
+                    .orElseThrow(() -> new RuntimeException("Department not found"));
+        }
+        if(currentUser.getRole()==Role.PM){
+            role = Role.MEMBER;
+        }
 
         log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
         // Create a new User object based on the addUserFormInput
         User user =  User.builder()
                 .name(addUserFormInput.getName())
                 .email(addUserFormInput.getEmail())
-                .role(Role.valueOf(addUserFormInput.getRole()))
+                .role(role)
                 .department(department)
                 .active(true)
                 .build();
@@ -141,9 +152,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO', 'PM')")
+    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
     public List<UserViewObject> getAllUsers() {
-        return userRepository.findAll().stream().map(UserViewObject::new).toList();
+        Role currentRole = getCurrentUser().getRole();
+        if(currentRole == Role.PMO){
+            return userRepository.findAll().stream().map(UserViewObject::new).toList();
+        }
+        if(currentRole== Role.DH){
+            return userRepository.findAllByDepartment(getCurrentUser().getDepartment()).stream().map(UserViewObject::new).toList();
+        }
+        if(currentRole== Role.PM){
+            return userRepository.findAllByDepartmentAndRole(getCurrentUser().getDepartment(), Role.MEMBER).stream().map(UserViewObject::new).toList();
+        }
+        return null;
     }
 
     @Override
@@ -152,6 +173,11 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(id);
         // For this example, we return null if the user is not found
         return userOptional.orElse(null);
+    }
+
+    private User getCurrentUser(){
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
 

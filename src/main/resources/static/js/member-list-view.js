@@ -17,13 +17,14 @@
         }
     });
 });
-    function renderMemberListTable(items,role) {
+    function renderMemberListTable(items) {
         //check if deliverable table is already initialized, if so, refresh the table with new data
         if ($.fn.DataTable.isDataTable('#user-list-table')) {
             $('#user-list-table').DataTable().destroy();
         }
-       let columns =[
-
+        return $('#user-list-table').DataTable({
+            data: items,
+            columns: [
                 {
                     data: 'id',
                     render: function (data, type, row, meta) {
@@ -32,6 +33,7 @@
                 },
                 {data: 'name'},
                 {data:'email'},
+                {data: 'department'},
                 {data: 'role'},
                 {
                     data: 'active',
@@ -53,19 +55,9 @@
                     }
                 },
 
-            ];
-                if(role === 'PM'){
-                    columns.splice(3,0,{data:'department'})
-
-                }
-                return $('#user-list-table').DataTable({
-                    data: items,
-                    columns: columns,
-
-                });
-
+            ]
+        });
     }
-    renderMemberListTable(items,'PMO');
 
 
     // For Create New Member
@@ -74,11 +66,9 @@
             name: $("#name").val(),
             email: $("#email").val(),
             role: $("#newUserRole").val(),
+            departmentId: $("#department").val(),
         };
-        //Check if the role is 'PM' and include the 'department' field
-         if($("#newUserRole").val() === 'PM'){
-             addMember.department=parseInt($("#department").val());
-         }
+
         console.log(addMember);
         $.ajax({
             type: "POST",
@@ -139,16 +129,19 @@
         let id = $('#editId').val();
         let name = $('#editName').val();
         let email = $('#editEmail').val();
-        let department = $('#editDepartment').val();
+        let department= $('#editDepartment').val();
         let role= $('#editUserRole').val();
+
         // Prepare updated user object
         let updatedUser = {
             id:id,
             name: name,
             email: email,
-            department: department,
+            department : department,
             role: role,
         };
+
+    }
         console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
         $.ajax({
@@ -168,9 +161,7 @@
                 console.log(xhr.responseText)
                 console.log('Error fetching data:', error);
             }
-
         });
-    }
     //For display edit user modal
     function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);

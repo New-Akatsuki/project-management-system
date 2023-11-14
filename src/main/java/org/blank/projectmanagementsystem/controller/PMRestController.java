@@ -32,11 +32,13 @@ public class PMRestController {
         List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
         return ResponseEntity.ok(systemOutlines);
     }
+
     @PostMapping("/pm/add-system-outline") // Changed endpoint
     public ResponseEntity<SystemOutline> addSystemOutline(@RequestBody SystemOutline systemOutline) {
         SystemOutline newSystemOutline = systemOutlineService.save(systemOutline);
         return ResponseEntity.ok(newSystemOutline);
     }
+
     @GetMapping("/pm/system-outline/{id}")
     public ResponseEntity<SystemOutline> getSystemOutlineById(@PathVariable Long id) {
         SystemOutline systemOutline = systemOutlineService.getSystemOutlineById(id);
@@ -46,6 +48,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/pm/system-outline/update")
     public ResponseEntity<SystemOutline> updateSystemOutline(@RequestBody SystemOutline systemOutline) {
         SystemOutline existingSystemOutline = systemOutlineService.getSystemOutlineById(systemOutline.getId());
@@ -91,6 +94,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/pm/deliverable/update")
     public ResponseEntity<Deliverable> updateDeliverable(@RequestBody Deliverable deliverable) {
         Deliverable existingDeliverable = deliverableService.getDeliverableById(deliverable.getId());
@@ -118,7 +122,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-  
+
     @PostMapping("/pm/deliverable/disable/{id}")
     public ResponseEntity<Deliverable> disableDeliverable(@PathVariable Long id) {
         Deliverable deliverable = deliverableService.getDeliverableById(id);
@@ -130,7 +134,6 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @GetMapping("/pm/clients")
     public ResponseEntity<List<Client>> getClients() {
@@ -184,6 +187,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PostMapping("/pm/client/disable/{id}")
     public ResponseEntity<Client> disableClient(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
@@ -208,6 +212,7 @@ public class PMRestController {
         Architecture newArchitecture = architectureService.save(architecture);
         return ResponseEntity.ok(newArchitecture);
     }
+
     @GetMapping("/pm/architecture/{id}")
     public ResponseEntity<Architecture> getArchitectureById(@PathVariable Long id) {
         Architecture architecture = architectureService.getArchitectureById(id);
@@ -220,6 +225,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/pm/architecture/update")
     public ResponseEntity<Architecture> updateArchitecture(@RequestBody Architecture architecture) {
         Architecture existingArchitecture = architectureService.getArchitectureById(architecture.getId());
@@ -236,6 +242,7 @@ public class PMRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @DeleteMapping("/pm/architecture/delete/{id}")
     public ResponseEntity<Long> deleteArchitecture(@PathVariable Long id) {
         architectureService.deleteArchitecture(id);
@@ -246,10 +253,9 @@ public class PMRestController {
     @PostMapping("/pm/member-create")
     public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
         log.info("===================");
-log.info("User: {}", addUserFormInput);
-            return ResponseEntity.ok(userService.createMember(addUserFormInput));
+        log.info("User: {}", addUserFormInput);
+        return ResponseEntity.ok(userService.createMember(addUserFormInput));
     }
-
 
     @PreAuthorize("hasAnyAuthority('PMO', 'PM')")
     @GetMapping("/pm/users")
@@ -270,11 +276,12 @@ log.info("User: {}", addUserFormInput);
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/pm/user-edit/{id}")
-    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user){
+    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user) {
 //        System.out.println("Received user for update: " + user);
-           User existingUser = userService.getUserById(user.getId());
-           Department department = departmentService.getDepartmentById(user.getDepartment());
+        User existingUser = userService.getUserById(user.getId());
+        Department department = departmentService.getDepartmentById(user.getDepartment());
 //        System.out.println("Existing user: " + existingUser);
         if (existingUser != null) {
             existingUser.setName(user.getName());
