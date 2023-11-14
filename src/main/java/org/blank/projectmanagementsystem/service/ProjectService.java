@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectService {
-    Project saveProject(ProjectFormInput projectFormInput, String pmUsername);
+
+    Project saveProject(ProjectFormInput projectFormInput);
+
     List<ProjectViewObject> getAllProjects();
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();

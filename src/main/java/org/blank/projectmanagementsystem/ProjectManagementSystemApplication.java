@@ -165,26 +165,6 @@ public class ProjectManagementSystemApplication {
             projectEntity.getArchitectures().add(architectureOutline);
             projectEntity.getDeliverables().add(deliverable);
 
-
-//            log.info("\n\nProject: {} \n\n", projectEntity);
-
-            projectService.saveProject(
-                    ProjectFormInput.builder()
-                            .name("Project 1")
-                            .background("background")
-                            .objective("objective")
-                            .startDate(LocalDate.now())
-                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
-                            .architectureOutlines(List.of(1L))
-                            .systemOutlines(List.of(1L))
-                            .deliverables(List.of(1L))
-                            .client(1L)
-                            .contractMembers(List.of(2L))
-                            .focMembers(List.of(5L))
-                            .department(1)
-                            .build(),"pm@gmail.com"
-            );
-
         };
     }
 }

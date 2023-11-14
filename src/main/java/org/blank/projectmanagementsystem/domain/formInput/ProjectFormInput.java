@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectFormInput {
+    private Long id;
     private String name;
     private Integer department;
     private LocalDate startDate;

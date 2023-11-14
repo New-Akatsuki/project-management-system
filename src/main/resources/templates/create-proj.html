@@ -108,8 +108,8 @@
     </div>
     <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
 
-<!--      <form th:action="@{/pm/create-proj}" method="post" th:object="${ProjectFormInput}"-->
-<!--            id="create-project">-->
+      <form th:action="@{/pm/create-proj}" method="post" th:object="${projectFormInput}"
+            id="create-project">
         <input type="hidden" name="projectId" value="USR001"/>
         <div class="container d-flex flex-column gap-2">
           <div class= "d-flex gap-3">
@@ -164,7 +164,12 @@
           <div class="d-flex gap-3">
             <div class="d-flex flex-column w-100 p-0">
               <label for="ao">Architecture Outlines</label>
+              <div class="d-flex gap-2 w-100 p-0">
               <select id="ao" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                <a id="addArchitectureButton" class="icon-add-btn" data-toggle="modal" data-target="#addArchitectureModal">
+                  <i class='bx bx-plus m-0 p-0'></i>
+                </a>
+              </div>
 
               <div class="replace" style="height: 100%;"></div>
             </div>
@@ -172,7 +177,12 @@
 
             <div class="d-flex flex-column w-100 p-0">
               <label for="so">System Outlines</label>
+              <div class="d-flex gap-2 w-100 p-0">
               <select id="so" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                <a id="addSystemOutlineButton" class="icon-add-btn" data-toggle="modal" data-target="#addSystemOutlineModal">
+                  <i class='bx bx-plus m-0 p-0'></i>
+                </a>
+              </div>
 
               <div class="replace" style="height: 100%;"></div>
             </div>
@@ -188,15 +198,21 @@
                   <option value="default" selected disabled>Select Client</option>
                   <!-- Add more options as needed -->
                 </select>
-                <button type="button" class="btn btn-primary btn-icon" id="callClientModal"><i
-                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                <a id="addClientButton" class="icon-add-btn" data-toggle="modal" data-target="#addClientModal">
+                  <i class='bx bx-plus m-0 p-0'></i>
+                </a>
               </div>
               <span class="text-danger" id="clientError">You must choose a Client</span>
             </div>
 
             <div class="d-flex flex-column w-100 p-0">
               <label for="deli">Choose Deliverables</label>
+              <div class="d-flex gap-2 w-100 p-0">
               <select id="deli" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                <a id="addDeliverablesButton" class="icon-add-btn" data-toggle="modal" data-target="#addDeliverablesModal">
+                  <i class='bx bx-plus m-0 p-0'></i>
+                </a>
+              </div>
 
               <div class="replace" style="height: 100%;"></div>
             </div>
@@ -218,7 +234,7 @@
           </div>
           <div class="align-self-end">
             <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
-            <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
+            <input type="submit" id="submitButton" class="btn btn-primary" value="Create Project">
           </div>
         </div>
         <!--  Hidden Items    -->
@@ -233,23 +249,134 @@
   </div>
 
   <!-- Add Client Modal -->
-  <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+  <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5">Add New Client</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!-- <span aria-hidden="true">&times;</span>-->
+          </button>
         </div>
         <div class="modal-body">
-          <div style="align-items: center;">
-            <input type="text" class="form-control" id="addClient"/>
-            <span class="text-danger d-none" id="addClientError">The client must not be blank.</span>
-          </div>
-        </div>
+          <!-- Form for adding a new client -->
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="clientName" class="form-label">Client Name</label>
+              <input type="text" class="form-control" id="clientName" name="name" required placeholder="Enter client name">
+            </div>
+            <div class="form-group">
+              <label for="clientEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="clientEmail" name="email" required placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required placeholder="Enter phone number">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" onclick="$.fn.addClient()" class="btn btn-primary" data-dismiss="modal">Add Client</button>
 
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Architecture Outline-->
+  <div class="modal fade" id="addArchitectureModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="architectureName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="architectureType">Type</label>
+              <select class="form-control" id="architectureType" required>
+                <option value="IDE">IDE</option>
+                <option value="FRAMEWORK">Framework</option>
+                <option value="LIBRARY">Library</option>
+                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                <option value="SCRIPT_LANGUAGE">Script Language</option>
+                <option value="MARKUP_LANGUAGE">Markup Language</option>
+                <option value="DATABASE">Database</option>
+                <option value="VCS">Version Control System</option>
+                <option value="API">API</option>
+                <option value="TESTING">Testing</option>
+                <option value="ALGORITHM">Algorithm</option>
+                <option value="DESIGN_PATTERN">Design Pattern</option>
+                <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+          </form>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" id="saveClient" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="$.fn.addArchitecture()" data-dismiss="modal">Add Architecture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Add System Outline-->
+  <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <!--          <span aria-hidden="true">&times;</span>-->
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Add your form for adding a new system outline here -->
+          <!-- Example form fields: -->
+          <form  class="mt-4">
+            <div class="form-group">
+              <label for="OutlineName" class="form-label">System Outline Name</label>
+              <input type="text" class="form-control" id="OutlineName" name="name" required>
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" onclick="$.fn.addSystemOutline()" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
+          </form>
+          <!-- Add Bootstrap classes to the form elements for better styling -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Add Deliverables-->
+  <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog" aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!-- <span aria-hidden="true">&times;</span>-->
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="mt-4">
+            <div class="form-group">
+              <label for="deliverablesName" class="form-label">Deliverable Method</label>
+              <input type="text" class="form-control" id="deliverablesName" name="name" required placeholder="Enter new deliverables method">
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" onclick="$.fn.addDeliverable()" class="btn btn-primary" data-dismiss="modal">Add Deliverables</button>
+          </form>
         </div>
       </div>
     </div>
@@ -359,7 +486,7 @@
 
     $(document).ready(function () {
       $.ajax({
-        url: getURL,
+        url:'/get-client',
         type: 'GET',
         success: function (data) {
           populateSelect(selectBoxClass, data);
@@ -502,44 +629,6 @@
 
 </script>
 <script>
-  // When Submit Button Clicked
-  // function saveMember() {
-  //   let member = $('#member').val();
-  //   let cArray = [];
-  //   let uArray = [];
-  //
-  //   // Process each value in the resParty array
-  //   member.forEach(function (party) {
-  //     if (party.startsWith('c')) {
-  //       // Remove the 'c' prefix and parse the remaining part as a long
-  //       let numericPart = party.substring(1);
-  //       let numericValue = parseInt(numericPart, 10);
-  //       if (!isNaN(numericValue)) {
-  //         cArray.push(numericValue);
-  //       }
-  //     } else if (party.startsWith('u')) {
-  //       // Remove the 'u' prefix and parse the remaining part as a long
-  //       let numericPart = party.substring(1);
-  //       let numericValue = parseInt(numericPart, 10);
-  //       if (!isNaN(numericValue)) {
-  //         uArray.push(numericValue);
-  //       }
-  //     }
-  //   });
-  //
-  //   // Log or process the arrays as needed
-  //   console.log('cArray:', cArray);
-  //   console.log('uArray:', uArray);
-  //
-  //   return {
-  //     id: null,
-  //     providerIds: uArray,
-  //     clientId: cArray[0]
-  //   }
-  // }
-
-</script>
-<script>
   $(document).ready(function () {
     $.ajax({
       url: '/get-department',
@@ -557,83 +646,59 @@
 <script>
   $('.text-danger').hide();
 
-  $('#create-issue').submit(function (e) {
+  $('#create-project').submit(function (e) {
     e.preventDefault();
 
     // Reset errors
     $('.text-danger').hide();
 
-    let issueTitle = $('#title').val();
-    let issueCategory = parseInt($('#issue_category').val());
-    let department= parseInt($('#department').val());
-    let member = saveMember();
-    let foc= saveFoc();
-    let dirCause = quillObjective.root.innerHTML;
-    let rootCause = quillBackground.root.innerHTML;
+    let name = $('#title').val();
+    let department= parseInt($('#department').val(),10);
+    let startDate= new Date($('#start-date').val());
+    let endDate= new Date($('#end-date').val());
+    let so= $('#so').val().map(val=> parseInt(val,10));
+    let ao= $('#ao').val().map(val=> parseInt(val,10));
+    let deli= $('#deli').val().map(val=> parseInt(val,10));
+    let member= $('#member').val().map(val=> parseInt(val,10));
+    let foc= $('#foc').val().map(val=> parseInt(val,10));
+    let client= parseInt($('#client').val(),10);
+    let objective = quillObjective.root.innerHTML;
+    let background = quillBackground.root.innerHTML;
 
-    console.log("Issue title : ", issueTitle);
-    console.log("Department : ", department);
-    console.log("Member : ", member);
-    console.log("Issue content : ", content);
-
-    // Array to collect validation errors
-    let errors = [];
-
-    // Perform validation
-    if (issueTitle === '') {
-      errors.push('#titleError');
-    }
-    if (isNaN(issueCategory) || issueCategory === 'default' || issueCategory === null) {
-      errors.push('#categoryError');
-    }
-    if (isNaN(department) || department === 'default' || department === null) {
-      errors.push('#departmentError');
-    }
-    if (member.providerIds.length === 0) {
-      errors.push('#memberError');
-    }
-    if (objective === '' || objective === '<p><br></p>') {
-      errors.push('#objectiveError');
-    }
-    if (quillBackground === '' || quillBackground === '<p><br></p>') {
-      errors.push('#BackgroundError');
-    }
-
-    // Display all errors at once
-    for (let error of errors) {
-      $(error).show();
-    }
-
-    // If there are errors, stop further processing
-    if (errors.length > 0) {
-      return false;
-    }
 
     // If no errors, proceed with the AJAX request
-    const issueObj = {
+    const projObj = {
       id: null,
-      title: issueTitle,
-      member: member,
-      foc: foc,
-      department: department
+      name: name,
+      department: department,
+      startDate: startDate,
+      endDate: endDate,
+      background: background,
+      objective: objective,
+      systemOutlines: so,
+      architectureOutlines: ao,
+      deliverables: deli,
+      contractMembers: member,
+      focMembers: foc,
+      client: client,
+
 
     };
 
     // Convert to JSON string
-    const jsonString = JSON.stringify(issueObj);
-    console.log(jsonString);
+    const jsonString = JSON.stringify(projObj);
+    console.log(projObj);
 
     $.ajax({
-      url: '/create-project',
+      url: '/pm/create-proj',
       type: 'POST',
       contentType: "application/json",
       data: jsonString,
       success: function (response) {
-        alert("Issue created successfully");
-        window.location.href = "/all-issues";
+        alert("Project created successfully");
       },
       error: function (response) {
-        alert("Issue creation failed");
+        alert("Project creation failed");
       }
     });
   });
@@ -657,8 +722,10 @@
   hideErrorOnInteraction($('#department'), $('#departmentError'));
   hideErrorOnInteraction($('#member'), $('#memberError'));
   hideErrorOnInteraction($('#client'), $('#clientError'));
-  hideErrorOnInteraction($('#objective'), $('#objectiveError'));
-  hideErrorOnInteraction($('#background'), $('#backgroundError'));
+  hideErrorOnInteraction($('#so'), $('#soError'));
+  hideErrorOnInteraction($('#ao'), $('#aoError'));
+  hideErrorOnInteraction($('#deli'), $('#deli_error'));
+
 
   // Event listeners for Quill text editors
 
@@ -692,9 +759,6 @@
     });
 
     //check name input
-    checkInputValidation("name", "Name",null, 3);
-    checkInputValidation("bg", "Background",null, 10);
-    checkInputValidation("obj", "Objective",null, 10);
     checkDatesValidation("start-date","end-date");
     //form validate
     formValidate("form-wizard1")
@@ -702,5 +766,7 @@
   });
 
 </script>
+
+<script src="/js/contract-info-script.js"></script>
 </body>
 </html>

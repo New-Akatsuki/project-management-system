@@ -9,7 +9,6 @@ import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
 import org.blank.projectmanagementsystem.service.ProjectService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +36,9 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper = new ProjectMapper();
 
     @Override
-    public Project saveProject(ProjectFormInput projectFormInput, String pmUsername) {
+    public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        //String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data

@@ -260,7 +260,7 @@ public class PMRestController {
     @PostMapping("/pm/create-proj")
     public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projectFormInput) {
         log.info("create project {} \n\n", projectFormInput);
-        return ResponseEntity.ok(projectService.saveProject(projectFormInput, projectFormInput.getName()));
+        return ResponseEntity.ok(projectService.saveProject(projectFormInput));
     }
 
     @GetMapping("/get-department")
@@ -297,6 +297,15 @@ public class PMRestController {
         log.info("get system{} \n\n", system);
         return system;
     }
+
+    @GetMapping("/get-client")
+    public List<Client> getClient() {
+        List<Client> system= clientService.getAllClients();
+        log.info("get system{} \n\n", system);
+        return system;
+    }
+
+
 
 
 
