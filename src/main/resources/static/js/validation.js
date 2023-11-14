@@ -7,57 +7,60 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
         return;
     }
 
-    nameInput.addEventListener("blur", function () {
-        if (pattern) {
-            if (!nameInput.value.match(pattern)) {
+    if(nameInput){
+        nameInput.addEventListener("blur", function () {
+            if (pattern) {
                 if (!nameInput.value.match(pattern)) {
-                    nameInput.setCustomValidity(patternMismatchMsg);
+                    if (!nameInput.value.match(pattern)) {
+                        nameInput.setCustomValidity(patternMismatchMsg);
+                        nameInput.classList.add("is-invalid");
+                        msg_div.textContent = patternMismatchMsg;
+                    }else {
+                        nameInput.setCustomValidity("");
+                        nameInput.classList.remove("is-invalid");
+                        nameInput.classList.add("is-valid");
+                        msg_div.textContent = "";
+                    }
+                }
+            } else {
+                if (!nameInput.validity.valid) {
+                    if (nameInput.validity.valueMissing) {
+                        nameInput.setCustomValidity(`${element_name || ""} is required.`);
+                    } else if (nameInput.validity.patternMismatch) {
+                        nameInput.setCustomValidity(`Please enter valid ${element_name || ""}`)
+                    } else if (nameInput.validity.tooShort) {
+                        nameInput.setCustomValidity(`${element_name} must be at least ${min_length || 0} characters.`);
+                    }
                     nameInput.classList.add("is-invalid");
-                    msg_div.textContent = patternMismatchMsg;
+                    msg_div.innerText = nameInput.validationMessage;
+                }
+            }
+        });
+
+        nameInput.addEventListener("input", function () {
+            nameInput.setCustomValidity(""); // Clear custom validation message
+            if (pattern){
+                if (!nameInput.value.match(pattern)) {
+                    showPatternInvalidMsg(nameInput,msg_div,element_name);
                 }else {
                     nameInput.setCustomValidity("");
                     nameInput.classList.remove("is-invalid");
                     nameInput.classList.add("is-valid");
                     msg_div.textContent = "";
                 }
-            }
-        } else {
-            if (!nameInput.validity.valid) {
-                if (nameInput.validity.valueMissing) {
-                    nameInput.setCustomValidity(`${element_name || ""} is required.`);
-                } else if (nameInput.validity.patternMismatch) {
-                    nameInput.setCustomValidity(`Please enter valid ${element_name || ""}`)
-                } else if (nameInput.validity.tooShort) {
-                    nameInput.setCustomValidity(`${element_name} must be at least ${min_length || 0} characters.`);
+            }else{
+                if (nameInput.validity.valid) {
+                    nameInput.classList.remove("is-invalid");
+                } else {
+                    nameInput.setCustomValidity("");
+                    nameInput.classList.remove("is-invalid");
+                    nameInput.classList.add("is-valid");
+                    msg_div.textContent = "";
                 }
-                nameInput.classList.add("is-invalid");
-                msg_div.innerText = nameInput.validationMessage;
             }
-        }
-    });
+        });
+    }
 
-    nameInput.addEventListener("input", function () {
-        nameInput.setCustomValidity(""); // Clear custom validation message
-        if (pattern){
-            if (!nameInput.value.match(pattern)) {
-                showPatternInvalidMsg(nameInput,msg_div,element_name);
-            }else {
-                nameInput.setCustomValidity("");
-                nameInput.classList.remove("is-invalid");
-                nameInput.classList.add("is-valid");
-                msg_div.textContent = "";
-            }
-        }else{
-            if (nameInput.validity.valid) {
-                nameInput.classList.remove("is-invalid");
-            } else {
-                nameInput.setCustomValidity("");
-                nameInput.classList.remove("is-invalid");
-                nameInput.classList.add("is-valid");
-                msg_div.textContent = "";
-            }
-        }
-    });
     return {
         element: nameInput,
         msg: msg_div,
