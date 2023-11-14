@@ -34,10 +34,9 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
 
     @Override
-    public User
-    save(User user) {
+    public User save(User user) {
         //create 8 number random password for user
-        if(user.getPassword() == null) {
+        if (user.getPassword() == null) {
             String password = String.valueOf((int) (Math.random() * 100000000));
             user.setPassword(passwordEncoder.encode(password));
         }
@@ -103,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
         // Create a new User object based on the addUserFormInput
-        User user =  User.builder()
+        User user = User.builder()
                 .name(addUserFormInput.getName())
                 .email(addUserFormInput.getEmail())
                 .role(Role.valueOf(addUserFormInput.getRole()))
@@ -130,17 +129,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('PMO')")
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
     }
 
-    private String getUsername(){
+    private String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
     @Override
     public User getLoginUser() {
-        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
+        return userRepository.findByUsernameOrEmail(getUsername(), getUsername()).orElse(null);
     }
 
     @Override

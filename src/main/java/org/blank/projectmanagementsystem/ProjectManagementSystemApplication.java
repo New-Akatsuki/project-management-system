@@ -147,24 +147,6 @@ public class ProjectManagementSystemApplication {
                     Deliverable.builder().id(null).name("Deliverable 1").build()
             );
 
-            Project projectEntity = Project.builder()
-                    .name("Project 1")
-                    .projectManager(pm)
-                    .background("background")
-                    .objective("objective")
-                    .startDate(LocalDate.now())
-                    .endDate(LocalDate.now())
-                    .department(pm.getDepartment())
-                    .client(client)
-                    .duration("2 years")
-                    .systemOutlines(new HashSet<>())
-                    .architectures(new HashSet<>())
-                    .deliverables(new HashSet<>())
-                    .build();
-            projectEntity.getSystemOutlines().add(systemOutlines);
-            projectEntity.getArchitectures().add(architectureOutline);
-            projectEntity.getDeliverables().add(deliverable);
-
         };
     }
 }

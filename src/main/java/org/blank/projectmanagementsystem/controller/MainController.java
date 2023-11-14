@@ -19,6 +19,8 @@ public class MainController {
     private final ProjectService projectService;
 
     private final UserService userService;
+
+
     @GetMapping("/")
     public String index(){
         return "index";

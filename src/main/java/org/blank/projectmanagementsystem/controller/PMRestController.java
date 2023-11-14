@@ -66,7 +66,6 @@ public class PMRestController {
     @DeleteMapping("/pm/system-outline/delete/{id}")
     public ResponseEntity<Long> deleteSystemOutline(@PathVariable Long id) {
         systemOutlineService.deleteSystemOutline(id);
-        //return 2xx if successful
         return ResponseEntity.ok(id);
     }
 
@@ -250,12 +249,6 @@ public class PMRestController {
     }
 
 
-    @PreAuthorize("hasAuthority('PMO')")
-    @GetMapping("/pm/users")
-    public ResponseEntity<List<UserViewObject>> getUserList() {
-        List<UserViewObject> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
 
     @PostMapping("/pm/create-proj")
     public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projectFormInput) {

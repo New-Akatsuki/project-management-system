@@ -528,11 +528,15 @@
       method: 'GET',
       dataType: 'json',
       success: function (data) {
-          console.log('data',data)
+          console.log('aaadata',data)
           $.each(data, function (index, value) {
-              $('#member,#foc').append($('<option>', {
+              $('#member').append($('<option>', {
                   value: value.id,
                   text: value.name
+              }));
+              $('#foc').append($('<option>', {
+                value: value.id,
+                text: value.name
               }));
           });
       },

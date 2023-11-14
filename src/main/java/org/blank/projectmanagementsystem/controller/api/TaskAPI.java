@@ -1,8 +1,7 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
@@ -10,7 +9,6 @@ import org.blank.projectmanagementsystem.service.PhaseService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,7 +18,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class GanttController {
+public class TaskAPI {
     private final TaskService taskService;
     private final PhaseService phaseService;
     private final ProjectService projectService;

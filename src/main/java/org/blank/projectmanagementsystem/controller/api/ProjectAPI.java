@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.api;
 
 import com.rabbitmq.client.impl.recovery.RecordedEntity;
 import lombok.RequiredArgsConstructor;
