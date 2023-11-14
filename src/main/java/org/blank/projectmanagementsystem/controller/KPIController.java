@@ -43,8 +43,8 @@ public class KPIController {
         return ResponseEntity.ok(amounts);
     }
 
-    @GetMapping("/calculateAllKPIs/{projectId}")
-    public Map<String, Double> calculateAllKPIs(@PathVariable Long projectId) {
+    @GetMapping("/calculateAllKPIs/{projectId}/{reviewerType}")
+    public Map<String, Double> calculateAllKPIs(@PathVariable Long projectId, @PathVariable ReviewerType reviewerType) {
         Map<String, Double> results = new HashMap<>();
 
         List<Amount> amounts = amountService.findByProjectId(projectId);
@@ -52,16 +52,14 @@ public class KPIController {
         for (Amount amount : amounts) {
             DevelopmentPhase developmentPhase = amount.getDevelopmentPhase();
 
-            // Fetch the corresponding ReviewCount to get the ReviewerType
-            ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhase(projectId, developmentPhase);
+            ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType);
 
             if (reviewCount != null) {
-                ReviewerType reviewerType = reviewCount.getReviewerType();
+                 reviewerType = reviewCount.getReviewerType();
                 double kpi = reviewCountService.calculateBasicDesignKpi(projectId, developmentPhase, reviewerType);
 
                 results.put(developmentPhase.name(), kpi);
             } else {
-                // Handle the case where ReviewCount is not found
                 results.put(developmentPhase.name(), 0.0);
             }
         }

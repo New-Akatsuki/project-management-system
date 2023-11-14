@@ -15,6 +15,6 @@ public interface ReviewCountService {
 
     double calculateBasicDesignKpi(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType);
 
-    ReviewCount findByProjectIdAndDevelopmentPhase(Long projectId, DevelopmentPhase developmentPhase);
+    ReviewCount findByProjectIdAndDevelopmentPhaseAndReviewerType(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType);
 
 }

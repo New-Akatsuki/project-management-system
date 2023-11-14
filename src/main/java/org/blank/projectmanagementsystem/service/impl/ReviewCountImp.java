@@ -62,8 +62,8 @@ public class ReviewCountImp implements ReviewCountService {
 
 
     @Override
-    public ReviewCount findByProjectIdAndDevelopmentPhase(Long projectId, DevelopmentPhase developmentPhase) {
-        return reviewCountRepository.findByProjectIdAndDevelopmentPhase(projectId, developmentPhase);
+    public ReviewCount findByProjectIdAndDevelopmentPhaseAndReviewerType(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType) {
+        return reviewCountRepository.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase,reviewerType);
     }
 
 }

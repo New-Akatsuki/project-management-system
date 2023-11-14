@@ -73,10 +73,11 @@
     }
     // Use $.ajax for more control
     $.ajax({
-      url: `/calculateAllKPIs/${projectId}`,
+      url: `/calculateAllKPIs/${projectId}/${reviewerType}
+      `,
       method: 'GET',
       data: {
-        reviewerType: reviewerType // Pass reviewerType as a parameter
+        reviewerType: reviewerType
       },
       success: function (results) {
         updateChart(results);
