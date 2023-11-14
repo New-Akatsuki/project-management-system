@@ -32,6 +32,8 @@
     <!-- Template Main CSS File -->
     <link th:href="@{css/style.css}" rel="stylesheet"/>
 
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js" defer></script>
+
 </head>
 <body>
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -101,7 +103,7 @@
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6 sec:authentication="principal.username"></h6>
+                        <h6 sec:authentication="principal.username" id="login-user-name"></h6>
                         <span id="role" sec:authentication="principal.authorities[0]"></span>
                     </li>
                     <li>
@@ -135,6 +137,19 @@
 <!-- Vendor JS Files -->
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/main.js}"></script>
+<script>
+
+    const loginUserName = document.querySelector("#login-user-name").innerText
+
+    const pusher = new Pusher('45b9b41cab6ad01f6264', {
+        cluster: 'ap1'
+    });
+
+    const channel = pusher.subscribe(`my-channel-${loginUserName}`);
+    channel.bind(`noti-event`, function(data) {
+        alert(JSON.stringify(data));
+    });
+</script>
 </body>
 
 </html>

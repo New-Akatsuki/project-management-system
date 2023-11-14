@@ -59,10 +59,11 @@ public class GanttController {
     }
 
     @GetMapping("/get-task-data")
-    public ResponseEntity<List<TaskViewObject>> getFakeGanttData() {
+    public ResponseEntity<List<TaskViewObject>> getTaskById() {
         List<TaskViewObject> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
+
     //for add Task
     @PostMapping("/add-task")
     public ResponseEntity<TaskViewObject> addTask(@RequestBody TaskFormInput task) {

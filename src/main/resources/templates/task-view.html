@@ -14,12 +14,11 @@
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"
     />
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
-    />
 
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+
 
     <!-- Favicons -->
     <link th:href="@{/images/favicon.png}" rel="icon">
@@ -32,9 +31,77 @@
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- CSS for datepicker -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+
     <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/kanban.css">
     <style>
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button[type="submit"] {
+            background-color: #1DA1F2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Styles for the modal fade animation */
+        .modal.fade .modal-dialog {
+            transition: opacity 0.3s ease; /* Add a transition for fading in */
+            opacity: 0; /* Start with opacity 0 */
+        }
+
+        .modal.fade.show .modal-dialog {
+            opacity: 1; /* Fade in the modal when it is shown */
+        }
+
 
         .tabs {
             display: flex;
@@ -70,6 +137,20 @@
             display: initial;
         }
 
+        .accordion-body{
+            overflow-y: scroll;
+            padding: 15px!important;
+        }
+
+        .bd-success{
+            background-color: #d4edda!important;
+        }
+        .bd-danger{
+            background-color: #f8d7da!important;
+        }
+        .bod-success{
+            border: 2px solid #8cf3ad !important;
+        }
 
     </style>
 
@@ -100,11 +181,11 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    <div class="card" style="padding: 20px; border-radius: 10px">
-        <div class="card-container">
-            <h3><i class='bx bx-task'></i> Task Page</h3>
+    <div class="card vh-100 shadow-none">
+        <div class="card-header">
+            <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
         </div>
-        <div class="container">
+        <div class="card-body">
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
                 <label for="tab1" class="tabs__label">Pending</label>
@@ -115,7 +196,8 @@
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
-                <label for="tab2" class="tabs__label">Overdue</label>
+                <label for="tab2" class="tabs__label">Overdue
+                    <span id="overdueBadge" class="badge bg-danger badge-number d-none">0</span></label>
                 <div class="tabs__content container">
                     <br>
                     <!-- Container for Overdue Task Cards -->
@@ -132,147 +214,74 @@
             </div>
 
         </div>
+        <div id="modalPlaceholder"></div>
     </div>
 </main>
 <!-- End #main -->
 
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<!-- Custom JavaScript -->
-<script>var accordionItems = [
-    {id: 1, title: "Task 1", description: "a", planHour: "40", status: 1, actualHour: null, dueDate: "11/02/2023"},
-    {id: 2, title: "Task 2", description: "b", planHour: "24", status: 2, actualHour: null, dueDate: "09/30/2023"},
-    {id: 3, title: "Task 3", description: "c", planHour: "48", status: 1, actualHour: null, dueDate: "11/05/2023"},
-    {id: 4, title: "Task 4", description: "d", planHour: "56", status: 0, actualHour: "50", dueDate: "11/23/2023"},
-    {id: 5, title: "Task 5", description: "e", planHour: "28", status: 2, actualHour: null, dueDate: "10/05/2023"},
-    {id: 6, title: "Task 6", description: "f", planHour: "42", status: 0, actualHour: "40", dueDate: "11/01/2023"},
-];
+<script src="/js/validation.js"></script>
 
-accordionItems.forEach(function (item, index) {
-    let cardItem = document.createElement("div");
-    cardItem.classList.add("mb-3");
-    cardItem.innerHTML = `
-          <div class="accordion rounded" id="${index}Item">
-              <div class="accordion-item ">
-                  <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#flush-collapse-${index}" aria-expanded="false"
-                              aria-controls="flush-collapse-${index}">
-                          ${item.title}
-                      </button>
-                  </h2>
-                  <div id="flush-collapse-${index}" class="accordion-collapse collapse"
-                       data-bs-parent="#${index}Item">
-                      <div class="accordion-body">
-                          <div>${item.description}<div>
-                          <div class="text-end">
-                              <button class="btn btn-primary text-right" data-bs-toggle="modal"
-                                      data-bs-target="#editModal-${item.id}">Edit</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      `;
+<script>
+    // Add fade animation to the modal
+    $('#taskModal').on('show.bs.modal', function () {
+        $(this).find('.modal-dialog').addClass('fade');
+    });
 
-    // Add task to the corresponding container based on status
-    switch (item.status) {
-        case 0:
-            document.getElementById('completedContainer').appendChild(cardItem);
-            break;
-        case 1:
-            document.getElementById('pendingContainer').appendChild(cardItem);
-            break;
-        case 2:
-            document.getElementById('overdueContainer').appendChild(cardItem);
-            break;
-        default:
-            break;
+    function setupDatePicker(elementId, minDate, maxDate) {
+        $(elementId).datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: minDate,
+            maxDate: maxDate,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
+        });
     }
 
-    // Dynamic creation of modal with form
-    let today = new Date();
 
-// Get the month, day, and year
-    let month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
-    let day = today.getDate().toString().padStart(2, '0');
-    let year = today.getFullYear();
-
-// Format the date as mm-dd-yyyy
-    let formattedDate = `${day}/${month}/${year}`;
-
-    let modal = document.createElement("div");
-    modal.classList.add("modal", "fade", "text-dark");
-    modal.id = `editModal-${item.id}`;
-    modal.tabIndex = "-1";
-    modal.setAttribute("aria-labelledby", `editModalLabel-${item.id}`);
-    modal.setAttribute("aria-hidden", "true");
-    modal.innerHTML = `
-      <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="editModalLabel-${item.id}">${item.title}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                  <!-- Form for editing -->
-                  <form id="editForm-${item.id}">
-                    <div class="row" style="padding:10px">
-                      <div class="col-6">
-                        <label for="planHour">Plan Hour :</label>
-                        <input type="number" id="planHour" class="inputmodalbox"
-                        placeholder="Enter plan hour" value="${item.planHour}" readonly disabled>
-                      </div>
-                      <!-- Conditionally display actual hour -->
-
-
-                      <div class="col-6">
-                        <label for="planHour">Due Date :</label>
-                        <input type="text" class="dateInputBox" placeholder="Select due date" value="${item.dueDate}" readonly disabled/>
-                      </div>
-                    </div>
-
-                    <div class="row" style="padding:10px">
-                       <div class="col-6">
-                        <label for="actualHour">Actual Hour :</label>
-                        <input type="number" id="actualHour" class="inputmodalbox" min="0"
-                        placeholder="Enter actual hour" value="${item.actualHour !== null ? item.actualHour : ''}">
-                      </div>
-                      <div class="col-6">
-                        <label for="actualHour">Actual Date :</label>
-                        <input type="text" class="dateInputBox" placeholder="Select actua date" value="${formattedDate}"/>
-                      </div>
-                    </div>
-
-                    <!-- Add other fields as needed -->
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="saveChanges(${item.id})">Save changes</button>
-              </div>
-          </div>
-      </div>
-  `;
-
-    document.body.appendChild(modal);
-});
 </script>
+
+<script src="/js/userTaskView.js"></script>
+
 <script>
     $(document).ready(function () {
         $(".dateInputBox").datepicker({
-            dateFormat: "dd/mm/yy",
+            dateFormat: "yy-mm-dd",
             showOtherMonths: true,
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
         });
+
+        $.ajax({
+            url: `/get-task-data`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                taskBoard({
+                    tasks: data
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     });
+
 </script>
 </body>
 </html>

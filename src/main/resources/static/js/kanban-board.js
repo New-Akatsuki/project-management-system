@@ -195,6 +195,7 @@
                 $(`#${item.id}-btn`).on('click', () => {
                     phaseId = item.id;
                     parentId = null;
+                    currentTaskId = null;
                     buildAddTaskModal(settings.startDate, settings.endDate)
                     resetTaskModal();
                     //show modal
@@ -817,7 +818,7 @@
                 </div>
             </div>`;
             $('#phaseModalPlace').append(completeTaskModal);
-            checkDatesValidation("task-start-date", "task-end-date");
+            // checkDatesValidation("task-start-date", "task-end-date");
             const updateStatusInfo = () => {
                 let task = item;
                 task.actual_hours = parseFloat($('#actualHour').val());
@@ -914,6 +915,10 @@
                     text: value.name
                 }));
             });
+
+            $('#task-start-date').on('input',()=>{
+                $('#task-start-date').val('');
+            })
 
             setupDatePicker('#task-start-date', minDate, maxDate);
             setupDatePicker('#task-end-date', minDate, maxDate);
