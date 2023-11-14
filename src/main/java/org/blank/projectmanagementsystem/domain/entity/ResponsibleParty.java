@@ -24,7 +24,7 @@ public class ResponsibleParty implements Serializable {
 
     @ManyToMany
     @JoinColumn(nullable = false)
-    private Set<User> Providers;
+    private Set<User> providers;
 
     @ManyToOne
     @JoinColumn(nullable = true)

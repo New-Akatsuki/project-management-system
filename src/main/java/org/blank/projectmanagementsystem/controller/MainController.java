@@ -49,34 +49,26 @@ public class MainController {
         return "user-profile";
     }
   
-    @GetMapping("/issues")
-    public String issuesView(){
-        return "issue-page";
-    }
-  
     @GetMapping("/department")
     public String departmentView(){
         return "department";
     }
-    @GetMapping("/create-issue-page")
-    public String issuessdfView(){
-        return "create-issue-page";
-    }
-
-    @GetMapping("/issue-display-page")
-    public String issuessdsdffView(){
-        return "issue-display";
-    }
-
 
     @GetMapping("/project-details-view")
     public String details(){
         return "project-details-info";
     }
 
-    @GetMapping("/change-password")
-    public String detailssd(){
-        return "change-password";
+
+
+    @GetMapping("/all-issues")
+    public String allIssue(){
+        return "issue-all-display";
+    }
+
+    @GetMapping("/issue-create")
+    public String issueCreate(){
+        return "issue-create";
     }
 
     @PreAuthorize("hasAuthority('PM')")

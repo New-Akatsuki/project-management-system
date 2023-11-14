@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.repository;
 
+import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -23,6 +24,5 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
 
     //get all project that user is project manager or contract members or foc members and project is status is ONGOING
     @Query("SELECT p FROM Project p WHERE (p.projectManager = :user OR :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers) AND p.status = :status")
-    Optional<List<Project>> findAllProjectsByUserInMembersAndStatus(@Param("user") User user,@Param("status") String status);
-
+    Optional<List<Project>> findAllProjectsByUserInMembersAndStatus(@Param("user") User user,@Param("status") ProjectStatus status);
 }

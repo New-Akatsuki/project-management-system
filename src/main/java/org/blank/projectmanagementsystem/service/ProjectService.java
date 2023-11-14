@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.Project;
+import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
@@ -11,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectService {
-    Project saveProject(ProjectFormInput projectFormInput, String pmUsername);
+
+    Project saveProject(ProjectFormInput projectFormInput);
+
     List<ProjectViewObject> getAllProjects();
     ProjectViewObject getProjectById(Long id);
     List<User> getProjectMembers(Long projectId);
@@ -19,4 +22,6 @@ public interface ProjectService {
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
 
     Project getProject(long projectId);
+
+
 }

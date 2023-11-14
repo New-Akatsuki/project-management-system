@@ -5,13 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Deliverable;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
-import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.*;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.User;
-import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.UserService;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
-import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +50,7 @@ public class PMController {
     private final ClientService clientService;
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
+
 
     @GetMapping("/project-list")
     public String projectList() {
@@ -99,10 +97,6 @@ public class PMController {
         return "project-detail";
     }
 
-    @GetMapping("/create-project")
-    public String CreateProject() {
-        return "create-new-project";
-    }
 
     @GetMapping("/edit-project")
     public String EditProject() {
@@ -118,5 +112,14 @@ public class PMController {
     public String Department() {
         return "department";
     }
+
+
+
+    @GetMapping("/create-project")
+    public ModelAndView createProject(){
+        return new ModelAndView("create-proj", "projectFormInput", new ProjectFormInput());
+    }
+
+
 }
 

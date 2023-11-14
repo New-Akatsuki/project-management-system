@@ -2,19 +2,18 @@ package org.blank.projectmanagementsystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
-
-import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueSolveFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping
 @Slf4j
 public class MemberController {
     private final UserService userService;
@@ -34,12 +33,19 @@ public class MemberController {
     }
 
     @PostMapping("/change-default-password")
-    public String changeDefaultPassword(@ModelAttribute DefaultPasswordFormInput defaultPasswordFormInput) {
-        log.info("========================================================");
-        log.info("default password: {}", defaultPasswordFormInput);
-        log.info("========================================================\n");
+    public ModelAndView changeDefaultPassword(@ModelAttribute DefaultPasswordFormInput defaultPasswordFormInput, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("default-password", "defaultPasswordFormInput", defaultPasswordFormInput);
+        }
+        log.info("defaultPasswordFormInput {}\n\n\n\n",defaultPasswordFormInput);
+        userService.updatePassword(defaultPasswordFormInput.getId(), defaultPasswordFormInput.getPassword());
+        return new ModelAndView("redirect:/");
+    }
 
-        return "redirect:/";
+    // You would implement a method to retrieve the currently logged in user
+    // This may vary depending on your authentication setup
+    private User getCurrentUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @GetMapping("/change-password")
@@ -78,17 +84,9 @@ public class MemberController {
         return new ModelAndView("issue-create", "issueCreateFormInput", new IssueCreateFormInput());
     }
 
-    @PostMapping("/create-issue")
-    public String createIssue(@ModelAttribute IssueCreateFormInput issueCreateFormInput){
-        log.info("========================================================");
-        log.info("issue: {}", issueCreateFormInput);
-        log.info("========================================================\n");
-        return "redirect:/";
-    }
-
     @GetMapping("/display-issue")
     public ModelAndView displayIssue(){
-        return new ModelAndView("issue-display", "IssueSolveFormInput", new IssueSolveFormInput());
+        return new ModelAndView("issue-details", "IssueSolveFormInput", new IssueSolveFormInput());
     }
 
     @GetMapping("/projects")

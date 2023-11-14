@@ -33,13 +33,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final ArchitectureRepository architectureRepository;
     private final DeliverableRepository deliverableRepository;
 
-
     private final ProjectMapper projectMapper = new ProjectMapper();
 
     @Override
-    public Project saveProject(ProjectFormInput projectFormInput, String pmUsername) {
+    public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        //String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
@@ -136,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     @Override
     public List<User> getUsersByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
         List<User> users = new ArrayList<>();
         projects.ifPresent(projectList->{
             projectList.forEach(project -> {
@@ -147,7 +146,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     @Override
     public Map<String,List<Object>> getUsersAndClientByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
         Map<String,List<Object>> data = new HashMap<>();
         List<Object> users = new ArrayList<>();
         List<Object> clients = new ArrayList<>();
@@ -172,4 +171,5 @@ public class ProjectServiceImpl implements ProjectService {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElseThrow();
     }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -24,6 +25,7 @@ import java.util.Set;
 
 @SpringBootApplication
 @Slf4j
+//@EnableJpaAuditing
 public class ProjectManagementSystemApplication {
 
     public static void main(String[] args) {
@@ -31,7 +33,7 @@ public class ProjectManagementSystemApplication {
 
     }
   
-    @Bean
+//    @Bean
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
             ProjectService projectService,
@@ -43,9 +45,7 @@ public class ProjectManagementSystemApplication {
         return args -> {
 
             Department department = new Department(null, "IT", true);
-            Department department2 = new Department(null, "HR", true);
             userService.saveDepartment(department);
-            userService.saveDepartment(department2);
 
             // save demo data after start
             var pmo = userService.save(
@@ -55,7 +55,7 @@ public class ProjectManagementSystemApplication {
                             .email("pmo@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.PMO)
-                            .department(department2)
+                            .department(department)
                             .active(true)
                             .build()
             );
@@ -78,7 +78,7 @@ public class ProjectManagementSystemApplication {
                             .email("pm@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.PM)
-                            .department(department2)
+                            .department(department)
                             .active(true)
                             .build()
             );
@@ -90,7 +90,7 @@ public class ProjectManagementSystemApplication {
                             .email("sdqc@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.SDQC)
-                            .department(department2)
+                            .department(department)
                             .active(true)
                             .build()
             );
@@ -101,7 +101,31 @@ public class ProjectManagementSystemApplication {
                             .email("member@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.MEMBER)
-                            .department(department2)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
+            var sar = userService.save(
+                    User.builder()
+                            .name("Sar")
+                            .username("sar")
+                            .email("sar@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.MEMBER)
+                            .department(department)
+                            .active(true)
+                            .build()
+            );
+
+            var dar = userService.save(
+                    User.builder()
+                            .name("Dar")
+                            .username("dar")
+                            .email("membear@gmail.com")
+                            .password(passwordEncoder.encode("Khun1234"))
+                            .role(Role.MEMBER)
+                            .department(department)
                             .active(true)
                             .build()
             );
@@ -140,26 +164,6 @@ public class ProjectManagementSystemApplication {
             projectEntity.getSystemOutlines().add(systemOutlines);
             projectEntity.getArchitectures().add(architectureOutline);
             projectEntity.getDeliverables().add(deliverable);
-
-
-//            log.info("\n\nProject: {} \n\n", projectEntity);
-
-            projectService.saveProject(
-                    ProjectFormInput.builder()
-                            .name("Project 1")
-                            .background("background")
-                            .objective("objective")
-                            .startDate(LocalDate.now())
-                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
-                            .architectureOutlines(List.of(1L))
-                            .systemOutlines(List.of(1L))
-                            .deliverables(List.of(1L))
-                            .client(1L)
-                            .contractMembers(List.of(2L))
-                            .focMembers(List.of(5L))
-                            .department(1)
-                            .build(),"pmo@gmail.com"
-            );
 
         };
     }

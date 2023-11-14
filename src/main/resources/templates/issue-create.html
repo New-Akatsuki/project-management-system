@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -83,7 +83,6 @@
         .modal {
             --bs-modal-width: 500px;
         }
-
         .btn-icon {
             height: 40px;
         }
@@ -109,93 +108,93 @@
         <div class="card-header">
             <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
         </div>
-        <div class="card-body" style="padding: 20px;">
+        <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
 
             <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
                   id="create-issue">
                 <input type="hidden" name="issueId" value="USR001"/>
                 <div class="container d-flex flex-column gap-2">
+
                     <div class="flex-1">
                         <label for="title" class="form-label">Title</label>
                         <input class="form-control" type="text" name="title" id="title"
                                placeholder="Enter issue title"/>
-                        <div id="title_error" class="invalid-feedback"></div>
+                        <span class="text-danger" id="titleError">Title must not be blank.</span>
                     </div>
 
                     <div class="d-flex gap-3">
                         <!-- Left Set -->
-                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
-                            <div class="d-flex flex-column w-100 p-0">
-                                <label for="issue_category" class="form-label">Category</label>
+                        <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
+                            <label for="issue_category" class="mb-0">Category</label>
+                            <div class="d-flex gap-2 w-100 p-0">
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box form-select"
                                         id="issue_category" style="width: 100%; height: 100%;">
                                     <option value="default" selected disabled>Select an option</option>
                                     <!-- Add more options as needed -->
                                 </select>
-                            </div>
-                            <button type="button" class="btn btn-primary btn-icon" id="callCategoryModal"><i
+                                <button type="button" class="btn btn-primary btn-icon" id="callCategoryModal"><i
                                     class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            </div>
+                            <span class="text-danger" id="categoryError">Category must be selected.</span>
                         </div>
 
                         <!-- Right Set -->
-                        <div class="d-flex w-100 p-0 align-items-end gap-2 w-100">
-                            <div class="d-flex flex-column w-100 p-0">
-                                <label for="issue_place">Issue Place</label>
+                        <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
+                            <label for="issue_place" class="mb-0">Issue Place</label>
+                            <div class="d-flex gap-2 w-100 p-0">
                                 <!-- Second Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box1 form-select"
                                         id="issue_place" style="width: 100%; height: 100%;">
                                     <option value="default" selected disabled>Select an option</option>
                                     <!-- Add more options as needed -->
                                 </select>
+                                <button type="button" class="btn btn-primary btn-icon" id="callPlaceModal"
+                                        data-target="categoryModal"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
-                            <button type="button" class="btn btn-primary btn-icon" id="callPlaceModal"
-                            data-target="categoryModal"><i
-                                    class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            <span class="text-danger" id="issueError">Issue place must be selected.</span>
                         </div>
                     </div>
 
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="issue_pic">Issue PIC</label>
+                            <label for="issue-pic">Issue PIC</label>
                             <select class="js-example-basic-single select-box2 form-select"
-                                    id="issue_pic" style="width: 100%; height: 100%;">
+                                    id="issue-pic" style="width: 100%; height: 100%;">
                                 <option value="default" selected disabled>Select an option</option>
                             </select>
+                            <span class="text-danger" id="picError">Issue PIC must be selected.</span>
                         </div>
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="res_party">Responsible Party</label>
-                            <select class="js-example-basic-multiple form-select" multiple="multiple"
-                                    id="res_party" style="width: 100%; height: 100%;">
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <!-- Add more options as needed -->
-                            </select>
+                            <label for="multiSelect">Responsible Party</label>
+                            <select id="multiSelect" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                            <span class="text-danger" id="resPartyError">Responsible party must be selected.</span>
+                            <div class="replace" style="height: 100%;"></div>
                         </div>
                     </div>
 
                     <div>
                         <label for="content" class="form-label">Content</label>
                         <div id="content"></div>
+                        <span class="text-danger" id="contentError">Content must not be empty!</span>
                     </div>
-
 
                     <div>
                         <label for="dir-cause" class="form-label">Direct Cause</label>
                         <div id="dir-cause"></div>
+                        <span class="text-danger" id="dirCauseError">Direct cause must not be empty!</span>
                     </div>
 
                     <div>
                         <label for="root-cause">Root Cause</label>
                         <div id="root-cause"></div>
+                        <span class="text-danger" id="rootCauseError">Root cause must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <input type="reset" class="btn btn-secondary" value="Reset" onclick="clean()">
+                        <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
                         <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
                     </div>
                 </div>
@@ -260,45 +259,20 @@
 <script th:src="@{/js/text-editor.js}"></script>
 
 <script>
+    // Function to toggle the toolbar
     function clean() {
+        $('#title').val("");
         quillContent.root.innerHTML = "";
         quillDirCause.root.innerHTML = "";
         quillRootCause.root.innerHTML = "";
         $('#issue_category').val("default").trigger('change');
         $('#issue_place').val("default").trigger('change');
-        $('#issue_pic').val("default").trigger('change');
-        $('#res_party').val(null).trigger('change');
+        $('#issue-pic').val("default").trigger('change');
+        $('#multiSelect').val(null).trigger('change');
     }
-
     let quillContent = new Quill("#content", aa);
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
-    document.getElementById('create-issue').addEventListener('submit', function (e) {
-        // Get the Quill content
-        var quillContentHTML = quillContent.root.innerHTML;
-        var quillDirCauseHTML = quillDirCause.root.innerHTML;
-        var quillRootCauseHTML = quillRootCause.root.innerHTML;
-
-        // Validation check
-        if (!isValidQuillContent(quillContentHTML) || isValidQuillContent(quillDirCauseHTML) || !isValidQuillContent(quillRootCauseHTML)) {
-            // If validation fails, prevent the form submission
-            e.preventDefault();
-            alert("Quill content cannot be empty.");
-        } else {
-            // Update hidden input fields
-            document.getElementById('contentInput').value = quillContentHTML;
-            document.getElementById('dirCauseInput').value = quillDirCauseHTML;
-            document.getElementById('rootCauseInput').value = quillRootCauseHTML;
-        }
-    });
-
-    // Function to check if Quill content is valid
-    function isValidQuillContent(html) {
-        // You can modify this condition based on your specific validation requirements
-        return html.trim() !== '' && html.trim() !== '<p><br></p>';
-    }
-
-
     //document element ready
     document.addEventListener('DOMContentLoaded', function () {
         const containers = document.querySelectorAll('.ql-container');
@@ -309,70 +283,18 @@
         toggleToolbar(1, 'dir-cause');
         toggleToolbar(2, 'root-cause');
     })
+
+
 </script>
 
 <script>
     $(document).ready(function () {
         // Function to populate options from JSON data
-        function populateSelect(selector, jsonData) {
-            var select = $(selector);
-            $.each(jsonData, function (index, value) {
-                select.append('<option value="' + value.id + '">' + value.name + '</option>');
-            });
-        }
-
-        // Simulated JSON data for the second third box
-        var jsonData3 = [
-            {id: 'A', name: 'Option A'},
-            {id: 'B', name: 'Option B'},
-            {id: 'C', name: 'Option C'}
-        ];
-        populateSelect('.js-example-basic-single.select-box2', jsonData3);
-
         // Initialize Select2 for both select boxes
         $('.js-example-basic-single').select2();
-
-        $('#create-issue').submit(function (e) {
-            e.preventDefault();
-
-            let title = $('#title').val();
-            let issue_category = $('#issue_category').val();
-            let issue_place = $('#issue_place').val();
-            let issue_pic = $('#issue_pic').val();
-            let res_party = $('#res-party').val();
-            let content = quillContent.root.innerHTML;
-            let dir_cause = quillDirCause.root.innerHTML;
-            let root_cause = quillRootCause.root.innerHTML;
-
-            $.ajax({
-                url: '/member/create-issue',
-                type: 'POST',
-                data: {
-                    id: "USR001",
-                    title: title,
-                    category: issue_category,
-                    place: issue_place,
-                    pic: issue_pic,
-                    content: content,
-                    resParty: res_party,
-                    dirCause: dir_cause,
-                    rootCause: root_cause
-                },
-                success: function (response) {
-                    console.log(response);
-                    if (response.status == "success") {
-                        alert("Issue created successfully");
-                        window.location.href = "/member/issue";
-                    } else {
-                        alert("Issue creation failed");
-                    }
-                }
-            })
-
-
-        })
     });
 </script>
+
 <script>
     function populateSelect(selector, options) {
         let select = $(selector);
@@ -440,8 +362,8 @@
         modalSaveButton.click(function () {
             let inputValue = input.val().trim();
             if (inputValue !== '') {
-                handlePostRequest({ id: null, name: inputValue });
-            }else{
+                handlePostRequest({id: null, name: inputValue});
+            } else {
                 error.removeClass('d-none');
                 input.focus();
             }
@@ -480,6 +402,221 @@
             closeOnSelect: true,
             width: '100%'
         });
+    });
+</script>
+<script>
+    // Function to fetch data from the server
+    function fetchData(url, successCallback) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: successCallback,
+            error: function (error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    }
+
+    // Populate the select box with options from the server
+    function populateSelectBox(data) {
+        const $multiSelect = $('#multiSelect');
+        Object.keys(data).forEach(key => {
+            const optgroup = $('<optgroup>', {label: key});
+            data[key].forEach(option => {
+                const prefixedId = key.charAt(0).toLowerCase() + (option.id);
+                optgroup.append($('<option>', {value: prefixedId, text: option.name}));
+            });
+            $multiSelect.append(optgroup);
+        });
+        $multiSelect.select2();
+    }
+
+    // Fetch data from the REST controller
+    const restUrl = '/get-responsible-party';
+    fetchData(restUrl, populateSelectBox);
+</script>
+<script>
+    // When Submit Button Clicked
+    function saveResponsibleParty() {
+        let resParty = $('#multiSelect').val();
+        let cArray = [];
+        let uArray = [];
+
+        // Process each value in the resParty array
+        resParty.forEach(function (party) {
+            if (party.startsWith('c')) {
+                // Remove the 'c' prefix and parse the remaining part as a long
+                let numericPart = party.substring(1);
+                let numericValue = parseInt(numericPart, 10);
+                if (!isNaN(numericValue)) {
+                    cArray.push(numericValue);
+                }
+            } else if (party.startsWith('u')) {
+                // Remove the 'u' prefix and parse the remaining part as a long
+                let numericPart = party.substring(1);
+                let numericValue = parseInt(numericPart, 10);
+                if (!isNaN(numericValue)) {
+                    uArray.push(numericValue);
+                }
+            }
+        });
+
+        // Log or process the arrays as needed
+        console.log('cArray:', cArray);
+        console.log('uArray:', uArray);
+
+        return {
+            id: null,
+            providerIds: uArray,
+            clientId: cArray[0]
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/get-pic',
+            type: 'GET',
+            success: function (data) {
+                console.log("Pic data : ", data);
+                populateSelect('.js-example-basic-single.select-box2', data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+</script>
+<script>
+    $('.text-danger').hide();
+
+    $('#create-issue').submit(function (e) {
+        e.preventDefault();
+
+        // Reset errors
+        $('.text-danger').hide();
+
+        let issueTitle = $('#title').val();
+        let issueCategory = parseInt($('#issue_category').val());
+        let issuePlace = parseInt($('#issue_place').val());
+        let issuePic = parseInt($('#issue-pic').val());
+        let resParty = saveResponsibleParty();
+        let content = quillContent.root.innerHTML;
+        let dirCause = quillDirCause.root.innerHTML;
+        let rootCause = quillRootCause.root.innerHTML;
+
+        console.log("Issue title : ", issueTitle);
+        console.log("Issue category : ", issueCategory);
+        console.log("Issue place : ", issuePlace);
+        console.log("Issue pic : ", issuePic);
+        console.log("Issue resParty : ", resParty);
+        console.log("Issue content : ", content);
+        console.log("Issue dirCause : ", dirCause);
+        console.log("Issue rootCause : ", rootCause);
+
+        // Array to collect validation errors
+        let errors = [];
+
+        // Perform validation
+        if (issueTitle === '') {
+            errors.push('#titleError');
+        }
+        if (isNaN(issueCategory) || issueCategory === 'default' || issueCategory === null) {
+            errors.push('#categoryError');
+        }
+        if (isNaN(issuePlace) || issuePlace === 'default' || issuePlace === null) {
+            errors.push('#issueError');
+        }
+        if (isNaN(issuePic) || issuePic === 'default' || issuePic === null) {
+            errors.push('#picError');
+        }
+        if (resParty.providerIds.length === 0) {
+            errors.push('#resPartyError');
+        }
+        if (content === '' || content === '<p><br></p>') {
+            errors.push('#contentError');
+        }
+        if (dirCause === '' || dirCause === '<p><br></p>') {
+            errors.push('#dirCauseError');
+        }
+        if (rootCause === '' || rootCause === '<p><br></p>') {
+            errors.push('#rootCauseError');
+        }
+
+        // Display all errors at once
+        for (let error of errors) {
+            $(error).show();
+        }
+
+        // If there are errors, stop further processing
+        if (errors.length > 0) {
+            return false;
+        }
+
+        // If no errors, proceed with the AJAX request
+        const issueObj = {
+            id: null,
+            title: issueTitle,
+            content: content,
+            directCause: dirCause,
+            rootCause: rootCause,
+            responsibleParty: resParty,
+            issuePlace: issuePlace,
+            issueCategory: issueCategory,
+            pic: issuePic
+        };
+
+        // Convert to JSON string
+        const jsonString = JSON.stringify(issueObj);
+        console.log(jsonString);
+
+        $.ajax({
+            url: '/create-issue',
+            type: 'POST',
+            contentType: "application/json",
+            data: jsonString,
+            success: function (response) {
+                alert("Issue created successfully");
+                window.location.href = "/all-issues";
+            },
+            error: function (response) {
+                alert("Issue creation failed");
+            }
+        });
+    });
+</script>
+<script>
+    $('.text-danger').hide();
+    // Function to hide the relevant error message when user interacts with input/select
+    function hideErrorOnInteraction(input, error) {
+        input.on('input', function () {
+            error.hide();
+        });
+
+        input.on('change', function () {
+            error.hide();
+        });
+    }
+
+    // Event listeners for input fields
+    hideErrorOnInteraction($('#title'), $('#titleError'));
+    hideErrorOnInteraction($('#issue_category'), $('#categoryError'));
+    hideErrorOnInteraction($('#issue_place'), $('#issueError'));
+    hideErrorOnInteraction($('#issue-pic'), $('#picError'));
+    hideErrorOnInteraction($('#multiSelect'), $('#resPartyError'));
+
+    // Event listeners for Quill text editors
+    quillContent.on('text-change', function () {
+        $('#contentError').hide();
+    });
+
+    quillDirCause.on('text-change', function () {
+        $('#dirCauseError').hide();
+    });
+
+    quillRootCause.on('text-change', function () {
+        $('#rootCauseError').hide();
     });
 </script>
 </body>

@@ -122,7 +122,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-primary" th:href="@{/issue-display-page}">Create Issue</a>
+                <a class="btn btn-primary" th:href="@{/issue-create}">Create Issue</a>
             </div>
         </div>
         <!-- Search Box -->
@@ -142,7 +142,7 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-3">
-                <label for="sortBy" class="cool-label">Sort By Status:</label>
+                <label for="sortBy" class="cool-label">Filter By Status:</label>
                 <select id="sortBy" class="form-select cool-box" onchange="sortIssues(this.value)">
                     <option value="all">All</option>
                     <option value="open">Open</option>
@@ -150,7 +150,7 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-3">
-                <label for="sortMonth" class="cool-label">Sort By Month:</label>
+                <label for="sortMonth" class="cool-label">Filter By Month:</label>
                 <select id="sortMonth" class="form-select cool-box">
                     <option value="all">All</option>
                     <option value="01">January</option>
@@ -168,7 +168,7 @@
                 </select>
             </div>
             <div class="col-md-6 col-lg-3">
-                <label for="sortYear" class="cool-label">Sort By Year:</label>
+                <label for="sortYear" class="cool-label">Filter By Year:</label>
                 <input type="number" id="sortYear" class="form-control" style="height: 38px" placeholder="Enter year"
                        oninput="sortIssuesByYear(this.value)" min="2000">
             </div>
@@ -193,11 +193,26 @@
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 
 <script>
-    // Sample data
+    // let issues =[];
+    // $(document).ready(function () {
+    //     $.ajax({
+    //         url: '/get-all-issue',
+    //         type: 'GET',
+    //         success: function (data) {
+    //             issues=data;
+    //             console.log("Issue List : ", data);
+    //         },
+    //         error: function (data) {
+    //             console.log(data);
+    //         }
+    //     });
+    // });
+
     const issues = [
         {
             id: "ISU01",
@@ -333,15 +348,8 @@
         const filteredIssues = (lowerCaseStatus === 'all') ? issues : issues.filter(issue => issue.status.toLowerCase() === lowerCaseStatus);
         displayIssues(filteredIssues, 1);
     }
-
-
 </script>
-
-<!-- ... (existing code) ... -->
-
 <script>
-    // Your existing script content
-
     // Function to sort issues by month and year
     function sortIssuesByMonthAndYear(month, year) {
         const filteredIssues = (month === 'all' && year === 'all') ? issues : issues.filter(issue => {
@@ -366,9 +374,40 @@
     document.getElementById('sortMonth').addEventListener('change', changeMonthAndYear);
     document.getElementById('sortYear').addEventListener('input', changeMonthAndYear);
 </script>
+<script>
 
-<!-- ... (existing code) ... -->
+    // Initial hide of "Create Issue" link
+    toggleCreateIssueButton(true);
 
+    // Attach event listener to search box
+    $('#issueSearch').on('input', function () {
+        const searchText = $(this).val().toLowerCase();
+        const filteredIssues = issues.filter(issue =>
+            issue.title.toLowerCase().includes(searchText) ||
+            issue.description.toLowerCase().includes(searchText) ||
+            issue.status.toLowerCase().includes(searchText) ||
+            issue.assignedTo.toLowerCase().includes(searchText) ||
+            issue.uploadedAt.toLowerCase().includes(searchText)
+        );
+        if(filteredIssues.length === 0) {
+            $('#issueContainer').html('<h4>No issues found!!</h4>');
+            toggleCreateIssueButton(false);
+        } else if (searchText===''){
+            toggleCreateIssueButton(true);
+        } else{
+            displayIssues(filteredIssues, 1);
+        }
+    });
+
+    // Function to toggle the visibility of "Create Issue" button
+    function toggleCreateIssueButton(shouldHide) {
+        const createIssueContainer = $('.col-md-6.text-end');
+        if (shouldHide) {
+            createIssueContainer.hide();
+        } else {
+            createIssueContainer.show();
+        }
+    }
+</script>
 </body>
-
 </html>

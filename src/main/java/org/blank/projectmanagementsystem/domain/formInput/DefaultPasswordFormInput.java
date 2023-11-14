@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DefaultPasswordFormInput {
-    private String newPassword;
+    private String id;
+    private String password;
     private String confirmPassword;
 }
