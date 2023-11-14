@@ -38,7 +38,6 @@
                 {
                     data: 'active',
                     render: function (data, type, row) {
-                        console.log('data', data ,row.id)
                         return `
                             <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}">${data ? 'Disabled' : 'Active'}</button>
 
@@ -124,24 +123,56 @@
 
 
     <!--Build Edit Member Modal-->
+    // function editUserRoleAndDepartment(){
+    //     //Get updated user information form modal fields
+    //     let id = $('#editId').val();
+    //     let name = $('#editName').val();
+    //     let email = $('#editEmail').val();
+    //     let department= $('#editDepartment').val();
+    //     let role= $('#editUserRole').val();
+    //
+    //     // Prepare updated user object
+    //      let updatedUser = {
+    //         id:id,
+    //         name: name,
+    //         email: email,
+    //         department : department,
+    //         role: role,
+    //     };
+    //     console.log("updatedUser", updatedUser);
+    //     $.ajax({
+    //         url: `/pm/user-edit/`+id, // Replace with your actual API endpoint
+    //         method: 'PUT',
+    //         data: JSON.stringify(updatedUser),
+    //         dataType: 'json',
+    //         contentType: 'application/json',
+    //         success: function (data) {
+    //             console.log('Data received:', data);
+    //             // Hide the modal
+    //             $('#userEditModal').modal('hide');
+    //         },
+    //         error: function (xhr,error) {
+    //             console.log(xhr.responseText)
+    //             console.log('Error fetching data:', error);
+    //         }
+    //     });
+    // }
+
     function editUserRoleAndDepartment(){
         //Get updated user information form modal fields
         let id = $('#editId').val();
         let name = $('#editName').val();
         let email = $('#editEmail').val();
-        let department= $('#editDepartment').val();
+        let department = $('#editDepartment').val();
         let role= $('#editUserRole').val();
-
         // Prepare updated user object
         let updatedUser = {
             id:id,
             name: name,
             email: email,
-            department : department,
+            department: department,
             role: role,
         };
-
-    }
         console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
         $.ajax({
@@ -152,16 +183,22 @@
             contentType: 'application/json',
             success: function (data) {
                 console.log('Data received:', data);
-                // Hide the modal
-                $('#userEditModal').modal('hide');
-                // Reload the DataTable with new data
-                // renderMemberListTable(data.updatedUser);
+                location.reload();
+                // // Hide the modal
+                // $('#userEditModal').modal('hide');
+                // // Reload the DataTable with new data
+                // renderMemberListTable(updatedUser);
             },
             error: function (xhr,error) {
                 console.log(xhr.responseText)
                 console.log('Error fetching data:', error);
             }
+
         });
+    }
+
+        //Make a PUT request to update the user data
+
     //For display edit user modal
     function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);

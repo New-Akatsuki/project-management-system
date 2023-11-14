@@ -7,6 +7,6 @@ public class UpdateUserFormInput {
     private Long id;
     private String name;
     private String email;
-    private int department;
+    private Integer department;
     private String Role;
 }
