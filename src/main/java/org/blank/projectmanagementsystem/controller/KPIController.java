@@ -43,29 +43,58 @@ public class KPIController {
         return ResponseEntity.ok(amounts);
     }
 
-    @GetMapping("/calculateAllKPIs/{projectId}/{reviewerType}")
-    public Map<String, Double> calculateAllKPIs(@PathVariable Long projectId, @PathVariable ReviewerType reviewerType) {
-        Map<String, Double> results = new HashMap<>();
+    @GetMapping("/calculateAllKPIs/{projectId}")
+    public Map<String, Map<String, Double>> calculateAllKPIs(@PathVariable Long projectId) {
+        Map<String, Map<String, Double>> results = new HashMap<>();
 
         List<Amount> amounts = amountService.findByProjectId(projectId);
 
-        for (Amount amount : amounts) {
-            DevelopmentPhase developmentPhase = amount.getDevelopmentPhase();
+        for (ReviewerType reviewerType : ReviewerType.values()) {
+            Map<String, Double> kpiMap = new HashMap<>();
 
-            ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType);
+            for (Amount amount : amounts) {
+                DevelopmentPhase developmentPhase = amount.getDevelopmentPhase();
 
-            if (reviewCount != null) {
-                 reviewerType = reviewCount.getReviewerType();
-                double kpi = reviewCountService.calculateBasicDesignKpi(projectId, developmentPhase, reviewerType);
+                ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType);
 
-                results.put(developmentPhase.name(), kpi);
-            } else {
-                results.put(developmentPhase.name(), 0.0);
+                if (reviewCount != null) {
+                    double kpi = reviewCountService.calculateBasicDesignKpi(projectId, developmentPhase, reviewerType);
+                    kpiMap.put(developmentPhase.name(), kpi);
+                } else {
+                    kpiMap.put(developmentPhase.name(), 0.0);
+                }
             }
+
+            results.put(reviewerType.name(), kpiMap);
         }
 
         return results;
     }
+
+//    @GetMapping("/calculateAllKPIs/{projectId}/{reviewerType}")
+//    public Map<String, Double> calculateAllKPIs(@PathVariable Long projectId, @PathVariable ReviewerType reviewerType) {
+//        Map<String, Double> results = new HashMap<>();
+//
+//        List<Amount> amounts = amountService.findByProjectId(projectId);
+//
+//        for (Amount amount : amounts) {
+//            DevelopmentPhase developmentPhase = amount.getDevelopmentPhase();
+//
+//            ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType);
+//
+//            if (reviewCount != null) {
+//                reviewerType = reviewCount.getReviewerType();
+//                double kpi = reviewCountService.calculateBasicDesignKpi(projectId, developmentPhase, reviewerType);
+//
+//                results.put(developmentPhase.name(), kpi);
+//            } else {
+//                results.put(developmentPhase.name(), 0.0);
+//            }
+//        }
+//
+//        return results;
+//    }
+
 
 
 }
