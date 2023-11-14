@@ -15,14 +15,14 @@
 
 <div>
   <label for="projectId">Project Name : </label>
-  <select id="projectId">
+  <select id="projectId" class="form-select project-select">
     <option>SELECT THE PROJECT </option>
   </select>
 </div>
 
 <div>
   <label for="reviewerType">Reviewer Name : </label>
-  <select id="reviewerType">
+  <select id="reviewerType" class="form-select reviewer-select">
     <option value="#" selected>SELECT ONE : </option>
     <option value="INTERNAL">INTERNAL </option>
     <option value="EXTERNAL">EXTERNAL</option>
@@ -30,7 +30,6 @@
 </div>
 
 
-<button onclick="calculateAllKPIs()">Calculate KPIs</button>
 
 <div class="container mt-5">
   <div class="row">
@@ -59,13 +58,15 @@
   });
   var myChart;
 
+  // Listen for changes in project or reviewer type
+  $('#projectId, #reviewerType').change(function() {
+    calculateAllKPIs();
+  });
+
   function calculateAllKPIs() {
     var projectId = $('#projectId').val();
     var reviewerType = $('#reviewerType').val();
     console.log('Reviewer Type:', reviewerType); // Log the reviewerType value
-
-
-
 
     if(myChart){
       myChart.destroy();
@@ -75,7 +76,7 @@
       url: `/calculateAllKPIs/${projectId}`,
       method: 'GET',
       data: {
-
+        reviewerType: reviewerType // Pass reviewerType as a parameter
       },
       success: function (results) {
         updateChart(results);

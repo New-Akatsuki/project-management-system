@@ -60,3 +60,10 @@ function updateChart(results) {
         }
     });
 }
+
+
+
+$(document).ready(function () {
+    $('.project-select').select2();
+    $('.reviewer-select').select2();
+});
