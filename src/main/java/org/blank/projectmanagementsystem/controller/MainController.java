@@ -107,5 +107,10 @@ public class MainController {
         return "man-month";
     }
 
+    @GetMapping("/kpi")
+    public String kpView(){
+        return "KPI";
+    }
+
 }
 

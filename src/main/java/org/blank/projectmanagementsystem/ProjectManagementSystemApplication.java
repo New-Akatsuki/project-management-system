@@ -113,6 +113,13 @@ public class ProjectManagementSystemApplication {
 //                            .phoneNumber("123456789")
 //                            .build()
 //            );
+//            var client2 = clientRepository.save(
+//                    Client.builder()
+//                            .name("yephone")
+//                            .email("yephone@gmaill.com")
+//                            .phoneNumber("09420320685")
+//                            .build()
+//            );
 //            var systemOutlines = systemOutlineRepository.save(
 //                    SystemOutline.builder().id(null).name("BasicDesign").build()
 //            );
