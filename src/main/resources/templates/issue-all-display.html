@@ -51,6 +51,18 @@
             transform: scale(1.02);
         }
 
+        .btn{
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
         .card-header {
             background: linear-gradient(to right, #6a0572, #00b4d8);
             color: #fff;
@@ -82,7 +94,8 @@
     </style>
     <style>
         #issueNotFound {
-            margin: 50px;
+            margin-top: 30px;
+            text-align: center;
         }
     </style>
     <style>
@@ -123,10 +136,12 @@
 
         <div class="row">
             <div class="col-md-6">
-                <h4><i class="bi bi-search"></i> Issue Page</h4>
+                <h4><i class="bi bi-info-circle"></i> Issue Page</h4>
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
+                <a class="btn btn-secondary" th:href="@{/issue-creator-view}">Creator View</a>
+                <a class="btn btn-secondary" th:href="@{/issue-pic-view}">PIC View</a>
                 <a class="btn btn-primary" th:href="@{/issue-create}">Create Issue</a>
             </div>
         </div>
@@ -184,16 +199,16 @@
 <script src="/js/pagination.js"></script>
 <!-- Your existing main.js script -->
 <script src="/js/main.js"></script>
-
 <!-- Your existing main.js script -->
 <script type="text/javascript" src="/js/main.js"></script>
-<!-- Add a new script block at the end of your HTML file -->
-
 <!-- Include Select2 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
     $(document).ready(function () {
+
+        // Initialize Select2
+        $('.js-example-basic-single').select2();
 
         $('#header .toggle-sidebar-btn').on('click', () => {
             if ($('body').hasClass('toggle-sidebar')) {
@@ -201,7 +216,7 @@
             } else {
                 $('body').addClass('toggle-sidebar');
             }
-        })
+        });
 
         var itemsPerPage = 5; // Set the number of items per page
         var issueContainer = $('#issueContainer');
@@ -209,6 +224,7 @@
         var allIssues = []; // Store all issues for searching
         var filteredIssues = []; // Store filtered issues
         var issueCategory = [];
+
         // Fetch the data after success
         $.ajax({
             url: '/get-all-issue',
@@ -244,15 +260,21 @@
 
         // Function to display issues as cards
         function displayIssues(issues) {
-            console.log("Working");
-            console.log(issues);
             var issueContainer = $('#issueContainer');
             issueContainer.empty();
             issues.forEach(function (issue) {
-                var formattedDate = moment(issue.createdAt).format("YYYY-MM-DD HH:mm:ss");
+                let date;
+                let dateText;
+                if (issue.modifiedAt == null) {
+                    date = issue.createdAt;
+                    dateText = "Uploaded at: ";
+                } else {
+                    date = issue.modifiedAt;
+                    dateText = "Edited at: ";
+                }
                 var card = `
                <div class="col-md-12">
-                   <a href="issue-display#${issue.id}" class="card-link">
+                   <a href="/issue-details/${issue.id}" class="card-link">
                        <div class="card issue-card" style="border-radius:20px">
                            <div class="card-header" style="border-radius:20px 20px 0 0; padding: 20px">
                                <h5 class="text-white">${issue.title}</h5>
@@ -270,7 +292,16 @@
                                    <div class="col-2"><label>Issue Place</label></div>:&nbsp;
                                    <div class="col-10">${issue.place}</div>
                                </div>
-                               <span class="uploaded-info">Uploaded at: ${formattedDate}</span>
+                               <div class="d-flex">
+                                   <div class="col-2"><label>Responsible Party</label></div>:&nbsp;
+                                   <div class="col-10">${issue.responsibleParty}</div>
+                               </div>
+
+                               <div id="issue-upload-date" style="padding-right: 10px">
+                                    <div class="uploaded-info">
+                                        <span class="text-end"><small><strong>${dateText}</strong>${formatDate(date)}</small></span>
+                                    </div>
+                               </div>
                            </div>
                        </div>
                    </a>
@@ -278,18 +309,16 @@
            `;
                 issueContainer.append(card);
             });
+
+
         }
 
         // Add an event listener for the search box
         $('#issueSearch').on('keyup', function () {
             var searchTerm = $(this).val().toLowerCase();
-            console.log(searchTerm);
             filteredIssues = filterIssues(allIssues, searchTerm);
-            console.log(filteredIssues);
-            // Update pagination with filtered data
             displayIssues(filteredIssues);
         });
-
 
         // Add an event listener for the select box
         $('#filterSelect').on('change', function () {
@@ -298,11 +327,8 @@
                 displayPage(allIssues);
                 return;
             }
-            // Filter issues based on the selected value and the search term
             filteredIssues = filterIssuesByStatus(allIssues, searchTerm);
-            // Update pagination with filtered data
             displayPage(filteredIssues);
-            // Check if filtered issues are empty
         });
 
         function filterIssuesByStatus(issues, selectedVal) {
@@ -317,12 +343,19 @@
         function filterIssues(issues, searchTerm) {
             return issues.filter(function (issue) {
                 console.log(issue.solved.toString(), searchTerm);
+                let date;
+                if(issue.modifiedAt == null){
+                    date=issue.createdAt;
+                }else{
+                    date=issue.modifiedAt;
+                }
                 // You can customize this condition based on your requirements
                 return (
                     issue.title.toLowerCase().includes(searchTerm) ||
                     issue.category.toLowerCase().includes(searchTerm) ||
                     issue.place.toLowerCase().includes(searchTerm) ||
-                    moment(issue.createdAt).format("YYYY-MM-DD HH:mm:ss").includes(searchTerm)
+                    issue.responsibleParty.toLowerCase().includes(searchTerm) ||
+                    formatDate(date).toLowerCase().includes(searchTerm)
                 );
 
             });
@@ -355,7 +388,7 @@
         // Add an event listener for the select box
         $('#category').on('change', function () {
             let selectedVal = $(this).val();
-            if(selectedVal === ""){
+            if (selectedVal === "") {
                 displayPage(allIssues);
                 return;
             }
@@ -376,7 +409,7 @@
         // Add an event listener for the select box
         $('#place').on('change', function () {
             let selectedVal = $(this).val();
-            if(selectedVal === ""){
+            if (selectedVal === "") {
                 displayPage(allIssues);
                 return;
             }
@@ -392,24 +425,35 @@
             var issueContainer = $('#issueContainer');
             issueContainer.empty();
             // Display the items for the current page
-            displayIssues(issues);
+            if (issues.length === 0) {
+                issueContainer.append('<h3 id="issueNotFound">Issue Not Found</h3>');
+                paginationContainer.hide();
+            } else {
+                displayIssues(issues);
+                paginationContainer.show();
+            }
+
         }
-
-        callSelectBox('/member/get-category', '.js-example-basic-single.s1');
-        callSelectBox('/member/get-place', '.js-example-basic-single.s2');
+        callSelectBox('get-category', '.js-example-basic-single.s1');
+        callSelectBox('get-place', '.js-example-basic-single.s2');
+        function populateSelect(selector, options) {
+            let select = $(selector);
+            $.each(options, function (index, value) {
+                select.append('<option value="' + value.name + '">' + value.name + '</option>');
+            });
+        }
     });
-</script>
-<script>
-    // Initialize Select2
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-    });
 
-    function populateSelect(selector, options) {
-        let select = $(selector);
-        $.each(options, function (index, value) {
-            select.append('<option value="' + value.name + '">' + value.name + '</option>');
-        });
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
     }
 </script>
 </body>

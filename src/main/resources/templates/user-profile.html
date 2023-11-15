@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>DIR-ACE TECHNOLOGY</title>
@@ -46,8 +46,6 @@
   <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
   <!-- Library / Plugin Css Build -->
   <link rel="stylesheet" href="/css/libs.min.css">
-  <!-- Single Select -->
-  <link rel="stylesheet" href="/css/single-select.css">
 
   <!--    icon-->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -92,7 +90,8 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="/images/kokhun.jpg" alt="Profile" class="rounded-circle">
+            <img th:src="@{{filename}(filename=${currentUser.imgUrl})}" alt="Profile" class="rounded-circle object-fit-cover" style="width: 200px; height: 200px;">
+
             <h2>Ko Khun</h2>
             <h3>Web Designer</h3>
           </div>
@@ -165,58 +164,53 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
-                  <div class="row mb-3">
+                  <form th:action="@{/edit-user-in-profile}" th:method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
                     <label for class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                     <div class="col-md-8 col-lg-9">
-                      <img src="/images/kokhun.jpg"alt="Profile">
+                      <img id="selectedPhoto" th:src="@{{filename}(filename=${currentUser.imgUrl})}" alt="Selected Photo" style="max-width: 200px; max-height: 250px;">
                       <div class="pt-2">
-                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+                        <input type="file" id="editPhoto" name="photoUrl" style="display: none;" accept="image/*" onchange="displayPhoto()">
+                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image" onclick="document.getElementById('editPhoto').click()"><i class="bi bi-upload"></i></a>
                         <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                       </div>
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <label for="editFullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" placeholder="Kevin Anderson">
+                      <input name="name" type="text" class="form-control" id="editFullName" th:value="${currentUser.name}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="userName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
+                    <label for="editUserName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="userName" type="text" class="form-control" id="userName" placeholder="Kevin Anderson">
-                    </div>
-                  </div>
-
-
-
-
-                  <div class="row mb-3">
-                    <label for="role" class="col-md-4 col-lg-3 col-form-label">Role</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="role" placeholder="Web Designer">
+                      <input name="username" type="text" class="form-control" id="editUserName" th:value="${currentUser.username}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                    <label for="editUserRole" class="col-md-4 col-lg-3 col-form-label">Role</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone" placeholder="Unknown">
+                      <input name="userRole" type="text" class="form-control" id="editUserRole" th:value="${currentUser.userRole}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <label for="editPhone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" placeholder="Unknown Mail">
+                      <input name="phone" type="text" class="form-control" id="editPhone" th:value="${currentUser.phone}">
                     </div>
                   </div>
 
-
-
+                  <div class="row mb-3">
+                    <label for="editEmail" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="email" class="form-control" id="editEmail" th:value="${currentUser.email}">
+                    </div>
+                  </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                   </div>
@@ -306,12 +300,7 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <script th:src="@{/js/form-wizard.js}"></script>
-<script th:src="@{/js/validation.js}"></script>
-
-<script th:src="@{/js/single-select.js}"></script>
-
-<!--selectbox-->
-<script src="/js/multi-select.js"></script>
+<!--<script th:src="@{/js/validation.js}"></script>-->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -442,5 +431,68 @@
   });
 </script>
 
+
+<script>
+  function displayPhoto() {
+    var input = document.getElementById('editPhoto');
+    var img = document.getElementById('selectedPhoto');
+    var file = input.files[0];
+
+    if (file) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      // If no file is selected, display the default image
+      img.src = "default-image.jpg";
+    }
+  }
+</script>
+<!--<script>-->
+<!--  $('#ProfileEdit').submit(function(e) {-->
+<!--    e.preventDefault();-->
+
+<!--    let userId = $('#userId').val();-->
+<!--    let editPhoto = $('#editPhoto')[0].files[0];-->
+<!--    let editFullName = $('#editFullName').val();-->
+<!--    let editUserName = $('#editUserName').val();-->
+<!--    let editUserRole = $('#editUserRole').val();-->
+<!--    let editPhone = $('#editPhone').val();-->
+<!--    let editEmail = $('#editEmail').val();-->
+
+<!--    let formData = new FormData();-->
+<!--    formData.append('id', parseInt(userId, 10)); // Parse as decimal-->
+<!--    formData.append('photoUrl', editPhoto);-->
+<!--    formData.append('fullName', editFullName);-->
+<!--    formData.append('userName', editUserName);-->
+<!--    formData.append('userRole', editUserRole);-->
+<!--    formData.append('phone', editPhone);-->
+<!--    formData.append('email', editEmail);-->
+
+<!--    console.log("Form Data : ", formData);-->
+
+<!--    $.ajax({-->
+<!--      url: '/user-profile-edit',-->
+<!--      type: 'POST',-->
+<!--      data: formData,-->
+<!--      encrypted: 'multipart/form-data',-->
+<!--      success: function (data) {-->
+<!--        console.log(data);-->
+<!--        alert("Update Success");-->
+<!--      },-->
+<!--      error: function (data) {-->
+<!--        console.log(data);-->
+<!--        alert("Update Fail");-->
+<!--      },-->
+<!--      cache: false,-->
+<!--      contentType: false,-->
+<!--      processData: false-->
+<!--    });-->
+<!--  });-->
+
+<!--</script>-->
 </body>
 </html>

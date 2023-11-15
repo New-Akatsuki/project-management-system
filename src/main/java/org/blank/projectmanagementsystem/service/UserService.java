@@ -3,6 +3,7 @@ package org.blank.projectmanagementsystem.service;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ProfileEditFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.mapper.UserMapper;
 
@@ -19,4 +20,7 @@ public interface UserService {
     void changePassword(String currentPassword, String newPassword);
     User registerUser(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
+    User editUserProfile(ProfileEditFormInput profileEditFormInput);
+    User getUserById(Long id);
+    User getCurrentUser();
 }
