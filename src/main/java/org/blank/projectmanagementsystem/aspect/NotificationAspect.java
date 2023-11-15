@@ -32,7 +32,5 @@ public class NotificationAspect {
 
     private final NotificationService notificationService;
 
-    private final QueueInfoService queueInfoService;
-
 
 }

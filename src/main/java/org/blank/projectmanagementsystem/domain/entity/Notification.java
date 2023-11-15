@@ -25,7 +25,7 @@ public class Notification implements Serializable {
     @Column(nullable = false)
     private LocalDate date;
 
-    private long taskId;
+    private String link;
 
     @JsonIgnore
     @ManyToOne

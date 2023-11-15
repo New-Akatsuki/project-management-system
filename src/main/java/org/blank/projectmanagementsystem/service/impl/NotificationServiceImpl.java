@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             String notiJson = mapper.writeValueAsString(notification);
 
             log.info("In try statement");

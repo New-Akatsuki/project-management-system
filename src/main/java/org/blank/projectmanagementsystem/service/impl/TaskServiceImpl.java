@@ -65,15 +65,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.mapToTask(taskFormInput);
         // Save the task to the database
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-        //send notification to assignees
-        taskFormInput.getAssignees().forEach(x->{
-            Notification notification = new Notification();
-            notification.setRecipient(userRepository.findById(x).orElse(null));
-            notification.setDate(LocalDate.now());
-            notification.setMessage("You have been assigned to a new task");
-            notification.setTaskId(savedTask.getId());
-            notificationService.sendNotification(notification, x);
-        });
         // Map and return the saved task as a TaskViewObject
         return taskMapper.mapToTaskViewObject(savedTask);
     }

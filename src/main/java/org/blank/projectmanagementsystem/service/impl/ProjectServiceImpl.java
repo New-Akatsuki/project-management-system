@@ -41,18 +41,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String pmUsername = "pm@gmail.com";
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
-        Notification notification = new Notification();
-
-        notification.setMessage("New user added");
-        notification.setRecipient(projectManager);
-        notification.setDate(LocalDate.now());
-
-        notificationService.saveNotification(notification);
-
-        notificationService.sendNotification(notification, 1);
         //get client data
         Client client = clientRepository.findById(projectFormInput.getClient()).orElseThrow();
 
