@@ -251,51 +251,7 @@ public class PMRestController {
     }
 }
 
-//    @PostMapping("/pm/member-create")
-//    public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-//        log.info("===================");
-//        log.info("User: {}", addUserFormInput);
-//        return ResponseEntity.ok(userService.createMember(addUserFormInput));
-//    }
 
-//    @PreAuthorize("hasAnyAuthority('PMO', 'PM')")
-//    @GetMapping("/pm/users")
-//    public ResponseEntity<List<UserViewObject>> getUserList() {
-//        List<UserViewObject> users = userService.getAllUsers();
-//        return ResponseEntity.ok(users);
-//    }
-
-//    @PutMapping("/pm/member/status/{id}")
-//    public ResponseEntity<User> updateMemberStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
-//        User user = userService.getUserById(id); // Change this to retrieve a specific user by id
-//
-//        if (user != null) {
-//            user.setActive(newStatus);
-//            User updatedUser = userService.save(user); // Change Client to User since it seems like a typo
-//            return ResponseEntity.ok(updatedUser);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
-//    @PutMapping("/pm/user-edit/{id}")
-//    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user) {
-////        System.out.println("Received user for update: " + user);
-//        User existingUser = userService.getUserById(user.getId());
-//        Department department = departmentService.getDepartmentById(user.getDepartment());
-////        System.out.println("Existing user: " + existingUser);
-//        if (existingUser != null) {
-//            existingUser.setName(user.getName());
-//            existingUser.setEmail(user.getEmail());
-//            existingUser.setDepartment(department);
-//            existingUser.setRole(Role.valueOf(user.getRole()));
-//            User updatedUser = userService.save(existingUser);
-//            return ResponseEntity.ok(new UserViewObject(updatedUser));
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//}
 
 
 

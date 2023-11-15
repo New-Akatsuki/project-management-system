@@ -3,7 +3,7 @@
     $(document).ready(function () {
     // Make an AJAX request to fetch data from the REST API endpoint
     $.ajax({
-        url: '/pm/users', // Replace with your actual API endpoint
+        url: '/users', // Replace with your actual API endpoint
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -65,14 +65,14 @@
             name: $("#name").val(),
             email: $("#email").val(),
             role: $("#newUserRole").val(),
-            departmentId: $("#department").val(),
+            department: parseInt($("#department").val()),
         };
 
         console.log(addMember);
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/pm/member-create",
+            url: "/member-create",
             data: JSON.stringify(addMember),
             dataType: 'json',
             success: function (data) {
@@ -104,7 +104,7 @@
 
         // Make the AJAX request
         $.ajax({
-        url: `/pm/member/status/${id}?newStatus=${newStatus}`,
+        url: `/member/status/${id}?newStatus=${newStatus}`,
         type: 'PUT',
         success: function(memberInfo) {
         // Handle success response, update UI if necessary
@@ -121,42 +121,6 @@
     });
     }
 
-
-    <!--Build Edit Member Modal-->
-    // function editUserRoleAndDepartment(){
-    //     //Get updated user information form modal fields
-    //     let id = $('#editId').val();
-    //     let name = $('#editName').val();
-    //     let email = $('#editEmail').val();
-    //     let department= $('#editDepartment').val();
-    //     let role= $('#editUserRole').val();
-    //
-    //     // Prepare updated user object
-    //      let updatedUser = {
-    //         id:id,
-    //         name: name,
-    //         email: email,
-    //         department : department,
-    //         role: role,
-    //     };
-    //     console.log("updatedUser", updatedUser);
-    //     $.ajax({
-    //         url: `/pm/user-edit/`+id, // Replace with your actual API endpoint
-    //         method: 'PUT',
-    //         data: JSON.stringify(updatedUser),
-    //         dataType: 'json',
-    //         contentType: 'application/json',
-    //         success: function (data) {
-    //             console.log('Data received:', data);
-    //             // Hide the modal
-    //             $('#userEditModal').modal('hide');
-    //         },
-    //         error: function (xhr,error) {
-    //             console.log(xhr.responseText)
-    //             console.log('Error fetching data:', error);
-    //         }
-    //     });
-    // }
 
     function editUserRoleAndDepartment(){
         //Get updated user information form modal fields
@@ -176,7 +140,7 @@
         console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
         $.ajax({
-            url: `/pm/user-edit/${id}`, // Replace with your actual API endpoint
+            url: `/user-edit/${id}`, // Replace with your actual API endpoint
             method: 'PUT',
             data: JSON.stringify(updatedUser),
             dataType: 'json',
@@ -202,11 +166,12 @@
     //For display edit user modal
     function displayEditUserModal(userId) {
         const user = userList.find(user => user.id === userId);
+        console.log("Edit Modal User  ",user)
         // Populate modal fields with user data
         $('#editId').val(user.id);
         $('#editName').val(user.name);
         $('#editEmail').val(user.email);
-        $('#editDepartment').val(user.department);
+        $('#editDepartment').val(user.departmentId);
         $('#editUserRole').val(user.role);
         // Disable the "name" field
         $('#editName').prop('disabled', true);

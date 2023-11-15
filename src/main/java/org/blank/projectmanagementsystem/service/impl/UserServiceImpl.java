@@ -79,33 +79,6 @@ public class UserServiceImpl implements UserService {
         return password;
     }
 
-//    @Override
-//    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
-//    public User createMember(AddUserFormInput addUserFormInput) {
-//        Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
-//        Department department = (Department) departmentRepository.findById(departmentId)
-//                .orElseThrow(() -> new RuntimeException("Department not found"));
-//
-//        log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
-//        // Create a new User object based on the addUserFormInput
-//        User user =  User.builder()
-//                .name(addUserFormInput.getName())
-//                .email(addUserFormInput.getEmail())
-//                .role(Role.valueOf(addUserFormInput.getRole()))
-//                .department(department)
-//                .build();
-//
-//        // Generate a default password for the user (you can modify this part)
-//        String defaultPassword = generateDefaultPassword();
-//        user.setPassword(passwordEncoder.encode(defaultPassword));
-//
-//        User savedUser = userRepository.save(user);
-//        // Send the default password to the user's email using MailService
-//        sendDefaultPasswordEmail(savedUser, defaultPassword);
-//        // Set other user properties as needed
-//        // Save the user
-//        return savedUser;
-//    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
@@ -175,7 +148,8 @@ public class UserServiceImpl implements UserService {
         return userOptional.orElse(null);
     }
 
-    private User getCurrentUser(){
+    @Override
+    public User getCurrentUser(){
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }

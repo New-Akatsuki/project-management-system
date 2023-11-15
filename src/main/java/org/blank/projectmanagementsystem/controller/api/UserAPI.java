@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.controller.api;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
@@ -9,31 +10,36 @@ import org.blank.projectmanagementsystem.domain.formInput.UpdateUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.DepartmentService;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@RestController
+@RequiredArgsConstructor
 @Slf4j
 
 public class UserAPI {
-    private UserService userService;
-    private DepartmentService departmentService;
+    private final UserService userService;
+    private final DepartmentService departmentService;
 
-    @PreAuthorize("hasAnyAuthority('PMO', 'PM')")
-    @GetMapping("/pm/users")
+    @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
+    @GetMapping("/users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-    @PostMapping("/pm/member-create")
+
+    @PostMapping("/member-create")
     public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
         log.info("===================");
         log.info("User: {}", addUserFormInput);
         return ResponseEntity.ok(userService.createMember(addUserFormInput));
     }
 
-    @PutMapping("/pm/member/status/{id}")
+    @PutMapping("/member/status/{id}")
     public ResponseEntity<User> updateMemberStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
         User user = userService.getUserById(id); // Change this to retrieve a specific user by id
 
@@ -45,9 +51,10 @@ public class UserAPI {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/pm/user-edit/{id}")
-    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user) {
 
+    @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
+    @PutMapping("/user-edit/{id}")
+    public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user) {
         User existingUser = userService.getUserById(user.getId());
         Department department = departmentService.getDepartmentById(user.getDepartment());
         if (existingUser != null) {
@@ -60,6 +67,13 @@ public class UserAPI {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/get-department")
+    public List<Department> getDepartment() {
+        List<Department> department = departmentService.getAllDepartments();
+        log.info("get department{} \n\n ", department);
+        return department;
     }
 }
 

@@ -1,9 +1,11 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
+    private final UserService userService;
     @Override
     public Department save(Department department) {
         return departmentRepository.save(department);
@@ -51,6 +54,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> getAllDepartments() {
+        var currentUser = userService.getCurrentUser();
+        if(currentUser.getRole()== Role.PM||currentUser.getRole()==Role.DH){
+            return List.of(departmentRepository.getReferenceById(currentUser.getDepartment().getId()));
+        }
         return departmentRepository.findAll();
     }
 }

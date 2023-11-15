@@ -95,6 +95,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Department</th>
                     <th>Role</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -140,21 +141,14 @@
 
           <div class="form-group">
             <label  class="form-label" for="editDepartment"> Department </label>
-            <select class="form-select"  id="editDepartment" name="editDepartment" required>
-              <option value="1">IT</option>
-              <option value="2">HR</option>
+            <select class="form-select"  id="editDepartment" name="editDepartment" >
             </select>
           </div>
 
           <div class="form-group">
             <label for="editUserRole" class="form-label">Role</label>
-            <select class="form-select"  id="editUserRole" name="editUserRole" required>
-              <option value="PMO" >PMO</option>
-              <option value="SDQC"> SDQC </option>
-              <option value="SDQC"> SDQC </option>
-              <option value="DH">DH</option>
-              <option value="PM">PM</option>
-              <option value="MEMBER">Member</option>
+            <select class="form-select"  id="editUserRole" name="editUserRole" >
+              <option value="MEMBER" selected>Member</option>
               <!-- Add more role options as needed -->
             </select>
           </div>
@@ -187,13 +181,14 @@
             <input type="text" class="form-control" id="email">
           </div>
           <div class="form-group">
+            <label  class="form-label" for="department"> Department </label>
+            <select class="form-select"  id="department" name="department">
+            </select>
+          </div>
+          <div class="form-group">
             <label for="newUserRole" class="form-label">Role</label>
-            <select class="form-select"  id="newUserRole" name="role" required>
-              <option value="PMO" selected>PMO</option>
-              <option value="SDQC"> SDQC </option>
-              <option value="DH">DH</option>
-              <option value="PM">PM</option>
-              <option value="MEMBER">Member</option>
+            <select class="form-select"  id="newUserRole" name="role" >
+              <option value="MEMBER" selected>Member</option>
               <!-- Add more role options as needed -->
             </select>
           </div>
@@ -206,6 +201,7 @@
     </div>
   </div>
 </div>
+
 
 <!--Confirmation Modal-->
 <div class="modal fade" id="confirmationMemberModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalMemberLabel" aria-hidden="true">
@@ -226,10 +222,35 @@
       </div>
     </div>
   </div>
-  <script src="/js/member-list-view.js"></script>
 </div>
+<script>
+  $(document).ready(function(){
+    $.ajax({
+      url: '/get-department',
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        console.log("Returned Data : ",data);
+        // Clear existing options
+        $('#department').empty();
+
+        // Append new options
+        $.each(data, function (index, value) {
+          $('#department').append($('<option>', {
+            value: value.id,
+            text: value.name
+          }));
+        });
+      },
+      error: function (xhr, status, error) {
+        // Handle errors
+        console.error('Error fetching department data:', error);
+      }
+    });
+  })
 
 
-
+</script>
+<script src="/js/member-list-view.js"></script>
 </body>
 </html>

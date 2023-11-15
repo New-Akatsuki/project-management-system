@@ -13,6 +13,7 @@ public class UserViewObject {
     private String name;
     private String email;
     private String role;
+    private Integer departmentId;
     private String department;
     private boolean active;
 
@@ -21,6 +22,7 @@ public class UserViewObject {
         email=user.getEmail();
         id = user.getId();
         role = String.valueOf(user.getRole());
+        departmentId = user.getDepartment().getId();
         department = user.getDepartment().getName();
         active= user.isActive();
     }
