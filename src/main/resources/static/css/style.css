@@ -1002,9 +1002,7 @@ h6 {
 /*--------------------------------------------------------------
 # Profie Page
 --------------------------------------------------------------*/
-.profile .profile-card img {
-  max-width: 120px;
-}
+
 
 .profile .profile-card h2 {
   font-size: 24px;
@@ -1049,9 +1047,9 @@ h6 {
   color: rgba(1, 41, 112, 0.6);
 }
 
-.profile .profile-edit img {
-  max-width: 120px;
-}
+/*.profile .profile-edit img {*/
+/*  max-width: 120px;*/
+/*}*/
 
 /*--------------------------------------------------------------
 # F.A.Q Page

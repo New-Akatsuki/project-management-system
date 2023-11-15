@@ -8,29 +8,33 @@
     <title>Dashboard - NiceAdmin Bootstrap Template</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
 
+    <!-- Bootstrap CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
     <!-- Favicons -->
     <link th:href="@{/images/favicon.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-    <link
-            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-            rel="stylesheet"
-    />
+    <!-- Bootstrap Icons -->
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+
+    <!-- Boxicons CSS -->
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+
+    <!-- Remixicon CSS -->
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link href="/css/pagination.css" rel="stylesheet"/>
 
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/css/select2.css">
     <style>
         .issue-card {
             margin-bottom: 20px;
@@ -47,6 +51,18 @@
             transform: scale(1.02);
         }
 
+        .btn{
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
         .card-header {
             background: linear-gradient(to right, #6a0572, #00b4d8);
             color: #fff;
@@ -55,15 +71,6 @@
 
         .card-body {
             padding: 10px;
-        }
-
-
-        .pagination-container {
-            margin-top: 20px;
-        }
-
-        .input-container {
-            margin-bottom: 20px;
         }
 
         .card {
@@ -85,16 +92,27 @@
             border-radius: 10px;
         }
     </style>
-
     <style>
-
-        .cool-box {
-            width: 100%;
+        #issueNotFound {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+    <style>
+        .select2-container .select2-selection--single {
+            box-sizing: border-box;
+            cursor: pointer;
+            display: block;
+            height: 37px;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        .cool-div {
-            margin-bottom: 10px;
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #444;
+            line-height: 37px;
         }
+
     </style>
 </head>
 
@@ -114,14 +132,16 @@
         </nav>
     </div>
     <!-- End Page Title -->
-    <div class="container" style="padding: 15px">
+    <div class="container" style="padding: 15px;">
 
         <div class="row">
             <div class="col-md-6">
-                <h4><i class="bi bi-search"></i> Issue Page</h4>
+                <h4><i class="bi bi-info-circle"></i> Issue Page</h4>
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
+                <a class="btn btn-secondary" th:href="@{/issue-creator-view}">Creator View</a>
+                <a class="btn btn-secondary" th:href="@{/issue-pic-view}">PIC View</a>
                 <a class="btn btn-primary" th:href="@{/issue-create}">Create Issue</a>
             </div>
         </div>
@@ -131,282 +151,309 @@
             <input type="text" id="issueSearch" placeholder="Search issues...">
         </div>
 
-
-        <div class="row cool-div">
-            <div class="col-md-6 col-lg-3">
-                <label for="issuesPerPage" class="cool-label">Issues Per Page:</label>
-                <select id="issuesPerPage" class="form-select cool-box" onchange="changePerPage(this.value)">
-                    <option value="3" selected>3</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
+        <!-- Select Box for Filter -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <select id="filterSelect" class="form-select">
+                    <option value="">Status</option>
+                    <option value="true">Solved</option>
+                    <option value="false">Unsolved</option>
                 </select>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <label for="sortBy" class="cool-label">Filter By Status:</label>
-                <select id="sortBy" class="form-select cool-box" onchange="sortIssues(this.value)">
-                    <option value="all">All</option>
-                    <option value="open">Open</option>
-                    <option value="closed">Closed</option>
+            <div class="col-md-4">
+                <select id="category" class="js-example-basic-single s1" name="category"
+                        style="width: 100%; height: 100%;">
+                    <option value="">Category</option>
+                    <!-- Add more options as needed -->
                 </select>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <label for="sortMonth" class="cool-label">Filter By Month:</label>
-                <select id="sortMonth" class="form-select cool-box">
-                    <option value="all">All</option>
-                    <option value="01">January</option>
-                    <option value="02">February</option>
-                    <option value="03">March</option>
-                    <option value="04">April</option>
-                    <option value="05">May</option>
-                    <option value="06">June</option>
-                    <option value="07">July</option>
-                    <option value="08">August</option>
-                    <option value="09">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
+            <div class="col-md-4">
+                <select id="place" class="js-example-basic-single s2" name="place" style="width: 100%; height: 100%;">
+                    <option value="">Place</option>
+                    <!-- Add more options as needed -->
                 </select>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <label for="sortYear" class="cool-label">Filter By Year:</label>
-                <input type="number" id="sortYear" class="form-control" style="height: 38px" placeholder="Enter year"
-                       oninput="sortIssuesByYear(this.value)" min="2000">
             </div>
         </div>
-
-
         <!-- Issue Cards -->
         <div class="row" id="issueContainer" style="margin-top: 15px">
             <!-- Cards will be dynamically added here -->
         </div>
 
-        <!-- Pagination -->
-        <div class="pagination-container overflow-x-auto">
-            <ul class="pagination" id="pagination"></ul>
-        </div>
+        <!-- Pagination Container -->
+        <div id="pagination-container"></div>
     </div>
 
 </main>
 <!-- End #main -->
+<!-- Include jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Include Moment.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<!-- Vendor JS Files -->
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- Template Main JS File -->
+
+<!-- Bootstrap and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/pagination.js"></script>
+<!-- Your existing main.js script -->
 <script src="/js/main.js"></script>
+<!-- Your existing main.js script -->
+<script type="text/javascript" src="/js/main.js"></script>
+<!-- Include Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
-    // let issues =[];
-    // $(document).ready(function () {
-    //     $.ajax({
-    //         url: '/get-all-issue',
-    //         type: 'GET',
-    //         success: function (data) {
-    //             issues=data;
-    //             console.log("Issue List : ", data);
-    //         },
-    //         error: function (data) {
-    //             console.log(data);
-    //         }
-    //     });
-    // });
+    $(document).ready(function () {
 
-    const issues = [
-        {
-            id: "ISU01",
-            title: 'UI Alignment Problem',
-            description: 'The UI elements are not aligned properly on the dashboard.',
-            status: 'Open',
-            assignedTo: 'John Doe',
-            uploadedAt: '2023-11-01'
-        },
-        {
-            id: "ISU02",
-            title: 'Superman vs Batman',
-            description: 'Unable to establish a connection with the database server.',
-            status: 'Closed',
-            assignedTo: 'Jane Smith',
-            uploadedAt: '2023-11-01'
-        },
-        {
-            id: "ISU03",
-            title: 'UI Alignment Problem',
-            description: 'The UI elements are not aligned properly on the dashboard.',
-            status: 'Open',
-            assignedTo: 'John Doe',
-            uploadedAt: '2023-11-01'
-        },
-        {
-            id: "ISU04",
-            title: 'UI Alignment Problem',
-            description: 'The UI elements are not aligned properly on the dashboard.',
-            status: 'Open',
-            assignedTo: 'John Doe',
-            uploadedAt: '2023-11-01'
-        },
-        {
-            id: "ISU05",
-            title: 'Superman vs Batman',
-            description: 'Unable to establish a connection with the database server.',
-            status: 'Closed',
-            assignedTo: 'Jane Smith',
-            uploadedAt: '2023-11-01'
-        },
-        {
-            id: "ISU06",
-            title: 'UI Alignment Problem',
-            description: 'The UI elements are not aligned properly on the dashboard.',
-            status: 'Open',
-            assignedTo: 'John Doe',
-            uploadedAt: '2023-11-01'
-        },
-        // Add more issues as needed
-    ];
+        // Initialize Select2
+        $('.js-example-basic-single').select2();
 
-    // Number of issues per page
-    let issuesPerPage = 3;
-
-    // Display issues initially
-    displayIssues(issues, 1);
-
-    // Attach event listener to search box
-    $('#issueSearch').on('input', function () {
-        const searchText = $(this).val().toLowerCase();
-        const filteredIssues = issues.filter(issue =>
-            issue.title.toLowerCase().includes(searchText) ||
-            issue.description.toLowerCase().includes(searchText) ||
-            issue.status.toLowerCase().includes(searchText) ||
-            issue.assignedTo.toLowerCase().includes(searchText) ||
-            issue.uploadedAt.toLowerCase().includes(searchText)
-        );
-        displayIssues(filteredIssues, 1);
-    });
-
-    // Attach event listener to issues per select
-    function changePerPage(value) {
-        issuesPerPage = parseInt(value, 10);
-        displayIssues(issues, 1);
-    }
-
-    // Function to display issues as cards with pagination and sorting
-    function displayIssues(issues, currentPage) {
-        const issueContainer = $('#issueContainer');
-        issueContainer.empty();
-
-        const startIndex = (currentPage - 1) * issuesPerPage;
-        const endIndex = startIndex + issuesPerPage;
-        const issuesToShow = issues.slice(startIndex, endIndex);
-
-        issuesToShow.forEach(issue => {
-            const card = `
-          <div class="col-md-12">
-            <a href="issue-display#${issue.id}" class="card-link">
-              <div class="card issue-card" style="border-radius:20px">
-                <div class="card-header" style="border-radius:20px 20px 0 0; padding: 20px">
-                  <h5 class="text-white">${issue.title}</h5>
-                </div>
-                <div class="card-body" style="padding:20px">
-                  <p class="card-text"><strong>Description:</strong>${issue.description}</p>
-                  <p class="card-text"><strong>Status:</strong> ${issue.status}</p>
-                  <p class="card-text"><strong>Assigned To:</strong> ${issue.assignedTo}</p>
-                  <span class="uploaded-info">Uploaded: ${issue.uploadedAt}</span>
-                </div>
-              </div>
-            </a>
-          </div>
-        `;
-
-            issueContainer.append(card);
+        $('#header .toggle-sidebar-btn').on('click', () => {
+            if ($('body').hasClass('toggle-sidebar')) {
+                $('body').removeClass('toggle-sidebar');
+            } else {
+                $('body').addClass('toggle-sidebar');
+            }
         });
 
-        // Update pagination
-        updatePagination(issues.length, currentPage);
-    }
+        var itemsPerPage = 5; // Set the number of items per page
+        var issueContainer = $('#issueContainer');
+        var paginationContainer = $('#pagination-container');
+        var allIssues = []; // Store all issues for searching
+        var filteredIssues = []; // Store filtered issues
+        var issueCategory = [];
 
-    // Function to update pagination
-    function updatePagination(totalIssues, currentPage) {
-        const totalPages = Math.ceil(totalIssues / issuesPerPage);
-        const pagination = $('#pagination');
-        pagination.empty();
+        // Fetch the data after success
+        $.ajax({
+            url: '/get-all-issue',
+            type: 'GET',
+            success: function (data) {
+                // Sort data by the latest created date
+                data.sort(function (a, b) {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
 
-        for (let i = 1; i <= totalPages; i++) {
-            const listItem = `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
-            pagination.append(listItem);
-        }
-    }
+                // Store all issues for searching
+                allIssues = data;
 
-    // Function to change the current page
-    function changePage(pageNumber) {
-        displayIssues(issues, pageNumber);
-    }
+                // Initialize Pagination.js for paginationContainer
+                if (filteredIssues.length > 0) {
+                    paginationContainer.hide();
+                }
+                paginationContainer.pagination({
+                    dataSource: data,
+                    pageSize: itemsPerPage,
+                    showSizeChanger: true,
+                    callback: function (data, pagination) {
+                        displayPage(data);
+                    }
+                });
 
-    // Function to sort issues
-    function sortIssues(status) {
-        const lowerCaseStatus = status.toLowerCase();
-        const filteredIssues = (lowerCaseStatus === 'all') ? issues : issues.filter(issue => issue.status.toLowerCase() === lowerCaseStatus);
-        displayIssues(filteredIssues, 1);
-    }
-</script>
-<script>
-    // Function to sort issues by month and year
-    function sortIssuesByMonthAndYear(month, year) {
-        const filteredIssues = (month === 'all' && year === 'all') ? issues : issues.filter(issue => {
-            const issueMonth = new Date(issue.uploadedAt).getMonth() + 1; // Months are zero-based
-            const issueYear = new Date(issue.uploadedAt).getFullYear();
-
-            return (month === 'all' || issueMonth.toString().padStart(2, '0') === month) &&
-                (year === 'all' || issueYear.toString() === year);
+                console.log("Issue List : ", data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
         });
 
-        displayIssues(filteredIssues, 1);
-    }
+        // Function to display issues as cards
+        function displayIssues(issues) {
+            var issueContainer = $('#issueContainer');
+            issueContainer.empty();
+            issues.forEach(function (issue) {
+                let date;
+                let dateText;
+                if (issue.modifiedAt == null) {
+                    date = issue.createdAt;
+                    dateText = "Uploaded at: ";
+                } else {
+                    date = issue.modifiedAt;
+                    dateText = "Edited at: ";
+                }
+                var card = `
+               <div class="col-md-12">
+                   <a href="/issue-details/${issue.id}" class="card-link">
+                       <div class="card issue-card" style="border-radius:20px">
+                           <div class="card-header" style="border-radius:20px 20px 0 0; padding: 20px">
+                               <h5 class="text-white">${issue.title}</h5>
+                           </div>
+                           <div class="card-body" style="padding:20px">
+                               <div class="d-flex">
+                                   <div class="col-2"><label>Status</label></div>:&nbsp;
+                                   <div class="col-10">${issue.solved ? 'Solved' : 'Unsolved'}</div>
+                               </div>
+                               <div class="d-flex">
+                                   <div class="col-2"><label>Category</label></div>:&nbsp;
+                                   <div class="col-10">${issue.category}</div>
+                               </div>
+                               <div class="d-flex">
+                                   <div class="col-2"><label>Issue Place</label></div>:&nbsp;
+                                   <div class="col-10">${issue.place}</div>
+                               </div>
+                               <div class="d-flex">
+                                   <div class="col-2"><label>Responsible Party</label></div>:&nbsp;
+                                   <div class="col-10">${issue.responsibleParty}</div>
+                               </div>
 
-    // Function to handle changes in both month and year inputs
-    function changeMonthAndYear() {
-        const selectedMonth = document.getElementById('sortMonth').value;
-        const selectedYear = document.getElementById('sortYear').value;
-        sortIssuesByMonthAndYear(selectedMonth, selectedYear);
-    }
+                               <div id="issue-upload-date" style="padding-right: 10px">
+                                    <div class="uploaded-info">
+                                        <span class="text-end"><small><strong>${dateText}</strong>${formatDate(date)}</small></span>
+                                    </div>
+                               </div>
+                           </div>
+                       </div>
+                   </a>
+               </div>
+           `;
+                issueContainer.append(card);
+            });
 
-    // Attach event listeners to month and year inputs
-    document.getElementById('sortMonth').addEventListener('change', changeMonthAndYear);
-    document.getElementById('sortYear').addEventListener('input', changeMonthAndYear);
-</script>
-<script>
 
-    // Initial hide of "Create Issue" link
-    toggleCreateIssueButton(true);
+        }
 
-    // Attach event listener to search box
-    $('#issueSearch').on('input', function () {
-        const searchText = $(this).val().toLowerCase();
-        const filteredIssues = issues.filter(issue =>
-            issue.title.toLowerCase().includes(searchText) ||
-            issue.description.toLowerCase().includes(searchText) ||
-            issue.status.toLowerCase().includes(searchText) ||
-            issue.assignedTo.toLowerCase().includes(searchText) ||
-            issue.uploadedAt.toLowerCase().includes(searchText)
-        );
-        if(filteredIssues.length === 0) {
-            $('#issueContainer').html('<h4>No issues found!!</h4>');
-            toggleCreateIssueButton(false);
-        } else if (searchText===''){
-            toggleCreateIssueButton(true);
-        } else{
-            displayIssues(filteredIssues, 1);
+        // Add an event listener for the search box
+        $('#issueSearch').on('keyup', function () {
+            var searchTerm = $(this).val().toLowerCase();
+            filteredIssues = filterIssues(allIssues, searchTerm);
+            displayIssues(filteredIssues);
+        });
+
+        // Add an event listener for the select box
+        $('#filterSelect').on('change', function () {
+            var searchTerm = $(this).val();
+            if (searchTerm === "") {
+                displayPage(allIssues);
+                return;
+            }
+            filteredIssues = filterIssuesByStatus(allIssues, searchTerm);
+            displayPage(filteredIssues);
+        });
+
+        function filterIssuesByStatus(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.solved.toString()
+                    === selectedVal;
+            });
+        }
+
+        // Function to filter issues based on the search term
+        function filterIssues(issues, searchTerm) {
+            return issues.filter(function (issue) {
+                console.log(issue.solved.toString(), searchTerm);
+                let date;
+                if(issue.modifiedAt == null){
+                    date=issue.createdAt;
+                }else{
+                    date=issue.modifiedAt;
+                }
+                // You can customize this condition based on your requirements
+                return (
+                    issue.title.toLowerCase().includes(searchTerm) ||
+                    issue.category.toLowerCase().includes(searchTerm) ||
+                    issue.place.toLowerCase().includes(searchTerm) ||
+                    issue.responsibleParty.toLowerCase().includes(searchTerm) ||
+                    formatDate(date).toLowerCase().includes(searchTerm)
+                );
+
+            });
+        }
+
+        function callSelectBox(getUrl, selector) {
+            $(document).ready(function () {
+                $.ajax({
+                    url: getUrl,
+                    type: 'GET',
+                    success: function (data) {
+                        issueCategory = data;
+                        populateSelect(selector, data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        }
+
+        // Function to filter issues by category
+        function filterIssuesByCategory(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.category === selectedVal;
+            });
+        }
+
+        // Add an event listener for the select box
+        $('#category').on('change', function () {
+            let selectedVal = $(this).val();
+            if (selectedVal === "") {
+                displayPage(allIssues);
+                return;
+            }
+            // Filter issues based on the selected category
+            let filteredByCategory = filterIssuesByCategory(allIssues, selectedVal);
+            // Update pagination with filtered data
+            displayPage(filteredByCategory);
+        });
+
+        // Function to filter issues by category
+        function filterIssuesByPlace(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.place === selectedVal;
+            });
+        }
+
+        // Add an event listener for the select box
+        $('#place').on('change', function () {
+            let selectedVal = $(this).val();
+            if (selectedVal === "") {
+                displayPage(allIssues);
+                return;
+            }
+            // Filter issues based on the selected category
+            let filteredByPlace = filterIssuesByPlace(allIssues, selectedVal);
+            console.log(filteredByPlace)
+            // Update pagination with filtered data
+            displayPage(filteredByPlace);
+        });
+
+        // Function to display issues for a specific page
+        function displayPage(issues) {
+            var issueContainer = $('#issueContainer');
+            issueContainer.empty();
+            // Display the items for the current page
+            if (issues.length === 0) {
+                issueContainer.append('<h3 id="issueNotFound">Issue Not Found</h3>');
+                paginationContainer.hide();
+            } else {
+                displayIssues(issues);
+                paginationContainer.show();
+            }
+
+        }
+        callSelectBox('get-category', '.js-example-basic-single.s1');
+        callSelectBox('get-place', '.js-example-basic-single.s2');
+        function populateSelect(selector, options) {
+            let select = $(selector);
+            $.each(options, function (index, value) {
+                select.append('<option value="' + value.name + '">' + value.name + '</option>');
+            });
         }
     });
 
-    // Function to toggle the visibility of "Create Issue" button
-    function toggleCreateIssueButton(shouldHide) {
-        const createIssueContainer = $('.col-md-6.text-end');
-        if (shouldHide) {
-            createIssueContainer.hide();
-        } else {
-            createIssueContainer.show();
-        }
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
     }
 </script>
 </body>

@@ -97,7 +97,11 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" data-bs-toggle="dropdown"
                    href="#" role="button" aria-expanded="false"
                 >
-                    <img src="/images/DAT.png" alt="Profile" class="rounded-circle">
+                    <th:block th:with="photoData=${#authentication.principal.photoDataAsString}">
+                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover" th:if="${photoData != null}" th:src="@{'data:image/jpeg;base64,' + ${photoData}}" alt="User Photo"/>
+                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover" th:unless="${photoData != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+                    </th:block>
+
                     <span class="d-none d-md-block dropdown-toggle ps-2" sec:authentication="principal.username"></span>
                 </a>
 

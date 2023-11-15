@@ -1,30 +1,29 @@
 //customizing toolbar..
 let toolbaroptions = [
-    //header for text for eg h1, h2,...
-    [{header: [1, 2, 3, 4, 5, 6, false]}],
-    //text style
+    // Font size
+    [{ size: ["small", false, "large", "huge"] }],
+    // Text style
     ["bold", "italic", "underline"],
-    //bullet point style...
-    [{list: "ordered"}, {list: "bullet"}],
-    //alignment
-    [{align: []}],
-    //sub and super script
-    [{script: "sub"}, {script: "super"}],
-    //adding text color and background
-    [{color: []}, {background: []}],
-    //adding code snippet or blockquote
+    // Bullet point style...
+    [{ list: "ordered" }, { list: "bullet" }],
+    // Alignment
+    [{ align: [] }],
+    // Sub and super script
+    [{ script: "sub" }, { script: "super" }],
+    // Adding text color and background
+    [{ color: [] }, { background: [] }],
+    // Adding code snippet or blockquote
     ["code-block", "blockquote"],
-    //image
+    // Image
     ["image"]
-]
+];
 
 let aa = {
     modules: {
         toolbar: toolbaroptions,
     },
     theme: "snow"
-}
-
+};
 
 function toggleToolbar(index, editor_id) {
     const containers = document.querySelectorAll('.ql-container');

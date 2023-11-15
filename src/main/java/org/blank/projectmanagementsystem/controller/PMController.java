@@ -61,10 +61,10 @@ public class PMController {
         return "user-list";
     }
 
-    @GetMapping("/user-profile")
-    public ModelAndView userprofile() {
-        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
-    }
+//    @GetMapping("/user-profile")
+//    public ModelAndView userprofile() {
+//        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
+//    }
 
     @PostMapping("/user-profile")
     public String userprofile(@ModelAttribute AddUserFormInput addUserFormInput) {

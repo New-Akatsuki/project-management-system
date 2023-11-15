@@ -133,7 +133,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
                 <li class="breadcrumb-item"><a th:href="@{/all-issues}">Issue</a></li>
-                <li class="breadcrumb-item active">Display Issue</li>
+                <li class="breadcrumb-item active">Issue Creator View</li>
             </ol>
         </nav>
     </div>
@@ -178,7 +178,7 @@
         let userId = $('#userId').text();
 
         $.ajax({
-            url: '/get-issue-by-pic/' + userId,
+            url: '/get-issue-by-createdBy/' + userId,
             type: 'GET',
             dataType: 'json',
             success: function (data) {
