@@ -11,5 +11,5 @@ public interface NotificationService {
 
     List<Notification> getNotifications();
 
-    public void sendNotification(Notification notification, String userName);
+    public void sendNotification(Notification notification, long id);
 }

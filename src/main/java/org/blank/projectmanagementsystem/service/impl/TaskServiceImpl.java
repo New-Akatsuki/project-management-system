@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final PhaseRepository phaseRepository;
+    private final NotificationServiceImpl notificationService;
+
     private final TaskMapper taskMapper = new TaskMapper();
 
     private User getCurrentUser(){
@@ -61,7 +65,15 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.mapToTask(taskFormInput);
         // Save the task to the database
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-
+        //send notification to assignees
+        taskFormInput.getAssignees().forEach(x->{
+            Notification notification = new Notification();
+            notification.setRecipient(userRepository.findById(x).orElse(null));
+            notification.setDate(LocalDate.now());
+            notification.setMessage("You have been assigned to a new task");
+            notification.setTaskId(savedTask.getId());
+            notificationService.sendNotification(notification, x);
+        });
         // Map and return the saved task as a TaskViewObject
         return taskMapper.mapToTaskViewObject(savedTask);
     }

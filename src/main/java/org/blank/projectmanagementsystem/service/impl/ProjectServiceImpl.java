@@ -8,11 +8,13 @@ import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
+import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,6 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final SystemOutlineRepository systemOutlineRepository;
     private final ArchitectureRepository architectureRepository;
     private final DeliverableRepository deliverableRepository;
+    private final NotificationService notificationService;
 
     private final ProjectMapper projectMapper = new ProjectMapper();
 
@@ -41,6 +44,15 @@ public class ProjectServiceImpl implements ProjectService {
         String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
+        Notification notification = new Notification();
+
+        notification.setMessage("New user added");
+        notification.setRecipient(projectManager);
+        notification.setDate(LocalDate.now());
+
+        notificationService.saveNotification(notification);
+
+        notificationService.sendNotification(notification, 1);
         //get client data
         Client client = clientRepository.findById(projectFormInput.getClient()).orElseThrow();
 

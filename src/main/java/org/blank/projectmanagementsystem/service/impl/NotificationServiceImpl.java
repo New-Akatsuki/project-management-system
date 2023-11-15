@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendNotification(Notification notification, String useName) {
+    public void sendNotification(Notification notification, long id) {
 
         String appId = "1682457";
         String key = "45b9b41cab6ad01f6264";
@@ -48,6 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
         String cluster = "ap1";
 
         try (Pusher pusher = new Pusher(appId, key, secret)) {
+
 
             ObjectMapper mapper = new ObjectMapper();
             String notiJson = mapper.writeValueAsString(notification);
@@ -57,7 +58,7 @@ public class NotificationServiceImpl implements NotificationService {
             pusher.setCluster(cluster);
             pusher.setEncrypted(true);
 
-            pusher.trigger("my-channel-" + useName, "noti-event", "{\"notification\":" + notiJson + "}");
+            pusher.trigger("my-channel-" + id, "noti-event", "{\"notification\":" + notiJson + "}");
 
             log.info("Pusher is triggered");
 

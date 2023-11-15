@@ -147,6 +147,23 @@ public class ProjectManagementSystemApplication {
                     Deliverable.builder().id(null).name("Deliverable 1").build()
             );
 
+            var project = projectService.saveProject(
+                    ProjectFormInput.builder()
+                            .name("Project 1")
+                            .department(department.getId())
+                            .startDate(LocalDate.of(2021, Month.JANUARY, 1))
+                            .endDate(LocalDate.of(2021, Month.JANUARY, 31))
+                            .background("Background")
+                            .objective("Objective")
+                            .client(client.getId())
+                            .systemOutlines(List.of(systemOutlines.getId()))
+                            .architectureOutlines(List.of(architectureOutline.getId()))
+                            .deliverables(List.of(deliverable.getId()))
+                            .contractMembers(List.of(member.getId()))
+                            .focMembers(List.of(sar.getId(), dar.getId()))
+                            .build()
+            );
+
         };
     }
 }
