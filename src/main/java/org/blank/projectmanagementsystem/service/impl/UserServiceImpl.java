@@ -124,43 +124,38 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public User editUserProfile(ProfileEditFormInput user) {
-        User filteredUser = userRepository.findById(user.getId()).orElseThrow();
-        filteredUser.setName(user.getFullName());
-        filteredUser.setEmail(user.getEmail());
-        filteredUser.setUserRole(user.getUserRole());
-        filteredUser.setPhone(user.getPhone());
-
-        MultipartFile file = user.getPhotoUrl();
-        String fileName = null;
-
-        if (file != null && !file.isEmpty()) {
-            try {
-                fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-                String uploadPath = "C:\\Users\\HP\\Downloads\\spring boot\\project-management-system\\src\\main\\resources\\static\\photo"
-                        + File.separator;
-                Path path = Paths.get(uploadPath + fileName);
-                filteredUser.setImgUrl(fileName);
-
-                // Save the file to the server
-                try (OutputStream outputStream = Files.newOutputStream(path)) {
-                    outputStream.write(file.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return userRepository.save(filteredUser);
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow();
-    }
+//    @Override
+//    public User editUserProfile(ProfileEditFormInput user) {
+//        User filteredUser = userRepository.findById(user.getId()).orElseThrow();
+//        filteredUser.setName(user.getFullName());
+//        filteredUser.setEmail(user.getEmail());
+//        filteredUser.setUserRole(user.getUserRole());
+//        filteredUser.setPhone(user.getPhone());
+//
+//        MultipartFile file = user.getPhotoUrl();
+//        String fileName = null;
+//
+//        if (file != null && !file.isEmpty()) {
+//            try {
+//                fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//
+//                String uploadPath = "C:\\Users\\HP\\Downloads\\spring boot\\project-management-system\\src\\main\\resources\\static\\photo"
+//                        + File.separator;
+//                Path path = Paths.get(uploadPath + fileName);
+//                filteredUser.setImgUrl(fileName);
+//
+//                // Save the file to the server
+//                try (OutputStream outputStream = Files.newOutputStream(path)) {
+//                    outputStream.write(file.getBytes());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return userRepository.save(filteredUser);
+//    }
 
     @Override
     public User getCurrentUser() {
@@ -168,6 +163,22 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsernameOrEmail(userName, userName).orElseThrow();
     }
 
+    @Override
+    public User editUserProfile(ProfileEditFormInput profileEditFormInput) {
+        var user = getCurrentUser();
+        try{
+            user.setPhotoData(profileEditFormInput.getPhotoData());
+            user.setName(profileEditFormInput.getFullName());
+            user.setUsername(profileEditFormInput.getUserName());
+            user.setUserRole(profileEditFormInput.getUserRole());
+            user.setPhone(profileEditFormInput.getPhone());
+            user.setEmail(profileEditFormInput.getEmail());
+            return userRepository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

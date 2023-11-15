@@ -11,13 +11,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
-//    Optional<User> findByEmail(String email);
+    //    Optional<User> findByEmail(String email);
 //    Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+
     //select user where username = ? or email = ?
     Optional<User> findByUsernameOrEmail(String username, String email);
 
@@ -25,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Long countByDepartment(Department department);
 
-    @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.UserEditViewObject(i.id, i.imgUrl, i.name, i.username, i.userRole,i.phone,i.email) FROM User i WHERE i.id = ?1")
-    Optional<UserViewObject> findByUserId(Long id);
+//    @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.UserEditViewObject(i.id, i.imgUrl, i.name, i.username, i.userRole,i.phone,i.email) FROM User i WHERE i.id = ?1")
+//    Optional<UserViewObject> findByUserId(Long id);
 
 }

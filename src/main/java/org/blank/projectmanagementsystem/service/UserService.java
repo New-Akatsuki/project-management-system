@@ -20,7 +20,6 @@ public interface UserService {
     void changePassword(String currentPassword, String newPassword);
     User registerUser(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
-    User editUserProfile(ProfileEditFormInput profileEditFormInput);
-    User getUserById(Long id);
     User getCurrentUser();
+    User editUserProfile(ProfileEditFormInput profileEditFormInput);
 }

@@ -10,6 +10,7 @@ import org.blank.projectmanagementsystem.domain.viewobject.IssueDetailsViewObjec
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.IssueService;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.blank.projectmanagementsystem.utils.ImageEncoder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,14 +38,15 @@ import java.time.format.DateTimeFormatter;
 public class MainController {
     private final UserService uService;
     private final UserRepository userRepository;
+
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @PreAuthorize("hasAuthority('MEMBER')")
     @GetMapping("/task-view")
-    public String task(){
+    public String task() {
         return "task-view";
     }
 
@@ -51,96 +54,99 @@ public class MainController {
     public String project() {
         return "project-view";
     }
+
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
         return "project-view";
     }
 
     @GetMapping("/user-list")
-    public String userListView(){
+    public String userListView() {
         return "user-list";
     }
 
 
-  
     @GetMapping("/department")
-    public String departmentView(){
+    public String departmentView() {
         return "department";
     }
 
     @GetMapping("/gantt")
-    public String ganttView(){
+    public String ganttView() {
         return "gantt-chart";
     }
 
     @GetMapping("/project-details-view")
-    public String details(){
+    public String details() {
         return "project-details-info";
     }
 
     @GetMapping("/change-password")
-    public String detailssd(){
+    public String detailssd() {
         return "change-password";
     }
 
     @GetMapping("/all-issues")
-    public String allIssue(){
+    public String allIssue() {
         return "issue-all-display";
     }
 
     @GetMapping("/issue-create")
-    public String issueCreate(){
+    public String issueCreate() {
         return "issue-create";
     }
 
     @GetMapping("/issue-display")
-    public String issueDetails(){
+    public String issueDetails() {
         return "issue-all-display-test";
     }
 
     @GetMapping("/issue-details/{id}")
-    public String issueDetailsView(@PathVariable String id, ModelMap modelMap){
+    public String issueDetailsView(@PathVariable String id, ModelMap modelMap) {
         modelMap.addAttribute("id", id);
         return "issue-details";
     }
 
     @GetMapping("/issue-pic-view")
-    public String issuePicView(){
+    public String issuePicView() {
         return "issue-pic-display";
     }
 
-    @GetMapping("/issue-pic-details-view/{id}")
-    public String issuePicDetailsView(@PathVariable String id, ModelMap modelMap){
-        modelMap.addAttribute("id", id);
-        return "issue-pic-details-view";
-    }
 
     @GetMapping("/issue-details-edit/{id}")
-    public String editIssue(@PathVariable String id, ModelMap modelMap){
+    public String editIssue(@PathVariable String id, ModelMap modelMap) {
         modelMap.addAttribute("id", id);
         return "issue-edit";
     }
 
     @GetMapping("/issue-creator-view")
-    public String issueCreatorView(){
+    public String issueCreatorView() {
         return "issue-creator-display";
     }
 
     @GetMapping("user-profile")
-    public String userProfileView(Model model){
+    public String userProfileView(Model model) {
         var user = uService.getCurrentUser();
+        byte[] photoData = user.getPhotoData();
+
+        // Always add the image attributes to the model, even if photoData is null
+        String base64Image = (photoData != null) ? ImageEncoder.encodeToBase64(photoData) : null;
+        String imageType = "image/jpeg"; // Set a default image type; you can modify this based on your application's needs
+
+        model.addAttribute("base64Image", base64Image);
+        model.addAttribute("imageType", imageType);
         model.addAttribute("currentUser", user);
         return "user-profile";
     }
 
-    @PostMapping("/edit-user-in-profile")
-    public String update(
-                            @RequestParam("name") String name,
-                            @RequestParam("username") String username,
-                            @RequestParam("email") String email,
-                            @RequestParam("phone") String phone,
-                            @RequestParam("userRole") String userRole,
 
+    @PostMapping("/edit-user-in-profile")
+    public String update(@RequestParam("name") String name,
+                         @RequestParam("username") String username,
+                         @RequestParam("email") String email,
+                         @RequestParam("phone") String phone,
+                         @RequestParam("userRole") String userRole,
+                         @RequestParam("isNull") boolean isNull,
                          @RequestParam(name = "photoUrl", required = false) MultipartFile file, HttpSession session) throws IOException {
 
         var user = uService.getCurrentUser();
@@ -150,31 +156,24 @@ public class MainController {
         user.setPhone(phone);
         user.setUserRole(userRole);
 
+        // Check if a new photo is provided
         if (file != null && !file.isEmpty()) {
-            try {
-                //create unique filename
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename()).replace(" ","_");
-                String uploadPath = "C:\\Users\\HP\\Downloads\\spring boot\\project-management-system\\src\\main\\resources\\static\\images"
-                        + File.separator;
-                Path path = Paths.get(uploadPath + fileName);
-                user.setImgUrl("/images/"+fileName);
-
-                // Save the file to the server
-                try (OutputStream outputStream = Files.newOutputStream(path)) {
-                    outputStream.write(file.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            byte[] photoUrl = file.getBytes();
+            user.setPhotoData(photoUrl);
         }
 
-        var currentAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if(isNull){
+            user.setPhotoData(null);
+        }
 
+        userRepository.save(user);
+
+        var currentAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userRepository.save(user), user.getPassword(), currentAuth);
         SecurityContextHolder.getContext().setAuthentication(auth);
+
         return "redirect:/user-profile";
     }
+
 }
 
