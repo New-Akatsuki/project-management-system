@@ -1,12 +1,12 @@
-$.get("/get-project-data", function (projects) {
-    var projectDropdown = $('#projectId');
-    projects.forEach(function (project) {
-        projectDropdown.append($('<option>', {
-            value: project.id,
-            text: project.name
-        }));
-    });
-});
+// $.get("/get-project-data", function (projects) {
+//     var projectDropdown = $('#projectId');
+//     projects.forEach(function (project) {
+//         projectDropdown.append($('<option>', {
+//             value: project.id,
+//             text: project.name
+//         }));
+//     });
+// });
 var myChart;
 
 // Listen for changes in project or reviewer type

@@ -55,8 +55,8 @@
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
     <main id="main" class="main">
       <!-- Breadcrumb part-->
@@ -102,7 +102,12 @@
 
         <!-- DashBoard MM Header End -->
 
-
+        <th:block th:with="dep=${#authentication.principal.department.name}">
+            <input type="hidden" id="currentUserDepartment" th:value="${dep}">
+        </th:block>
+        <th:block th:with="role=${#authentication.principal.role}">
+            <input type="hidden" id="currentUserRole" th:value="${role}">
+        </th:block>
 
 
         <!-- DashBoard MM Body Start -->
@@ -115,18 +120,7 @@
                 <div class="col-md-3">
                     <label class="form-label" for="monthSelector">Month</label>
                     <select class="form-select month-select" id="monthSelector">
-                        <option value="01">January</option>
-                        <option value="02">February</option>
-                        <option value="03">March</option>
-                        <option value="04">April</option>
-                        <option value="05">May</option>
-                        <option value="06">June</option>
-                        <option value="07">July</option>
-                        <option value="08">August</option>
-                        <option value="09">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
+
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -200,6 +194,12 @@
 
 <script src="/js/dashboard-mm.js"></script>
 <script src="/js/dashboard-kpi.js"></script>
+<script>
+    const currentUserDeparment = document.getElementById('currentUserDepartment').value;
+    const currentUserRole = document.getElementById('currentUserRole').value;
+    console.log('currentUserDeparment', currentUserDeparment);
+    console.log('currentUserRole', currentUserRole);
+</script>
 </body>
 
 </html>

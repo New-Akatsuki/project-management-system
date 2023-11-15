@@ -3,23 +3,61 @@ const ctxManMonthProductivity = document.getElementById('manMonthProductivityCha
 
 let manMonthChart;
 let manMonthProductivityChart;
+let projectList = []
 
-
-function updateYearSelector() {
+function updateYearSelector(projects) {
+    projectList = projects || projectList;
+    const selectedProjectId = $('#projectSelector').val();
+    //set Year
     const currentYear = new Date().getFullYear();
-    let html = "<option value=''>Select a year</option>";
-    for (let year = 2010; year <= currentYear; year++) {
-        html += `<option value="${year}">${year}</option>`;
-    }
+    let html = "";
+
+    //get selected project
+    let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
+    console.log(selectedProject, selectedProjectId);
+
+    //set year range
+    const sDate = new Date(selectedProject.startDate)
+    const eDate = new Date(selectedProject.endDate)
+    const yearRange = getYearRange(sDate, eDate)
+    console.log(sDate, eDate, yearRange)
+
+    yearRange.forEach(year => {
+        html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
+    });
     $("#yearSelector").html(html);
+
 }
 
-updateYearSelector();
+
+function updateMonthSelector(projects) {
+    projectList = projects || projectList;
+    const selectedProjectId = $('#projectSelector').val();
+    let html = '';
+    let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
+    const startMonth = new Date(selectedProject.startDate)
+    const endMonth = new Date(selectedProject.endDate)
+    const monthRange = generateUniqueMonthArray(startMonth, endMonth)
+    console.log(startMonth, endMonth, monthRange);
+    let prevMonth = new Date().getMonth();
+    monthRange.forEach(month => {
+        html += `<option value="${month.id}" ${month.id === prevMonth ? 'selected' : ''}>${month.name}</option>`;
+
+    })
+    $("#monthSelector").html(html)
+}
 
 function updateDepartmentSelector(data) {
-    let html = "<option value=''>Select a department</option>";
-    for (const department of data) {
-        html += `<option value="${department.id}">${department.name}</option>`;
+    let html = "";
+    let isSet = false;
+    if (currentUserRole === "DH" || currentUserRole === "PM") {
+        let department = data.filter(val => val.name === currentUserDeparment)[0];
+        html += `<option value="${department.id}" selected>${department.name}</option>`;
+        isSet = true;
+    } else {
+        data.forEach((department, index) => {
+            html += `<option value="${department.id}"  ${index === 0 ? 'selected' : ''}>${department.name}</option>`;
+        })
     }
     $("#departmentSelector").html(html);
 }
@@ -33,25 +71,66 @@ $("#yearSelector").on("change", function () {
     updateCharts();
 });
 
+function getYearRange(startDate, endDate) {
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+
+    const years = [];
+    for (let year = startYear; year <= endYear; year++) {
+        years.push(year);
+    }
+
+    return years;
+}
+
+function generateUniqueMonthArray(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const uniqueMonths = [];
+    let currentMonth = start;
+
+    while (currentMonth <= end) {
+        const monthName = new Intl.DateTimeFormat('en-US', {month: 'long'}).format(currentMonth);
+        const id = currentMonth.getMonth() + 1; // Adding 1 to make it 1-based
+        const paddedId = id.toString().padStart(2, '0'); // Ensure two-digit string
+
+        // Check if the month is not already in the array
+        if (!uniqueMonths.some(month => month.name === monthName)) {
+            uniqueMonths.push({id: paddedId, name: monthName});
+        }
+
+        currentMonth.setMonth(currentMonth.getMonth() + 1);
+    }
+
+    return uniqueMonths;
+}
+
+function getProjectByDepartment() {
+    const selectedDepartmentId = $("#departmentSelector").val();
+    console.log('ss', selectedDepartmentId)
+    if (selectedDepartmentId) {
+        console.log('id', selectedDepartmentId)
+        $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
+            console.log('Received projects:', projects);
+            updateProjectSelector(projects);
+            updateYearSelector(projects)
+            updateMonthSelector(projects)
+            updateCharts();
+
+        });
+    }
+}
 
 $("#departmentSelector").on("change", function () {
-    const selectedDepartmentId = $(this).val();
-    if (selectedDepartmentId) {
-        $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
-            updateProjectSelector(projects);
-            updateCharts();
-        });
-    } else {
-        updateProjectSelector([]);
-        updateCharts();
-    }
+    getProjectByDepartment()
 });
 
 function updateProjectSelector(projects) {
-    let html = "<option value=''>Select a project</option>";
-    for (const project of projects) {
-        html += `<option value="${project.id}">${project.name}</option>`;
-    }
+    let html = "";
+    projects.forEach((project, index) => {
+        html += `<option value="${project.id}" ${index === 0 ? 'selected' : ''}>${project.name}</option>`;
+    });
     $("#projectSelector").html(html);
 }
 
@@ -60,6 +139,8 @@ $("#monthSelector").on("change", function () {
 });
 
 $("#projectSelector").on("change", function () {
+    updateMonthSelector(null)
+    updateYearSelector(null)
     updateCharts();
 });
 
@@ -69,7 +150,7 @@ function updateCharts() {
     const selectedDepartmentId = $("#departmentSelector").val();
     const selectedMonth = $("#monthSelector").val();
 
-
+    console.log(selectedYear, selectedMonth)
     if (selectedProjectId) {
         $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
             const planManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
@@ -285,6 +366,8 @@ function updateManMonthProductivity(labels, actualProductivityRatio) {
 updateCharts();
 
 $(document).ready(function () {
+
+    getProjectByDepartment();
     $('.year-select').select2();
     $('.month-select').select2();
     $('.department-select').select2();

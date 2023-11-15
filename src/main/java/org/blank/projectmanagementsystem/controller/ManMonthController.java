@@ -46,6 +46,7 @@ public class ManMonthController {
                 return ResponseEntity.ok(departments);
         }
 
+
         @GetMapping("/get-projects")
         public ResponseEntity<List<ProjectViewObject>> getProjectsByDepartment(@RequestParam Long departmentId) {
                 List<ProjectViewObject> projects = projectService.getProjectsByDepartment(departmentId);
