@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.ResponseEntity;
@@ -297,6 +298,15 @@ public class PMRestController {
         log.info("get system{} \n\n", system);
         return system;
     }
+
+    @GetMapping("/get-projects")
+    public List<ProjectViewObject> getProject() {
+        List<ProjectViewObject> proj= projectService.getAllProjects();
+        log.info("get proj{} \n\n", proj);
+        return proj;
+    }
+
+
 
 
 
