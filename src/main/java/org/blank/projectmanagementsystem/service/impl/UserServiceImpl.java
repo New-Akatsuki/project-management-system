@@ -36,14 +36,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         //create 8 number random password for user
-        if (user.getPassword() == null) {
+        if(user.getPassword() == null) {
             String password = String.valueOf((int) (Math.random() * 100000000));
             user.setPassword(passwordEncoder.encode(password));
         }
-        var savedUser = userRepository.save(user);
-        //create queue for user
-//        dynamicQueueManager.createQueueForUser(savedUser.getEmail());
-        return savedUser;
+        return userRepository.save(user);
     }
 
     @Override
@@ -75,9 +72,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String id, String newPassword) {
+    public void updatePassword(String newPassword) {
         //get user from database
-        User user = userRepository.findByUsernameOrEmail(id, id).orElse(null);
+        User user = userRepository.findByUsernameOrEmail(getUsername(), getUsername()).orElse(null);
         //change password
         if (user != null) {
             user.setPassword(passwordEncoder.encode(newPassword));
@@ -85,6 +82,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
+
     private String generateDefaultPassword() {
         String password = String.valueOf((int) (Math.random() * 100000000));
         log.info("generateDefaultPassword: {} \n\n\n\n\n", password);
@@ -101,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
         // Create a new User object based on the addUserFormInput
-        User user = User.builder()
+        User user =  User.builder()
                 .name(addUserFormInput.getName())
                 .email(addUserFormInput.getEmail())
                 .role(Role.valueOf(addUserFormInput.getRole()))
@@ -128,17 +126,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('PMO')")
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
     }
 
-    private String getUsername() {
+    private String getUsername(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
     @Override
     public User getLoginUser() {
-        return userRepository.findByUsernameOrEmail(getUsername(), getUsername()).orElse(null);
+        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
     }
 
     @Override
