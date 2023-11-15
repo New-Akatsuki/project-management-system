@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         }
     }
-
     private String generateDefaultPassword() {
         String password = String.valueOf((int) (Math.random() * 100000000));
         log.info("generateDefaultPassword: {} \n\n\n\n\n", password);
