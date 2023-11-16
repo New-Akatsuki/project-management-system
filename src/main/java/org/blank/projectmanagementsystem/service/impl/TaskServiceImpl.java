@@ -133,6 +133,11 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
+    @Override
+    public List<TaskViewObject> getTasksByProject(Long projectId) {
+        return taskRepository.findAllByProjectId(projectId).stream().map(taskMapper::mapToTaskViewObject).toList();
+    }
+
 
     //create recursive function to get all subtask and clear assignees
     private void clearAssignees(Task task) {

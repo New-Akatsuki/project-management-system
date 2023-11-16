@@ -3,6 +3,11 @@ package org.blank.projectmanagementsystem.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Department;
+import org.blank.projectmanagementsystem.domain.entity.Project;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
+import org.blank.projectmanagementsystem.service.ClientService;
+import org.blank.projectmanagementsystem.service.DepartmentService;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ProfileEditFormInput;
@@ -35,6 +40,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -45,10 +52,20 @@ public class MainController {
     private final ProjectService projectService;
 
     private final UserService userService;
-
+    private final ClientService clientService;
+    private final DepartmentService departmentService;
+    private final ProjectService projectService;
 
     @GetMapping("/")
-    public String index() {
+    public String index(ModelMap model){
+        long userCount = userService.getAllUsers().size();
+        long clientCount = clientService.getAllClients().size();
+        long departmentCount = departmentService.getAllDepartments().size();
+
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("clientCount", clientCount);
+        model.addAttribute("departmentCount", departmentCount);
+
         return "index";
     }
 
@@ -184,6 +201,17 @@ public class MainController {
     public ModelAndView showProjectDetial(@PathVariable Long id){
         ProjectViewObject project = projectService.getProjectById(id);
         return new ModelAndView("project-details-info","currentProject",project);
+    }
+
+    @GetMapping("/man-month")
+    public String manMonthView(){
+
+        return "man-month";
+    }
+
+    @GetMapping("/kpi")
+    public String kpView(){
+        return "KPI";
     }
 
 }

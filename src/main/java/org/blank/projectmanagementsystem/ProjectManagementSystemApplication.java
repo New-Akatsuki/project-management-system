@@ -33,21 +33,21 @@ public class ProjectManagementSystemApplication {
 
     }
   
-    @Bean
-    CommandLineRunner runner(
-            UserService userService, PasswordEncoder passwordEncoder,
-            ProjectService projectService,
-            ClientRepository clientRepository,
-            SystemOutlineRepository systemOutlineRepository,
-            ArchitectureRepository architectureRepository,
-            DeliverableRepository deliverableRepository
-    ){
-        return args -> {
+   @Bean
+   CommandLineRunner runner(
+           UserService userService, PasswordEncoder passwordEncoder,
+           ProjectService projectService,
+           ClientRepository clientRepository,
+           SystemOutlineRepository systemOutlineRepository,
+           ArchitectureRepository architectureRepository,
+           DeliverableRepository deliverableRepository
+   ){
+       return args -> {
 
-            Department department = new Department(null, "IT", true);
-            Department department2 = new Department(null, "HR", true);
-            userService.saveDepartment(department);
-            userService.saveDepartment(department2);
+           Department department = new Department(null, "IT", true);
+           Department department2 = new Department(null, "HR", true);
+           userService.saveDepartment(department);
+           userService.saveDepartment(department2);
 
             // save demo data after start
             var pmo = userService.save(

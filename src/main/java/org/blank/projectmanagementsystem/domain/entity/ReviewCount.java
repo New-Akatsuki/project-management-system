@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 
 import java.io.Serializable;
@@ -21,9 +22,9 @@ public class ReviewCount implements Serializable {
     @Column(nullable = false)
     private ReviewerType reviewerType;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ReviewCategory reviewCategory;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DevelopmentPhase developmentPhase;
 
     @ManyToOne
     @JoinColumn(nullable = false)

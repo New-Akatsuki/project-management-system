@@ -18,12 +18,15 @@ public class Amount {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private DevelopmentPhase name;
+    private DevelopmentPhase developmentPhase;
 
     @Column(nullable = false)
     private int amount;
 
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Project project;
+
+
 }

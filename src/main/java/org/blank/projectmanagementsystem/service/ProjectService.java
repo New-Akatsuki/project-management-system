@@ -18,8 +18,6 @@ public interface ProjectService {
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
-
+    List<ProjectViewObject> getProjectsByDepartment(Long departmentId);
     Project getProject(long projectId);
-
-
 }

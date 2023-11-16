@@ -166,8 +166,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProject(long projectId) {
-        return projectRepository.getReferenceById(projectId);
+    public List<ProjectViewObject> getProjectsByDepartment(Long departmentId) {
+        return projectRepository.findByDepartmentId(departmentId).stream().map(ProjectViewObject::new).toList();
     }
 
     private User getCurrentUser(){

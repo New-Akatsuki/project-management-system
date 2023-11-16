@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class PMORestController {
     private final DepartmentService departmentService;
+    private final ProjectService projectService;
 
 
 
@@ -47,6 +49,8 @@ public class PMORestController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }
 

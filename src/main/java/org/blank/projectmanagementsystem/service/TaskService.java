@@ -14,4 +14,5 @@ public interface TaskService {
     TaskViewObject createTask(TaskFormInput task);
     Task updateTask(TaskFormInput task);
     void deleteTask(Long id);
+    List<TaskViewObject> getTasksByProject(Long projectId);
 }

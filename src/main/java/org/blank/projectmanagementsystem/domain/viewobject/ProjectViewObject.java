@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class ProjectViewObject {
+    private Long id;
     private String name;
     private String client;
     private String projectManager;
@@ -26,6 +27,7 @@ public class ProjectViewObject {
     private List<String> deliverables;
 
     public ProjectViewObject(Project project){
+        id = project.getId();
         name = project.getName();
         client = project.getClient().getName();
         projectManager = project.getProjectManager().getName();
