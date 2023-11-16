@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.blank.projectmanagementsystem.mapper.TaskMapper;
 import org.blank.projectmanagementsystem.service.PhaseService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.TaskService;
@@ -67,16 +68,12 @@ public class TaskAPI {
     public ResponseEntity<TaskViewObject> addTask(@RequestBody TaskFormInput task) {
         log.info("new task: {}", task);
         return ResponseEntity.ok(taskService.createTask(task));
-//        return null;
     }
 
     @PutMapping("/update-task")
     public ResponseEntity<TaskViewObject> updateTask(@RequestBody TaskFormInput task) {
-        log.info("\n\n\nupdate task tfi: {}\n\n\n\n", task);
-        TaskViewObject tvo = taskService.updateTask(task);
-        log.info("\n\n\nupdate task tvo: {}\n\n\n\n", tvo);
+        TaskViewObject tvo = new TaskMapper().mapToTaskViewObject(taskService.updateTask(task));
         return ResponseEntity.ok(tvo);
-//        return null;
     }
 
 

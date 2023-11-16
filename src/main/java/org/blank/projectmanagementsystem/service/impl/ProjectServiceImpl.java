@@ -34,7 +34,6 @@ public class ProjectServiceImpl implements ProjectService {
     private final SystemOutlineRepository systemOutlineRepository;
     private final ArchitectureRepository architectureRepository;
     private final DeliverableRepository deliverableRepository;
-    private final NotificationService notificationService;
 
     private final ProjectMapper projectMapper = new ProjectMapper();
 

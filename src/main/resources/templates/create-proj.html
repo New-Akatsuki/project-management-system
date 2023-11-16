@@ -820,21 +820,5 @@
     });
 
 </script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script>
-
-    const userId = document.getElementById('userId').value;
-    const pusher = new Pusher('45b9b41cab6ad01f6264', {
-        cluster: 'ap1'
-    });
-
-    console.log('userId', userId)
-
-    const channel = pusher.subscribe(`my-channel-1`);
-    channel.bind(`noti-event`, function(data) {
-        // alert(JSON.stringify(data));
-        console.log("pusher trigger", data)
-    });
-</script>
 </body>
 </html>

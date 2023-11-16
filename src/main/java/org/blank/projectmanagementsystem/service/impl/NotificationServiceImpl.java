@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
@@ -60,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
             pusher.setCluster(cluster);
             pusher.setEncrypted(true);
 
-            pusher.trigger("my-channel-" + id, "noti-event", "{\"notification\":" + notiJson + "}");
+            pusher.trigger("my-channel-" + id, "noti-event", notiJson);
 
             log.info("Pusher is triggered");
 
@@ -72,5 +73,10 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
 
+    }
+
+    @Override
+    public List<Notification> getNotificationById(Long id) {
+        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
     }
 }

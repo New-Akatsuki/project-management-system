@@ -37,7 +37,7 @@
 <body>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
-        <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center justify-content-between">
 
         <a th:href="@{/}" class="logo d-flex align-items-center">
             <img src="/images/DAT.png" alt=""/>
@@ -62,35 +62,12 @@
                     <span class="badge bg-primary badge-number">4</span>
                 </a><!-- End Notification Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                    <li class="dropdown-header">
-                        You have 4 new notifications
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
+                <ul id="notiArea" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
 
-                    <li class="notification-item">
-                        <i class="bi bi-exclamation-circle text-warning"></i>
-                        <div>
-                            <h4>Lorem Ipsum</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>30 min. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li class="dropdown-footer">
-                        <a href="/notification">Show all notifications</a>
-                    </li>
 
                 </ul><!-- End Notification Dropdown Items -->
 
             </li><!-- End Notification Nav -->
-
 
 
             <li class="nav-item dropdown pe-3">
@@ -98,8 +75,11 @@
                    href="#" role="button" aria-expanded="false"
                 >
                     <th:block th:with="photoData=${#authentication.principal.photoDataAsString}">
-                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover" th:if="${photoData != null}" th:src="@{'data:image/jpeg;base64,' + ${photoData}}" alt="User Photo"/>
-                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover" th:unless="${photoData != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover"
+                             th:if="${photoData != null}" th:src="@{'data:image/jpeg;base64,' + ${photoData}}"
+                             alt="User Photo"/>
+                        <img style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover"
+                             th:unless="${photoData != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
                     </th:block>
 
                     <span class="d-none d-md-block dropdown-toggle ps-2" sec:authentication="principal.username"></span>
@@ -138,6 +118,21 @@
             </li><!-- End Profile Nav -->
         </ul>
     </nav>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="/js/notification.js"></script>
+    <script>
+
+        $.ajax({
+            url: "/notifications",
+            type: "GET",
+            success: function (data) {
+                $("#notiArea").notification({notifications: data});
+            }
+        });
+
+    </script>
     <!-- End Icons Navigation -->
 </header>
 <!-- End Header -->

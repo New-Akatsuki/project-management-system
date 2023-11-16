@@ -77,7 +77,6 @@ public class User implements Serializable,UserDetails {
         return username == null ? email : username;
     }
 
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

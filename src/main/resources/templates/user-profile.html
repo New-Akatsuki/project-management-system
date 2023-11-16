@@ -10,12 +10,6 @@
   <!-- Bootstrap CSS for modal box -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Bootstrap JS and Popper.js for Modal Box -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect"/>
   <link
@@ -43,7 +37,7 @@
 
 
   <!-- Hope Ui Design System Css -->
-  <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+  <link rel="stylesheet" href="/css/hope.css">
   <!-- Library / Plugin Css Build -->
   <link rel="stylesheet" href="/css/libs.min.css">
 
@@ -336,23 +330,6 @@
 <script th:src="@{/js/form-wizard.js}"></script>
 <!--<script th:src="@{/js/validation.js}"></script>-->
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-
-  $(document).ready(function () {
-    const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    const currentPass = checkInputValidation("currentPassword", "Current Password", password_pattern);
-    const newPass = checkInputValidation("newPassword", "New Password", password_pattern);
-    const confirmPass = checkInputValidation("confirmPassword", "Confirm Password", password_pattern);
-    // Usage
-    checkPasswordsMatch(newPass, confirmPass);
-
-    // Initialize form validatio
-    formValidate("form-wizard1");
-  });
-</script>
-
 <script>
   $(document).ready(function() {
     $("#passwordIcon").on('click', function() {
@@ -403,14 +380,6 @@
       }
     });
   });
-</script>
-<!--Single Select-->
-<script>
-
-  const data2 = ['ACE', 'DAT', 'Ace Plus']
-  const id2 = init("department")
-  const department_wrapperUpdateName = singleSelect(id2, data2);
-
 </script>
 
 <script>
@@ -467,23 +436,6 @@
 
 
 <script>
-  // function displayPhoto() {
-  //   var input = document.getElementById('editPhoto');
-  //   var img = document.getElementById('selectedPhoto');
-  //   var file = input.files[0];
-  //
-  //   if (file) {
-  //     var reader = new FileReader();
-  //
-  //     reader.onload = function(e) {
-  //       img.src = e.target.result;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     // If no file is selected, display the default image
-  //     img.src = "default-image.jpg";
-  //   }
-  // }
   function displayPhoto() {
     var input = document.getElementById('editPhoto');
     // var img = document.getElementById('selectedPhoto');
@@ -512,48 +464,6 @@
   }
 
 </script>
-<!--<script>-->
-<!--  $('#ProfileEdit').submit(function(e) {-->
-<!--    e.preventDefault();-->
-
-<!--    let userId = $('#userId').val();-->
-<!--    let editPhoto = $('#editPhoto')[0].files[0];-->
-<!--    let editFullName = $('#editFullName').val();-->
-<!--    let editUserName = $('#editUserName').val();-->
-<!--    let editUserRole = $('#editUserRole').val();-->
-<!--    let editPhone = $('#editPhone').val();-->
-<!--    let editEmail = $('#editEmail').val();-->
-
-<!--    let formData = new FormData();-->
-<!--    formData.append('id', parseInt(userId, 10)); // Parse as decimal-->
-<!--    formData.append('photoUrl', editPhoto);-->
-<!--    formData.append('fullName', editFullName);-->
-<!--    formData.append('userName', editUserName);-->
-<!--    formData.append('userRole', editUserRole);-->
-<!--    formData.append('phone', editPhone);-->
-<!--    formData.append('email', editEmail);-->
-
-<!--    console.log("Form Data : ", formData);-->
-
-<!--    $.ajax({-->
-<!--      url: '/user-profile-edit',-->
-<!--      type: 'POST',-->
-<!--      data: formData,-->
-<!--      encrypted: 'multipart/form-data',-->
-<!--      success: function (data) {-->
-<!--        console.log(data);-->
-<!--        alert("Update Success");-->
-<!--      },-->
-<!--      error: function (data) {-->
-<!--        console.log(data);-->
-<!--        alert("Update Fail");-->
-<!--      },-->
-<!--      cache: false,-->
-<!--      contentType: false,-->
-<!--      processData: false-->
-<!--    });-->
-<!--  });-->
-
 <!--</script>-->
 <script>
   function handleFileChange(){

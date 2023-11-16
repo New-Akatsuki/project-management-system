@@ -496,6 +496,7 @@ h6 {
 
 .header-nav .notifications {
   inset: 8px -15px auto auto !important;
+  min-width: 300px;
 }
 
 .header-nav .notifications .notification-item {

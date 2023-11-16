@@ -72,14 +72,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskViewObject updateTask(TaskFormInput taskFormInput) {
+    public Task updateTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
         //reset subtask date
         resetSubTaskDate(modifyTask);
-        return taskMapper.mapToTaskViewObject(taskRepository.save(modifyTask));
+        return taskRepository.save(modifyTask);
     }
 
     private Task fillTaskData(TaskFormInput taskFormInput, Task task) {
