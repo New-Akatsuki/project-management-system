@@ -27,14 +27,9 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public SystemOutline getSystemOutlineById(Long id) {
-        return systemOutlineRepository.findById(Math.toIntExact(id)).orElse(null);
+        return systemOutlineRepository.findById(id).orElse(null);
     }
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public void deleteSystemOutline(Long id) {
-        systemOutlineRepository.deleteById(id);
-    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")

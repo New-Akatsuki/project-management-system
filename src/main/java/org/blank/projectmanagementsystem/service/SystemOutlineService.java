@@ -11,5 +11,5 @@ public interface SystemOutlineService {
 
     SystemOutline getSystemOutlineById(Long id);
 
-    void deleteSystemOutline(Long id);
+
 }

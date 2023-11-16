@@ -71,7 +71,7 @@ function showPatternInvalidMsg(element,msg_div,element_name) {
 }
 
 
-function checkPasswordsMatch(passwordElement, confirmPassElement) {
+/*function checkPasswordsMatch(passwordElement, confirmPassElement) {
     confirmPassElement.element.addEventListener("input", function () {
        if (passwordElement.element.value !== confirmPassElement.element.value) {
             confirmPassElement.element.setCustomValidity("Passwords do not match.");
@@ -97,7 +97,7 @@ function checkPasswordsMatch(passwordElement, confirmPassElement) {
             }
         }
     });
-}
+}*/
 
 function formValidate(form_id, action=()=>{}) {
     const nameForm = document.getElementById(form_id);

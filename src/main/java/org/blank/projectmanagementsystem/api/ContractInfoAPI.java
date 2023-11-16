@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.api;
 
 import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.Architecture;

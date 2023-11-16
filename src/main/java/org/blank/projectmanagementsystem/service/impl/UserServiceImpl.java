@@ -6,6 +6,7 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
@@ -16,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -60,12 +59,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String currentPassword, String newPassword) {
+    public ChangePasswordFormInput changePassword(String currentPassword, String newPassword) {
         //get current username from security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
+
         User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
+        log.info("User found: {}", user);
+        //change password
+        if (user != null) {
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                log.info("Password matches {}\n\n\n", newPassword);
+                user.setPassword(passwordEncoder.encode(newPassword));
+                user.setDefaultPassword(false);
+                userRepository.save(user);
+            }
+            return new ChangePasswordFormInput();
+        }
+        return new ChangePasswordFormInput();
     }
+
 
     private String generateDefaultPassword() {
         // Generate a random alphanumeric password with a length of 8 characters
@@ -111,5 +124,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserViewObject> getAllUsers() {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
+    }
+
+    @Override
+    public Boolean checkCurrentPassword(String currentPassword) {
+        User user = getCurrentUser();
+        return passwordEncoder.matches(currentPassword, user.getPassword());
+    }
+
+
+    @Override
+    public User getCurrentUser() {
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(userName, userName).orElseThrow();
     }
 }

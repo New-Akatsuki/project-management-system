@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.*;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class PMRestController {
     private final UserService userService;
-    private final SystemOutlineService systemOutlineService;
+   /* private final SystemOutlineService systemOutlineService;
     private final ClientService clientService;
     private final ArchitectureService architectureService;
     private final DeliverableService deliverableService;
@@ -74,7 +73,7 @@ public class PMRestController {
         }
     }
 
-    @GetMapping("/pm/deliverables") // Changed endpoint
+   @GetMapping("/pm/deliverables") // Changed endpoint
     public ResponseEntity<List<Deliverable>> getDeliverables() {
         List<Deliverable> deliverables = deliverableService.getAllDeliverables();
         return ResponseEntity.ok(deliverables);
@@ -100,7 +99,6 @@ public class PMRestController {
         Deliverable existingDeliverable = deliverableService.getDeliverableById(deliverable.getId());
 
         if (existingDeliverable != null) {
-            // Update the existing deliverable's information
             existingDeliverable.setName(deliverable.getName());
 
             Deliverable updatedDeliverable = deliverableService.save(existingDeliverable);
@@ -125,7 +123,7 @@ public class PMRestController {
     }
 
 
-    @GetMapping("/pm/clients")
+   @GetMapping("/pm/clients")
     public ResponseEntity<List<Client>> getClients() {
         List<Client> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
@@ -228,19 +226,64 @@ public class PMRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-    }
+    }*/
 
     @PostMapping("/pm/add-users")
     public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
         User newUser = userService.registerUser(addUserFormInput);
         return ResponseEntity.ok(addUserFormInput);
     }
+
     @GetMapping("/pm/users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-   }
+
+
+
+    @PostMapping("/pm/change-password")
+    public ResponseEntity<ChangePasswordFormInput> changePassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
+        ChangePasswordFormInput chpwd = userService.changePassword(
+                changePasswordFormInput.getCurrentPassword(),
+                changePasswordFormInput.getNewPassword());
+        log.info("===========================================================================================");
+        log.info("ChangePasswordFormInput: {}", chpwd);
+        log.info("===========================================================================================");
+        if (chpwd != null) {
+            chpwd.setCurrentPassword(changePasswordFormInput.getCurrentPassword());
+            chpwd.setNewPassword(changePasswordFormInput.getNewPassword());
+            chpwd.setConfirmPassword(changePasswordFormInput.getConfirmPassword());
+            return ResponseEntity.ok(chpwd);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/pm/check-current-password")
+    public ResponseEntity<String> checkCurrentPassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
+        boolean chpwd = userService.checkCurrentPassword(changePasswordFormInput.getCurrentPassword());
+        log.info("===========================================================================================");
+        log.info("CurrentPassword: {}", chpwd);
+        log.info("===========================================================================================");
+
+        if (chpwd) {
+            String cp = changePasswordFormInput.getCurrentPassword();
+            return ResponseEntity.ok(cp);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+
+
+
+}
+
+
+
+
 
 
 

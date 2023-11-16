@@ -44,12 +44,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public void delete(int id) {
-
-    }
-
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }

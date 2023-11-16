@@ -86,7 +86,6 @@ public class PMController {
     @GetMapping("/edit-user")
     public ModelAndView editUser() {
         return new ModelAndView("edit-user", "editUserFormInput", new EditUserFormInput());
-
     }
 
     @PostMapping("/edit-user")
@@ -118,5 +117,7 @@ public class PMController {
     public String Department() {
         return "department";
     }
+
+
 }
 
