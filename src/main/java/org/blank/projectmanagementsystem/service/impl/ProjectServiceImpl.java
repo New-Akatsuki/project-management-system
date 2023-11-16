@@ -9,11 +9,13 @@ import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
+import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String pmUsername = "pm@gmail.com";
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data

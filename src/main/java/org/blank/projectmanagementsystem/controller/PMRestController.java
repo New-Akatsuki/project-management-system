@@ -8,11 +8,14 @@ import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
+import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.*;
+import org.blank.projectmanagementsystem.service.impl.NotificationServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,7 +29,8 @@ public class PMRestController {
     private final DeliverableService deliverableService;
     private final ProjectService projectService;
     private final DepartmentService departmentService;
-
+    private final NotificationServiceImpl notificationService;
+    private final UserRepository userRepository;
 
     @PreAuthorize("hasAuthority('PM')")
     @GetMapping("/pm/system-outlines") // Changed endpoint
@@ -247,6 +251,7 @@ public class PMRestController {
     @PostMapping("/pm/add-users")
     public ResponseEntity<AddUserFormInput> addUser(@RequestBody AddUserFormInput addUserFormInput) {
         User newUser = userService.createMember(addUserFormInput);
+
         return ResponseEntity.ok(addUserFormInput);
     }
 

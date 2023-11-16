@@ -6,6 +6,8 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ProfileEditFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
@@ -17,7 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,4 +153,63 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+
+//    @Override
+//    public User editUserProfile(ProfileEditFormInput user) {
+//        User filteredUser = userRepository.findById(user.getId()).orElseThrow();
+//        filteredUser.setName(user.getFullName());
+//        filteredUser.setEmail(user.getEmail());
+//        filteredUser.setUserRole(user.getUserRole());
+//        filteredUser.setPhone(user.getPhone());
+//
+//        MultipartFile file = user.getPhotoUrl();
+//        String fileName = null;
+//
+//        if (file != null && !file.isEmpty()) {
+//            try {
+//                fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//
+//                String uploadPath = "C:\\Users\\HP\\Downloads\\spring boot\\project-management-system\\src\\main\\resources\\static\\photo"
+//                        + File.separator;
+//                Path path = Paths.get(uploadPath + fileName);
+//                filteredUser.setImgUrl(fileName);
+//
+//                // Save the file to the server
+//                try (OutputStream outputStream = Files.newOutputStream(path)) {
+//                    outputStream.write(file.getBytes());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return userRepository.save(filteredUser);
+//    }
+
+    @Override
+    public User getCurrentUser() {
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(userName, userName).orElseThrow();
+    }
+
+    @Override
+    public User editUserProfile(ProfileEditFormInput profileEditFormInput) {
+        var user = getCurrentUser();
+        try{
+            user.setPhotoData(profileEditFormInput.getPhotoData());
+            user.setName(profileEditFormInput.getFullName());
+            user.setUsername(profileEditFormInput.getUserName());
+            user.setUserRole(profileEditFormInput.getUserRole());
+            user.setPhone(profileEditFormInput.getPhone());
+            user.setEmail(profileEditFormInput.getEmail());
+            return userRepository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

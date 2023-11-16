@@ -1,6 +1,8 @@
 package org.blank.projectmanagementsystem.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendNotification(Notification notification, String useName) {
+    public void sendNotification(Notification notification, long id) {
 
         String appId = "1682457";
         String key = "45b9b41cab6ad01f6264";
@@ -49,7 +51,9 @@ public class NotificationServiceImpl implements NotificationService {
 
         try (Pusher pusher = new Pusher(appId, key, secret)) {
 
+
             ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             String notiJson = mapper.writeValueAsString(notification);
 
             log.info("In try statement");
@@ -57,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
             pusher.setCluster(cluster);
             pusher.setEncrypted(true);
 
-            pusher.trigger("my-channel-" + useName, "noti-event", "{\"notification\":" + notiJson + "}");
+            pusher.trigger("my-channel-" + id, "noti-event", notiJson);
 
             log.info("Pusher is triggered");
 
@@ -69,5 +73,10 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
 
+    }
+
+    @Override
+    public List<Notification> getNotificationById(Long id) {
+        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
     }
 }

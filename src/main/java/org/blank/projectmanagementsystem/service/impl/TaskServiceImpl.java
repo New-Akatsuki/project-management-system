@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,8 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final PhaseRepository phaseRepository;
+    private final NotificationServiceImpl notificationService;
+
     private final TaskMapper taskMapper = new TaskMapper();
 
     private User getCurrentUser(){
@@ -61,7 +65,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.mapToTask(taskFormInput);
         // Save the task to the database
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-
         // Map and return the saved task as a TaskViewObject
         return taskMapper.mapToTaskViewObject(savedTask);
     }
@@ -69,14 +72,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskViewObject updateTask(TaskFormInput taskFormInput) {
+    public Task updateTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
         //reset subtask date
         resetSubTaskDate(modifyTask);
-        return taskMapper.mapToTaskViewObject(taskRepository.save(modifyTask));
+        return taskRepository.save(modifyTask);
     }
 
     private Task fillTaskData(TaskFormInput taskFormInput, Task task) {
