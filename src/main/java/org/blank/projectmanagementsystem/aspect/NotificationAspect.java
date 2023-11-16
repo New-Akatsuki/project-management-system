@@ -4,11 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.blank.projectmanagementsystem.domain.entity.Notification;
+import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
+import org.blank.projectmanagementsystem.domain.entity.*;
+import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.QueueInfoService;
+import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,57 +29,114 @@ import java.util.Map;
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationAspect {
 
     private final NotificationService notificationService;
+    private final UserRepository userRepository;
 
-    private final QueueInfoService queueInfoService;
-
-    private final RabbitTemplate rabbitTemplate;
-
-    private final DirectExchange directExchange;
-
-//    @AfterReturning(
-//            pointcut = "execution(* com.project.ecommerce.api.OrderApi.addOrder(..)) && args(orderDto)",
-//            argNames = "result, orderDto",
-//            returning = "result"
-//    )
-//    public void sendNotificationAfterOrderCreation(Object result, OrderDetailDto orderDto) throws JsonProcessingException {
-//        if (result instanceof ResponseEntity) {
-//            ResponseEntity<OrderDetailVo> responseEntity = (ResponseEntity<OrderDetailVo>) result;
-//
-//            // Check if the status code indicates success (e.g., 2xx range)
-//            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-//                OrderDetailVo orderVo = responseEntity.getBody();
-//                // Send a notification using the notificationService
-//                assert orderVo != null;
-//                sendNotification(orderVo.getOrderId(), "New Order Arrived!", getAdminRoutingKey());
-//            }
-//        }
-//    }
-
-
-    private String getAdminRoutingKey() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return queueInfoService.getRoutingKeyByUsername(username);
+    private User getCurrentUser(){
+//        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var username = "pm";
+        return userRepository.findByUsernameOrEmail(username,username).orElse(null);
     }
 
-    private void sendNotification(long itemId, String message, String routingKey) throws JsonProcessingException {
-        // send notification to admin
-        Map<String, Object> notification = new HashMap<>();
-        notification.put("message", message);
-        notification.put("orderId", itemId);
+    @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.ProjectServiceImpl.saveProject(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterProjectCreation(Project result) throws JsonProcessingException {
+        if (result != null) {
+            User user = getCurrentUser();
+            Notification notification = Notification.builder()
+                    .message("Project " + result.getName() + " has been created")
+                    .date(LocalDate.now())
+                    .link("/project/" + result.getId())
+                    .type(NotificationType.PROJECT)
+                    .recipient(user)
+                    .build();
 
-        // change map to json
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String jsonNotification = objectMapper.writeValueAsString(notification);
+            result.getContractMembers().forEach(contractMember -> {
+                if (!contractMember.equals(user)) {
+                    notification.setMessage("You have been assigned to project [" + result.getName() + "] as a contract member");
+                    notification.setRecipient(contractMember);
+                    notificationService.saveNotification(notification);
+                    notificationService.sendNotification(notification, contractMember.getId());
+                }
+            });
+            result.getFocMembers().forEach(focMember -> {
+                if (!focMember.equals(user)) {
+                    notification.setMessage("You have been assigned to project [" + result.getName() + "] as a foc member");
+                    notification.setRecipient(focMember);
+                    notificationService.saveNotification(notification);
+                    notificationService.sendNotification(notification, focMember.getId());
+                }
+            });
+        }
+    }
 
-        // save notification to database
-        notificationService.saveNotification(Notification.builder().taskId(itemId).message(message).date(LocalDate.now()).build());
+    @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.IssueServiceImpl.createIssue(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterIssueCreation(Issue result) throws JsonProcessingException {
+        if (result!=null){
+            Notification notification = Notification.builder()
+                    .message("You have been assigned to issue [" + result.getTitle()+ "] as a PIC")
+                    .date(LocalDate.now())
+                    .link("/issue/" + result.getId())
+                    .type(NotificationType.ISSUE)
+                    .recipient(result.getPic())
+                    .build();
+            notificationService.saveNotification(notification);
+            notificationService.sendNotification(notification, result.getPic().getId());
+        }
+    }
 
-        // send notification to admins using topic exchange
-        rabbitTemplate.convertAndSend(directExchange.getName(), routingKey, jsonNotification);
+    @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.TaskServiceImpl.createTask(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterTaskCreation(TaskViewObject result) throws JsonProcessingException {
+        if (result!=null){
+            Notification notification = Notification.builder()
+                    .message("You have been assigned to task [" + result.getName()+ "] as a assignee")
+                    .date(LocalDate.now())
+                    .link("/task/" + result.getId())
+                    .type(NotificationType.TASK)
+                    .build();
+
+            result.getAssignees().forEach(assignee -> {
+                notification.setRecipient(userRepository.getReferenceById(assignee.getId()));
+                notificationService.saveNotification(notification);
+                notificationService.sendNotification(notification, assignee.getId());
+            });
+        }
+    }
+
+    @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.TaskServiceImpl.updateTask(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterTaskCompleted(Task result) throws JsonProcessingException {
+        if (result!=null){
+            User user = getCurrentUser();
+            if (result.isStatus()){
+                Notification notification = Notification.builder()
+                        .message("Task " + result.getName()+ " has been completed by "+ user.getName())
+                        .date(LocalDate.now())
+                        .link("/task/" + result.getId())
+                        .type(NotificationType.TASK)
+                        .recipient(result.getProject().getProjectManager())
+                        .build();
+                notificationService.saveNotification(notification);
+                notificationService.sendNotification(notification, result.getProject().getProjectManager().getId());
+            }
+        }
     }
 
 }

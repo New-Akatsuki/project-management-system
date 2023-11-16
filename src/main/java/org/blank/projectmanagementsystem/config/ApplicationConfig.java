@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,5 +18,4 @@ import java.util.Map;
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
 public class ApplicationConfig {
-
 }

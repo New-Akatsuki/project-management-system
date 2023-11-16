@@ -1,3 +1,4 @@
+
     <!--For Member List Table-->
     let userList = [];
     $(document).ready(function () {
@@ -96,6 +97,7 @@
 
         // Set event listener for modal confirm button
         $('#confirmMemberButton').on('click', function(event) {
+
         // Prevent form submission and page refresh
         event.preventDefault();
 

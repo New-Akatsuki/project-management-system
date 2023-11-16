@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>DIR-ACE TECHNOLOGY</title>
@@ -9,12 +9,6 @@
   <meta content="" name="keywords"/>
   <!-- Bootstrap CSS for modal box -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap JS and Popper.js for Modal Box -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -43,11 +37,9 @@
 
 
   <!-- Hope Ui Design System Css -->
-  <link rel="stylesheet" href="/css/hope-ui.min.css?v=4.0.0">
+  <link rel="stylesheet" href="/css/hope.css">
   <!-- Library / Plugin Css Build -->
   <link rel="stylesheet" href="/css/libs.min.css">
-  <!-- Single Select -->
-  <link rel="stylesheet" href="/css/single-select.css">
 
   <!--    icon-->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -66,6 +58,37 @@
   <link rel="stylesheet" href="/css/multiple-select.css">
   <!-- Template Main CSS File -->
   <link href="/css/style.css" rel="stylesheet"/>
+  <style>
+    .imgContainer{
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      object-fit: cover;
+    }
+
+    .profilePhoto {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .imgContainer img,.profilePhoto img{
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;  /* Ensure the image inside is also a circle */
+    }
+  </style>
 
 </head>
 <body>
@@ -92,9 +115,12 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="/images/kokhun.jpg" alt="Profile" class="rounded-circle">
-            <h2>Ko Khun</h2>
-            <h3>Web Designer</h3>
+<!--            <img th:src="@{{filename}(filename=${currentUser.imgUrl})}" alt="Profile" class="rounded-circle object-fit-cover" style="width: 200px; height: 200px;">-->
+            <img class="profilePhoto" th:if="${base64Image != null}" th:src="'data:' + ${imageType} + ';base64,' + ${base64Image}" alt="User Photo"/>
+            <img class="profilePhoto" th:unless="${base64Image != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+
+            <h2 th:text="${currentUser.name}"></h2>
+            <h3 th:text="${currentUser.userRole}"></h3>
           </div>
         </div>
 
@@ -128,36 +154,36 @@
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                  <div class="col-lg-9 col-md-8">Unknown</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.name}"></div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label ">Username</div>
-                  <div class="col-lg-9 col-md-8">Unknown</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.username}"></div>
                 </div>
 
 
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Role</div>
-                  <div class="col-lg-9 col-md-8">Web Designer</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.userRole}"></div>
                 </div>
 
 
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Department</div>
-                  <div class="col-lg-9 col-md-8">Unknown</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.department.name}"></div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Phone</div>
-                  <div class="col-lg-9 col-md-8">Unknown Number</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.phone}"></div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Email</div>
-                  <div class="col-lg-9 col-md-8">Unknown Email</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.email}"></div>
                 </div>
 
               </div>
@@ -165,58 +191,61 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
-                  <div class="row mb-3">
+                  <form th:action="@{/edit-user-in-profile}" th:method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
                     <label for class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                     <div class="col-md-8 col-lg-9">
-                      <img src="/images/kokhun.jpg"alt="Profile">
+                      <!-- Display the selected photo or default photo -->
+                      <img class="imgContainer" th:if="${base64Image != null}" th:src="'data:' + ${imageType} + ';base64,' + ${base64Image}" alt="User Photo"/>
+                      <img class="imgContainer" th:unless="${base64Image != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+                      <!-- File input for uploading a new photo -->
                       <div class="pt-2">
-                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                        <input type="file" id="editPhoto" name="photoUrl" style="display: none;" accept="image/*" onchange="handleFileChange()" th:value="${currentUser.photoData}">
+                        <p id="typeError" style="color: red;"></p>
+                        <p id="sizeError" style="color: red;"></p>
+                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image" onclick="document.getElementById('editPhoto').click()"><i class="bi bi-upload"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image" onclick="removePhoto()"><i class="bi bi-trash"></i></a>
                       </div>
+
+                      <input type="hidden" id="isNull" name="isNull" value="false">
+
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <label for="editFullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" placeholder="Kevin Anderson">
+                      <input name="name" type="text" class="form-control" id="editFullName" th:value="${currentUser.name}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="userName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
+                    <label for="editUserName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="userName" type="text" class="form-control" id="userName" placeholder="Kevin Anderson">
-                    </div>
-                  </div>
-
-
-
-
-                  <div class="row mb-3">
-                    <label for="role" class="col-md-4 col-lg-3 col-form-label">Role</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="role" placeholder="Web Designer">
+                      <input name="username" type="text" class="form-control" id="editUserName" th:value="${currentUser.username}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                    <label for="editUserRole" class="col-md-4 col-lg-3 col-form-label">Role</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone" placeholder="Unknown">
+                      <input name="userRole" type="text" class="form-control" id="editUserRole" th:value="${currentUser.userRole}">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <label for="editPhone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" placeholder="Unknown Mail">
+                      <input name="phone" type="text" class="form-control" id="editPhone" th:value="${currentUser.phone}">
                     </div>
                   </div>
 
-
-
+                  <div class="row mb-3">
+                    <label for="editEmail" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="email" class="form-control" id="editEmail" th:value="${currentUser.email}">
+                    </div>
+                  </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                   </div>
@@ -225,73 +254,68 @@
               </div>
 
               <div class="tab-pane fade pt-3" id="profile-settings">
-
-
-
               </div>
-
               <div class="tab-pane fade pt-3" id="profile-change-password">
                 <!-- Change Password Form -->
-                <form>
+                  <form id="changePasswordForm">
+                  <div class="mb-3">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Old Password"/>
+                      <label id="password-labelOld" for="currentPassword" class="form-label d-flex align-items-center">
+                        <i class="bx bx-lock-alt me-2"></i>Current Password
+                      </label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="button" id="passwordToggleOld">
+                      <i id="passwordIconOld" class="bi bi-eye-slash"></i>
+                    </button>
+                  </div>
+                    <div id="currentPasswordError" class="text-danger mt-2"></div>
+                  </div>
 
-                  <div class="row">
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$" />
 
-
-                    <div class="col-md-12">
-
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-                            <label id="password-label" for="password" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Enter Old Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
-                            <i id="passwordIcon" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
+                        <!--<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" onblur="checkInputValidation('password', 'New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />-->
+                        <label id="password-label" for="newPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>New Password
+                        </label>
                       </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                        <i id="passwordIcon" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="newPasswordError" class="text-danger mt-2"></div>
+                  </div>
 
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="newPassword" name="password" placeholder="Password"/>
-                            <label id="password-label2" for="newPassword" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Enter New Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
-                            <i id="passwordIcon2" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
+
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password" onblur="checkInputValidation('confirmPassword', 'Confirm New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />
+                        <label id="password-label2" for="confirmPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>Confirm New Password
+                        </label>
                       </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
+                        <i id="passwordIcon2" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="confirmPasswordError" class="text-danger mt-2"></div>
+                  </div>
+                    <div id="errorMessage" class="text-danger mt-3"></div>
 
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="confirmPassword" name="password" placeholder="Password"/>
-                            <label id="password-label3" for="confirmPassword" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Confirm Reset Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle3">
-                            <i id="passwordIcon3" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
-                      </div>
-
+                  <div class="d-flex justify-content-end mx-auto">
+                    <div class="text-center">
+                      <button type="button" class="btn btn-primary" id="resetButton" onclick="validatePassword()">Change Password</button>
                     </div>
                   </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
-                  </div>
-
-                </form><!-- End Change Password Form -->
-
+                </form>
               </div>
 
-            </div><!-- End Bordered Tabs -->
+            </div>
 
           </div>
         </div>
@@ -310,137 +334,71 @@
 
 <script th:src="@{/js/single-select.js}"></script>
 
-<!--selectbox-->
-<script src="/js/multi-select.js"></script>
+<script src="/js/ch-pwd.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
 
-  $(document).ready(function () {
-    const password_pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    const currentPass = checkInputValidation("currentPassword", "Current Password", password_pattern);
-    const newPass = checkInputValidation("newPassword", "New Password", password_pattern);
-    const confirmPass = checkInputValidation("confirmPassword", "Confirm Password", password_pattern);
-    // Usage
-    checkPasswordsMatch(newPass, confirmPass);
-
-    // Initialize form validatio
-    formValidate("form-wizard1");
-  });
-</script>
 
 <script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#currentPassword");
-      var passwordIcon = $("#passwordIcon");
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
-<script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#newPassword");
-      var passwordIcon = $("#passwordIcon");
+  function displayPhoto() {
+    var input = document.getElementById('editPhoto');
+    // var img = document.getElementById('selectedPhoto');
+    var img=document.querySelector('.imgContainer');
 
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
+    var file = input.files[0];
 
-<script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#confirmPassword");
-      var passwordIcon = $("#passwordIcon");
+    if (file) {
+      var reader = new FileReader();
 
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
-<!--Single Select-->
-<script>
-
-  const data2 = ['ACE', 'DAT', 'Ace Plus']
-  const id2 = init("department")
-  const department_wrapperUpdateName = singleSelect(id2, data2);
-
-</script>
-
-<script>
-
-  // Password toggle logic
-  const passwordToggle = document.getElementById('passwordToggle');
-  const passwordInput = document.getElementById('password');
-  const passwordIcon = document.getElementById('passwordIcon');
-
-  passwordToggle.addEventListener('click', function () {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      passwordIcon.classList.remove('bi-eye-slash');
-      passwordIcon.classList.add('bi-eye');
-    } else {
-      passwordInput.type = 'password';
-      passwordIcon.classList.remove('bi-eye');
-      passwordIcon.classList.add('bi-eye-slash');
+      reader.onload = function(e) {
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
-  });
+  }
 
-  const passwordToggle2 = document.getElementById('passwordToggle2');
-  const passwordInput2 = document.getElementById('newPassword');
-  const passwordIcon2 = document.getElementById('passwordIcon2');
+  function removePhoto() {
+    let img = document.querySelector('.imgContainer');
+    img.src = "/images/profile.jpg"; // Set default photo when removing the selected one
+    let isNull = document.getElementById('isNull');
+    isNull.value = "true"; // Set the value of the isNull input to true
+    $('#editPhoto').val(''); // Clear the file input
+    // Set the value of the editPhoto input to null
+    document.getElementById('editPhoto').value = null;
+  }
 
-  passwordToggle2.addEventListener('click', function () {
-    if (passwordInput2.type === 'newPassword') {
-      passwordInput2.type = 'text';
-      passwordIcon2.classList.remove('bi-eye-slash');
-      passwordIcon2.classList.add('bi-eye');
-    } else {
-      passwordInput2.type = 'newPassword';
-      passwordIcon2.classList.remove('bi-eye');
-      passwordIcon2.classList.add('bi-eye-slash');
-    }
-  });
-
-  const passwordToggle3 = document.getElementById('passwordToggle3');
-  const passwordInput3 = document.getElementById('confirmPassword');
-  const passwordIcon3 = document.getElementById('passwordIcon3');
-
-  passwordToggle3.addEventListener('click', function () {
-    if (passwordInput3.type === 'confirmPassword') {
-      passwordInput3.type = 'text';
-      passwordIcon3.classList.remove('bi-eye-slash');
-      passwordIcon3.classList.add('bi-eye');
-    } else {
-      passwordInput3.type = 'confirmPassword';
-      passwordIcon3.classList.remove('bi-eye');
-      passwordIcon3.classList.add('bi-eye-slash');
-    }
-  });
 </script>
+<!--</script>-->
+<script>
+  function handleFileChange(){
+    displayPhoto();
+    validateImage();
+  }
+  function validateImage() {
+    var input = document.getElementById('editPhoto');
+    var maxSizeInBytes = 1024 * 1024; // 1MB
+    var allowedTypes = ['image/jpeg', 'image/png'];
 
+    if (input.files.length > 0) {
+      var fileSize = input.files[0].size;
+      var fileType = input.files[0].type;
+
+      if (fileSize > maxSizeInBytes) {
+        document.getElementById('sizeError').innerText = 'File size exceeds the limit (1MB)';
+        input.value = ''; // Clear the input field
+      } else {
+        document.getElementById('sizeError').innerText = '';
+      }
+
+      if (!allowedTypes.includes(fileType)) {
+        document.getElementById('typeError').innerText = 'Invalid file type. Allowed types: JPEG, PNG';
+        input.value = ''; // Clear the input field
+      } else {
+        document.getElementById('typeError').innerText = '';
+      }
+    }
+  }
+</script>
 </body>
 </html>

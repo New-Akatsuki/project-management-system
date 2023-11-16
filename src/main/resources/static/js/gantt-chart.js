@@ -172,6 +172,7 @@ $(document).ready(function () {
 
 
             gantt.config.xml_date = "%Y-%m-%d";
+
             gantt.init('gantt');
 
             gantt.parse({data: data, links: []});

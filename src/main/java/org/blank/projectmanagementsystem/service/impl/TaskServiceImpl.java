@@ -2,8 +2,10 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.mapper.TaskMapper;
@@ -13,9 +15,11 @@ import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.hibernate.annotations.OnDelete;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -29,12 +33,26 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final PhaseRepository phaseRepository;
+    private final NotificationServiceImpl notificationService;
+
     private final TaskMapper taskMapper = new TaskMapper();
+
+    private User getCurrentUser(){
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(username,username).orElse(null);
+    }
 
     @Override
     @Transactional(readOnly = true)
     public List<TaskViewObject> getAllTasks() {
-        return taskRepository.findAll().stream().map(taskMapper::mapToTaskViewObject).toList();
+        return taskRepository.findAllByAssignees_Id(getCurrentUser().getId())
+                .stream().map(taskMapper::mapToTaskViewObject).toList();
+    }
+
+    @Override
+    public List<TaskViewObject> getTasksByUser() {
+        return taskRepository.findAllByAssignees_Id(getCurrentUser().getId())
+                .stream().map(taskMapper::mapToTaskViewObject).toList();
     }
 
     @Override
@@ -47,7 +65,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskMapper.mapToTask(taskFormInput);
         // Save the task to the database
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-
         // Map and return the saved task as a TaskViewObject
         return taskMapper.mapToTaskViewObject(savedTask);
     }
@@ -55,14 +72,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
-    public TaskViewObject updateTask(TaskFormInput taskFormInput) {
+    public Task updateTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
         //reset subtask date
         resetSubTaskDate(modifyTask);
-        return taskMapper.mapToTaskViewObject(taskRepository.save(modifyTask));
+        return taskRepository.save(modifyTask);
     }
 
     private Task fillTaskData(TaskFormInput taskFormInput, Task task) {

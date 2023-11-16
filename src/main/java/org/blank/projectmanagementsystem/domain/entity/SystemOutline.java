@@ -27,5 +27,5 @@ public class SystemOutline implements Serializable {
 
     private String name;
   
-    private boolean active=true;
+    private boolean status;
 }
