@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+
+    <style>
+        .rounded-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upload-info{
+            font-size: 1em;
+            color: #666;
+            text-align: right;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Issue</a></li>
+                <li class="breadcrumb-item active">Display Issue</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <!-- Main Content -->
+    <div class="card rounded-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 style="color: white; margin-left:15px"><i class="bi bi-pip"></i> Display Issue Details</h3>
+        </div>
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px; margin-top: 10px">
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="title">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#title-box" aria-expanded="true"
+                                    aria-controls="title-box">
+                                <span class="display-6 fs-5 fw-bold">Title</span>
+                            </button>
+                        </h2>
+                        <div id="title-box" class="accordion-collapse collapse show"
+                             data-bs-parent="#title">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="pic">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#pic-box" aria-expanded="true"
+                                    aria-controls="pic-box">
+                                <span class="display-6 fs-5 fw-bold">PIC</span>
+                            </button>
+                        </h2>
+                        <div id="pic-box" class="accordion-collapse collapse show"
+                             data-bs-parent="#pic">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="category">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#category-box" aria-expanded="true"
+                                    aria-controls="category-box">
+                                <span class="display-6 fs-5 fw-bold">Category</span>
+                            </button>
+                        </h2>
+                        <div id="category-box" class="accordion-collapse collapse show"
+                             data-bs-parent="#category">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="content">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                <span class="display-6 fs-5 fw-bold">Content</span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                             data-bs-parent="#content">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="resParty">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#res-party" aria-expanded="true"
+                                    aria-controls="res-party">
+                                <span class="display-6 fs-5 fw-bold">Responsible Party</span>
+                            </button>
+                        </h2>
+                        <div id="res-party" class="accordion-collapse collapse show"
+                             data-bs-parent="#resParty">
+                            <div class="accordion-body text-justify">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="direct-cause">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="true"
+                                    aria-controls="collapseTwo">
+                                <span class="display-6 fs-5 fw-bold">Direct Cause</span>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse show"
+                             data-bs-parent="#direct-cause">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="root-cause">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="true"
+                                    aria-controls="collapseThree">
+                                <span class="display-6 fs-5 fw-bold">Root Cause</span>
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse show"
+                             data-bs-parent="#root-cause">
+                            <div class="accordion-body text-justify">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding-left:20px; padding-right: 20px">
+            <p><strong>Issue ID :&nbsp </strong><span>ISU001</span></p>
+            <p><strong>Uploaded at </strong><span>31 October 2023.</span></p>
+        </div>
+    </div>
+
+    <div class="card rounded-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
+        </div>
+
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px; margin: 10px">
+            <form>
+                <div>
+                    <label for="co-action">Corrective Action</label>
+                </div>
+                <div id="co-action"></div>
+                <br>
+                <div>
+                    <label for="pre-action">Preventive Action</label>
+                </div>
+                <div id="pre-action"></div>
+                <br>
+                <div>
+                    <label for="impact">Impact</label>
+                </div>
+                <div>
+                    <div id="impact"></div>
+                </div>
+                <br>
+                <input type="hidden" name="coAction" id="co-actionInput">
+                <input type="hidden" name="preAction" id="pre-actionInput">
+                <div class="d-flex justify-content-end gap-3 mt-2">
+                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                    <button class="btn btn-danger">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+<!-- End #main -->
+
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+<script>
+    let coAction = new Quill("#co-action", aa)
+    let preAction = new Quill("#pre-action", aa)
+    let impact = new Quill("#impact", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-action');
+        toggleToolbar(1, 'pre-action');
+        toggleToolbar(2, 'impact');
+    })
+</script>
+
+<script>
+    // Script for Issue Details
+    // Assume you have JSON data
+    const jsonData = {
+        title: "Sample Title",
+        pic: "Sample PIC",
+        category: "Sample Category",
+        content: "Sample Content",
+        resParty: {
+            users: [
+                {userId: "USR001", username: "Johnny", role: "Coder"},
+                {userId: "USR002", username: "Java", role: "PM"},
+                {userId: "USR003", username: "Json", role: "Head"},
+                {userId: "USR004", username: "Buck", role: "SSS"}
+            ]
+        },
+        directCause: "Sample Direct Cause",
+        rootCause: "Sample Root Cause"
+    };
+
+    // Function to update the content of the spans and generate a table
+    function updateContent(sectionId, data) {
+        const container = document.querySelector(`#${sectionId} .accordion-body`);
+
+        if (container) {
+            container.innerHTML = ''; // Clear previous content
+
+            if (Array.isArray(data)) {
+                // Generate a table if the data is an array of objects
+                const table = document.createElement('table');
+                table.className = 'table table-hover';
+
+                // Create table header
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headerRow.innerHTML = '<th scope="col">User ID</th><th scope="col">Username</th><th scope="col">Role</th>';
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                // Create table body
+                const tbody = document.createElement('tbody');
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${user.userId}</td><td>${user.username}</td><td>${user.role}</td>`;
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+
+                container.appendChild(table);
+            } else {
+                // Update the content of the span if the data is not an array
+                const spanElement = document.createElement('span');
+                spanElement.textContent = data;
+                container.appendChild(spanElement);
+            }
+        }
+    }
+
+    // Update each section with corresponding data
+    updateContent("title-box", jsonData.title);
+    updateContent("pic-box", jsonData.pic);
+    updateContent("category-box", jsonData.category);
+    updateContent("collapseOne", jsonData.content);
+    updateContent("res-party", jsonData.resParty.users);
+    updateContent("collapseTwo", jsonData.directCause);
+    updateContent("collapseThree", jsonData.rootCause);
+</script>
+</body>
+
+</html>

@@ -1,11 +1,9 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -17,7 +15,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = "username")
 public class Notification implements Serializable {
 
     @Id
@@ -29,8 +26,12 @@ public class Notification implements Serializable {
     @Column(nullable = false)
     private LocalDate date;
 
-    private long taskId;
+    private String link;
+
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
 
     @JsonIgnore
-    private String username;
+    @ManyToOne
+    private User recipient;
 }

@@ -496,6 +496,7 @@ h6 {
 
 .header-nav .notifications {
   inset: 8px -15px auto auto !important;
+  min-width: 300px;
 }
 
 .header-nav .notifications .notification-item {
@@ -1002,9 +1003,7 @@ h6 {
 /*--------------------------------------------------------------
 # Profie Page
 --------------------------------------------------------------*/
-.profile .profile-card img {
-  max-width: 120px;
-}
+
 
 .profile .profile-card h2 {
   font-size: 24px;
@@ -1049,9 +1048,9 @@ h6 {
   color: rgba(1, 41, 112, 0.6);
 }
 
-.profile .profile-edit img {
-  max-width: 120px;
-}
+/*.profile .profile-edit img {*/
+/*  max-width: 120px;*/
+/*}*/
 
 /*--------------------------------------------------------------
 # F.A.Q Page
@@ -1346,7 +1345,7 @@ h6 {
 }
 
 .tabs__label {
-  padding: 10px 16px;
+  padding: 8px 10px;
   cursor: pointer;
 }
 
@@ -1364,8 +1363,10 @@ h6 {
 
 .tabs__radio:checked + .tabs__label {
   font-weight: bold;
-  color: #0019fd;
-  border-bottom: 2px solid #0019fd;
+  color: #3577ff;
+  background: #f5f7fc;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 5px solid #3577ff;
 }
 
 .tabs__radio:checked + .tabs__label + .tabs__content {

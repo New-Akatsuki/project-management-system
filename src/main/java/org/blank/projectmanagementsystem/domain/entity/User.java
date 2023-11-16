@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
+import org.blank.projectmanagementsystem.utils.ImageEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,28 +49,20 @@ public class User implements Serializable,UserDetails {
     @JoinColumn(nullable = false)
     private Department department;
 
-    private String imgUrl;
+    @Column(columnDefinition = "LONGBLOB",nullable = true)
+    private byte[] photoData;
 
     private String userRole;
 
     private String phone;
 
-    private boolean active = true;
+    private boolean active;
 
     private boolean defaultPassword = true;
-//
-//    @JsonBackReference
-//    @ManyToMany(mappedBy = "assignees")
-//    private Set<Task> tasks;
-//
-//    @JsonBackReference
-//    @ManyToMany(mappedBy = "contractMembers")
-//    private List<Project> contractProjects;
-//
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "focMembers")
-//    private List<Project> focProjects;
 
+    public String getPhotoDataAsString() {
+        return (photoData != null) ? ImageEncoder.encodeToBase64(photoData) : null;
+    }
     /*
      *the following is user details for spring security
      */
@@ -103,5 +96,7 @@ public class User implements Serializable,UserDetails {
     public boolean isEnabled() {
         return active;
     }
-
 }
+
+
+

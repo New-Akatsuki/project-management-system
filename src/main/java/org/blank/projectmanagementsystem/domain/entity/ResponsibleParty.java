@@ -22,12 +22,6 @@ public class ResponsibleParty implements Serializable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToMany
-    @JoinColumn(nullable = false)
-    private Set<User> Providers;
-
-    @ManyToOne
-    @JoinColumn(nullable = true)
-    private Client client;
-
+    @Column(unique = true,nullable = false, length = 50)
+    private String name;
 }

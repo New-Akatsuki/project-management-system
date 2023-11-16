@@ -5,14 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
+import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,13 +36,12 @@ public class ProjectServiceImpl implements ProjectService {
     private final ArchitectureRepository architectureRepository;
     private final DeliverableRepository deliverableRepository;
 
-
     private final ProjectMapper projectMapper = new ProjectMapper();
 
     @Override
-    public Project saveProject(ProjectFormInput projectFormInput, String pmUsername) {
+    public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        //String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String pmUsername = "pm@gmail.com";
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
@@ -105,18 +107,24 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectViewObject> getAllProjects() {
+    public List<ProjectListViewObject> getAllProjects() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsernameOrEmail(username,username).orElseThrow();
 
         return switch (user.getRole()) {
-            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();
-            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).map(p->new ProjectViewObject((Project) p)).stream().toList();
-            case PM ->projectRepository.findAllByProjectManager(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
-            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
+            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectListViewObject::new).toList();
+            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).map(p->new ProjectListViewObject((Project) p)).stream().toList();
+            case PM ->projectRepository.findAllByProjectManager(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
+            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
             default -> throw new IllegalStateException("Invalid user");
         };
     }
+
+    @Override
+    public ProjectViewObject getProjectById(Long id) {
+        return new ProjectViewObject(projectRepository.getReferenceById(id));
+    }
+
     @Override
     public List<User> getProjectMembers(Long projectId) {
         List<User> members = new ArrayList<>();
@@ -130,7 +138,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     @Override
     public List<User> getUsersByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
         List<User> users = new ArrayList<>();
         projects.ifPresent(projectList->{
             projectList.forEach(project -> {
@@ -141,7 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
     @Override
     public Map<String,List<Object>> getUsersAndClientByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING.name());
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
         Map<String,List<Object>> data = new HashMap<>();
         List<Object> users = new ArrayList<>();
         List<Object> clients = new ArrayList<>();
@@ -166,4 +174,5 @@ public class ProjectServiceImpl implements ProjectService {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElseThrow();
     }
+
 }

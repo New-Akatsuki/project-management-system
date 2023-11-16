@@ -9,9 +9,10 @@ import java.util.List;
 
 public interface TaskService {
     List<TaskViewObject> getAllTasks();
+    List<TaskViewObject> getTasksByUser();
     TaskViewObject getTaskById(Long id);
     TaskViewObject createTask(TaskFormInput task);
-    TaskViewObject updateTask(TaskFormInput task);
+    Task updateTask(TaskFormInput task);
     void deleteTask(Long id);
     List<TaskViewObject> getTasksByProject(Long projectId);
 }

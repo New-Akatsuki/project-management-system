@@ -45,12 +45,11 @@
                 </a>
             </li>
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC')">
-                <a class="nav-link" th:href="@{/pmo/department}">
+                <a class="nav-link" th:href="@{/department}">
                     <i class="bi bi-briefcase"></i>
                     <span>Department</span>
                 </a>
             </li>
-
 
 
             <li class="nav-item">
@@ -59,25 +58,26 @@
                     <span>Projects</span>
                 </a>
             </li>
-            <li class="nav-item" sec:authorize="hasAnyAuthority('DH','PM')">
-                <a class="nav-link"  th:href="@{/pm/add-user}">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PM')">
+                <a class="nav-link"  th:href="@{/user-list-pm}">
                     <i class="bi bi-person-video3"></i>
-                    <span>Create member account</span>
+                    <span>User Management</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/issues}">
+                <a class="nav-link" th:href="@{/all-issues}">
                     <i class="bi bi-info-circle"></i>
                     <span>Issues</span>
                 </a>
             </li>
 
             <li class="nav-item" sec:authorize="hasAuthority('PMO')">
-                <a class="nav-link"  th:href="@{/pm/user-list}">
+                <a class="nav-link"  th:href="@{/user-list}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
                 </a>
             </li>
+
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
                 <a class="nav-link" th:href="@{/pm/contract-info}">
@@ -85,10 +85,17 @@
                     <span>Contract Info</span>
                 </a>
             </li>
+            <li class="nav-item" sec:authorize="hasAuthority('DH')">
+                <a class="nav-link"  th:href="@{/user-list-dh}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>User Management</span>
+                </a>
+            </li>
+
 
 
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/pm/user-profile}">
+                <a class="nav-link" th:href="@{/user-profile}">
                     <i class="bi bi-person"></i>
                     <span>User Profile</span>
                 </a>

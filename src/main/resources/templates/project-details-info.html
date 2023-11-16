@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>DIR-ACE TECHNOLOGY</title>
@@ -32,9 +32,6 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
 
-    <!-- Dark Css -->
-    <link rel="stylesheet" href="/css/dark.min.css">
-
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
 
@@ -50,8 +47,8 @@
 
 <body>
 <!-- ======= Header ======= -->
-<div th:replace="fragments/header :: header"></div>
-<div th:replace="fragments/sidebar :: #sidebar"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
     <!-- Breadcrumb part-->
@@ -78,7 +75,7 @@
             </div>
             <!--            Outer card body -->
             <div class="card-body row px-4 px-md-5">
-                <div class="display-6 mb-4 fw-bold px-3">Foodpanda : Food Deliverable Project</div>
+                <div id="projectName" class="display-6 mb-4 fw-bold px-3" th:text="${currentProject.name}"></div>
                 <!--                client info -->
                 <div class="col-12 col-md-7 px-3">
                     <div class="row px-3">
@@ -86,15 +83,15 @@
                             <tbody>
                             <tr>
                                 <th class="col-4 ps-3">Client name</th>
-                                <td >Unknown client</td>
+                                <td id="clientName" th:text="${currentProject.client}"></td>
                             </tr>
                             <tr>
                                 <th class="ps-3">Project Manager</th>
-                                <td >Unknown person</td>
+                                <td id="pmName" th:text="${currentProject.projectManager}"></td>
                             </tr>
                             <tr>
                                 <th class="ps-3">Department</th>
-                                <td >Unknown person</td>
+                                <td id="depName" th:text="${currentProject.department}">Unknown person</td>
                             </tr>
                             </tbody>
                         </table>
@@ -102,44 +99,47 @@
                             <tbody>
                             <tr>
                                 <th class="col-4 ps-3">Start date</th>
-                                <td class="col-8">Unknown date</td>
+                                <td id="startDate" class="col-8" th:text="${currentProject.startDate}">Unknown date</td>
                             </tr>
                             <tr>
                                 <th class="ps-3">End date</th>
-                                <td>Unknown date</td>
+                                <td id="endDate" th:text="${currentProject.endDate}">Unknown date</td>
                             </tr>
                             <tr>
                                 <th class="ps-3">Duration</th>
-                                <td>Unknown date</td>
+                                <td id="Duration" th:text="${currentProject.duration}">Unknown date</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="col-12 col-md-5 px-3">
+                <div class="col-12 d-flex col-md-5 px-3">
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="ps-2 col-6">Contract Members</th>
+                            </tr>
+                        </thead>
+                        <tbody th:each="conMember : ${currentProject.contractMembers}">
+                            <tr>
+                                <td class="ps-2" th:text="${conMember}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <table class="table table-sm table-striped-columns table-bordered">
                         <thead>
                         <tr>
-                            <th class="col-6">Contract Members</th>
-                            <th class="col-6">FOC Members</th>
+                            <th class="ps-2 col-6">FOC Members</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody th:each="focMember : ${currentProject.focMembers}">
                         <tr>
-                            <td>Mg Mg</td>
-                            <td>Mg Mg</td>
+                            <td class="ps-2" th:text="${focMember}"></td>
                         </tr>
-                        <tr>
-                            <td>Aung Aung</td>
-                            <td>Aung Aung</td>
-                        </tr>
-                        <tr>
-                            <td>Tun Tun</td>
-                            <td></td>
-                        </tr>
-
                         </tbody>
                     </table>
+
                 </div>
 
                 <div class="col-12 px-3">
@@ -154,15 +154,7 @@
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show"
                                  data-bs-parent="#background">
-                                <div class="accordion-body text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen
-                                    book. It has survived not only five centuries, but also the leap into electronic
-                                    typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                                    with the release of Letraset sheets containing Lorem Ipsum passages, and more
-                                    recently with desktop publishing software like Aldus PageMaker including
-                                    versions of Lorem Ipsum.
+                                <div id="backgroundText" class="accordion-body text-justify" th:text="${currentProject.background}">
                                 </div>
                             </div>
                         </div>
@@ -180,15 +172,7 @@
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse show"
                                  data-bs-parent="#objective">
-                                <div class="accordion-body text-justify">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                    unknown printer took a galley of type and scrambled it to make a type specimen
-                                    book. It has survived not only five centuries, but also the leap into electronic
-                                    typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                                    with the release of Letraset sheets containing Lorem Ipsum passages, and more
-                                    recently with desktop publishing software like Aldus PageMaker including
-                                    versions of Lorem Ipsum.
+                                <div id="objectiveText" class="accordion-body text-justify" th:text="${currentProject.background}">
                                 </div>
                             </div>
                         </div>
@@ -208,12 +192,8 @@
                             <div id="collapseThree" class="accordion-collapse collapse show"
                                  data-bs-parent="#systemOutline">
                                 <div class="accordion-body p-2">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                        <li class="list-group-item">A fourth item</li>
-                                        <li class="list-group-item">And a fifth one</li>
+                                    <ul class="list-group" th:each="sys : ${currentProject.systemOutlines}">
+                                        <li class="list-group-item" th:text="${sys}"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -233,12 +213,8 @@
                             <div id="collapseFour" class="accordion-collapse collapse show"
                                  data-bs-parent="#architecture">
                                 <div class="accordion-body p-2">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                        <li class="list-group-item">A fourth item</li>
-                                        <li class="list-group-item">And a fifth one</li>
+                                    <ul class="list-group" th:each="arch : ${currentProject.architectureOutlines}">
+                                        <li class="list-group-item" th:text="${arch}"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -258,12 +234,8 @@
                             <div id="collapseFive" class="accordion-collapse collapse show"
                                  data-bs-parent="#deliverable">
                                 <div class="accordion-body p-2">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                        <li class="list-group-item">A fourth item</li>
-                                        <li class="list-group-item">And a fifth one</li>
+                                    <ul class="list-group" th:each="deli : ${currentProject.deliverables}">
+                                        <li class="list-group-item" th:text="${deli}"></li>
                                     </ul>
                                 </div>
                             </div>
@@ -283,13 +255,17 @@
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 
 <!-- Bootstrap JS and Popper.js for Modal Box -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 
 </body>
 </html>

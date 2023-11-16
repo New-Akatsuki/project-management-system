@@ -15,6 +15,7 @@ import org.springframework.cglib.core.Local;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class TaskMapper {
                 .start_date(task.getStartDate())
                 .end_date(task.getDueDate())
                 .actual_due_date(task.getActualDueDate())
-                .duration(calculateDuration(task.getStartDate(), task.getDueDate()))
+                .duration(calculateDurationOnlyWeekday(task.getStartDate(), task.getDueDate()))
                 .plan_hours(task.getPlanHours())
                 .actual_hours(task.getActualHours())
                 .progress(task.isStatus()?1:0)
@@ -74,6 +75,25 @@ public class TaskMapper {
 
     private int calculateDuration(LocalDate startDate, LocalDate endDate){
         return (int) (endDate.toEpochDay() - startDate.toEpochDay());
+    }
+
+    //calculateDuration only weekday
+    private int calculateDurationOnlyWeekday(LocalDate startDate, LocalDate endDate){
+        int duration = 0;
+        while(startDate.isBefore(endDate)){
+            if(startDate.getDayOfWeek().getValue() < 6){
+                duration++;
+            }
+            startDate = startDate.plusDays(1);
+        }
+        return duration;
+    }
+
+    public static void main(String[] args) {
+        TaskMapper taskMapper = new TaskMapper();
+        System.out.println(taskMapper.calculateDurationOnlyWeekday(
+                LocalDate.of(2023, Month.NOVEMBER, 1),
+                LocalDate.of(2023, Month.NOVEMBER, 8)));
     }
 
 }

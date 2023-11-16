@@ -7,10 +7,8 @@ import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.service.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,19 +21,34 @@ public class PMORestController {
 
 
 
-    @GetMapping("/pmo/departments")
+    @GetMapping("/departments")
     public ResponseEntity<List<Department>> getDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
         return ResponseEntity.ok(departments);
     }
 
-
-    @PostMapping("/pmo/add-department")
+    @PreAuthorize("hasAnyAuthority('PMO')")
+    @PostMapping("/department-create")
     public ResponseEntity<Department> addDepartment(@RequestBody Department department) {
         Department newDepartment = departmentService.save(department);
         return ResponseEntity.ok(newDepartment);
     }
+    @PreAuthorize("hasAnyAuthority('PMO')")
+    @PutMapping("/department-edit/{id}")
+    public ResponseEntity<Department> updateDepartment(@PathVariable("id") Long departmentId, @RequestBody Department updatedDepartment) {
+        Department existingDepartment = departmentService.getDepartmentById(Math.toIntExact(departmentId));
 
+        if (existingDepartment != null) {
+            // Update the existing department with the new information
+            existingDepartment.setName(updatedDepartment.getName());
+            // Update other fields as needed
+
+            Department savedDepartment = departmentService.save(existingDepartment);
+            return ResponseEntity.ok(savedDepartment);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

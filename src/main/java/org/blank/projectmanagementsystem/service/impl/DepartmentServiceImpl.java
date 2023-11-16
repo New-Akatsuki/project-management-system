@@ -1,9 +1,11 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -13,15 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
-
     private final DepartmentRepository departmentRepository;
-
+    private final UserService userService;
     @Override
     public Department save(Department department) {
         return departmentRepository.save(department);
     }
-
-
     @Override
     public Department updateDepartment(Department department) {
         //check if department exists
@@ -35,10 +34,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.save(existingDepartment);
     }
 
+
     @Override
-    public Department getDepartmentById(Department department) {
-        return departmentRepository.findById(department.getId()).orElse(null);
+    public Department getDepartmentById(Integer id) {
+        return departmentRepository.findById(id).orElse(null);
     }
+
+
 
     @Override
     public void delete(Department department) {
@@ -46,7 +48,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public Department getDepartmentByName(String departmentName) {
+        return departmentRepository.findDepartmentByName(departmentName);
+    }
+
+    @Override
     public List<Department> getAllDepartments() {
+        var currentUser = userService.getCurrentUser();
+        if(currentUser.getRole()== Role.PM||currentUser.getRole()==Role.DH){
+            return List.of(departmentRepository.getReferenceById(currentUser.getDepartment().getId()));
+        }
         return departmentRepository.findAll();
     }
 }
