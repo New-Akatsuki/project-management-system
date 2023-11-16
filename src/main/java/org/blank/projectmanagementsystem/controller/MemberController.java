@@ -52,7 +52,7 @@ public class MemberController {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    @GetMapping("/change-password")
+   /* @GetMapping("/change-password")
     public ModelAndView changePassword() {
         return new ModelAndView("change-password", "changePasswordFormInput", new ChangePasswordFormInput());
     }
@@ -66,7 +66,7 @@ public class MemberController {
         userService.changePassword(changePasswordFormInput.getCurrentPassword(), changePasswordFormInput.getNewPassword());
 
         return "redirect:/";
-    }
+    }*/
 
     @GetMapping("/task-name")
     public String taskname() {

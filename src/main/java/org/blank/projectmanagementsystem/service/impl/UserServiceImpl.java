@@ -6,6 +6,7 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ProfileEditFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
@@ -74,11 +75,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String currentPassword, String newPassword) {
+    public ChangePasswordFormInput changePassword(String currentPassword, String newPassword) {
         //get current username from security context
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         //get user from database
+
         User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
+        log.info("User found: {}", user);
+        //change password
+        if (user != null) {
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                log.info("Password matches {}\n\n\n", newPassword);
+                user.setPassword(passwordEncoder.encode(newPassword));
+                user.setDefaultPassword(false);
+                userRepository.save(user);
+            }
+            return new ChangePasswordFormInput();
+        }
+        return new ChangePasswordFormInput();
     }
 
     @Override
@@ -141,6 +155,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream().map(UserViewObject::new).toList();
     }
 
+    @Override
+    public Boolean checkCurrentPassword(String currentPassword) {
+        User user = getCurrentUser();
+        return passwordEncoder.matches(currentPassword, user.getPassword());
+    }
+
     private String getUsername(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
@@ -153,40 +173,6 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
-
-//    @Override
-//    public User editUserProfile(ProfileEditFormInput user) {
-//        User filteredUser = userRepository.findById(user.getId()).orElseThrow();
-//        filteredUser.setName(user.getFullName());
-//        filteredUser.setEmail(user.getEmail());
-//        filteredUser.setUserRole(user.getUserRole());
-//        filteredUser.setPhone(user.getPhone());
-//
-//        MultipartFile file = user.getPhotoUrl();
-//        String fileName = null;
-//
-//        if (file != null && !file.isEmpty()) {
-//            try {
-//                fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//
-//                String uploadPath = "C:\\Users\\HP\\Downloads\\spring boot\\project-management-system\\src\\main\\resources\\static\\photo"
-//                        + File.separator;
-//                Path path = Paths.get(uploadPath + fileName);
-//                filteredUser.setImgUrl(fileName);
-//
-//                // Save the file to the server
-//                try (OutputStream outputStream = Files.newOutputStream(path)) {
-//                    outputStream.write(file.getBytes());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return userRepository.save(filteredUser);
-//    }
 
     @Override
     public User getCurrentUser() {
@@ -210,6 +196,5 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
-
 
 }

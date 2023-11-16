@@ -55,7 +55,7 @@ $(document).ready(function () {
         }
         else {
             $('#addClientModal').modal('hide');
-            $.fn.addClient();
+           $.fn.addClient();
         }
     });
 });

@@ -20,12 +20,7 @@ import java.util.List;
 public class ArchitectureServiceImpl implements ArchitectureService {
     private final ArchitectureRepository architectureRepository;
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public Architecture getById(Long id) {
 
-        return architectureRepository.findById(id).orElse(null);
-    }
 
 
 
@@ -38,11 +33,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
 
 
 
-    @Override
-    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
-    public void deleteArchitecture(Long id) {
-        architectureRepository.deleteById(id);
-    }
+
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")

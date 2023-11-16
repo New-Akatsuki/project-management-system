@@ -119,45 +119,46 @@ $(document).ready(function () {
      ===================================================*/
 
 
-    function renderArchitectureTable(items) {
-        if ($.fn.DataTable.isDataTable('#architecture')) {
-            $('#architecture').DataTable().destroy();
-        }
+        function renderArchitectureTable(items) {
+            if ($.fn.DataTable.isDataTable('#architecture')) {
+                $('#architecture').DataTable().destroy();
+            }
 
-        return $('#architecture').DataTable({
-            data: items,
-            columns: [
-                {
-                    data: 'id',
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                },
-                { data: 'name' },
-                { data: 'type' },
+            return $('#architecture').DataTable({
+                data: items,
+                columns: [
+                    {
+                        data: 'id',
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    },
+                    { data: 'name' },
+                    { data: 'type' },
 
-                {
-                    data: 'status',
-                    render: function (data, type, row) {
+                    {
+                        data: 'status',
+                        render: function (data, type, row) {
 
-                        return `
+                            return `
                         <div id="toggleBtnArchitectureGp" class="btn-group" role="group" aria-label="Architecture Status">
                            ${buildToggleArchitectureBtn(data, row.id)}
                         </div>
                     `;
-                    }
-                },
-                {
-                    data: 'id',
-                    render: function (data, type, row, meta) {
-                        return `
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function (data, type, row, meta) {
+                            return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
                     `;
-                    }
-                },
-            ]
-        });
-    }
+                        }
+                    },
+                ]
+            });
+        }
+
 
     /*===================================================
    Build the SystemOutline table
@@ -570,7 +571,7 @@ $(document).ready(function () {
     /*===================================================
             open edit Client modal
     ===================================================*/
-    function openEditClientModal(clientId) {
+   function openEditClientModal(clientId) {
 
         const client = contractInfo.clients.filter(client => client.id === clientId)[0];
 

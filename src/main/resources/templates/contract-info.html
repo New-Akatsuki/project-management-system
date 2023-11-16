@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DIR-ACE TECHNOLOGY</title>
-  <meta content="" name="description"/>
-  <meta content="" name="keywords"/>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link
-          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"/>
-  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Favicons -->
-  <link th:href="@{/images/DAT.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
-  <link
-          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-          rel="stylesheet"
-  />
-  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
-  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
-  <!-- Template Main CSS File -->
-  <link href="/css/style.css" rel="stylesheet"/>
-  <!-- Library / Plugin Css Build -->
-  <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"/>
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
 
-  <!-- Custom Css -->
-  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-  <!-- Customizer Css -->
-  <link rel="stylesheet" href="/css/customizer.min.css">
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
-  <!-- Modal Css -->
-  <link rel="stylesheet" href="/css/modal.css">
-  <!-- RTL Css -->
-  <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
 
-  <!-- Bootstrap CSS for modal box -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
 
 
 </head>
@@ -54,172 +56,171 @@
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
-  <!-- Breadcrumb part-->
-  <div class="pagetitle">
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">ContractInfo</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- End Page Title -->
-
-  <!-- Main Content -->
-
-  <div class="container-fluid content-inner mt-4 py-0">
-    <div>
-      <div class="row">
-
-
-        <div class="col-sm-12">
-          <div class="card">
-
-            <div class="card-body px-">
-
-              <fieldset>
-                <div class="form-card text-start">
-
-                  <div class="row">
-                    <div class="col-sm-12 col-lg-12">
-                      <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                          <div class="display-6 fs-4">
-                            Clients
-                          </div>
-
-
-                          <a id="addClientButton" class="icon-add-btn" data-toggle="modal"
-                             data-target="#addClientModal">
-                            <i class='bx bx-plus m-0 p-0'></i>
-                          </a>
-
-                        </div>
-
-                        <div class="card-body">
-                          <table class="table table-sm" style="width:100%;" id="client">
-                            <thead>
-                            <tr>
-                              <th>No.</th>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Phone</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                            </thead>
-                          </table>
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12 col-lg-12">
-                      <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                          <div class="display-6 fs-4">
-                            Deliverables Methods
-                          </div>
-
-
-                          <a id="addDeliverablesButton" class="icon-add-btn"
-                             data-toggle="modal" data-target="#addDeliverablesModal">
-                            <i class='bx bx-plus m-0 p-0'></i>
-                          </a>
-                        </div>
-
-                        <div class="card-body">
-                          <table class="table table-sm" style="width:100%;" id="deliverable">
-                            <thead>
-                            <tr>
-                              <th>No.</th>
-                              <th>Name</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                            </thead>
-
-                          </table>
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12 col-lg-12">
-                      <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                          <div class="display-6 fs-4">
-                            Architecture Outlines
-                          </div>
-
-
-                          <a id="addArchitectureButton" class="icon-add-btn"
-                             data-toggle="modal" data-target="#addArchitectureModal">
-                            <i class='bx bx-plus m-0 p-0'></i>
-                          </a>
-                        </div>
-
-                        <div class="card-body">
-                          <table class="table table-sm" style="width:100%;" id="architecture">
-                            <thead>
-                            <tr>
-                              <th>ID</th>
-                              <th>Name</th>
-                              <th>Type</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                            </thead>
-
-
-                          </table>
-
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-12 col-lg-12">
-                      <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                          <div class="display-6 fs-4">
-                            System Outlines
-                          </div>
-
-                          <a id="addSystemOutlineButton" class="icon-add-btn"
-                             data-toggle="modal" data-target="#addSystemOutlineModal">
-                            <i class='bx bx-plus m-0 p-0'></i>
-                          </a>
-                        </div>
-
-                        <div class="card-body">
-
-                          <table class="table table-sm" style="width:100%;"
-                                 id="systemOutline">
-                            <thead>
-                            <tr>
-                              <th>ID</th>
-                              <th>Name</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                            </thead>
-                          </table>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">ContractInfo</li>
+            </ol>
+        </nav>
     </div>
-  </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+
+    <div class="container-fluid content-inner mt-4 py-0">
+        <div>
+            <div class="row">
 
 
-  <!-- End Main Content-->
+                <div class="col-sm-12">
+                    <div class="card">
+
+                        <div class="card-body px-">
+
+                            <fieldset>
+                                <div class="form-card text-start">
+
+                                    <div class="row">
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between">
+                                                    <div class="display-6 fs-4">
+                                                        Clients
+                                                    </div>
+
+
+                                                    <a id="addClientButton" class="icon-add-btn" data-toggle="modal"
+                                                       data-target="#addClientModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <table class="table table-sm" style="width:100%;" id="client">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Phone</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between">
+                                                    <div class="display-6 fs-4">
+                                                        Deliverables Methods
+                                                    </div>
+
+
+                                                    <a id="addDeliverablesButton" class="icon-add-btn"
+                                                       data-toggle="modal" data-target="#addDeliverablesModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <table class="table table-sm" style="width:100%;" id="deliverable">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>Name</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between">
+                                                    <div class="display-6 fs-4">
+                                                        Architecture Outlines
+                                                    </div>
+
+
+                                                    <a id="addArchitectureButton" class="icon-add-btn"
+                                                       data-toggle="modal" data-target="#addArchitectureModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <table class="table table-sm" style="width:100%;" id="architecture">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                            <th>Type</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+
+
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between">
+                                                    <div class="display-6 fs-4">
+                                                        System Outlines
+                                                    </div>
+
+                                                    <a id="addSystemOutlineButton" class="icon-add-btn"
+                                                       data-toggle="modal" data-target="#addSystemOutlineModal">
+                                                        <i class='bx bx-plus m-0 p-0'></i>
+                                                    </a>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <table class="table table-sm" style="width:100%;"
+                                                           id="systemOutline">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main Content-->
+
 </main>
 <!-- End #main -->
 
@@ -243,151 +244,154 @@
 
 <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
      aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!--<span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="mt-4">
-          <div class="form-group">
-            <label for="deliverablesName" class="form-label">Deliverable Method</label>
-            <input type="text" class="form-control" id="deliverablesName" name="name" required
-                   placeholder="Enter new deliverables method">
-            <span id="addDeliverablesNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
 
-          </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button id="saveNewDeliverable" class="btn btn-primary" data-dismiss="modal">
-            Add Deliverables
-          </button>
-        </form>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-4">
+                    <div class="form-group">
+                        <label for="deliverablesName" class="form-label">Deliverable Method</label>
+                        <input type="text" class="form-control" id="deliverablesName" name="name" required
+                               placeholder="Enter new deliverables method">
+                        <span id="addDeliverablesNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
+
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveNewDeliverable" class="btn btn-primary" data-dismiss="modal">
+                       Add Deliverables
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <!--Add Deliverables-->
 <div class="modal fade" id="editDeliverableModal" tabindex="-1" role="dialog"
      aria-labelledby="editDeliverablesModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editDeliverablesModalLabel">Update Deliverables</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <!-- <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="mt-4">
-          <div class="form-group">
-            <input type="hidden" id="editDeliverableId" name="id">
-            <label for="editDeliverableName" class="form-label">Deliverable Method</label>
-            <input type="text" class="form-control" id="editDeliverableName" name="name" required
-                   placeholder="Enter new deliverable method">
-          </div>
 
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" onclick="$.fn.updateDeliverable()" class="btn btn-primary"
-                  data-bs-dismiss="modal">Update Deliverables
-          </button>
-        </form>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDeliverablesModalLabel">Update Deliverables</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-4">
+                    <div class="form-group">
+                        <input type="hidden" id="editDeliverableId" name="id">
+                        <label for="editDeliverableName" class="form-label">Deliverable Method</label>
+                        <input type="text" class="form-control" id="editDeliverableName" name="name" required
+                               placeholder="Enter new deliverable method">
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="$.fn.updateDeliverable()" class="btn btn-primary"
+                            data-bs-dismiss="modal">Update Deliverables
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <!-- Add Client Modal -->
 <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!-- <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form for adding a new client -->
-        <form class="mt-4" id="addClientForm">
-          <div class="form-group">
-            <label for="clientName" class="form-label">Client Name</label>
-            <input type="text" class="form-control" id="clientName" name="name" required
-                   placeholder="Enter client name">
-            <span id="addClientNameError" class="text-danger d-none" >Client name must not be blank!!</span>
-          </div>
-          <div class="form-group">
-            <label for="clientEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="clientEmail" name="email" required
-                   placeholder="Enter email">
-            <span id="addClientEmailError" class="text-danger d-none">Client name must not be blank!!</span>
-          </div>
-          <div class="form-group">
-            <label for="clientPhoneNumber" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
-                   placeholder="Enter phone number">
-            <span id="addClientPhError" class="text-danger d-none">Client name must not be blank!!</span>
-          </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
-        </form>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for adding a new client -->
+                <form class="mt-4" id="addClientForm">
+                    <div class="form-group">
+                        <label for="clientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" name="name" required
+                               placeholder="Enter client name">
+                        <span id="addClientNameError" class="text-danger d-none" >Client name must not be blank!!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" name="email" required
+                               placeholder="Enter email">
+                        <span id="addClientEmailError" class="text-danger d-none">Client name must not be blank!!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                               placeholder="Enter phone number">
+                        <span id="addClientPhError" class="text-danger d-none">Client name must not be blank!!</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+                </form>
+            </div>
+        </div>
+
     </div>
-  </div>
 </div>
 
 
 <!--Edit Client-->
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editClientModalLabel">Edit Client</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <!--          <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form for editing an existing client -->
-        <form class="mt-4">
-          <div class="form-group">
-            <input type="hidden" id="editClientId" name="id">
-            <label for="editClientName" class="form-label">Client Name</label>
-            <input type="text" class="form-control" id="editClientName" name="name" required
-                   placeholder="Enter client name">
 
-          </div>
-          <div class="form-group">
-            <label for="editClientEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="editClientEmail" name="email" required
-                   placeholder="Enter email">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editClientModalLabel">Edit Client</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <!--          <span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for editing an existing client -->
+                <form class="mt-4">
+                    <div class="form-group">
+                        <input type="hidden" id="editClientId" name="id">
+                        <label for="editClientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="editClientName" name="name" required
+                               placeholder="Enter client name">
 
-          </div>
-          <div class="form-group">
-            <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required
-                   placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="editClientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editClientEmail" name="email" required
+                               placeholder="Enter email">
 
-          </div>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" onclick="$.fn.updateClient()" class="btn btn-primary" data-bs-dismiss="modal">
-            Update Client
-          </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required
+                               placeholder="Enter phone number">
 
-        </form>
-      </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="$.fn.updateClient()" class="btn btn-primary" data-bs-dismiss="modal">
+                        Update Client
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
     </div>
-  </div>
 </div>
-
-<!--confirmation client modal-->
 
 
 <!--<button type="button" class="btn btn-primary" onclick="toggleClientStatus(1, 'active', true)">Enable</button>-->
@@ -395,267 +399,267 @@
 
 <div class="modal fade" id="confirmationClientModal" tabindex="-1" role="dialog"
      aria-labelledby="confirmationModalClientLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmationModalClientLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!--<span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to <span id="confirmationClientAction"></span> this client?
-        <div id="confirmationClientMessage"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmClientButton">Confirm</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalClientLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationClientAction"></span> this client?
+                <div id="confirmationClientMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmClientButton">Confirm</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" role="dialog"
      aria-labelledby="confirmationModalDeliverableLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmationModalDeliverableLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!--<span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
-        <div id="confirmationDeliverableMessage"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmDeliverableButton">Confirm</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalDeliverableLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
+                <div id="confirmationDeliverableMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmDeliverableButton">Confirm</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" role="dialog"
      aria-labelledby="confirmationModalArchitectureLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmationModalArchitectureLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!--<span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to <span id="confirmationArchitectureAction"></span> this deliverable?
-        <div id="confirmationArchitectureMessage"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmArchitectureButton">Confirm</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalArchitectureLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationArchitectureAction"></span> this deliverable?
+                <div id="confirmationArchitectureMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmArchitectureButton">Confirm</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" role="dialog"
      aria-labelledby="confirmationModalSystemOutlineLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmationModalSystemOutlineLabel">Confirmation</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!--<span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to <span id="confirmationSystemOutlineAction"></span> this deliverable?
-        <div id="confirmationSystemOutlineMessage"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="confirmSystemOutlineButton">Confirm</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalSystemOutlineLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!--<span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationSystemOutlineAction"></span> this deliverable?
+                <div id="confirmationSystemOutlineMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmSystemOutlineButton">Confirm</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
 
 <!--Add System Outline-->
 <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal"
      aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <!--          <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your form for adding a new system outline here -->
-        <!-- Example form fields: -->
-        <form class="mt-4">
-          <div class="form-group">
-            <label for="OutlineName" class="form-label">System Outline Name</label>
-            <input type="text" class="form-control" id="OutlineName" name="name" required>
-            <span id="addSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
-          </div>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button id="saveNewSystemOutline" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <!--          <span aria-hidden="true">&times;</span>-->
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your form for adding a new system outline here -->
+                <!-- Example form fields: -->
+                <form class="mt-4">
+                    <div class="form-group">
+                        <label for="OutlineName" class="form-label">System Outline Name</label>
+                        <input type="text" class="form-control" id="OutlineName" name="name" required>
+                        <span id="addSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveNewSystemOutline" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
 
-        </form>
-        <!-- Add Bootstrap classes to the form elements for better styling -->
-      </div>
+                </form>
+                <!-- Add Bootstrap classes to the form elements for better styling -->
+            </div>
+        </div>
+
     </div>
-  </div>
 </div>
-
-
 <!--Edit System Outline-->
 
 <div class="modal fade" id="editSystemOutlineModal" tabindex="-1" role="dialog"
      aria-labelledby="editSystemOutlineModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editSystemOutlineModalLabel">Edit System Outline</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <!--          <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form for editing an existing system outline -->
-        <form class="mt-4">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSystemOutlineModalLabel">Edit System Outline</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <!--          <span aria-hidden="true">&times;</span>-->
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <!-- Form for editing an existing system outline -->
+                <form class="mt-4">
 
 
-          <div class="form-group">
-            <input type="hidden" id="editOutlineId" name="id">
-            <label for="editOutlineName" class="form-label">System Outline Name</label>
-            <input type="text" class="form-control" id="editOutlineName" name="name" required
-                   placeholder="Enter Outline Name">
-          </div>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" onclick="$.fn.updateSystemOutline()" class="btn btn-primary"
-                  data-bs-dismiss="modal">Update Outline
-          </button>
-        </form>
-      </div>
+                    <div class="form-group">
+                        <input type="hidden" id="editOutlineId" name="id">
+                        <label for="editOutlineName" class="form-label">System Outline Name</label>
+                        <input type="text" class="form-control" id="editOutlineName" name="name" required
+                               placeholder="Enter Outline Name">
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="$.fn.updateSystemOutline()" class="btn btn-primary"
+                            data-bs-dismiss="modal">Update Outline
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!--Add Architecture Outline-->
 <div class="modal fade" id="addArchitectureModal" tabindex="-1" role="dialog"
      aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="mt-4">
-          <div class="form-group">
-            <label for="architectureName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="architectureName" name="name"
-                   placeholder="Enter architecture outline name" required>
-            <span id="addArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
-          </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="mt-4">
+                    <div class="form-group">
+                        <label for="architectureName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="architectureName" name="name"
+                               placeholder="Enter architecture outline name" required>
+                        <span id="addArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
+                    </div>
 
-          <div class="form-group">
-            <label class="form-label" for="architectureType">Type</label>
-            <select class="form-control" id="architectureType" required>
-              <option value="IDE">IDE</option>
-              <option value="FRAMEWORK">Framework</option>
-              <option value="LIBRARY">Library</option>
-              <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
-              <option value="SCRIPT_LANGUAGE">Script Language</option>
-              <option value="MARKUP_LANGUAGE">Markup Language</option>
-              <option value="DATABASE">Database</option>
-              <option value="VCS">Version Control System</option>
-              <option value="API">API</option>
-              <option value="TESTING">Testing</option>
-              <option value="ALGORITHM">Algorithm</option>
-              <option value="DESIGN_PATTERN">Design Pattern</option>
-              <option value="CLOUD_COMPUTING">Cloud Computing</option>
-              <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
-              <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
-              <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
-              <option value="OTHER">Other</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="form-group">
+                        <label class="form-label" for="architectureType">Type</label>
+                        <select class="form-control" id="architectureType" required>
+                            <option value="IDE">IDE</option>
+                            <option value="FRAMEWORK">Framework</option>
+                            <option value="LIBRARY">Library</option>
+                            <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                            <option value="SCRIPT_LANGUAGE">Script Language</option>
+                            <option value="MARKUP_LANGUAGE">Markup Language</option>
+                            <option value="DATABASE">Database</option>
+                            <option value="VCS">Version Control System</option>
+                            <option value="API">API</option>
+                            <option value="TESTING">Testing</option>
+                            <option value="ALGORITHM">Algorithm</option>
+                            <option value="DESIGN_PATTERN">Design Pattern</option>
+                            <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                            <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                            <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                            <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
-        <button id="saveNewArchitecture" class="btn btn-primary" data-dismiss="modal">Add
-          Architecture
-        </button>
-      </div>
+                <button id="saveNewArchitecture" class="btn btn-primary" data-dismiss="modal">Add
+                    Architecture
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!--Edit Architecture Outline-->
 <div class="modal fade" id="editArchitectureModal" tabindex="-1" role="dialog"
      aria-labelledby="editArchitectureModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editArchitectureModalLabel">Edit Architecture Outline</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <!-- <span aria-hidden="true">&times;</span>-->
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="mt-4">
-          <div class="form-group">
-            <input type="hidden" id="editArchitectureId" name="id">
-            <div>
-              <label for="editArchitectureName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="editArchitectureName" name="name"
-                     placeholder="Enter architecture outline name" required>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editArchitectureModalLabel">Edit Architecture Outline</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <!-- <span aria-hidden="true">&times;</span>-->
+                </button>
             </div>
-            <div>
-              <label for="editArchitectureType" class="form-label">Type</label>
-              <select class="form-control" id="editArchitectureType" required>
-                <option value="IDE">IDE</option>
-                <option value="FRAMEWORK">Framework</option>
-                <option value="LIBRARY">Library</option>
-                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
-                <option value="SCRIPT_LANGUAGE">Script Language</option>
-                <option value="MARKUP_LANGUAGE">Markup Language</option>
-                <option value="DATABASE">Database</option>
-                <option value="VCS">Version Control System</option>
-                <option value="API">API</option>
-                <option value="TESTING">Testing</option>
-                <option value="ALGORITHM">Algorithm</option>
-                <option value="DESIGN_PATTERN">Design Pattern</option>
-                <option value="CLOUD_COMPUTING">Cloud Computing</option>
-                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
-                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
-                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
-                <option value="OTHER">Other</option>
-              </select>
+            <div class="modal-body">
+                <form class="mt-4">
+                    <div class="form-group">
+                        <input type="hidden" id="editArchitectureId" name="id">
+                        <div>
+                            <label for="editArchitectureName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editArchitectureName" name="name"
+                                   placeholder="Enter architecture outline name" required>
+                        </div>
+                        <div>
+                            <label for="editArchitectureType" class="form-label">Type</label>
+                            <select class="form-control" id="editArchitectureType" required>
+                                <option value="IDE">IDE</option>
+                                <option value="FRAMEWORK">Framework</option>
+                                <option value="LIBRARY">Library</option>
+                                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                                <option value="SCRIPT_LANGUAGE">Script Language</option>
+                                <option value="MARKUP_LANGUAGE">Markup Language</option>
+                                <option value="DATABASE">Database</option>
+                                <option value="VCS">Version Control System</option>
+                                <option value="API">API</option>
+                                <option value="TESTING">Testing</option>
+                                <option value="ALGORITHM">Algorithm</option>
+                                <option value="DESIGN_PATTERN">Design Pattern</option>
+                                <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="$.fn.updateArchitecture()"
-                data-bs-dismiss="modal">Update Architecture
-        </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="$.fn.updateArchitecture()"
+                        data-bs-dismiss="modal">Update Architecture
+                </button>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
@@ -666,38 +670,5 @@
 <script src="/js/contract-info.js"></script>
 
 
-
-<!--"$.fn.addClient()"-->
-<!--<script>
-    $(document).ready(function () {
-        $('#saveNewClient').click(function () {
-          let name = $('#clientName').val();
-          let email = $('#clientEmail').val();
-          let phoneNumber = $('#clientPhoneNumber').val();
-          let client = {
-            name: name,
-            email: email,
-            phoneNumber: phoneNumber
-          };
-
-          let clientNameError = $('#addClientNameError');
-          let clientEmailError = $('#addClientEmailError');
-          let clientPhError = $('#addClientPhError');
-          if (name === '') {
-            clientNameError.removeClass('d-none');
-          }
-          if (email === '') {
-            clientEmailError.removeClass('d-none');
-          }
-          if (phoneNumber === '') {
-            clientPhError.removeClass('d-none');
-          }
-          else{
-            $.fn.addClient();
-          }
-        });
-        });
-</script>
--->
 </body>
 </html>

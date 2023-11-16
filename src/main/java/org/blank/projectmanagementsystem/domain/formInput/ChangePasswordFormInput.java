@@ -8,4 +8,5 @@ public class ChangePasswordFormInput {
     private String newPassword;
     private String confirmPassword;
 
+
 }

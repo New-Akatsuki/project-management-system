@@ -30,8 +30,6 @@ public class MailService {
             helper.setTo(user.getEmail());
             helper.setSubject("Welcome to Dir-Ace Technology");
 
-
-
             helper.setText( "Dear " + user.getName() + ",\n\n" +
                     "Your account has been created successfully.\n\n" +
                     "Here is your default password: "  + defaultPassword+ "\n\n" +
@@ -45,5 +43,3 @@ public class MailService {
         }
     }
 }
-
-

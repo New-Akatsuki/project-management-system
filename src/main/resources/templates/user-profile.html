@@ -257,63 +257,65 @@
               </div>
               <div class="tab-pane fade pt-3" id="profile-change-password">
                 <!-- Change Password Form -->
-                <form>
+                  <form id="changePasswordForm">
+                  <div class="mb-3">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Old Password"/>
+                      <label id="password-labelOld" for="currentPassword" class="form-label d-flex align-items-center">
+                        <i class="bx bx-lock-alt me-2"></i>Current Password
+                      </label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="button" id="passwordToggleOld">
+                      <i id="passwordIconOld" class="bi bi-eye-slash"></i>
+                    </button>
+                  </div>
+                    <div id="currentPasswordError" class="text-danger mt-2"></div>
+                  </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password"/>
-                            <label id="password-label" for="password" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Enter Old Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
-                            <i id="passwordIcon" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$" />
+
+                        <!--<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" onblur="checkInputValidation('password', 'New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />-->
+                        <label id="password-label" for="newPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>New Password
+                        </label>
                       </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                        <i id="passwordIcon" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="newPasswordError" class="text-danger mt-2"></div>
+                  </div>
 
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="newPassword" name="password" placeholder="Password"/>
-                            <label id="password-label2" for="newPassword" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Enter New Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
-                            <i id="passwordIcon2" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
+
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password" onblur="checkInputValidation('confirmPassword', 'Confirm New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />
+                        <label id="password-label2" for="confirmPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>Confirm New Password
+                        </label>
                       </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
+                        <i id="passwordIcon2" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="confirmPasswordError" class="text-danger mt-2"></div>
+                  </div>
+                    <div id="errorMessage" class="text-danger mt-3"></div>
 
-                      <div class="mb-3">
-                        <div class="input-group">
-                          <div class="form-floating">
-                            <input type="password" class="form-control" id="confirmPassword" name="password" placeholder="Password"/>
-                            <label id="password-label3" for="confirmPassword" class="form-label d-flex align-items-center">
-                              <i class="bx bx-lock-alt me-2"></i>Confirm Reset Password
-                            </label>
-                          </div>
-                          <button class="btn btn-outline-secondary" type="button" id="passwordToggle3">
-                            <i id="passwordIcon3" class="bi bi-eye-slash"></i>
-                          </button>
-                        </div>
-                      </div>
-
+                  <div class="d-flex justify-content-end mx-auto">
+                    <div class="text-center">
+                      <button type="button" class="btn btn-primary" id="resetButton" onclick="validatePassword()">Change Password</button>
                     </div>
                   </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Change Password</button>
-                  </div>
-
-                </form><!-- End Change Password Form -->
-
+                </form>
               </div>
 
-            </div><!-- End Bordered Tabs -->
+            </div>
 
           </div>
         </div>
@@ -328,111 +330,14 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <script th:src="@{/js/form-wizard.js}"></script>
-<!--<script th:src="@{/js/validation.js}"></script>-->
+<script th:src="@{/js/validation.js}"></script>
 
-<script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#currentPassword");
-      var passwordIcon = $("#passwordIcon");
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
-<script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#newPassword");
-      var passwordIcon = $("#passwordIcon");
+<script th:src="@{/js/single-select.js}"></script>
 
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
+<script src="/js/ch-pwd.js"></script>
 
-<script>
-  $(document).ready(function() {
-    $("#passwordIcon").on('click', function() {
-      var passwordField = $("#confirmPassword");
-      var passwordIcon = $("#passwordIcon");
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-      // Toggle password visibility
-      if (passwordField.attr('type') === 'password') {
-        passwordField.attr('type', 'text');
-        passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-      } else {
-        passwordField.attr('type', 'password');
-        passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-      }
-    });
-  });
-</script>
-
-<script>
-
-  // Password toggle logic
-  const passwordToggle = document.getElementById('passwordToggle');
-  const passwordInput = document.getElementById('password');
-  const passwordIcon = document.getElementById('passwordIcon');
-
-  passwordToggle.addEventListener('click', function () {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      passwordIcon.classList.remove('bi-eye-slash');
-      passwordIcon.classList.add('bi-eye');
-    } else {
-      passwordInput.type = 'password';
-      passwordIcon.classList.remove('bi-eye');
-      passwordIcon.classList.add('bi-eye-slash');
-    }
-  });
-
-  const passwordToggle2 = document.getElementById('passwordToggle2');
-  const passwordInput2 = document.getElementById('newPassword');
-  const passwordIcon2 = document.getElementById('passwordIcon2');
-
-  passwordToggle2.addEventListener('click', function () {
-    if (passwordInput2.type === 'newPassword') {
-      passwordInput2.type = 'text';
-      passwordIcon2.classList.remove('bi-eye-slash');
-      passwordIcon2.classList.add('bi-eye');
-    } else {
-      passwordInput2.type = 'newPassword';
-      passwordIcon2.classList.remove('bi-eye');
-      passwordIcon2.classList.add('bi-eye-slash');
-    }
-  });
-
-  const passwordToggle3 = document.getElementById('passwordToggle3');
-  const passwordInput3 = document.getElementById('confirmPassword');
-  const passwordIcon3 = document.getElementById('passwordIcon3');
-
-  passwordToggle3.addEventListener('click', function () {
-    if (passwordInput3.type === 'confirmPassword') {
-      passwordInput3.type = 'text';
-      passwordIcon3.classList.remove('bi-eye-slash');
-      passwordIcon3.classList.add('bi-eye');
-    } else {
-      passwordInput3.type = 'confirmPassword';
-      passwordIcon3.classList.remove('bi-eye');
-      passwordIcon3.classList.add('bi-eye-slash');
-    }
-  });
-</script>
 
 
 <script>
