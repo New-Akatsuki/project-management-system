@@ -217,7 +217,7 @@ To use dhtmlxGantt in non-GPL projects (and get Pro version of the product), ple
   display: inline-block;
   vertical-align: top;
   border-right: 1px solid #CECECE;
-  text-align: center;
+  text-align: left;
   position: relative;
   cursor: default;
   height: 100%;

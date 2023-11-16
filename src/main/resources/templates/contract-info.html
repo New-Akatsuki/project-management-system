@@ -13,6 +13,7 @@
             rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
+
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
@@ -45,6 +46,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
 
 
 </head>
@@ -217,9 +219,8 @@
             </div>
         </div>
     </div>
-
-
     <!-- End Main Content-->
+
 </main>
 <!-- End #main -->
 
@@ -243,6 +244,7 @@
 
 <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
      aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
+
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -274,6 +276,7 @@
 <!--Add Deliverables-->
 <div class="modal fade" id="editDeliverableModal" tabindex="-1" role="dialog"
      aria-labelledby="editDeliverablesModalLabel" aria-hidden="true">
+
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -339,6 +342,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -346,6 +350,7 @@
 <!--Edit Client-->
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel"
      aria-hidden="true">
+
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -384,10 +389,9 @@
                 </form>
             </div>
         </div>
+
     </div>
 </div>
-
-<!--confirmation client modal-->
 
 
 <!--<button type="button" class="btn btn-primary" onclick="toggleClientStatus(1, 'active', true)">Enable</button>-->
@@ -481,7 +485,6 @@
     </div>
 </div>
 
-
 <!--Add System Outline-->
 <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal"
      aria-hidden="true">
@@ -509,10 +512,9 @@
                 <!-- Add Bootstrap classes to the form elements for better styling -->
             </div>
         </div>
+
     </div>
 </div>
-
-
 <!--Edit System Outline-->
 
 <div class="modal fade" id="editSystemOutlineModal" tabindex="-1" role="dialog"
@@ -524,6 +526,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <!--          <span aria-hidden="true">&times;</span>-->
                 </button>
+
             </div>
             <div class="modal-body">
                 <!-- Form for editing an existing system outline -->
@@ -656,46 +659,16 @@
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+
 <script src="/js/contract-info-script.js"></script>
 
 <script src="/js/contract-info.js"></script>
 
 
-
-<!--"$.fn.addClient()"-->
-<!--<script>
-    $(document).ready(function () {
-        $('#saveNewClient').click(function () {
-          let name = $('#clientName').val();
-          let email = $('#clientEmail').val();
-          let phoneNumber = $('#clientPhoneNumber').val();
-          let client = {
-            name: name,
-            email: email,
-            phoneNumber: phoneNumber
-          };
-
-          let clientNameError = $('#addClientNameError');
-          let clientEmailError = $('#addClientEmailError');
-          let clientPhError = $('#addClientPhError');
-          if (name === '') {
-            clientNameError.removeClass('d-none');
-          }
-          if (email === '') {
-            clientEmailError.removeClass('d-none');
-          }
-          if (phoneNumber === '') {
-            clientPhError.removeClass('d-none');
-          }
-          else{
-            $.fn.addClient();
-          }
-        });
-        });
-</script>
--->
 </body>
 </html>

@@ -17,7 +17,6 @@ import jakarta.mail.internet.MimeMessage;
 public class MailService {
 
     private final JavaMailSender javaMailSender;
-    private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}") // Assuming you have configured email properties in your application.properties
     private String fromEmail;
@@ -29,16 +28,14 @@ public class MailService {
         try {
             helper.setFrom(fromEmail);
             helper.setTo(user.getEmail());
-            helper.setSubject("Welcome to Your Application");
+            helper.setSubject("Welcome to Dir-Ace Technology");
 
-            // You can use a Thymeleaf template to customize your email content
-            Context context = new Context();
-            context.setVariable("user", user);
-            context.setVariable("defaultPassword", defaultPassword);
-
-            String emailContent = templateEngine.process("default-password-email-template", context); // Create a Thymeleaf template for your email content
-
-            helper.setText(emailContent, true);
+            helper.setText( "Dear " + user.getName() + ",\n\n" +
+                    "Your account has been created successfully.\n\n" +
+                    "Here is your default password: "  + defaultPassword+ "\n\n" +
+                    "Please change your password as soon as you log in for the first time.\n\n" +
+                    "Best Regards,\n\n" +
+                    "The HR Team", true);
 
             javaMailSender.send(message);
         } catch (MessagingException e) {

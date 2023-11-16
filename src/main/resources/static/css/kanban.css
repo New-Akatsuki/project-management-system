@@ -16,9 +16,11 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;
-    gap: 15px;
-    padding: 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     height: 75vh;
+    margin-bottom: 12px;
 }
 .cd_kanban_board > .cd_kanban_board_blocks:after{
     content: '';
@@ -26,7 +28,7 @@
     clear: both;
 }
 .cd_kanban_board > .cd_kanban_board_blocks .kb-section{
-    margin:10px 10px 10px 0;
+    margin:0 10px 0 0;
     flex: 1;
     background: rgb(232, 237, 246);
     max-width: 360px;
@@ -81,6 +83,9 @@
 .cd_kanban_board_block_item_placeholder{
     width: 100%;
     height: 60px;
+    border: 10px dot-dash #0d6efd;
+    border-radius: 5px;
+    background: #cae0fc;
     margin: 0 0 10px;
     display: block;
     clear: both;
@@ -129,11 +134,13 @@
     padding-block: 0.5rem;
     margin-top: 10px;
     min-height: 50px;
+    height: 100%;
     overflow-y: scroll;
 }
 
 .kb-task {
-    height: 155px;
+    min-height: 145px;
+    height: 145px;
     padding: 10px 20px;
     background-color: #fff;
     transition: height 0.3s ease-out;
@@ -414,9 +421,9 @@ input[type="checkbox"] {
     border-radius: 5px;
     background: #dfe9ff;
 }
-.dropdown-toggle{
-    display: none!important;
-}
+/*.dropdown-toggle{*/
+/*    display: none!important;*/
+/*}*/
 .dropdown-item:hover{
     background: #dfe9ff!important;
 }
@@ -477,6 +484,14 @@ input[type="checkbox"] {
     color: white;
     vertical-align: middle;
 }
+.fs-sx{
+    font-size: 8px;
+}
+
+.min-w-50px{
+    width: 50px;
+}
+
 .priority-high{
     background: #ff3535;
     border: 1px solid #ff3535;
@@ -486,8 +501,8 @@ input[type="checkbox"] {
     border: 1px solid #ff9f35;
 }
 .priority-low{
-    background: #ffdd35;
-    border: 1px solid #ffdd35;
+    background: #3fc068;
+    border: 1px solid #3fc068;
 }
 
 .type-task{
@@ -512,8 +527,9 @@ input[type="checkbox"] {
 .move-top{
     position: absolute;
     top: 85px;
-    left: 250px;
+    left: 270px;
     z-index: 1;
+    animation: floatOutSubtask;
 }
 
 .float-edit-btn{
@@ -522,3 +538,4 @@ input[type="checkbox"] {
     right: 25px;
     z-index: 1;
 }
+

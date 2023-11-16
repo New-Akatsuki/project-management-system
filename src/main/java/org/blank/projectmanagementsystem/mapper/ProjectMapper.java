@@ -22,10 +22,7 @@ public class ProjectMapper {
                 .build();
     }
 
-    //Entity to ViewObject
-    public ProjectViewObject mapToProjectViewObject(Project project){
-        return null;
-    }
+
 
     //calculate duration by month and day from start date and end date like 1 month 2 days
     public String calculateDuration(LocalDate startDate, LocalDate endDate){

@@ -5,9 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -16,6 +20,7 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,41 +33,43 @@ public class Issue implements Serializable {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 700, nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String content;
 
-    @Column(nullable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+//    @Column(nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private OffsetDateTime modifyAt = OffsetDateTime.now();
+//    @Column(nullable = false)
+    @Column(nullable = true)
+    private LocalDateTime modifyAt;
 
     private boolean solved=false;
 
-    @Column(nullable = false, length = 700)
+    @Column(length = 700)
     private String impact;
 
-    @Column(length = 700, nullable = false)
-    private String direct_cause;
+    @Column(nullable = false, columnDefinition = "longtext")
+    private String directCause;
 
-    @Column(length = 700, nullable = false)
-    private String root_cause;
+    @Column(nullable = false, columnDefinition = "longtext")
+    private String rootCause;
 
-    @Column(length = 700, nullable = false)
+    @Column(columnDefinition = "longtext")
     private String correctiveAction;
 
-    @Column(length = 700, nullable = false)
+    @Column(columnDefinition = "longtext")
     private String preventiveAction;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private ResponsibleParty responsibleParty;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
-    private IssuePlace issue_place;
+    private IssuePlace issuePlace;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private IssueCategory issueCategory;
 
@@ -73,4 +80,10 @@ public class Issue implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private User pic;
+
+    @Column(nullable = true)
+    private LocalDateTime solutionCreatedAt;
+
+    @Column(nullable = true)
+    private LocalDateTime solutionModifiedAt;
 }
