@@ -52,53 +52,6 @@ public class PMController {
     private final DeliverableService deliverableService;
 
 
-
-    @GetMapping("/user-list")
-    public String userList() {
-        return "user-list";
-    }
-
-//    @GetMapping("/user-profile")
-//    public ModelAndView userprofile() {
-//        return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());
-//    }
-
-    @PostMapping("/user-profile")
-    public String userprofile(@ModelAttribute AddUserFormInput addUserFormInput) {
-        return "user-list";
-    }
-
-    @GetMapping("/add-user")
-    public ModelAndView addUser() {
-        return new ModelAndView("add-user", "addUserFormInput", new AddUserFormInput());
-    }
-
-//    @PostMapping("/add-user")
-//    public String addUser(@ModelAttribute AddUserFormInput addUserFormInput) {
-//        return "redirect:/";
-//    }
-
-    @GetMapping("/edit-user")
-    public ModelAndView editUser() {
-        return new ModelAndView("edit-user", "editUserFormInput", new EditUserFormInput());
-    }
-
-    @PostMapping("/edit-user")
-    public String editUser(@ModelAttribute EditUserFormInput editUserFormInput) {
-        return "/user-list";
-    }
-
-    @GetMapping("/project-detail")
-    public String ProjectDetail() {
-        return "project-detail";
-    }
-
-
-    @GetMapping("/edit-project")
-    public String EditProject() {
-        return "edit-project";
-    }
-
     @GetMapping("/contract-info")
     public String ContractInfo() {
         return "contract-info";

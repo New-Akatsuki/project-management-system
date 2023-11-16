@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.repository;
 
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
@@ -30,5 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.UserEditViewObject(i.id, i.imgUrl, i.name, i.username, i.userRole,i.phone,i.email) FROM User i WHERE i.id = ?1")
 //    Optional<UserViewObject> findByUserId(Long id);
 
+    List<User> findAllByDepartment(Department department);
 
+    List<User> findAllByDepartmentAndRole(Department department, Role role);
 }

@@ -14,6 +14,7 @@ public interface UserService {
     User save(User user);
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
+    User getUserById(Long id);
     ChangePasswordFormInput changePassword(String currentPassword, String newPassword);
     Boolean checkCurrentPassword(String currentPassword);
     User getCurrentUser();

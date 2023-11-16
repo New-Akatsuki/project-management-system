@@ -73,12 +73,6 @@ public class MainController {
         return "project-view";
     }
 
-    @GetMapping("/user-list")
-    public String userListView() {
-        return "user-list";
-    }
-
-
     @GetMapping("/department")
     public String departmentView() {
         return "department";

@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import static java.lang.Math.toIntExact;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +59,7 @@ public class UserServiceImpl implements UserService {
     public void saveDepartment(Department department) {
         departmentRepository.save(department);
     }
+
 
 
     @Override
@@ -114,19 +116,30 @@ public class UserServiceImpl implements UserService {
         return password;
     }
 
+
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
-    public User createMember(AddUserFormInput addUserFormInput) {
-        Long departmentId = addUserFormInput.getDepartment(); // Assuming getDepartment() returns the department ID
-        Department department = (Department) departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new RuntimeException("Department not found"));
+    public UserViewObject createMember(AddUserFormInput addUserFormInput){
+
+        var currentUser = getCurrentUser();
+        Department department = currentUser.getDepartment();
+        Long departmentId = addUserFormInput.getDepartment();
+        Role role  = Role.valueOf(addUserFormInput.getRole());
+
+        if(departmentId!=null){ // Assuming getDepartment() returns the department ID
+            department = (Department) departmentRepository.findById(toIntExact(departmentId))
+                    .orElseThrow(() -> new RuntimeException("Department not found"));
+        }
+        if(currentUser.getRole()==Role.PM){
+            role = Role.MEMBER;
+        }
 
         log.info("addUserFormInput: {}\n\n\n\n\n", addUserFormInput);
         // Create a new User object based on the addUserFormInput
         User user =  User.builder()
                 .name(addUserFormInput.getName())
                 .email(addUserFormInput.getEmail())
-                .role(Role.valueOf(addUserFormInput.getRole()))
+                .role(role)
                 .department(department)
                 .defaultPassword(true)
                 .active(true)
@@ -141,7 +154,7 @@ public class UserServiceImpl implements UserService {
         sendDefaultPasswordEmail(savedUser, defaultPassword);
         // Set other user properties as needed
         // Save the user
-        return savedUser;
+        return new UserViewObject(savedUser);
     }
 
     private void sendDefaultPasswordEmail(User user, String password) {
@@ -150,12 +163,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('PMO')")
+    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
     public List<UserViewObject> getAllUsers() {
-        return userRepository.findAll().stream().map(UserViewObject::new).toList();
+        Role currentRole = getCurrentUser().getRole();
+        if(currentRole == Role.PMO){
+            return userRepository.findAll().stream().map(UserViewObject::new).toList();
+        }
+        if(currentRole== Role.DH){
+            return userRepository.findAllByDepartment(getCurrentUser().getDepartment()).stream().map(UserViewObject::new).toList();
+        }
+        if(currentRole== Role.PM){
+            return userRepository.findAllByDepartmentAndRole(getCurrentUser().getDepartment(), Role.MEMBER).stream().map(UserViewObject::new).toList();
+        }
+        return null;
     }
 
     @Override
+    public User getUserById(Long id) {
+        // Assuming you have a UserRepository or a database query to fetch the user by ID
+        Optional<User> userOptional = userRepository.findById(id);
+        // For this example, we return null if the user is not found
+        return userOptional.orElse(null);
+    }
+
+    @Override
+    public User getCurrentUser(){
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsernameOrEmail(username, username).orElse(null);
+    }
+
     public Boolean checkCurrentPassword(String currentPassword) {
         User user = getCurrentUser();
         return passwordEncoder.matches(currentPassword, user.getPassword());
