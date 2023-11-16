@@ -77,6 +77,10 @@
             data: JSON.stringify(addMember),
             dataType: 'json',
             success: function (data) {
+                $("#name").val('')
+                $("#email").val('')
+                $("#newUserRole").val('')
+                $("#department").val('')
                 userList.push(data)
                 console.log(userList);
                 renderMemberListTable(userList);

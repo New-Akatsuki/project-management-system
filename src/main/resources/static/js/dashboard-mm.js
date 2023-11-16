@@ -6,6 +6,7 @@ let manMonthProductivityChart;
 let projectList = []
 let currentSelectedProject;
 
+
 function updateYearSelector(projects) {
     projectList = projects || projectList;
     $("#yearSelector").empty();
@@ -15,7 +16,7 @@ function updateYearSelector(projects) {
     const currentYear = new Date().getFullYear();
     let html = "";
 
-    if (currentUserRole === "PMO" && (selectedDepartmentId === null || selectedDepartmentId === "")) {
+    if ((currentUserRole === "PMO" && (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
         //set year option from 2010 to current year
         for (let year = 2010; year <= currentYear; year++) {
             html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
@@ -47,7 +48,7 @@ function updateMonthSelector(projects) {
     const selectedProjectId = $('#projectSelector').val();
     const selectedDepartmentId = $("#departmentSelector").val();
     let html = '';
-    if (currentUserRole === "PMO"&& (selectedDepartmentId === null || selectedDepartmentId === "")) {
+    if ((currentUserRole === "PMO"&& (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
         //generate month option from Jan to Dec
         const monthRange = generateUniqueMonthArray(new Date('2021-01-01'), new Date('2021-12-31'))
         let prevMonth = new Date().getMonth();
@@ -75,7 +76,7 @@ function updateDepartmentSelector(data) {
     let html = "";
     let isSet = false;
     if (currentUserRole === "DH" || currentUserRole === "PM") {
-        let department = data.filter(val => val.name === currentUserDeparment)[0];
+        let department = data.filter(val => val.name === currentDepartmentName)[0];
         html += `<option value="${department.id}" selected>${department.name}</option>`;
         isSet = true;
     } else if(currentUserRole === "PMO") {
@@ -92,9 +93,12 @@ function updateDepartmentSelector(data) {
     $("#departmentSelector").html(html);
 }
 
-$.get("/api/get-department-data", function (data) {
-    updateDepartmentSelector(data);
-});
+function getDepartmentAndRender(){
+    $.get("/api/get-department-data", function (data) {
+        updateDepartmentSelector(data);
+    });
+}
+
 
 
 $("#yearSelector").on("change", function () {
@@ -137,8 +141,13 @@ function generateUniqueMonthArray(startDate, endDate) {
 }
 
 function getProjectByDepartment() {
-
-    const selectedDepartmentId = $("#departmentSelector").val();
+    let selectedDepartmentId = $("#departmentSelector").val();
+    console.log('userrol',currentUserRole!=="PMO")
+    if(currentUserRole!=="PMO"){
+        console.log('in getproject', currentDepartmentName)
+        $("#departmentSelector").val(currentDepartmentName)
+        selectedDepartmentId = parseInt(currentDepartmentId,10);
+    }
     console.log('in getproject', selectedDepartmentId)
     if (selectedDepartmentId) {
         console.log('id', selectedDepartmentId)
@@ -151,7 +160,9 @@ function getProjectByDepartment() {
             updateYearSelector(projects)
             updateMonthSelector(projects)
             updateCharts();
-            calculateAllKPIs(projects[0].id);
+            if(projects.length > 0){
+                calculateAllKPIs(projects[0].id);
+            }
         });
     }else{
         $("#projectSelector").empty();
@@ -209,8 +220,9 @@ function updateCharts() {
     const selectedDepartmentId = $("#departmentSelector").val();
     const selectedMonth = $("#monthSelector").val();
 
-    console.log(selectedYear, selectedMonth)
+
     if (selectedProjectId) {
+        console.log('in selected project')
         $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
             const planManMonths = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
             const actualManMonths = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
@@ -220,6 +232,7 @@ function updateCharts() {
             updateManMonthProductivity([selectedProjectId], [actualProductivityRatio]);
         });
     } else if (selectedDepartmentId && selectedMonth) {
+        console.log('in selcted department and month')
         $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
             const projectLabels = [];
             const planManMonths = [];
@@ -265,7 +278,8 @@ function updateCharts() {
 
             projects.forEach(processProject);
         });
-    }if (selectedMonth) {
+    }else if (selectedMonth) {
+        console.log('in selected month')
         $.get(`/api/get-department-data`, function (departments) {
             const departmentLabels = [];
             const planManMonths = [];
@@ -376,7 +390,7 @@ function calculateManMonthProductivity(actualManMonths, planManMonths) {
     if (planManMonths === 0) {
         return 0;
     }
-    return (actualManMonths / planManMonths) * 100;
+    return (planManMonths / actualManMonths) * 100;
 }
 
 function updateManMonthChart(labels, planManMonths, actualManMonths) {

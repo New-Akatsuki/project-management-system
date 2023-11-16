@@ -7,31 +7,18 @@ import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
-import org.blank.projectmanagementsystem.domain.formInput.EditUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ProfileEditFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.repository.DepartmentRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
-import org.blank.projectmanagementsystem.service.MailService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import static java.lang.Math.toIntExact;
 
@@ -43,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MailService mailService;
+    private final MailServiceImpl mailService;
 
     @Override
     public User save(User user) {
@@ -114,17 +101,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private String generateDefaultPassword() {
-        String password = String.valueOf((int) (Math.random() * 100000000));
-        log.info("generateDefaultPassword: {} \n\n\n\n\n", password);
-        // Generate a random alphanumeric password with a length of 8 characters
-        return password;
-    }
-
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
-    public UserViewObject createMember(AddUserFormInput addUserFormInput){
+    public User createMember(AddUserFormInput addUserFormInput, String defaultPassword){
 
         var currentUser = getCurrentUser();
         Department department = currentUser.getDepartment();
@@ -150,22 +130,17 @@ public class UserServiceImpl implements UserService {
                 .active(true)
                 .build();
 
-        // Generate a default password for the user (you can modify this part)
-        String defaultPassword = generateDefaultPassword();
         user.setPassword(passwordEncoder.encode(defaultPassword));
 
         User savedUser = userRepository.save(user);
-        // Send the default password to the user's email using MailService
-        sendDefaultPasswordEmail(savedUser, defaultPassword);
-        // Set other user properties as needed
-        // Save the user
-        return new UserViewObject(savedUser);
+//        sendDefaultPasswordEmail(savedUser, defaultPassword);
+        return savedUser;
     }
 
-    private void sendDefaultPasswordEmail(User user, String password) {
-        // Call the MailService to send the default password email
-        mailService.sendDefaultPassword(user, password);
-    }
+//    private void sendDefaultPasswordEmail(User user, String password) {
+//        // Call the MailService to send the default password email
+//        mailService.sendDefaultPassword(user, password);
+//    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")

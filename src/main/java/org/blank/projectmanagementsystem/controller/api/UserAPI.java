@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-
 public class UserAPI {
     private final UserService userService;
     private final DepartmentService departmentService;
@@ -32,11 +31,13 @@ public class UserAPI {
         return ResponseEntity.ok(users);
     }
 
+    private String generateDefaultPassword() {
+        return String.valueOf((int) (Math.random() * 1000000));
+    }
+
     @PostMapping("/member-create")
     public ResponseEntity<UserViewObject> addUser(@RequestBody AddUserFormInput addUserFormInput) {
-        log.info("===================");
-        log.info("User: {}", addUserFormInput);
-        return ResponseEntity.ok(userService.createMember(addUserFormInput));
+        return ResponseEntity.ok(new UserViewObject(userService.createMember(addUserFormInput, generateDefaultPassword())));
     }
 
     @PutMapping("/member/status/{id}")

@@ -19,7 +19,7 @@ public interface UserService {
     ChangePasswordFormInput changePassword(String currentPassword, String newPassword);
     Boolean checkCurrentPassword(String currentPassword);
     User getCurrentUser();
-    UserViewObject createMember(AddUserFormInput addUserFormInput);
+    User createMember(AddUserFormInput addUserFormInput,String defaultPassword);
     List<UserViewObject> getAllUsers();
     User editUserProfile(ProfileEditFormInput profileEditFormInput);
     User getLoginUser();

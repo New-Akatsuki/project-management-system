@@ -105,8 +105,11 @@
 
         <!-- DashBoard MM Header End -->
 
+        <th:block th:with="dep=${#authentication.principal.department.id}">
+            <input type="hidden" id="currentUserDepartmentId" th:value="${dep}">
+        </th:block>
         <th:block th:with="dep=${#authentication.principal.department.name}">
-            <input type="hidden" id="currentUserDepartment" th:value="${dep}">
+            <input type="hidden" id="currentUserDepartmentName" th:value="${dep}">
         </th:block>
         <th:block th:with="role=${#authentication.principal.role}">
             <input type="hidden" id="currentUserRole" th:value="${role}">
@@ -200,13 +203,13 @@
 <script src="/js/dashboard-kpi.js"></script>
 
 <script>
-    const currentUserDeparment = document.getElementById('currentUserDepartment').value;
+    const currentDepartmentId = document.getElementById('currentUserDepartmentId').value;
+    const currentDepartmentName = document.getElementById('currentUserDepartmentName').value;
     const currentUserRole = document.getElementById('currentUserRole').value;
-    console.log('currentUserDeparment', currentUserDeparment);
-    console.log('currentUserRole', currentUserRole);
 </script>
 <script>
     $(document).ready(function () {
+        getDepartmentAndRender();
         $('.year-select').select2();
         $('.month-select').select2();
         $('.department-select').select2();
