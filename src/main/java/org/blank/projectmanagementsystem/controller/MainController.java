@@ -63,6 +63,11 @@ public class MainController {
         return "project-view";
     }
 
+    @GetMapping("/pm/project-list")
+    public String projectList() {
+        return "project-list";
+    }
+  
     @GetMapping("/kan-ban")
     public String kanBanView(ModelMap model) {
         return "project-view";

@@ -5,11 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 
+import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+
 import org.blank.projectmanagementsystem.domain.formInput.DefaultPasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueCreateFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.IssueSolveFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,7 +42,7 @@ public class MemberController {
             return new ModelAndView("default-password", "defaultPasswordFormInput", defaultPasswordFormInput);
         }
         log.info("defaultPasswordFormInput {}\n\n\n\n",defaultPasswordFormInput);
-        userService.updatePassword(defaultPasswordFormInput.getId(), defaultPasswordFormInput.getPassword());
+        userService.updatePassword(defaultPasswordFormInput.getPassword());
         return new ModelAndView("redirect:/");
     }
 
@@ -69,15 +73,7 @@ public class MemberController {
         return "task-name";
     }
 
-    @PostMapping("/task-name")
-    public String taskname(@ModelAttribute TaskFormInput taskFormInput){
-        log.info("================================================");
-        log.info("task name: {}", taskFormInput);
-        log.info("================================================\n");
 
-        SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        return "redirect:/";
-    }
 
     @GetMapping("/create-issue")
     public ModelAndView createIssue(){

@@ -52,10 +52,7 @@ public class PMController {
     private final DeliverableService deliverableService;
 
 
-    @GetMapping("/project-list")
-    public String projectList() {
-        return "project-list";
-    }
+
     @GetMapping("/user-list")
     public String userList() {
         return "user-list";
