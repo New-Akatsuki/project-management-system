@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateUser(User user){
+        return userRepository.save(user);
+    }
+
+    @Override
     public void saveDepartment(Department department) {
         departmentRepository.save(department);
     }
@@ -210,11 +215,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public User getCurrentUser() {
-        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(userName, userName).orElseThrow();
-    }
 
     @Override
     public User editUserProfile(ProfileEditFormInput profileEditFormInput) {

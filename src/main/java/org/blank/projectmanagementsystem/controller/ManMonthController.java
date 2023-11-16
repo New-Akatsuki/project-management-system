@@ -36,7 +36,7 @@ public class ManMonthController {
 
         @GetMapping("/get-project-data")
         public ResponseEntity<List<ProjectViewObject>> getProject() {
-                List<ProjectViewObject> projects = projectService.getAllProjects();
+                List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
                 return ResponseEntity.ok(projects);
         }
 
@@ -48,7 +48,7 @@ public class ManMonthController {
 
 
         @GetMapping("/get-projects")
-        public ResponseEntity<List<ProjectViewObject>> getProjectsByDepartment(@RequestParam Long departmentId) {
+        public ResponseEntity<List<ProjectViewObject>> getProjectsByDepartment(@RequestParam Integer departmentId) {
                 List<ProjectViewObject> projects = projectService.getProjectsByDepartment(departmentId);
                 return ResponseEntity.ok(projects);
         }

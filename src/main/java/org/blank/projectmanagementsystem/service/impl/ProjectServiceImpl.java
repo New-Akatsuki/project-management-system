@@ -106,16 +106,27 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.save(project);
     }
 
+
     @Override
     public List<ProjectListViewObject> getAllProjects() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsernameOrEmail(username,username).orElseThrow();
-
+        var user = getCurrentUser();
         return switch (user.getRole()) {
             case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectListViewObject::new).toList();
-            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).map(p->new ProjectListViewObject((Project) p)).stream().toList();
-            case PM ->projectRepository.findAllByProjectManager(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
-            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
+            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).stream().map(ProjectListViewObject::new).toList();
+            case PM ->projectRepository.findAllByProjectManager(user).stream().map(ProjectListViewObject::new).toList();
+            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).stream().map(ProjectListViewObject::new).toList();
+            default -> throw new IllegalStateException("Invalid user");
+        };
+    }
+
+    @Override
+    public List<ProjectViewObject> getAllProjectViewObjects() {
+        var user = getCurrentUser();
+        return switch (user.getRole()) {
+            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();
+            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).stream().map(ProjectViewObject::new).toList();
+            case PM ->projectRepository.findAllByProjectManager(user).stream().map(ProjectViewObject::new).toList();
+            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).stream().map(ProjectViewObject::new).toList();
             default -> throw new IllegalStateException("Invalid user");
         };
     }
@@ -166,8 +177,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectViewObject> getProjectsByDepartment(Long departmentId) {
+    public List<ProjectViewObject> getProjectsByDepartment(Integer departmentId) {
         return projectRepository.findByDepartmentId(departmentId).stream().map(ProjectViewObject::new).toList();
+    }
+
+    @Override
+    public Project getProject(long projectId) {
+        return projectRepository.getReferenceById(projectId);
     }
 
     private User getCurrentUser(){

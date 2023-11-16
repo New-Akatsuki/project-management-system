@@ -27,7 +27,7 @@ public class KPIController {
 
     @GetMapping("/get-project-data")
     public ResponseEntity<List<ProjectViewObject>> getProject() {
-        List<ProjectViewObject> projects = projectService.getAllProjects();
+        List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
         return ResponseEntity.ok(projects);
     }
 

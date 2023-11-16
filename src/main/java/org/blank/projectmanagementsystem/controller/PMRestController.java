@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 public class PMRestController {
     private final UserService userService;
-
+    private final ProjectService projectService;
  
 
     @PostMapping("/pm/change-password")

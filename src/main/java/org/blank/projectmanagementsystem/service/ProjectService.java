@@ -12,12 +12,12 @@ import java.util.Map;
 public interface ProjectService {
 
     Project saveProject(ProjectFormInput projectFormInput);
-
     List<ProjectListViewObject> getAllProjects();
+    List<ProjectViewObject> getAllProjectViewObjects();
     ProjectViewObject getProjectById(Long id);
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
-    List<ProjectViewObject> getProjectsByDepartment(Long departmentId);
+    List<ProjectViewObject> getProjectsByDepartment(Integer departmentId);
     Project getProject(long projectId);
 }

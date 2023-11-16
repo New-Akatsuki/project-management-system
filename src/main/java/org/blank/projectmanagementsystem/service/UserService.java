@@ -12,13 +12,14 @@ import java.util.Optional;
 
 public interface UserService {
     User save(User user);
+    User updateUser(User user);
     void saveDepartment(Department department);
     void changeDefaultPassword(String password);
     User getUserById(Long id);
     ChangePasswordFormInput changePassword(String currentPassword, String newPassword);
     Boolean checkCurrentPassword(String currentPassword);
     User getCurrentUser();
-    User createMember(AddUserFormInput addUserFormInput);
+    UserViewObject createMember(AddUserFormInput addUserFormInput);
     List<UserViewObject> getAllUsers();
     User editUserProfile(ProfileEditFormInput profileEditFormInput);
     User getLoginUser();

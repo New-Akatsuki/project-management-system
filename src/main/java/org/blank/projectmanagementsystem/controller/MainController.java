@@ -54,7 +54,6 @@ public class MainController {
     private final UserService userService;
     private final ClientService clientService;
     private final DepartmentService departmentService;
-    private final ProjectService projectService;
 
     @GetMapping("/")
     public String index(ModelMap model){
@@ -139,56 +138,6 @@ public class MainController {
         return "issue-creator-display";
     }
 
-    @GetMapping("user-profile")
-    public String userProfileView(Model model) {
-        var user = uService.getCurrentUser();
-        byte[] photoData = user.getPhotoData();
-
-        // Always add the image attributes to the model, even if photoData is null
-        String base64Image = (photoData != null) ? ImageEncoder.encodeToBase64(photoData) : null;
-        String imageType = "image/jpeg"; // Set a default image type; you can modify this based on your application's needs
-
-        model.addAttribute("base64Image", base64Image);
-        model.addAttribute("imageType", imageType);
-        model.addAttribute("currentUser", user);
-        return "user-profile";
-    }
-
-
-    @PostMapping("/edit-user-in-profile")
-    public String update(@RequestParam("name") String name,
-                         @RequestParam("username") String username,
-                         @RequestParam("email") String email,
-                         @RequestParam("phone") String phone,
-                         @RequestParam("userRole") String userRole,
-                         @RequestParam("isNull") boolean isNull,
-                         @RequestParam(name = "photoUrl", required = false) MultipartFile file, HttpSession session) throws IOException {
-
-        var user = uService.getCurrentUser();
-        user.setName(name);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPhone(phone);
-        user.setUserRole(userRole);
-
-        // Check if a new photo is provided
-        if (file != null && !file.isEmpty()) {
-            byte[] photoUrl = file.getBytes();
-            user.setPhotoData(photoUrl);
-        }
-
-        if(isNull){
-            user.setPhotoData(null);
-        }
-
-        userRepository.save(user);
-
-        var currentAuth = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userRepository.save(user), user.getPassword(), currentAuth);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        return "redirect:/user-profile";
-    }
 
     @PreAuthorize("hasAuthority('PM')")
     @GetMapping("/notification")

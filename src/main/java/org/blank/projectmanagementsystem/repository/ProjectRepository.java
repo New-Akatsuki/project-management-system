@@ -15,13 +15,13 @@ import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project,Long> {
-    Optional<List<Project>> findAllByProjectManager(User projectManager);
-    Optional<List<Project>> findAllByDepartment(Department department);
+    List<Project> findAllByProjectManager(User projectManager);
+    List<Project> findAllByDepartment(Department department);
 
 
     //get all project that user contains in the list of contract members or foc members
     @Query("SELECT p FROM Project p WHERE :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers")
-    Optional<List<Project>> findAllProjectsByUserInMembers(@Param("user") User user);
+    List<Project> findAllProjectsByUserInMembers(@Param("user") User user);
 
     //get all project that user is project manager or contract members or foc members and project is status is ONGOING
     @Query("SELECT p FROM Project p WHERE (p.projectManager = :user OR :user MEMBER OF p.contractMembers OR :user MEMBER OF p.focMembers) AND p.status = :status")
@@ -29,6 +29,6 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
   
   
     //find all by department id
-    List<Project> findByDepartmentId(Long departmentId);
+    List<Project> findByDepartmentId(Integer department_id);
 
 }
