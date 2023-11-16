@@ -4,57 +4,86 @@ const ctxManMonthProductivity = document.getElementById('manMonthProductivityCha
 let manMonthChart;
 let manMonthProductivityChart;
 let projectList = []
+let currentSelectedProject;
 
 function updateYearSelector(projects) {
     projectList = projects || projectList;
+    $("#yearSelector").empty();
     const selectedProjectId = $('#projectSelector').val();
+    const selectedDepartmentId = $("#departmentSelector").val();
     //set Year
     const currentYear = new Date().getFullYear();
     let html = "";
 
-    //get selected project
-    let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
-    console.log(selectedProject, selectedProjectId);
+    if(currentUserRole === "PMO" && selectedDepartmentId === ""){
+        //set year option from 2010 to current year
+        for (let year = 2010; year <= currentYear; year++) {
+            html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
+        }
+    }else{
+        //get selected project
+        let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
+        //set year range
+        const sDate = new Date(selectedProject.startDate)
+        const eDate = new Date(selectedProject.endDate)
+        const yearRange = getYearRange(sDate, eDate)
+        console.log(sDate, eDate, yearRange)
 
-    //set year range
-    const sDate = new Date(selectedProject.startDate)
-    const eDate = new Date(selectedProject.endDate)
-    const yearRange = getYearRange(sDate, eDate)
-    console.log(sDate, eDate, yearRange)
+        yearRange.forEach(year => {
+            html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
+        });
+    }
 
-    yearRange.forEach(year => {
-        html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
-    });
     $("#yearSelector").html(html);
 
 }
 
 
 function updateMonthSelector(projects) {
+
+    $("#monthSelector").empty();
     projectList = projects || projectList;
     const selectedProjectId = $('#projectSelector').val();
+    const selectedDepartmentId = $("#departmentSelector").val();
     let html = '';
-    let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
-    const startMonth = new Date(selectedProject.startDate)
-    const endMonth = new Date(selectedProject.endDate)
-    const monthRange = generateUniqueMonthArray(startMonth, endMonth)
-    console.log(startMonth, endMonth, monthRange);
-    let prevMonth = new Date().getMonth();
-    monthRange.forEach(month => {
-        html += `<option value="${month.id}" ${month.id === prevMonth ? 'selected' : ''}>${month.name}</option>`;
+    if (currentUserRole === "PMO"&& selectedDepartmentId === "") {
+        //generate month option from Jan to Dec
+        const monthRange = generateUniqueMonthArray(new Date('2021-01-01'), new Date('2021-12-31'))
+        let prevMonth = new Date().getMonth();
+        monthRange.forEach(month => {
+            html += `<option value="${month.id}" ${month.id === prevMonth ? 'selected' : ''}>${month.name}</option>`;
 
-    })
+        });
+    }else{
+        let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
+        const startMonth = new Date(selectedProject.startDate)
+        const endMonth = new Date(selectedProject.endDate)
+        const monthRange = generateUniqueMonthArray(startMonth, endMonth)
+        let prevMonth = new Date().getMonth();
+        monthRange.forEach(month => {
+            html += `<option value="${month.id}" ${month.id === prevMonth ? 'selected' : ''}>${month.name}</option>`;
+
+        });
+    }
+
     $("#monthSelector").html(html)
 }
 
 function updateDepartmentSelector(data) {
+    $("#departmentSelector").empty();
     let html = "";
     let isSet = false;
     if (currentUserRole === "DH" || currentUserRole === "PM") {
         let department = data.filter(val => val.name === currentUserDeparment)[0];
         html += `<option value="${department.id}" selected>${department.name}</option>`;
         isSet = true;
-    } else {
+    } else if(currentUserRole === "PMO") {
+        html += `<option value="" selected>All</option>`;
+        data.forEach((department) => {
+            html += `<option value="${department.id}">${department.name}</option>`;
+        });
+    }
+    else {
         data.forEach((department, index) => {
             html += `<option value="${department.id}"  ${index === 0 ? 'selected' : ''}>${department.name}</option>`;
         })
@@ -107,24 +136,51 @@ function generateUniqueMonthArray(startDate, endDate) {
 }
 
 function getProjectByDepartment() {
+
     const selectedDepartmentId = $("#departmentSelector").val();
-    console.log('ss', selectedDepartmentId)
+    console.log('in getproject', selectedDepartmentId)
     if (selectedDepartmentId) {
         console.log('id', selectedDepartmentId)
         $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
-            console.log('Received projects:', projects);
-            updateProjectSelector(projects);
-            updateYearSelector(projects)
-            updateMonthSelector(projects)
-            updateCharts();
 
+            if (projects.length === 0) {
+                // Handle the case where there are no projects in the department
+                console.log('No projects found for the selected department.');
+
+                // Show the chart with default data or an empty state
+                updateChartsWithNoProjects();
+
+            }else {
+                console.log('Received projects:', projects);
+                updateProjectSelector(projects);
+                updateYearSelector(projects)
+                updateMonthSelector(projects)
+                updateCharts();
+                calculateAllKPIs(projects[0].id);
+            }
         });
+    }else{
+        $("#projectSelector").empty();
+        updateYearSelector(null)
+        updateMonthSelector(null)
+        updateCharts();
     }
 }
 
 $("#departmentSelector").on("change", function () {
     getProjectByDepartment()
 });
+
+function updateChartsWithNoProjects() {
+    // You can update the charts with default data or an empty state
+    // For example, display a message in the chart or set default values
+
+    const defaultLabels = ['No Projects'];
+    const defaultData = [0];
+
+    updateManMonthChart(defaultLabels, defaultData, defaultData);
+    updateManMonthProductivity(defaultLabels, defaultData);
+}
 
 function updateProjectSelector(projects) {
     let html = "";
@@ -139,10 +195,19 @@ $("#monthSelector").on("change", function () {
 });
 
 $("#projectSelector").on("change", function () {
-    updateMonthSelector(null)
-    updateYearSelector(null)
-    updateCharts();
+    const selectedProjectId = $("#projectSelector").val();
+    const selectedDepartmentId = $("#departmentSelector").val();
+    $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
+        console.log('Received projects:', projects);
+        updateYearSelector(projects)
+        updateMonthSelector(projects)
+        updateCharts();
+        calculateAllKPIs(selectedProjectId);
+    });
+
 });
+
+
 
 function updateCharts() {
     const selectedYear = $("#yearSelector").val();
@@ -207,49 +272,64 @@ function updateCharts() {
             function processDepartment(department) {
                 const departmentId = department.id;
                 $.get(`/api/get-projects?departmentId=${departmentId}`, function (projects) {
-                    const projectLabels = [];
-                    const projectPlanManMonths = [];
-                    const projectActualManMonths = [];
+                    if (projects.length > 0) {
+                        const projectLabels = [];
+                        const projectPlanManMonths = [];
+                        const projectActualManMonths = [];
 
-                    let projectsProcessed = 0;
+                        let projectsProcessed = 0;
 
-                    function processProject(project) {
-                        const projectId = project.id;
-                        $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
-                            const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
-                            const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
-                            projectLabels.push(project.name);
-                            projectPlanManMonths.push(projectPlanManMonth);
-                            projectActualManMonths.push(projectActualManMonth);
+                        function processProject(project) {
+                            const projectId = project.id;
+                            $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
+                                const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
+                                const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
+                                projectLabels.push(project.name);
+                                projectPlanManMonths.push(projectPlanManMonth);
+                                projectActualManMonths.push(projectActualManMonth);
 
-                            projectsProcessed++;
+                                projectsProcessed++;
 
-                            if (projectsProcessed === projects.length) {
-                                const departmentPlanManMonth = projectPlanManMonths.reduce((sum, val) => sum + val, 0);
-                                const departmentActualManMonth = projectActualManMonths.reduce((sum, val) => sum + val, 0);
+                                if (projectsProcessed === projects.length) {
+                                    const departmentPlanManMonth = projectPlanManMonths.reduce((sum, val) => sum + val, 0);
+                                    const departmentActualManMonth = projectActualManMonths.reduce((sum, val) => sum + val, 0);
 
-                                departmentLabels.push(department.name);
-                                planManMonths.push(departmentPlanManMonth);
-                                actualManMonths.push(departmentActualManMonth);
+                                    departmentLabels.push(department.name);
+                                    planManMonths.push(departmentPlanManMonth);
+                                    actualManMonths.push(departmentActualManMonth);
 
-                                departmentsProcessed++;
+                                    departmentsProcessed++;
 
-                                if (departmentsProcessed === departments.length) {
-                                    updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
+                                    if (departmentsProcessed === departments.length) {
+                                        updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
 
-                                    const allDepartmentsProductivityRatios = departments.map((dept, index) => {
-                                        const deptActualManMonths = actualManMonths[index];
-                                        const deptPlanManMonths = planManMonths[index];
-                                        return calculateManMonthProductivity(deptActualManMonths, deptPlanManMonths);
-                                    });
+                                        const allDepartmentsProductivityRatios = departments.map((dept, index) => {
+                                            const deptActualManMonths = actualManMonths[index];
+                                            const deptPlanManMonths = planManMonths[index];
+                                            return calculateManMonthProductivity(deptActualManMonths, deptPlanManMonths);
+                                        });
 
-                                    updateManMonthProductivity(departmentLabels, allDepartmentsProductivityRatios);
+                                        updateManMonthProductivity(departmentLabels, allDepartmentsProductivityRatios);
+                                    }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
 
-                    projects.forEach(processProject);
+                        projects.forEach(processProject);
+                    } else {
+                        // No projects for the department, handle this case as needed
+                        departmentLabels.push(department.name);
+                        planManMonths.push(0);
+                        actualManMonths.push(0);
+                        departmentsProcessed++;
+
+                        if (departmentsProcessed === departments.length) {
+                            updateManMonthChart(departmentLabels, planManMonths, actualManMonths);
+
+                            const allDepartmentsProductivityRatios = departments.map(() => 0);
+                            updateManMonthProductivity(departmentLabels, allDepartmentsProductivityRatios);
+                        }
+                    }
                 });
             }
 
@@ -257,6 +337,7 @@ function updateCharts() {
         });
     }
 }
+
 
 let workingDayPerHour = 7.5;
 let workingDayPerMonth = 20;
@@ -298,6 +379,8 @@ function updateManMonthChart(labels, planManMonths, actualManMonths) {
     if (manMonthChart) {
         manMonthChart.destroy();
     }
+
+
 
     const chartData = {
         labels: labels,
@@ -365,12 +448,4 @@ function updateManMonthProductivity(labels, actualProductivityRatio) {
 
 updateCharts();
 
-$(document).ready(function () {
-
-    getProjectByDepartment();
-    $('.year-select').select2();
-    $('.month-select').select2();
-    $('.department-select').select2();
-    $('.project-select').select2();
-});
 

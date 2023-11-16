@@ -125,7 +125,8 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" for="departmentSelector">Select a department:</label>
-                    <select class="form-select department-select" id="departmentSelector"></select>
+                    <select class="form-select department-select" id="departmentSelector">
+                    </select>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" for="projectSelector">Select a project:</label>
@@ -138,13 +139,13 @@
 
 
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-lg-6 col-sm-12">
                     <h4>Man Month</h4>
                     <div class="chartBox">
                         <canvas id="manMonthChart"></canvas>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-lg-6 col-sm-12">
                     <h4>Man Month Productivity Ratio</h4>
                     <div class="chartBox">
                         <canvas id="manMonthProductivityChart"></canvas>
@@ -162,7 +163,7 @@
 
         <div class="container mt-5">
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-12 col-lg-12 col-sm-12">
                     <h4>KPI RATIO</h4>
                     <div class="kpiChart">
                         <canvas id="kpiChart"></canvas>
@@ -192,13 +193,23 @@
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-<script src="/js/dashboard-mm.js"></script>
 <script src="/js/dashboard-kpi.js"></script>
+<script src="/js/dashboard-mm.js"></script>
 <script>
     const currentUserDeparment = document.getElementById('currentUserDepartment').value;
     const currentUserRole = document.getElementById('currentUserRole').value;
     console.log('currentUserDeparment', currentUserDeparment);
     console.log('currentUserRole', currentUserRole);
+</script>
+<script>
+    $(document).ready(function () {
+        $('.year-select').select2();
+        $('.month-select').select2();
+        $('.department-select').select2();
+        $('.project-select').select2();
+        getProjectByDepartment();
+    });
+
 </script>
 </body>
 

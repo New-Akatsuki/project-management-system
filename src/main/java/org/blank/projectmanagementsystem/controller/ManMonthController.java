@@ -29,7 +29,7 @@ public class ManMonthController {
 
 
         @GetMapping("/get-task-data")
-        public ResponseEntity<List<TaskViewObject>> getFakeGanttData() {
+        public ResponseEntity<List<TaskViewObject>> getTaskData() {
                 List<TaskViewObject> tasks = taskService.getAllTasks();
                 return ResponseEntity.ok(tasks);
         }
