@@ -69,52 +69,34 @@
 
     <!-- Main Content -->
 
-    <div class="container-fluid content-inner mt-4 py-0">
+    <div class="container-fluid content-inner mt-n5 py-0">
         <div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">Department</h4>
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">Add New Department</a>
 
-                    <div class="col-12">
-                        <div class="card shadow-none">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="display-6 fs-4">
-                                    Department
-                                </div>
-                                <a id="addDepartmentButton" class="icon-add-btn" data-toggle="modal"
-                                   data-target="#addDepartmentModal">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+
                             </div>
-
-                            <div class="card-body">
-                                <table class="table table-hover">
+                        </div>
+                        <div class="card-body px-">
+                            <div class="table-responsive">
+                                <table id="department-table" class="display" style="width: 100%;">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
-                                        <th class="col-1">Action</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="departmentTableBody">
-                                    <tr th:each="department : ${departments}">
-                                        <td  th:text="${department.id}"></td>
-                                        <td th:text="${department.name}"></td>
-                                        <td><a id="openEditClientModalButton" class="icon-add-btn"
-                                               data-bs-toggle="modal" data-bs-target="#editClientModal">
-                                            <i class='bx bx-edit m-0 p-0'></i>
-                                        </a></td>
-                                    </tr>
-
-
-                                    </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -134,9 +116,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 <!--Modal box-->
-
-
 <!--Add department-->
 <div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel"
      aria-hidden="true">
@@ -152,94 +134,172 @@
                 <!-- Add your form fields for adding a new member here -->
                 <form>
                     <div class="form-group">
-                        <label for="departmentName">Department Name</label>
-                        <input type="text" class="form-control" id="departmentName" placeholder="Enter department name">
+                        <label for="name">Department Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addDepartment()" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addDepartment()" data-bs-dismiss="modal">Save</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<!-- edit "Department" Modal -->
-<div class="modal  fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="department-modal-form" class="modal-content">
+<!-- Edit Department Modal-->
+<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="departmentEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
             <div class="modal-header">
-                <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.4"
-                          d="M16.6643 21.9897H7.33488C5.88835 22.0796 4.46781 21.5781 3.3989 20.6011C2.4219 19.5312 1.92041 18.1107 2.01032 16.6652V7.33482C1.92041 5.88932 2.4209 4.46878 3.3979 3.39889C4.46781 2.42189 5.88835 1.92041 7.33488 2.01032H16.6643C18.1089 1.92041 19.5284 2.4209 20.5973 3.39789C21.5733 4.46878 22.0758 5.88832 21.9899 7.33482V16.6652C22.0788 18.1107 21.5783 19.5312 20.6013 20.6011C19.5314 21.5781 18.1109 22.0796 16.6643 21.9897Z"
-                          fill="currentColor"></path>
-                    <path d="M17.0545 10.3976L10.5018 16.9829C10.161 17.3146 9.7131 17.5 9.24574 17.5H6.95762C6.83105 17.5 6.71421 17.4512 6.62658 17.3634C6.53895 17.2756 6.5 17.1585 6.5 17.0317L6.55842 14.7195C6.56816 14.261 6.75315 13.8317 7.07446 13.5098L11.7189 8.8561C11.7967 8.77805 11.9331 8.77805 12.011 8.8561L13.6399 10.4785C13.747 10.5849 13.9028 10.6541 14.0683 10.6541C14.4286 10.6541 14.7109 10.3615 14.7109 10.0102C14.7109 9.83463 14.6428 9.67854 14.5357 9.56146C14.5065 9.52244 12.9554 7.97805 12.9554 7.97805C12.858 7.88049 12.858 7.71463 12.9554 7.61707L13.6078 6.95366C14.2114 6.34878 15.1851 6.34878 15.7888 6.95366L17.0545 8.22195C17.6485 8.81707 17.6485 9.79268 17.0545 10.3976Z"
-                          fill="currentColor"></path>
-                </svg>
-
-                <h1 class="modal-title fs-5" id="departmentModalLabel">Edit Department</h1>
+                <h5 class="modal-title fs-5">Edit Department</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <label for="department-name">Department Name:</label>
-                <input type="text" id="department-name" class="form-control" required>
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <input type="hidden" class="form-control" id="editId">
+                        <label for="editDepartmentName">Name</label>
+                        <input type="text" class="form-control" id="editDepartmentName">
+                    </div>
+
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="delete-department-button" class="btn btn-danger">Delete</button>
-                <button type="button" id="department-modal-save-button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="editDepartment()" class="btn btn-primary">Update</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
 <script>
-    function updateUI(department) {
-        const departmentTableBody = $('#departmentTableBody');
-
-        // Create a new row with the system outline data
-        const newRow = `
-      <tr>
-        <td>${department.id}</td>
-        <td>${department.name}</td>
-        <td>
-          <a href="/department/${department.id}/edit" class="btn btn-sm btn-primary mx-2">Edit</a>
-        </td>
-      </tr>
-    `;
-
-        // Append the new row to the table
-        departmentTableBody.append(newRow);
-
-        console.log("Department: " + JSON.stringify(department));
-    }
-    function addDepartment() {
-        console.log("addDepartment() called");
-        let newDepartment = {
-            id: null,
-            name: $('#departmentName').val()
-        };
-
+<!--   For Department Table-->
+    let departmentList =[];
+    $(document).ready(function () {
+        //Make an AJAX request to fetch data from the Rest API point
         $.ajax({
-            type: "POST",
-            url: "/pmo/add-department",
-            contentType: "application/json",
-            data: JSON.stringify(newDepartment),
+            url: '/departments',
+            method: 'GET',
             dataType: 'json',
             success: function (data) {
-                $("#addDepartmentModal").modal('hide');
-                console.log("SUCCESS: ", data);
-                // Update the UI with the newly added system outline
-                updateUI(data);
+                console.log('All department list: ', data);
+                departmentList = data;
+                //Render the data into the DataTable
+                renderDepartmentListTable(data);
             },
             error: function (xhr, status, error) {
-                console.log("ERROR: ", xhr.responseText);
+                console.log('Error: ', error);
+            }
+        });
+    });
+
+function renderDepartmentListTable(items) {
+    if ($.fn.DataTable.isDataTable('#department-table')) {
+        $('#department-table').DataTable().destroy();
+    }
+    return $('#department-table').DataTable({
+        data: items,
+        columns: [
+            {data: 'id'},
+            {data: 'name'},
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `<button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>`;
+                }
+            }
+        ]
+    });
+}
+
+
+
+
+
+
+// For add Department
+    function addDepartment() {
+        let addDepartment= {
+           id:$("#id").val(),
+            name:$("#name").val(),};
+
+        console.log(addDepartment);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/department-create",
+            data: JSON.stringify(addDepartment),
+            dataType: 'json',
+            success: function (data) {
+                // departmentList.push(data)
+                console.log(departmentList);
+                location.reload();
+                // renderDepartmentListTable(departmentList);
+            },
+            error: function (error) {
+                console.log('Error adding new department:', error);
             }
         });
     }
+
+    //For Display Edit Department Modal
+    function displayEditDepartmentModal(id) {
+    const department = departmentList.find(department => department.id === id);
+    console.log("Department Edit ", department);
+    // Check if department is found
+    if (department) {
+        //populate modal fields with department data
+        $('#editId').val(department.id);
+        $('#editDepartmentName').val(department.name);
+        //show the modal
+        $("#departmentEditModal").modal('show');
+    } else {
+        console.log("Department not found for ID:", id);
+    }
+}
+
+    // function displayEditDepartmentModal(departmentId) {
+    //     const department = departmentList.find(department => department.id === departmentId);
+    //     console.log("Department Edit ", department)
+    //     //populate modal fields with department data
+    //     $('#editId').val(department.id);
+    //     $('#editDepartmentName').val(department.name);
+    //     //show the modal
+    //     $("#departmentEditModal").modal('show');
+    // }
+function editDepartment() {
+    let id = $('#editId').val();
+    let name = $('#editDepartmentName').val();
+    let updatedDepartment = {
+        id: id,
+        name: name,
+    };
+    console.log("updatedDepartment", updatedDepartment);
+    // Make a PUT request to update the department data
+    $.ajax({
+        url: `/department-edit/${id}`,
+        method: 'PUT',
+        data: JSON.stringify(updatedDepartment),
+        dataType: 'json',
+        contentType: 'application/json', // Corrected contentType value
+        success: function (data) {
+            console.log('Data received:', data);
+            location.reload();
+        },
+        error: function (xhr, error) {
+            console.log(xhr.responseText)
+            console.log('Error fetching data:', error);
+        }
+    });
+}
 
 
 </script>
