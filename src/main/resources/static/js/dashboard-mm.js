@@ -15,27 +15,28 @@ function updateYearSelector(projects) {
     const currentYear = new Date().getFullYear();
     let html = "";
 
-    if(currentUserRole === "PMO" && selectedDepartmentId === ""){
+    if (currentUserRole === "PMO" && (selectedDepartmentId === null || selectedDepartmentId === "")) {
         //set year option from 2010 to current year
         for (let year = 2010; year <= currentYear; year++) {
             html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
         }
-    }else{
+    } else {
         //get selected project
-        let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
-        //set year range
-        const sDate = new Date(selectedProject.startDate)
-        const eDate = new Date(selectedProject.endDate)
-        const yearRange = getYearRange(sDate, eDate)
-        console.log(sDate, eDate, yearRange)
+        let selectedProject = projectList.find(p => p.id === parseInt(selectedProjectId, 10));
+        if (selectedProject) {
+            //set year range
+            const sDate = new Date(selectedProject.startDate)
+            const eDate = new Date(selectedProject.endDate)
+            const yearRange = getYearRange(sDate, eDate)
+            console.log(sDate, eDate, yearRange)
 
-        yearRange.forEach(year => {
-            html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
-        });
+            yearRange.forEach(year => {
+                html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
+            });
+        }
     }
 
     $("#yearSelector").html(html);
-
 }
 
 
@@ -46,7 +47,7 @@ function updateMonthSelector(projects) {
     const selectedProjectId = $('#projectSelector').val();
     const selectedDepartmentId = $("#departmentSelector").val();
     let html = '';
-    if (currentUserRole === "PMO"&& selectedDepartmentId === "") {
+    if (currentUserRole === "PMO"&& (selectedDepartmentId === null || selectedDepartmentId === "")) {
         //generate month option from Jan to Dec
         const monthRange = generateUniqueMonthArray(new Date('2021-01-01'), new Date('2021-12-31'))
         let prevMonth = new Date().getMonth();
@@ -142,22 +143,15 @@ function getProjectByDepartment() {
     if (selectedDepartmentId) {
         console.log('id', selectedDepartmentId)
         $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
-
-            if (projects.length === 0) {
-                // Handle the case where there are no projects in the department
-                console.log('No projects found for the selected department.');
-
-                // Show the chart with default data or an empty state
+            console.log('Received projects:', projects);
+            if(projects.length === 0){
                 updateChartsWithNoProjects();
-
-            }else {
-                console.log('Received projects:', projects);
-                updateProjectSelector(projects);
-                updateYearSelector(projects)
-                updateMonthSelector(projects)
-                updateCharts();
-                calculateAllKPIs(projects[0].id);
             }
+            updateProjectSelector(projects);
+            updateYearSelector(projects)
+            updateMonthSelector(projects)
+            updateCharts();
+            calculateAllKPIs(projects[0].id);
         });
     }else{
         $("#projectSelector").empty();
@@ -170,17 +164,6 @@ function getProjectByDepartment() {
 $("#departmentSelector").on("change", function () {
     getProjectByDepartment()
 });
-
-function updateChartsWithNoProjects() {
-    // You can update the charts with default data or an empty state
-    // For example, display a message in the chart or set default values
-
-    const defaultLabels = ['No Projects'];
-    const defaultData = [0];
-
-    updateManMonthChart(defaultLabels, defaultData, defaultData);
-    updateManMonthProductivity(defaultLabels, defaultData);
-}
 
 function updateProjectSelector(projects) {
     let html = "";
@@ -207,6 +190,17 @@ $("#projectSelector").on("change", function () {
 
 });
 
+function updateChartsWithNoProjects() {
+    // You can update the charts with default data or an empty state
+    // For example, display a message in the chart or set default values
+
+    const defaultLabels = ['No Projects'];
+    const defaultData = [0];
+
+    // Update both charts with default data
+    updateManMonthChart(defaultLabels, defaultData, defaultData);
+    updateManMonthProductivity(defaultLabels, defaultData);
+}
 
 
 function updateCharts() {
@@ -230,6 +224,12 @@ function updateCharts() {
             const projectLabels = [];
             const planManMonths = [];
             const actualManMonths = [];
+
+            if (projects.length === 0) {
+                // If the department has no projects, show default or empty data
+                updateManMonthChart(projectLabels, planManMonths, actualManMonths);
+                updateManMonthProductivity(projectLabels, []);
+            }
 
             let projectsProcessed = 0;
 
@@ -256,12 +256,16 @@ function updateCharts() {
 
                         updateManMonthProductivity(projectLabels, departmentProductivityRatios);
                     }
-                });
+                } .fail(function (error) {
+                    console.error("Error fetching tasks:", error);
+                })
+
+                );
             }
 
             projects.forEach(processProject);
         });
-    } else if (selectedMonth) {
+    }if (selectedMonth) {
         $.get(`/api/get-department-data`, function (departments) {
             const departmentLabels = [];
             const planManMonths = [];
@@ -271,6 +275,8 @@ function updateCharts() {
 
             function processDepartment(department) {
                 const departmentId = department.id;
+
+                // Check if there are projects for the department
                 $.get(`/api/get-projects?departmentId=${departmentId}`, function (projects) {
                     if (projects.length > 0) {
                         const projectLabels = [];
@@ -337,8 +343,6 @@ function updateCharts() {
         });
     }
 }
-
-
 let workingDayPerHour = 7.5;
 let workingDayPerMonth = 20;
 
