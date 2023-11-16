@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
@@ -104,15 +105,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectViewObject> getAllProjects() {
+    public List<ProjectListViewObject> getAllProjects() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsernameOrEmail(username,username).orElseThrow();
 
         return switch (user.getRole()) {
-            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();
-            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).map(p->new ProjectViewObject((Project) p)).stream().toList();
-            case PM ->projectRepository.findAllByProjectManager(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
-            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectViewObject((Project) p)).stream().toList();
+            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectListViewObject::new).toList();
+            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).map(p->new ProjectListViewObject((Project) p)).stream().toList();
+            case PM ->projectRepository.findAllByProjectManager(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
+            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).map(p->new ProjectListViewObject((Project) p)).stream().toList();
             default -> throw new IllegalStateException("Invalid user");
         };
     }
