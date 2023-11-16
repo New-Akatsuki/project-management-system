@@ -608,7 +608,6 @@ $(document).ready(function () {
     function openEditSystemOutlineModal(systemOutlineId) {
         console.log("systemOutlineId", systemOutlineId);
         const systemOutline = contractInfo.systems.filter(systemOutline => systemOutline.id === systemOutlineId)[0];
-
         // Populate modal fields with deliverable data
         $('#editOutlineId').val(systemOutline.id);
         $('#editOutlineName').val(systemOutline.name);

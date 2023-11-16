@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class Issue implements Serializable {
     @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 700, nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String content;
 
 //    @Column(nullable = false)
@@ -40,7 +41,7 @@ public class Issue implements Serializable {
     private LocalDateTime createdAt;
 
 //    @Column(nullable = false)
-    @LastModifiedDate
+    @Column(nullable = true)
     private LocalDateTime modifyAt;
 
     private boolean solved=false;
@@ -48,27 +49,27 @@ public class Issue implements Serializable {
     @Column(length = 700)
     private String impact;
 
-    @Column(length = 700, nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String directCause;
 
-    @Column(length = 700, nullable = false)
+    @Column(nullable = false, columnDefinition = "longtext")
     private String rootCause;
 
-    @Column(length = 700)
+    @Column(columnDefinition = "longtext")
     private String correctiveAction;
 
-    @Column(length = 700)
+    @Column(columnDefinition = "longtext")
     private String preventiveAction;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private ResponsibleParty responsibleParty;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private IssuePlace issuePlace;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false)
     private IssueCategory issueCategory;
 
@@ -79,4 +80,10 @@ public class Issue implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private User pic;
+
+    @Column(nullable = true)
+    private LocalDateTime solutionCreatedAt;
+
+    @Column(nullable = true)
+    private LocalDateTime solutionModifiedAt;
 }

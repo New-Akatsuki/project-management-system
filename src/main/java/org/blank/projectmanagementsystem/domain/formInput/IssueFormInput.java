@@ -17,7 +17,7 @@ public class IssueFormInput {
 
     private String rootCause;
 
-    private ResPartyFormInput responsibleParty;
+    private Long responsibleParty;
 
     private Long issuePlace;
 

@@ -81,11 +81,6 @@ public class MemberController {
     }
 
 
-    @GetMapping("/display-issue")
-    public ModelAndView displayIssue(){
-        return new ModelAndView("issue-display", "IssueSolveFormInput", new IssueSolveFormInput());
-    }
-
     @GetMapping("/projects")
     public String projects(){
         return "project-view";

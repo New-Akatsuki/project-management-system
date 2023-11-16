@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>DIR-ACE TECHNOLOGY</title>
@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet"/>
+          rel="stylesheet"/>
 
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
@@ -34,7 +34,13 @@
 
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
     <style>
         .rounded-card {
             border-radius: 10px;
@@ -50,23 +56,44 @@
             justify-content: space-between;
             align-items: center;
         }
+    </style>
+    <style>
+        .noSolution {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20vh; /* Optional: This ensures that the message is centered vertically on the entire viewport height */
+            font-size: 1.2em; /* Optional: Adjust the font size as needed */
+            color: #555; /* Optional: Set the text color */
+        }
+    </style>
+    <style>
+        .accordion-body {
+            padding: 0;
+            animation: fade-in 0.5s ease-in-out;
+        }
 
-        .upload-info{
-            font-size: 1em;
-            color: #666;
-            text-align: right;
-            padding-left: 20px;
-            padding-right: 20px;
+        .accordion-button {
+            padding: 10px 14px 10px 14px;
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
-
 <body>
 <!-- ======= Header ======= -->
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
 <main id="main" class="main">
+    <span id="userId" sec:authentication="principal.id" class="d-none"></span>
     <!-- Breadcrumb part-->
     <div class="page-title">
         <nav>
@@ -82,13 +109,13 @@
     <div class="card rounded-card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 style="color: white; margin-left:15px"><i class="bi bi-pip"></i> Display Issue Details</h3>
-            <a class="icon-add-btn">
+            <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
                 <i class='bx bx-edit'></i>
             </a>
         </div>
 
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px; margin-top: 10px">
+        <div class="card-body" style="padding: 25px 20px 0 20px; margin-top: 10px">
             <div class="col-12 px-3">
                 <div class="accordion mb-3" id="title">
                     <div class="accordion-item">
@@ -101,7 +128,7 @@
                         </h2>
                         <div id="title-box" class="accordion-collapse collapse show"
                              data-bs-parent="#title">
-                            <div class="accordion-body text-justify">
+                            <div class="accordion-body">
                                 <span></span>
                             </div>
                         </div>
@@ -121,7 +148,7 @@
                         </h2>
                         <div id="pic-box" class="accordion-collapse collapse show"
                              data-bs-parent="#pic">
-                            <div class="accordion-body text-justify">
+                            <div class="accordion-body">
                                 <span></span>
                             </div>
                         </div>
@@ -141,27 +168,7 @@
                         </h2>
                         <div id="category-box" class="accordion-collapse collapse show"
                              data-bs-parent="#category">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="content">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true"
-                                    aria-controls="collapseOne">
-                                <span class="display-6 fs-5 fw-bold">Content</span>
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show"
-                             data-bs-parent="#content">
-                            <div class="accordion-body text-justify">
+                            <div class="accordion-body">
                                 <span></span>
                             </div>
                         </div>
@@ -180,7 +187,43 @@
                         </h2>
                         <div id="res-party" class="accordion-collapse collapse show"
                              data-bs-parent="#resParty">
-                            <div class="accordion-body text-justify">
+                            <div class="accordion-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="issuePlace">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#res-party" aria-expanded="true"
+                                    aria-controls="place">
+                                <span class="display-6 fs-5 fw-bold">Place</span>
+                            </button>
+                        </h2>
+                        <div id="place" class="accordion-collapse collapse show"
+                             data-bs-parent="#issuePlace">
+                            <div class="accordion-body">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <div class="accordion mb-3" id="content">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                <span class="display-6 fs-5 fw-bold">Content</span>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show"
+                             data-bs-parent="#content">
+                            <div class="accordion-body">
                             </div>
                         </div>
                     </div>
@@ -198,8 +241,7 @@
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse show"
                              data-bs-parent="#direct-cause">
-                            <div class="accordion-body text-justify">
-                                <span></span>
+                            <div class="accordion-body">
                             </div>
                         </div>
                     </div>
@@ -218,50 +260,26 @@
                         </h2>
                         <div id="collapseThree" class="accordion-collapse collapse show"
                              data-bs-parent="#root-cause">
-                            <div class="accordion-body text-justify">
-                                <span></span>
+                            <div class="accordion-body">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div style="display: flex; justify-content: space-between; padding-left:20px; padding-right: 20px">
-            <p><strong>Issue ID :&nbsp </strong><span>ISU001</span></p>
-            <p><strong>Uploaded at </strong><span>31 October 2023.</span></p>
+        <div id="details-upload-date" style="padding-right: 35px">
         </div>
     </div>
-
-    <div class="card rounded-card">
+    <div class="card rounded-card solution">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
-            <a class="icon-add-btn">
+            <a class="icon-add-btn d-none" id="editSolution">
                 <i class='bx bx-edit'></i>
             </a>
         </div>
 
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px; margin-top: 10px">
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="solution">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#solution-box" aria-expanded="true"
-                                    aria-controls="solution-box">
-                                <span class="display-6 fs-5 fw-bold">Solution</span>
-                            </button>
-                        </h2>
-                        <div id="solution-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#solution">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="card-body" style="padding: 25px 20px 0 20px; margin-top: 10px">
             <div class="col-12 px-3">
                 <div class="accordion mb-3" id="co-action">
                     <div class="accordion-item">
@@ -321,123 +339,304 @@
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="upload-info">
-            <p><strong>Uploaded at </strong><span>31 October 2023.</span></p>
+        <div id="solution-upload-date" style="padding-right: 35px">
         </div>
     </div>
 
+    <span class="noSolution d-none">There is no solution for this issue yet.</span>
+
+    <div class="card rounded-card solveForm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
+        </div>
+
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px; margin: 10px">
+            <form>
+                <div>
+                    <label for="co-action">Corrective Action</label>
+                </div>
+                <div id="co-actionSolve"></div>
+                <span class="text-danger error-message" id="coActionError">Corrective Action must not be empty!</span>
+                <br>
+                <div>
+                    <label for="pre-action">Preventive Action</label>
+                </div>
+                <div id="pre-actionSolve"></div>
+                <span class="text-danger error-message" id="preActionError">Preventive Action must not be empty!</span>
+                <br>
+                <div>
+                    <label for="impact">Impact</label>
+                </div>
+                <div>
+                    <div id="impactSolve"></div>
+                    <span class="text-danger error-message" id="impactError">Impact must not be empty!</span>
+                </div>
+                <br>
+                <div class="d-flex justify-content-end gap-3 mt-2" id="solveFormSubmitDiv">
+                    <button class="btn btn-secondary d-none" id="solveBackBtn" type="button"
+                            onclick="backToSolutionCard()">Cancel
+                    </button>
+                    <button class="btn btn-danger" type="reset" id="solveReset">Reset</button>
+                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
 <!-- End #main -->
-
-
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/text-editor.js"></script>
+
 <script>
-    // Assume you have JSON data
-    const jsonData = {
-        title: "Sample Title",
-        pic: "Sample PIC",
-        category: "Sample Category",
-        content: "Sample Content",
-        resParty: {
-            users: [
-                {userId: "USR001", username: "Johnny", role: "Coder"},
-                {userId: "USR002", username: "Java", role: "PM"},
-                {userId: "USR003", username: "Json", role: "Head"},
-                {userId: "USR004", username: "Buck", role: "SSS"}
-            ]
-        },
-        directCause: "Sample Direct Cause",
-        rootCause: "Sample Root Cause"
-    };
+    let coActionContent = new Quill("#co-actionSolve", aa)
+    let preActionContent = new Quill("#pre-actionSolve", aa)
+    let impactContent = new Quill("#impactSolve", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-actionSolve');
+        toggleToolbar(1, 'pre-actionSolve');
+        toggleToolbar(2, 'impactSolve');
+    })
+</script>
+<script>
+    const issueId = window.location.pathname.split('/').pop();
+    console.log(issueId);
+    let userId = $('#userId').text();
+</script>
+<script>
+    // Function to format date with month name and time in AM/PM format without seconds
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
 
-    // Function to update the content of the spans and generate a table
-    function updateContent(sectionId, data) {
-        const container = document.querySelector(`#${sectionId} .accordion-body`);
+    $(document).ready(function () {
+        $.ajax({
+            url: "/get-issue-details/" + issueId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let jsonData = data;
+                console.log("Data :", jsonData);
+                const detailsUploadDate = document.getElementById('details-upload-date');
+                if (jsonData.modifiedAt === null) {
+                    detailsUploadDate.innerHTML = `<p class="text-end"><strong>Uploaded At: </strong><span>${formatDate(jsonData.createdAt)}</span><p>`;
+                } else {
+                    detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(jsonData.modifiedAt)}</span></p>`;
+                }
 
-        if (container) {
-            container.innerHTML = ''; // Clear previous content
-
-            if (Array.isArray(data)) {
-                // Generate a table if the data is an array of objects
-                const table = document.createElement('table');
-                table.className = 'table table-hover';
-
-                // Create table header
-                const thead = document.createElement('thead');
-                const headerRow = document.createElement('tr');
-                headerRow.innerHTML = '<th scope="col">User ID</th><th scope="col">Username</th><th scope="col">Role</th>';
-                thead.appendChild(headerRow);
-                table.appendChild(thead);
-
-                // Create table body
-                const tbody = document.createElement('tbody');
-                data.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${user.userId}</td><td>${user.username}</td><td>${user.role}</td>`;
-                    tbody.appendChild(row);
-                });
-                table.appendChild(tbody);
-
-                container.appendChild(table);
-            } else {
-                // Update the content of the span if the data is not an array
-                const spanElement = document.createElement('span');
-                spanElement.textContent = data;
-                container.appendChild(spanElement);
+                if (jsonData.createdByUserId == userId) {
+                    $("#linkIssueEditPage").removeClass("d-none");
+                }
+                // Update each section with corresponding data
+                updateContent("title-box", jsonData.title);
+                updateContent("pic-box", jsonData.pic);
+                updateContent("category-box", jsonData.category);
+                updateContent("place", jsonData.place);
+                updateContent("res-party", jsonData.responsibleParty);
+                updateContentForQuill("collapseOne", jsonData.content);
+                updateContentForQuill("collapseTwo", jsonData.directCause);
+                updateContentForQuill("collapseThree", jsonData.rootCause);
             }
-        }
-    }
-
-    // Update each section with corresponding data
-    updateContent("title-box", jsonData.title);
-    updateContent("pic-box", jsonData.pic);
-    updateContent("category-box", jsonData.category);
-    updateContent("collapseOne", jsonData.content);
-    updateContent("res-party", jsonData.resParty.users);
-    updateContent("collapseTwo", jsonData.directCause);
-    updateContent("collapseThree", jsonData.rootCause);
-</script>
-
-<script>
-    // Assume you have JSON data
-    const solutionJson = {
-        solution: "Sample Solution",
-        coAction: "Sample Action",
-        preAction: "Sample Action",
-        impact: "Sample Impact",
-    };
+        });
+    });
 
     // Function to update the content of the spans and generate a table
-    function updateContent(sectionId, data) {
+    function updateContentForQuill(sectionId, data) {
         const container = document.querySelector(`#${sectionId} .accordion-body`);
-
         if (container) {
-            container.innerHTML = '';
-                const spanElement = document.createElement('span');
-                spanElement.textContent = data;
-                container.appendChild(spanElement);
-
+            const quill = new Quill(container, {
+                modules: {
+                    toolbar: false
+                },
+                theme: 'snow'
+            });
+            quill.enable(false);
+            // Intercept paste event
+            quill.clipboard.dangerouslyPasteHTML(0, data);
+            quill.root.innerHTML = quill.root.innerHTML.replace(/<p><br><\/p>/g, '');
         }
     }
 
-    // Update each section with corresponding data
-    updateContent("solution-box", solutionJson.solution);
-    updateContent("co-action-box", solutionJson.coAction);
-    updateContent("pre-action-box", solutionJson.preAction);
-    updateContent("impact-box", solutionJson.impact);
+    function updateContent(sectionId, data) {
+        const container = document.querySelector(`#${sectionId} .accordion-body`);
+        if (container) {
+            container.style.padding = '12px 15px 12px 15px';
+            container.innerHTML = data; // Clear previous content
+        }
+    }
 </script>
+<script>
+    let solutionData = [];
+    $(document).ready(function () {
+        $(".card.rounded-card.solveForm").addClass("d-none");
+        $.ajax({
+            url: "/get-issue-solution/" + issueId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let solutionJson = data;
+                // Check if any of the values are null
+                if (solutionJson.coAction === null || solutionJson.preAction === null || solutionJson.impact === null) {
+                    $(".card.rounded-card.solution").hide();
+                    if (solutionJson.picId == userId) {
+                        $(".card.rounded-card.solveForm").removeClass("d-none");
+                    } else {
+                        $(".noSolution").removeClass("d-none");
+                    }
+                } else {
+                    if (solutionJson.picId == userId) {
+                        $("#editSolution").removeClass("d-none");
+                    }
+                    const detailsUploadDate = document.getElementById('solution-upload-date');
+                    if (solutionJson.solutionModifiedAt === null) {
+                        detailsUploadDate.innerHTML = `<p class="text-end"><strong>Uploaded At: </strong><span>${formatDate(solutionJson.solutionCreatedAt)}</span><p>`;
+                    } else {
+                        detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(solutionJson.solutionModifiedAt)}</span></p>`;
+                    }
+                    // Update each section with corresponding data
+                    updateContentForQuill("co-action-box", solutionJson.coAction);
+                    updateContentForQuill("pre-action-box", solutionJson.preAction);
+                    updateContentForQuill("impact-box", solutionJson.impact);
+                    solutionData.push(solutionJson);
+                }
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
+    });
+</script>
+<script>
+    $(".solveForm").submit(function (e) {
+        e.preventDefault();
+        let coAction = coActionContent.root.innerHTML;
+        let preAction = preActionContent.root.innerHTML;
+        let impact = impactContent.root.innerHTML;
+        let issueId = window.location.pathname.split('/').pop();
+        let errors = [];
 
+        if (coAction === '' || coAction === '<p><br></p>') {
+            errors.push('#coActionError');
+        }
+        if (preAction === '' || preAction === '<p><br></p>') {
+            errors.push('#preActionError');
+        }
+        if (impact === '' || impact === '<p><br></p>') {
+            errors.push('#impactError');
+        }
+        // Display all errors at once
+        for (let error of errors) {
+            $(error).show();
+        }
+
+        // If there are errors, stop further processing
+        if (errors.length > 0) {
+            return false;
+        }
+        let solution = {
+            "id": issueId,
+            "coAction": coAction,
+            "preAction": preAction,
+            "impact": impact,
+        }
+        $.ajax({
+            url: "/add-solution",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(solution),
+            dataType: "json",
+            success: function (data) {
+                console.log("Data: ", data);
+                window.location.reload();
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
+    });
+
+    // Event listeners for Quill text editors
+    coActionContent.on('text-change', function () {
+        $('#coActionError').hide();
+    });
+
+    preActionContent.on('text-change', function () {
+        $('#preActionError').hide();
+    });
+
+    impactContent.on('text-change', function () {
+        $('#impactError').hide();
+    });
+</script>
+<script>
+    function updateQuillForSolveForm(quillInstance, data) {
+        // Intercept paste event
+        quillInstance.clipboard.dangerouslyPasteHTML(0, data);
+        quillInstance.root.innerHTML = quillInstance.root.innerHTML.replace(/<p><br><\/p>/g, '');
+    }
+
+    $("#editSolution").click(function () {
+        $(".card.rounded-card.solution").hide();
+        $("#solveBackBtn").removeClass("d-none");
+        $("#solveReset").addClass("d-none");
+        $(".card.rounded-card.solveForm").removeClass("d-none");
+
+        // Assuming solutionData is an array with one element
+        if (solutionData.length > 0) {
+            updateQuillForSolveForm(coActionContent, solutionData[0].coAction);
+            updateQuillForSolveForm(preActionContent, solutionData[0].preAction);
+            updateQuillForSolveForm(impactContent, solutionData[0].impact);
+        }
+    });
+</script>
+<script>
+    $(".solveForm button[type='reset']").click(function () {
+        // Clear the Quill instances when the reset button is clicked
+        coActionContent.root.innerHTML = "";
+        preActionContent.root.innerHTML = "";
+        impactContent.root.innerHTML = "";
+    });
+
+    function backToSolutionCard() {
+        $(".card.rounded-card.solution").show();
+        $(".card.rounded-card.solveForm").addClass("d-none");
+    }
+
+    function linkIssueEditPage() {
+        window.location.href = "/issue-details-edit/" + issueId;
+    }
+</script>
+<script>
+    function hideAllErrorMessages() {
+        $('.error-message').hide();
+    }
+
+    // Hide all error messages when the document is ready
+    $(document).ready(function () {
+        hideAllErrorMessages();
+    });
+</script>
 </body>
-
 </html>

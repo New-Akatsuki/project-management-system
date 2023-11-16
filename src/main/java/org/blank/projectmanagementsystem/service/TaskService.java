@@ -12,6 +12,6 @@ public interface TaskService {
     List<TaskViewObject> getTasksByUser();
     TaskViewObject getTaskById(Long id);
     TaskViewObject createTask(TaskFormInput task);
-    TaskViewObject updateTask(TaskFormInput task);
+    Task updateTask(TaskFormInput task);
     void deleteTask(Long id);
 }
