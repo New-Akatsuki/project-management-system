@@ -17,6 +17,9 @@ public class User {
     public String userListPM() {
         return "user-list-pm";
     }
+    @GetMapping("/user-list-dh")
+    public String userListDH(){return "user-list-dh";}
+
     @GetMapping("/user-profile")
     public ModelAndView userprofile() {
         return new ModelAndView("user-profile", "addUserFormInput", new AddUserFormInput());

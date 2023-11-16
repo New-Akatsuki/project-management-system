@@ -178,6 +178,41 @@
         // Show the modal
         $('#userEditModal').modal('show');
     }
+    // For get department
+    $(document).ready(function(){
+        $.ajax({
+            url: '/get-department',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log("Returned Data : ",data);
+                // Clear existing options
+                $('#department').empty();
+
+                // Append new options
+                $.each(data, function (index, value) {
+                    $('#department').append($('<option>', {
+                        value: value.id,
+                        text: value.name
+                    }));
+                });
+
+                $('#editDepartment').empty();
+
+                // Append new options
+                $.each(data, function (index, value) {
+                    $('#editDepartment').append($('<option>', {
+                        value: value.id,
+                        text: value.name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error('Error fetching department data:', error);
+            }
+        });
+    })
 
 
 

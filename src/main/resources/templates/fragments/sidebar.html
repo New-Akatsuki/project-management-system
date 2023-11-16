@@ -58,7 +58,7 @@
                     <span>Projects</span>
                 </a>
             </li>
-            <li class="nav-item" sec:authorize="hasAuthority('PM')">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PM')">
                 <a class="nav-link"  th:href="@{/user-list-pm}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
@@ -78,12 +78,20 @@
                 </a>
             </li>
 
+
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
                 <a class="nav-link" th:href="@{/pm/contract-info}">
                     <i class="bi bi-info-square-fill"></i>
                     <span>Contract Info</span>
                 </a>
             </li>
+            <li class="nav-item" sec:authorize="hasAuthority('DH')">
+                <a class="nav-link"  th:href="@{/user-list-dh}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>User Management</span>
+                </a>
+            </li>
+
 
 
             <li class="nav-item">

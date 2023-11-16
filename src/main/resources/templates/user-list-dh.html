@@ -85,29 +85,29 @@
                 <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
               </div>
 
-              </div>
             </div>
-            <div class="card-body px-">
-              <div class="table-responsive">
-                <table id="user-list-table" class="display" style="width: 100%;">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Department</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                </table>
-              </div>
+          </div>
+          <div class="card-body px-">
+            <div class="table-responsive">
+              <table id="user-list-table" class="display" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   <!-- End Main Content-->
 </main>
 <!-- Vendor JS Files -->
@@ -148,7 +148,9 @@
           <div class="form-group">
             <label for="editUserRole" class="form-label">Role</label>
             <select class="form-select"  id="editUserRole" name="editUserRole" >
+              <option value="PM">PM</option>
               <option value="MEMBER" selected>Member</option>
+
               <!-- Add more role options as needed -->
             </select>
           </div>
@@ -188,7 +190,8 @@
           <div class="form-group">
             <label for="newUserRole" class="form-label">Role</label>
             <select class="form-select"  id="newUserRole" name="role" >
-              <option value="MEMBER" selected>Member</option>
+              <option value="PM">PM</option>
+              <option value="MEMBER" >Member</option>
               <!-- Add more role options as needed -->
             </select>
           </div>
