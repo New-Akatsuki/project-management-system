@@ -29,7 +29,6 @@ public class IssueServiceImpl implements IssueService {
     private final IssueCategoryRepository issueCategoryRepository;
     private final IssuePlaceRepository issuePlaceRepository;
     private final UserRepository userRepository;
-    private final ClientRepository clientRepository;
     private final ResponsiblePartyRepository responsiblePartyRepository;
 
     private User getCurrentUser() {
@@ -61,27 +60,6 @@ public class IssueServiceImpl implements IssueService {
 
     private String checkAndResizeImage(String content) {
         return content.replace("<img", "<img style=\"width: 100%; height: auto;\"");
-
-    }
-
-    @Override
-    public IssueCategory createIssueCategory(IssueCategory issueCategory) {
-        return issueCategoryRepository.save(new IssueCategory(null, issueCategory.getName()));
-    }
-
-    @Override
-    public List<IssueCategory> getAllCategory() {
-        return issueCategoryRepository.findAll();
-    }
-
-    @Override
-    public IssuePlace createIssuePlace(IssuePlace issuePlace) {
-        return issuePlaceRepository.save(new IssuePlace(null, issuePlace.getName()));
-    }
-
-    @Override
-    public List<IssuePlace> getAllPlace() {
-        return issuePlaceRepository.findAll();
     }
 
     @Override
@@ -89,27 +67,12 @@ public class IssueServiceImpl implements IssueService {
         return null;
     }
 
-
-
     @Override
     public List<Issue> getAllIssue() {
         return issueRepository.findAll();
     }
 
-    @Override
-    public List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject() {
-        return issueRepository.getAllIssueDisplayViewObject();
-    }
 
-    @Override
-    public ResponsibleParty createResponsibleParty(ResponsibleParty responsibleParty) {
-        return responsiblePartyRepository.save(new ResponsibleParty(null, responsibleParty.getName()));
-    }
-
-    @Override
-    public List<ResponsibleParty> getAllResponsibleParty() {
-        return responsiblePartyRepository.findAll();
-    }
 
     @Override
     public IssueDetailsViewObject getIssueDetailsById(Long id) {
@@ -141,8 +104,49 @@ public class IssueServiceImpl implements IssueService {
         return issueRepository.save(issue);
     }
 
+
+
+
+
+    //Done Testing
+    @Override
+    public IssueCategory createIssueCategory(IssueCategory issueCategory) {
+        return issueCategoryRepository.save(new IssueCategory(null, issueCategory.getName()));
+    }
+    //Done Testing
+    @Override
+    public List<IssueCategory> getAllCategory() {
+        return issueCategoryRepository.findAll();
+    }
+    //Done Testing
+    @Override
+    public IssuePlace createIssuePlace(IssuePlace issuePlace) {
+        return issuePlaceRepository.save(new IssuePlace(null, issuePlace.getName()));
+    }
+    //Done Testing
+    @Override
+    public List<IssuePlace> getAllPlace() {
+        return issuePlaceRepository.findAll();
+    }
+    //Done Testing
+    @Override
+    public ResponsibleParty createResponsibleParty(ResponsibleParty responsibleParty) {
+        return responsiblePartyRepository.save(new ResponsibleParty(null, responsibleParty.getName()));
+    }
+    //Done Testing
+    @Override
+    public List<ResponsibleParty> getAllResponsibleParty() {
+        return responsiblePartyRepository.findAll();
+    }
+    //Done Testing
+    @Override
+    public List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject() {
+        return issueRepository.getAllIssueDisplayViewObject();
+    }
+    //Done Testing
     @Override
     public List<AllIssueDisplayViewObject> getAllIssueByCreatedById(Long id) {
         return issueRepository.findByCreatedByID(id);
     }
+
 }

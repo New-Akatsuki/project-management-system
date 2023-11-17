@@ -281,6 +281,7 @@
             issues.forEach(function (issue) {
                 let date;
                 let dateText;
+                console.log("Get Date : "+issue.createdAt);
                 if (issue.modifiedAt == null) {
                     date = issue.createdAt;
                     dateText = "Uploaded at: ";

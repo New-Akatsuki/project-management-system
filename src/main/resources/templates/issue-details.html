@@ -93,7 +93,7 @@
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
 <main id="main" class="main">
-    <span id="userId" sec:authentication="principal.id" class="d-none"></span>
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
     <!-- Breadcrumb part-->
     <div class="page-title">
         <nav>
@@ -413,9 +413,10 @@
     })
 </script>
 <script>
-    const issueId = window.location.pathname.split('/').pop();
+    var issueId = window.location.pathname.split('/').reverse()[1];
     console.log(issueId);
-    let userId = $('#userId').text();
+    let userId = $('#userId').val();
+    console.log("User Id : "+userId);
 </script>
 <script>
     // Function to format date with month name and time in AM/PM format without seconds
@@ -534,7 +535,7 @@
         let coAction = coActionContent.root.innerHTML;
         let preAction = preActionContent.root.innerHTML;
         let impact = impactContent.root.innerHTML;
-        let issueId = window.location.pathname.split('/').pop();
+        let issueId = window.location.pathname.split('/').reverse()[1];
         let errors = [];
 
         if (coAction === '' || coAction === '<p><br></p>') {

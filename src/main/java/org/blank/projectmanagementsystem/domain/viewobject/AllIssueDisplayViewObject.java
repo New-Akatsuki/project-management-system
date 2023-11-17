@@ -18,18 +18,6 @@ public class AllIssueDisplayViewObject {
     private boolean solved;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    public AllIssueDisplayViewObject(Issue issue) {
-        this.id = issue.getId();
-        this.title = issue.getTitle();
-        this.category = issue.getIssueCategory().getName();
-        this.place = issue.getIssuePlace().getName();
-        this.responsibleParty = issue.getResponsibleParty().getName();
-        this.solved = issue.isSolved();
-        this.createdAt = issue.getCreatedAt();
-        this.modifiedAt = issue.getModifyAt();
-
-    }
-
     public AllIssueDisplayViewObject(Long id, String title, String category, String place, String responsibleParty, boolean solved, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
         this.title = title;
