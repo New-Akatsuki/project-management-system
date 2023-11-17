@@ -169,16 +169,19 @@
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name">
+                        <span class="text-danger" id="nameError"  style="display:none;">Enter your Name. </span>
                     </div>
                     <div class="form-group">
                         <label for="name">Email</label>
                         <input type="text" class="form-control" id="email">
+                        <span class="text-danger" id="emailError" style="display: none;">Email must not be blank.</span>
                     </div>
                     <div class="form-group">
                         <label  class="form-label" for="department"> Department </label>
 
                                                 <select class="form-select"  id="department" name="department" required>
                                                 </select>
+                        <span class="text-danger" id="departmentError">Department must be selected.</span>
 
 
                     </div>
@@ -193,13 +196,14 @@
                                                 <option value="MEMBER">Member</option>
                                                 <!-- Add more role options as needed -->
                                               </select>
+                        <span class="text-danger" id="roleError">Role must be selected.</span>
 
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="addNewMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                <button type="button" onclick="validateAndAddMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
             </div>
         </div>
     </div>
@@ -227,6 +231,8 @@
     </div>
 </div>
 <script src="/js/member-list-view.js"></script>
+
+
 
 </body>
 </html>

@@ -219,6 +219,33 @@
             }
         });
     })
+    function validateAndAddMember(){
+        const nameInput=document.getElementById("name");
+        const emailInput=document.getElementById("email");
+        const nameError=document.getElementById("nameError");
+        const emailError=document.getElementById("emailError");
+
+        //Reset error message
+        nameError.style.display = 'none';
+        emailError.style.display = 'none';
+
+        //Validation
+        let isValid =true;
+        if(nameInput.value.trim() === ''){
+            nameError.style.display ='block';
+            isValid =false;
+        }
+        if(emailInput.value.trim() === ''){
+            emailError.style.display ='block';
+            isValid =false;
+        }
+        if(isValid){
+            addNewMember();
+        }
+    }
+
+
+
 
 
 
