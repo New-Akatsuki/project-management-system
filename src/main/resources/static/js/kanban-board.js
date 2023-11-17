@@ -133,18 +133,23 @@
         /* ===========================================================
             *  Build toast
             * ============================================================*/
-        function buildToast(){
+        function buildToast(data={
+            title: 'Error!',
+            body: 'something went wrong :(',
+            icon:'bx bx-error-circle',
+            color:'text-danger'
+        }) {
+
             $('#toastPlace').empty();
-            const toast = `<div class="toast-container position-fixed bottom-0 end-0 p-3">
-                                      <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+            const toast = `<div class="toast-container position-fixed toast-place">
+                                      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                         <div class="toast-header">
-                                          <img src="/images/DAT.png" class="rounded me-2" alt="...">
-                                          <strong class="me-auto">Bootstrap</strong>
-                                          <small>11 mins ago</small>
+                                           <i class="${data.icon} ${data.color} fs-5 me-2"></i>
+                                           <strong class="me-auto ${data.color}">${data.title}</strong>
                                           <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                         </div>
                                         <div class="toast-body">
-                                          Hello, world! This is a toast message.
+                                          ${data.body}
                                         </div>
                                       </div>
                                     </div>`;
@@ -311,7 +316,7 @@
 
                 $(`#${item.id} .kb-task-status-layout`).on('click', () => {
                     if (item.status) {
-                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?")
+                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?",'make incomplete');
                         //show modal
                         $('#confirmModal').modal('show');
                     } else {
@@ -326,7 +331,7 @@
                         const subtaskBlock = document.getElementById(`${item.id}-subtask-block`);
                         subtaskBlock.classList.toggle('hide');
                         //for animation
-                        task.style.height = subtaskBlock.classList.contains('hide') ? '145' : `${height + 145}px`;
+                        task.style.height = subtaskBlock.classList.contains('hide') ? '145px' : `${height + 145}px`;
                         subtaskIcon.classList.toggle('toggle-subtask-icon-active');
                     });
                 }
@@ -429,7 +434,7 @@
        *  Build phase modals Function
        * ============================================================*/
         function buildConfirmModal(action = () => {
-        }, title = 'Are you sure?') {
+        }, title = 'Are you sure?',actionName='delete') {
             const modal = `
               <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -439,7 +444,7 @@
                             <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to delete</label>
+                            <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to ${actionName}</label>
                             <input type="text" id="confirmInput" class="form-control" autocomplete="off">
                             
                             <div id="errorConfirmText" class="d-flex d-none text-danger align-items-center gap-1"><i class="bx bx-info-circle"></i>Please check your input</div>
@@ -473,11 +478,9 @@
         /* ===========================================================
               *  render phase modals Function
               * ============================================================*/
-        function renderConfirmModal(action = () => {
-            console.log('clicked confirm')
-        }, title) {
+        function renderConfirmModal(action = () => {}, title,actionName='delete') {
             $('#confirmModal').remove();
-            buildConfirmModal(action, title)
+            buildConfirmModal(action, title,actionName);
         }
 
 
@@ -540,12 +543,19 @@
                     settings.phases.push(data)
                     render()
                     $.fn.refreshGantt();
-                    buildToast();
+                    buildToast({
+                        title: 'Successfully Created!',
+                        body:'Phase '+data.name+' is successfully created.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
                     $('#liveToast').toast('show');
 
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 }
             });
         }
@@ -567,9 +577,18 @@
                     settings.phases.filter(val => val.id === phaseData.id)[0].name = data.name;
                     $.fn.refreshGantt()
                     render()
+                    buildToast({
+                        title: 'Successfully Updated!',
+                        body: 'Phase '+data.name+' is successfully updated.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
+                    $('#liveToast').toast('show');
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 }
             });
         }
@@ -592,9 +611,18 @@
                     $.fn.refreshGantt()
                     render()
                     $('#confirmModal').modal('hide');
+                    buildToast({
+                        title: 'Successfully Deleted!',
+                        body: 'Phase '+data.name+' is successfully deleted.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
+                    $('#liveToast').toast('show');
                 },
                 error: function (error) {
                     console.log("Error response text:", error.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 }
             });
         }
@@ -660,10 +688,19 @@
                     }
                     $.fn.refreshGantt()
                     render()
+                    buildToast({
+                        title: 'Successfully Created!',
+                        body: 'Task '+data.name+' is successfully created.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
+                    $('#liveToast').toast('show');
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
                     console.log(xhr.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 },
             });
         }
@@ -700,6 +737,31 @@
                     //update settings.task data
                     settings.tasks.filter(val => val.id === data.id)[0] = data;
                     settings.tasks.filter(val => val.id === data.id)[0].assignees = data.assignees;
+                    //check if task status is true, make subtask of the task status true
+                    if (data.status) {
+                        settings.tasks.filter(val => val.parent === data.id).forEach((item, index, array) => {
+                            item.status = true;
+                            item.actual_hours = data.actual_hours / array.length;
+                            item.actual_due_date = data.actual_due_date;
+                            settings.tasks.filter(val => val.id === item.id)[0] = item;
+                        });
+                        if(data.parent){
+                            const siblings = settings.tasks.filter(val => val.parent === data.parent);
+                            //if siblings all status is true, make parent status true
+                            if(siblings.every(val => val.status)) {
+                                settings.tasks.filter(val => val.id === data.parent)[0].status = true;
+                                settings.tasks.filter(val => val.id === data.parent)[0].actual_hours = siblings.reduce((a, b) => a + b.actual_hours, 0);
+                                settings.tasks.filter(val => val.id === data.parent)[0].actual_due_date = data.actual_due_date;
+                            }
+                        }
+                    }else{
+                        settings.tasks.filter(val => val.parent === data.id).forEach((item, index, array) => {
+                            item.status = false;
+                            item.actual_hours = null;
+                            item.actual_due_date = null;
+                            settings.tasks.filter(val => val.id === item.id)[0] = item;
+                        });
+                    }
 
                     resetSubtaskDate(data)
                     //reload
@@ -716,10 +778,19 @@
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
+                    buildToast({
+                        title: 'Successfully Updated!',
+                        body: 'Task '+data.name+' is successfully updated.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
+                    $('#liveToast').toast('show');
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
                     console.log(xhr.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 },
             });
         }
@@ -747,9 +818,18 @@
                     currentTaskId = null
                     $.fn.refreshGantt()
                     render()
+                    buildToast({
+                        title: 'Successfully Deleted!',
+                        body: 'Task '+data.name+' is successfully deleted.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    });
+                    $('#liveToast').toast('show');
                 },
                 error: function (error) {
                     console.log("Error response text:", error.responseText);
+                    buildToast();
+                    $('#liveToast').toast('show');
                 }
             });
         }
@@ -1091,7 +1171,7 @@
             if (completeBtn) {
                 completeBtn.addEventListener('click', () => {
                     if (task.status) {
-                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?")
+                        renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?",'make incomplete')
                         //show modal
                         $('#confirmModal').modal('show');
                     } else {
@@ -1130,9 +1210,10 @@
             const subtaskList = settings.tasks.filter(val => val.parent === taskId);
             //append subtasks
             subtaskList.forEach((item) => {
+                const dueDateColor = new Date(item.end_date) < new Date() ? 'text-danger' : '';
                 const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
                 const subtask = `
-                    <div id="${item.id}-offcanvas-subtask" class="kb-subtask-body">
+                    <div id="${item.id}-offcanvas-subtask" class="kb-subtask-body ${dueDateColor}">
                             <span class="flex-1 fs-4 d-flex align-items-center justify-content-center">
                                 ${doneIcon}
                             </span>

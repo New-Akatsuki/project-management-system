@@ -10,6 +10,7 @@ import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.repository.NotificationRepo;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
     }
 
+    @Async
     @Override
     public void sendNotification(Notification notification, long id) {
 
@@ -75,8 +77,4 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
-    @Override
-    public List<Notification> getNotificationById(Long id) {
-        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
-    }
 }

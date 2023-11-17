@@ -2,7 +2,6 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -13,17 +12,13 @@ import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
-import org.hibernate.annotations.OnDelete;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +28,6 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final PhaseRepository phaseRepository;
-    private final NotificationServiceImpl notificationService;
 
     private final TaskMapper taskMapper = new TaskMapper();
 
@@ -45,19 +39,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional(readOnly = true)
     public List<TaskViewObject> getAllTasks() {
-        return taskRepository.findAllByAssignees_Id(getCurrentUser().getId())
+        return taskRepository.findAllByAssigneesId(getCurrentUser().getId())
                 .stream().map(taskMapper::mapToTaskViewObject).toList();
-    }
-
-    @Override
-    public List<TaskViewObject> getTasksByUser() {
-        return taskRepository.findAllByAssignees_Id(getCurrentUser().getId())
-                .stream().map(taskMapper::mapToTaskViewObject).toList();
-    }
-
-    @Override
-    public TaskViewObject getTaskById(Long id) {
-        return taskRepository.findById(id).map(taskMapper::mapToTaskViewObject).orElse(null);
     }
 
     @Override
@@ -77,9 +60,57 @@ public class TaskServiceImpl implements TaskService {
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
+        var resultTask = taskRepository.save(modifyTask);
+        if(modifyTask.isStatus()){
+            makeChildComplete(modifyTask);
+            //check if siblings of the task are completed, then set the parent task to complete
+            if (modifyTask.getParentTask() != null) {
+                var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
+                if (siblings.stream().allMatch(Task::isStatus)) {
+                    modifyTask.getParentTask().setStatus(true);
+                    modifyTask.getParentTask().setActualHours(siblings.stream().reduce(0f, (acc, val) -> acc + val.getActualHours(), Float::sum));
+                    modifyTask.getParentTask().setActualDueDate(modifyTask.getActualDueDate());
+                }
+            }
+        }else {
+            makeChildIncomplete(modifyTask);
+            //check if this task have parent and siblings, then set the parent task to incomplete
+            if (modifyTask.getParentTask() != null) {
+                var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
+                if (siblings.stream().anyMatch(t->!t.isStatus())) {
+                    modifyTask.getParentTask().setStatus(false);
+                    modifyTask.getParentTask().setActualHours(0f);
+                    modifyTask.getParentTask().setActualDueDate(null);
+                }
+            }
+        }
         //reset subtask date
         resetSubTaskDate(modifyTask);
-        return taskRepository.save(modifyTask);
+        return resultTask;
+    }
+
+    private void makeChildComplete(Task task){
+        AtomicReference<Float> parentTaskActualHours = new AtomicReference<>(task.getActualHours());
+        var subTasks = taskRepository.findAllByParentTask(task);
+        subTasks.stream().filter(Task::isStatus).forEach(val -> {
+            parentTaskActualHours.updateAndGet(v -> v - val.getActualHours());
+        });
+        subTasks.stream().filter(t->!t.isStatus()).forEach(val -> {
+            val.setStatus(true);
+            val.setActualHours(parentTaskActualHours.get()/subTasks.size());
+            val.setActualDueDate(task.getActualDueDate());
+            makeChildComplete(val);
+        });
+    }
+
+    private void makeChildIncomplete(Task task){
+        var subTasks = taskRepository.findAllByParentTask(task);
+        subTasks.forEach(val -> {
+            val.setStatus(false);
+            val.setActualHours(0f);
+            val.setActualDueDate(null);
+            makeChildIncomplete(val);
+        });
     }
 
     private Task fillTaskData(TaskFormInput taskFormInput, Task task) {
@@ -136,6 +167,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskViewObject> getTasksByProject(Long projectId) {
         return taskRepository.findAllByProjectId(projectId).stream().map(taskMapper::mapToTaskViewObject).toList();
+    }
+
+    @Override
+    public List<TaskViewObject> getMemberTaskByProject(Long projectId) {
+        var user = getCurrentUser();
+        return taskRepository.findAllByProjectIdAndAssigneesContaining(projectId, user)
+                .stream().map(taskMapper::mapToTaskViewObject).toList();
     }
 
 

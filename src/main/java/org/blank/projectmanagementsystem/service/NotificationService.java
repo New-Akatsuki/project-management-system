@@ -14,5 +14,4 @@ public interface NotificationService {
 
     void sendNotification(Notification notification, long id);
 
-    List<Notification> getNotificationById(Long id);
 }

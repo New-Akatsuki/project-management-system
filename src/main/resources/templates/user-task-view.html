@@ -259,6 +259,7 @@
 
 <script>
     $(document).ready(function () {
+        const projectId = 1;
         $(".dateInputBox").datepicker({
             dateFormat: "yy-mm-dd",
             showOtherMonths: true,
@@ -268,7 +269,7 @@
         });
 
         $.ajax({
-            url: `/get-task-data`,
+            url: `/get-tasks/${projectId}`,
             type: "GET",
             dataType: "json",
             success: function (data) {

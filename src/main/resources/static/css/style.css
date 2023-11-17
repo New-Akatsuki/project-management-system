@@ -1412,3 +1412,8 @@ h6 {
 .w-fit{
   width: fit-content;
 }
+
+.toast-place{
+  top: 100px;
+  right: 0;
+}
