@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
+import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.repository.AmountRepository;
 import org.blank.projectmanagementsystem.service.AmountService;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AmountServiceImp implements AmountService {
     private final AmountRepository amountRepository;
+
+
+    @Override
+    public Amount save(Amount amount) {
+        return amountRepository.save(amount);
+    }
 
     @Override
     public List<Amount> getAllAmount() {
