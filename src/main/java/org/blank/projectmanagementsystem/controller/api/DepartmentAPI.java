@@ -1,11 +1,10 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
-import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
-import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
-import org.blank.projectmanagementsystem.service.*;
+import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +14,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class PMORestController {
+public class DepartmentAPI {
     private final DepartmentService departmentService;
-    private final ProjectService projectService;
-
-
 
     @GetMapping("/departments")
     public ResponseEntity<List<Department>> getDepartments() {
@@ -27,13 +23,12 @@ public class PMORestController {
         return ResponseEntity.ok(departments);
     }
 
-    @PreAuthorize("hasAnyAuthority('PMO')")
     @PostMapping("/department-create")
     public ResponseEntity<Department> addDepartment(@RequestBody Department department) {
         Department newDepartment = departmentService.save(department);
         return ResponseEntity.ok(newDepartment);
     }
-    @PreAuthorize("hasAnyAuthority('PMO')")
+
     @PutMapping("/department-edit/{id}")
     public ResponseEntity<Department> updateDepartment(@PathVariable("id") Long departmentId, @RequestBody Department updatedDepartment) {
         Department existingDepartment = departmentService.getDepartmentById(Math.toIntExact(departmentId));
@@ -50,9 +45,4 @@ public class PMORestController {
         }
     }
 
-
-
 }
-
-
-

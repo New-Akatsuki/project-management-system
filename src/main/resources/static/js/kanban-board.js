@@ -131,6 +131,27 @@
         }
 
         /* ===========================================================
+            *  Build toast
+            * ============================================================*/
+        function buildToast(){
+            $('#toastPlace').empty();
+            const toast = `<div class="toast-container position-fixed bottom-0 end-0 p-3">
+                                      <div id="liveToast" class="toast " role="alert" aria-live="assertive" aria-atomic="true">
+                                        <div class="toast-header">
+                                          <img src="/images/DAT.png" class="rounded me-2" alt="...">
+                                          <strong class="me-auto">Bootstrap</strong>
+                                          <small>11 mins ago</small>
+                                          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body">
+                                          Hello, world! This is a toast message.
+                                        </div>
+                                      </div>
+                                    </div>`;
+            $('#toastPlace').append(toast);
+        }
+
+        /* ===========================================================
        *  Rebuild UI Function
        * ============================================================*/
         function render() {
@@ -519,6 +540,9 @@
                     settings.phases.push(data)
                     render()
                     $.fn.refreshGantt();
+                    buildToast();
+                    $('#liveToast').toast('show');
+
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr.responseText);
@@ -932,6 +956,7 @@
                 width: '100%'
             });
         }
+
 
 
         /*

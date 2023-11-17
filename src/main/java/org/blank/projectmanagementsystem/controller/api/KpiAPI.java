@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class KPIController {
+public class KpiAPI {
     private final ProjectService projectService;
     private final ReviewCountService reviewCountService;
     private final AmountService amountService;

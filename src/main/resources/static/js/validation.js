@@ -74,49 +74,22 @@ function showPatternInvalidMsg(element,msg_div,element_name) {
 }
 
 
-/*function checkPasswordsMatch(passwordElement, confirmPassElement) {
-    confirmPassElement.element.addEventListener("input", function () {
-       if (passwordElement.element.value !== confirmPassElement.element.value) {
-            confirmPassElement.element.setCustomValidity("Passwords do not match.");
-            confirmPassElement.element.classList.add("is-invalid");
-            confirmPassElement.msg.textContent = "Passwords do not match.";
-        } else {
-            confirmPassElement.element.setCustomValidity("");
-            confirmPassElement.element.classList.remove("is-invalid");
-            confirmPassElement.msg.textContent = "";
-        }
-    });
-    passwordElement.element.addEventListener("input", function () {
-
-        if (confirmPassElement.element.value !== "") {
-            if (passwordElement.element.value !== confirmPassElement.element.value) {
-                confirmPassElement.element.setCustomValidity("Passwords do not match.");
-                confirmPassElement.element.classList.add("is-invalid");
-                confirmPassElement.msg.textContent = "Passwords do not match.";
-            } else {
-                confirmPassElement.element.setCustomValidity("");
-                confirmPassElement.element.classList.remove("is-invalid");
-                confirmPassElement.msg.textContent = "";
-            }
-        }
-    });
-}*/
-
 function formValidate(form_id, action=()=>{}) {
     const nameForm = document.getElementById(form_id);
-
-    nameForm.addEventListener("submit", function (event) {
-        if (!nameForm.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }else {
-            event.preventDefault();
-            event.stopPropagation();
-            console.log('in form validation');
-            action();
-        }
-        nameForm.classList.add("was-validated");
-    });
+    if(nameForm){
+        nameForm.addEventListener("submit", function (event) {
+            if (!nameForm.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }else {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log('in form validation');
+                action();
+            }
+            nameForm.classList.add("was-validated");
+        });
+    }
 }
 
 let startDate,endDate,startDateID,endDateID;

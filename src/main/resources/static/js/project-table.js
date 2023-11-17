@@ -30,23 +30,20 @@ function renderProjectListTable(items) {
             {data: 'endDate'},
             {data: 'client'},
             {
-                data: 'On going',
+                data: 'status',
                 render: function (data, type, row) {
                     return `
-                            <button type="button" onclick="toggleProjectStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}">${data ? 'Disabled' : 'Active'}</button>
-
+                         <span class="badge bg-${data==='ONGOING'?'success': data==='FINISHED'?'secondary':'danger'}">${data}</span>
                     `;
                 }
             },
-
-
             {
                 data: 'id',
                 render: function (data, type, row) {
-                    return `
-                    <button class="btn btn-sm btn-primary mx-2" onclick="displayEditProjectModal(${row.id})">Edit</button>
 
-                                `;
+                    return `
+                        <a class="btn btn-sm btn-primary mx-2" href="/projects/${data}/working-area">More</a>
+                    `;
                 }
             },
 
@@ -54,41 +51,6 @@ function renderProjectListTable(items) {
     });
 }
 
-
-<!--Build Toggle Project Btn-->
-function toggleProjectStatus(id, newStatus) {
-    // Show Bootstrap modal for confirmation
-    const actionText = newStatus ? 'disable' : 'enable';
-    $('#confirmationMemberAction').text(actionText);
-
-    $('#confirmationMemberModal').modal('show');
-
-    // Set event listener for modal confirm button
-    $('#confirmMemberButton').on('click', function(event) {
-        // Prevent form submission and page refresh
-        event.preventDefault();
-
-        // Close the modal
-        $('#confirmationMemberModal').modal('hide');
-
-        // Make the AJAX request
-        $.ajax({
-            url: `/member/status/${id}?newStatus=${newStatus}`,
-            type: 'PUT',
-            success: function(memberInfo) {
-                // Handle success response, update UI if necessary
-                console.log('Member status updated successfully:', memberInfo);
-                userList.filter(user=>user.id===memberInfo.id)[0].active = memberInfo.active;
-                renderMemberListTable(userList)
-            },
-            error: function(error) {
-                // Handle error response
-                console.error('Error updating member status:', error);
-            }
-        });
-        $('#confirmMemberButton').off('click');
-    });
-}
 
 // For get department
 

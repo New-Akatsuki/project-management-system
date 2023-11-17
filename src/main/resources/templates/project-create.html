@@ -115,7 +115,6 @@
 
             <form th:action="@{/pm/create-proj}" method="post" th:object="${projectFormInput}"
                   id="create-project">
-                <input type="hidden" name="projectId" value="USR001"/>
                 <div class="container d-flex flex-column gap-2">
                     <div class="d-flex gap-3">
 
@@ -471,7 +470,7 @@
 
         $(document).ready(function () {
             $.ajax({
-                url: '/get-client',
+                url: '/clients',
                 type: 'GET',
                 success: function (data) {
                     populateSelect('.js-example-basic-single.select-box', data);
@@ -500,7 +499,7 @@
 </script>
 <script>
     $.ajax({
-        url: '/get-member',
+        url: '/users',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -518,7 +517,7 @@
     });
 
     $.ajax({
-        url: '/get-deliverables',
+        url: '/deliverables',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -536,7 +535,7 @@
     });
 
     $.ajax({
-        url: '/get-architecture-outlines',
+        url: '/architectures',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -554,7 +553,7 @@
     });
 
     $.ajax({
-        url: '/get-systemoutlines',
+        url: '/system-outlines',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -624,19 +623,19 @@
         let client = parseInt($('#client').val(), 10);
         let objective = quillObjective.root.innerHTML;
         let background = quillBackground.root.innerHTML;
-
-        console.log("Name :", name);
-        console.log("Department :", department);
-        console.log("Start Date :", startDate);
-        console.log("End Date :", endDate);
-        console.log("System Outlines :", so);
-        console.log("Architecture Outlines :", ao);
-        console.log("Deliverables :", deli);
-        console.log("Contract Members :", member);
-        console.log("FOC Members :", foc);
-        console.log("Client :", client);
-        console.log("Objective :", objective);
-        console.log("Background :", background);
+        //
+        // console.log("Name :", name);
+        // console.log("Department :", department);
+        // console.log("Start Date :", startDate);
+        // console.log("End Date :", endDate);
+        // console.log("System Outlines :", so);
+        // console.log("Architecture Outlines :", ao);
+        // console.log("Deliverables :", deli);
+        // console.log("Contract Members :", member);
+        // console.log("FOC Members :", foc);
+        // console.log("Client :", client);
+        // console.log("Objective :", objective);
+        // console.log("Background :", background);
 
         let errors = [];
 
@@ -703,10 +702,10 @@
         };
         // Convert to JSON string
         const jsonString = JSON.stringify(projObj);
-        console.log(projObj);
+        // console.log(projObj);
 
         $.ajax({
-            url: '/pm/create-proj',
+            url: '/add-project',
             type: 'POST',
             contentType: "application/json",
             data: jsonString,
@@ -980,6 +979,5 @@
     hideErrorOnInteraction($('#architectureName'),$('#architectureNameError'));
     hideErrorOnInteraction($('#OutlineName'), $('#systemOutlineNameError'));
 </script>
-<script src="/js/contract-info-script.js"></script>
 </body>
 </html>

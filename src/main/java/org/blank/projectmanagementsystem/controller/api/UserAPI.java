@@ -6,6 +6,7 @@ import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
+import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.UpdateUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
 import org.blank.projectmanagementsystem.service.DepartmentService;
@@ -25,7 +26,7 @@ public class UserAPI {
     private final DepartmentService departmentService;
 
     @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
-    @GetMapping("/users")
+    @GetMapping("/get-users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
@@ -53,7 +54,7 @@ public class UserAPI {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
+    @PreAuthorize("hasAnyAuthority('PMO','PM','DH')")
     @PutMapping("/user-edit/{id}")
     public ResponseEntity<UserViewObject> updateUser(@RequestBody UpdateUserFormInput user) {
         User existingUser = userService.getUserById(user.getId());
@@ -75,6 +76,32 @@ public class UserAPI {
         List<Department> department = departmentService.getAllDepartments();
         log.info("get department{} \n\n ", department);
         return department;
+    }
+
+    @PostMapping("/users/change-password")
+    public ResponseEntity<ChangePasswordFormInput> changePassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
+        ChangePasswordFormInput chpwd = userService.changePassword(
+                changePasswordFormInput.getCurrentPassword(),
+                changePasswordFormInput.getNewPassword());
+        if (chpwd != null) {
+            chpwd.setCurrentPassword(changePasswordFormInput.getCurrentPassword());
+            chpwd.setNewPassword(changePasswordFormInput.getNewPassword());
+            chpwd.setConfirmPassword(changePasswordFormInput.getConfirmPassword());
+            return ResponseEntity.ok(chpwd);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/users/check-current-password")
+    public ResponseEntity<String> checkCurrentPassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
+        boolean chpwd = userService.checkCurrentPassword(changePasswordFormInput.getCurrentPassword());
+        if (chpwd) {
+            String cp = changePasswordFormInput.getCurrentPassword();
+            return ResponseEntity.ok(cp);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

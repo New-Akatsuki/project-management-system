@@ -201,8 +201,9 @@
 
         </div>
     </div>
-
+    <input type="hidden" id="projectId" th:value="${projectId}">
     <div id="phaseModalPlace"></div>
+    <div id="toastPlace"></div>
 
     <!-- Modal Form -->
     <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
@@ -326,7 +327,8 @@
 <script>
     $(document).ready(function () {
 
-        let projectId = 1;
+        let projectId = document.getElementById("projectId").value;
+        console.log('projectId', projectId)
 
         fetchKanbanData()
         fetchGanttData()

@@ -11,7 +11,7 @@ function checkCurrentPassword() {
     // Make an AJAX request to check if the current password is correct
     $.ajax({
         type: 'POST',
-        url: '/pm/check-current-password', // Replace with the actual server endpoint
+        url: '/users/check-current-password', // Replace with the actual server endpoint
         contentType: 'application/json',
         data: JSON.stringify({ currentPassword: currentPassword }),
         success: function (data) {
@@ -40,6 +40,7 @@ $('#currentPassword').on('input', function () {
 });
 
 function checkValidateion() {
+    $('#errorMessage').text('');
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
     let currentPassword = $('#currentPassword').val();
@@ -99,7 +100,7 @@ function validatePassword() {
             // Serialize form data
             $.ajax({
                 type: 'POST',
-                url: '/pm/change-password',
+                url: '/users/change-password',
                 contentType: 'application/json',
                 data: JSON.stringify(changePassword),
                 success: function (data) {

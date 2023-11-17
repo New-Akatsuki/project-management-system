@@ -159,9 +159,9 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-secondary" th:href="@{/issue-creator-view}">Creator View</a>
-                <a class="btn btn-secondary" th:href="@{/issue-pic-view}">PIC View</a>
-                <a class="btn btn-primary" th:href="@{/issue-create}">Create Issue</a>
+                <a class="btn btn-secondary" th:href="@{/issues/my-issues}">Creator View</a>
+                <a class="btn btn-secondary" th:href="@{/issues/pic}">PIC View</a>
+                <a class="btn btn-primary" th:href="@{/issues/new}">Create Issue</a>
             </div>
         </div>
         <!-- Search Box -->
@@ -290,7 +290,7 @@
                 }
                 var card = `
                <div class="col-md-12">
-                   <a href="/issue-details/${issue.id}" class="card-link">
+                   <a href="/issues/${issue.id}/details" class="card-link">
                        <div class="card issue-card" style="border-radius:20px">
                            <div class="card-header" style="border-radius:20px 20px 0 0; padding: 20px">
                                <h5 class="text-white">${issue.title}</h5>

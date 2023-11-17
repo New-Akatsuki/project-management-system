@@ -254,7 +254,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <label for="deliverablesName" class="form-label">Deliverable Method</label>
                         <input type="text" class="form-control" id="deliverablesName" name="name" required
@@ -286,7 +286,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <input type="hidden" id="editDeliverableId" name="id">
                         <label for="editDeliverableName" class="form-label">Deliverable Method</label>
@@ -318,7 +318,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form for adding a new client -->
-                <form class="mt-4" id="addClientForm">
+                <form id="addClientForm">
                     <div class="form-group">
                         <label for="clientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="clientName" name="name" required
@@ -329,16 +329,17 @@
                         <label for="clientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="clientEmail" name="email" required
                                placeholder="Enter email">
-                        <span id="addClientEmailError" class="text-danger d-none">Client name must not be blank!!</span>
+                        <span id="addClientEmailError" class="text-danger d-none">Client email must not be blank!!</span>
                     </div>
                     <div class="form-group">
-                        <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                        <label for="clientPhoneNumber" class="form-label">Phone Number(Optional)</label>
                         <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
                                placeholder="Enter phone number">
-                        <span id="addClientPhError" class="text-danger d-none">Client name must not be blank!!</span>
+                        <span id="addClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+
                 </form>
             </div>
         </div>
@@ -361,7 +362,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form for editing an existing client -->
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <input type="hidden" id="editClientId" name="id">
                         <label for="editClientName" class="form-label">Client Name</label>
@@ -499,7 +500,7 @@
             <div class="modal-body">
                 <!-- Add your form for adding a new system outline here -->
                 <!-- Example form fields: -->
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <label for="OutlineName" class="form-label">System Outline Name</label>
                         <input type="text" class="form-control" id="OutlineName" name="name" required>
@@ -530,7 +531,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form for editing an existing system outline -->
-                <form class="mt-4">
+                <form>
 
 
                     <div class="form-group">
@@ -561,7 +562,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <label for="architectureName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="architectureName" name="name"
@@ -616,7 +617,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="mt-4">
+                <form>
                     <div class="form-group">
                         <input type="hidden" id="editArchitectureId" name="id">
                         <div>

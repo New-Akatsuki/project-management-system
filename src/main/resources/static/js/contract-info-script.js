@@ -49,7 +49,7 @@ $(document).ready(function () {
                     render: function (data, type, row) {
 
                         return `
-                        <div id="toggleBtnGp" class="btn-group" role="group" aria-label="Client Status">
+                        <div id="toggleBtnGp${row.id}" class="btn-group" role="group" aria-label="Client Status">
                            ${buildToggleUserBtn(data, row.id)}
                         </div>
                     `;
@@ -93,7 +93,7 @@ $(document).ready(function () {
                     render: function (data, type, row) {
 
                         return `
-                        <div id="toggleBtndeliverableGp" class="btn-group" role="group" aria-label="Deliverable Status">
+                        <div id="toggleBtndeliverableGp${row.id}" class="btn-group" role="group" aria-label="Deliverable Status">
                            ${buildToggleDeliverableBtn(data, row.id)}
                         </div>
                     `;
@@ -141,7 +141,7 @@ $(document).ready(function () {
                         render: function (data, type, row) {
 
                             return `
-                        <div id="toggleBtnArchitectureGp" class="btn-group" role="group" aria-label="Architecture Status">
+                        <div id="toggleBtnArchitectureGp${row.id}" class="btn-group" role="group" aria-label="Architecture Status">
                            ${buildToggleArchitectureBtn(data, row.id)}
                         </div>
                     `;
@@ -185,7 +185,7 @@ $(document).ready(function () {
                     render: function (data, type, row) {
 
                         return `
-                        <div id="toggleBtnSystemOutlineGp" class="btn-group" role="group" aria-label="SystemOutline Status">
+                        <div id="toggleBtnSystemOutlineGp${row.id}" class="btn-group" role="group" aria-label="SystemOutline Status">
                            ${buildToggleSystemOutlineBtn(data, row.id)}
                         </div>
                     `;
@@ -214,7 +214,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/pm/add-deliverable", // Replace with your server endpoint for adding deliverables
+            url: "/add-deliverable", // Replace with your server endpoint for adding deliverables
             contentType: "application/json",
             data: JSON.stringify(newDeliverable),
             dataType: 'json',
@@ -247,7 +247,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/pm/add-client", // Replace with your server endpoint for adding deliverables
+            url: "/add-client", // Replace with your server endpoint for adding deliverables
             contentType: "application/json",
             data: JSON.stringify(newClient),
             dataType: 'json',
@@ -277,7 +277,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/pm/add-architecture", // Replace with your server endpoint for adding deliverables
+            url: "/add-architecture", // Replace with your server endpoint for adding deliverables
             contentType: "application/json",
             data: JSON.stringify(newArchitecture),
             dataType: 'json',
@@ -311,7 +311,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/pm/add-system-outline", // Replace with your server endpoint for adding deliverables
+            url: "/add-system-outline", // Replace with your server endpoint for adding deliverables
             contentType: "application/json",
             data: JSON.stringify(newSystemOutline),
             dataType: 'json',
@@ -348,7 +348,7 @@ $(document).ready(function () {
         // Make a PUT request to update the deliverable data
         $.ajax({
             type: "PUT",
-            url: "/pm/deliverable/update", // Endpoint to update deliverable data by ID
+            url: "/deliverable/update", // Endpoint to update deliverable data by ID
             contentType: "application/json",
             data: JSON.stringify(updatedDeliverable),
             dataType: 'json',
@@ -402,7 +402,7 @@ $(document).ready(function () {
         // Make a PUT request to update the deliverable data
         $.ajax({
             type: "PUT",
-            url: "/pm/client/update", // Endpoint to update deliverable data by ID
+            url: "/client/update", // Endpoint to update deliverable data by ID
             contentType: "application/json",
             data: JSON.stringify(updatedClient),
             dataType: 'json',
@@ -457,7 +457,7 @@ $(document).ready(function () {
         // Make a PUT request to update the deliverable data
         $.ajax({
             type: "PUT",
-            url: "/pm/architecture/update", // Endpoint to update deliverable data by ID
+            url: "/architecture/update", // Endpoint to update deliverable data by ID
             contentType: "application/json",
             data: JSON.stringify(updatedArchitecture),
             dataType: 'json',
@@ -508,7 +508,7 @@ $(document).ready(function () {
         // Make a PUT request to update the deliverable data
         $.ajax({
             type: "PUT",
-            url: "/pm/system-outline/update", // Endpoint to update deliverable data by ID
+            url: "/system-outline/update", // Endpoint to update deliverable data by ID
             contentType: "application/json",
             data: JSON.stringify(updatedSystemOutline),
             dataType: 'json',
@@ -681,7 +681,7 @@ function toggleClientStatus(id, newStatus) {
 
         // Make the AJAX request
         $.ajax({
-            url: `/pm/client/status/${id}?newStatus=${newStatus}`,
+            url: `/client/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
             success: function(contractInfo) {
                 // Handle success response, update UI if necessary
@@ -716,7 +716,7 @@ function toggleDeliverableStatus(id, newStatus) {
 
         // Make the AJAX request
         $.ajax({
-            url: `/pm/deliverable/status/${id}?newStatus=${newStatus}`,
+            url: `/deliverable/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
             success: function(contractInfo) {
                 // Handle success response, update UI if necessary
@@ -750,7 +750,7 @@ function toggleArchitectureStatus(id, newStatus) {
 
         // Make the AJAX request
         $.ajax({
-            url: `/pm/architecture/status/${id}?newStatus=${newStatus}`,
+            url: `/architecture/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
             success: function(contractInfo) {
                 // Handle success response, update UI if necessary
@@ -786,7 +786,7 @@ function toggleSystemOutlineStatus(id, newStatus) {
 
         // Make the AJAX request
         $.ajax({
-            url: `/pm/system-outline/status/${id}?newStatus=${newStatus}`,
+            url: `/system-outline/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
             success: function(contractInfo) {
                 // Handle success response, update UI if necessary
@@ -808,35 +808,35 @@ function toggleSystemOutlineStatus(id, newStatus) {
         build toggle button
   ====================================================*/
 function buildToggleUserBtn(status,id){
-    $('#toggleUserBtn').remove();
+    $(`#toggleUserBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
-    const btn = `<button id="toggleUserBtn" type="button" onclick="toggleClientStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-    $('#toggleBtnGp').append(btn)
+    const btn = `<button id="toggleUserBtn${id}" type="button" onclick="toggleClientStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $(`#toggleBtnGp${id}`).append(btn)
     return btn;
 }
 function buildToggleDeliverableBtn(status,id){
-    $('#toggleDeliverableBtn').remove();
+    $(`#toggleDeliverableBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
-    const btn = `<button id="toggleDeliverableBtn" type="button" onclick="toggleDeliverableStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-    $('#toggleBtndeliverableGp').append(btn)
+    const btn = `<button id="toggleDeliverableBtn${id}" type="button" onclick="toggleDeliverableStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $(`#toggleBtndeliverableGp${id}`).append(btn)
     return btn;
 }
 function buildToggleArchitectureBtn(status,id){
-    $('#toggleArchitectureBtn').remove();
+    $(`#toggleArchitectureBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
-    const btn = `<button id="toggleArchitectureBtn" type="button" onclick="toggleArchitectureStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-    $('#toggleBtnArchitectureGp').append(btn)
+    const btn = `<button id="toggleArchitectureBtn${id}" type="button" onclick="toggleArchitectureStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $(`#toggleBtnArchitectureGp${id}`).append(btn)
     return btn;
 }
 function buildToggleSystemOutlineBtn(status,id){
-    $('#toggleSystemOutlineBtn').remove();
+    $(`#toggleSystemOutlineBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
-    const btn = `<button id="toggleSystemOutlineBtn" type="button" onclick="toggleSystemOutlineStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
-    $('#toggleBtnSystemOutlineGp').append(btn)
+    const btn = `<button id="toggleSystemOutlineBtn${id}" type="button" onclick="toggleSystemOutlineStatus(${id}, ${!status})" class="btn btn-sm btn-${statusClass}">${statusText}</button>`;
+    $(`#toggleBtnSystemOutlineGp${id}`).append(btn)
     return btn;
 }
 

@@ -390,7 +390,7 @@ function calculateManMonthProductivity(actualManMonths, planManMonths) {
     if (planManMonths === 0) {
         return 0;
     }
-    return (planManMonths / actualManMonths) * 100;
+    return (planManMonths / actualManMonths)*100;
 }
 
 function updateManMonthChart(labels, planManMonths, actualManMonths) {

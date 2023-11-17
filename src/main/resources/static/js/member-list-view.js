@@ -4,7 +4,7 @@
     $(document).ready(function () {
     // Make an AJAX request to fetch data from the REST API endpoint
     $.ajax({
-        url: '/users', // Replace with your actual API endpoint
+        url: '/get-users', // Replace with your actual API endpoint
         method: 'GET',
         dataType: 'json',
         success: function (data) {

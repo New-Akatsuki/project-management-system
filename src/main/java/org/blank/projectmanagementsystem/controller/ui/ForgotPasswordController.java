@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.ui;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,9 +80,6 @@ public class ForgotPasswordController {
         fwRepo.save(fwToken);
         model.addAttribute("msg", "Password Reset is successful!");
         return "login";
-
-
-
     }
 
 }

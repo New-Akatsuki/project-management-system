@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import static java.lang.Math.toIntExact;
 
@@ -137,23 +138,26 @@ public class UserServiceImpl implements UserService {
         return savedUser;
     }
 
-//    private void sendDefaultPasswordEmail(User user, String password) {
-//        // Call the MailService to send the default password email
-//        mailService.sendDefaultPassword(user, password);
-//    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
     public List<UserViewObject> getAllUsers() {
-        Role currentRole = getCurrentUser().getRole();
+        var currentUser = getCurrentUser();
+        Role currentRole = currentUser.getRole();
         if(currentRole == Role.PMO){
-            return userRepository.findAll().stream().map(UserViewObject::new).toList();
+            return userRepository.findAll().stream()
+                    .filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
+                    .map(UserViewObject::new).toList();
         }
         if(currentRole== Role.DH){
-            return userRepository.findAllByDepartment(getCurrentUser().getDepartment()).stream().map(UserViewObject::new).toList();
+            return userRepository.findAllByDepartment(getCurrentUser().getDepartment()).stream()
+                    .filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
+                    .map(UserViewObject::new).toList();
         }
         if(currentRole== Role.PM){
-            return userRepository.findAllByDepartmentAndRole(getCurrentUser().getDepartment(), Role.MEMBER).stream().map(UserViewObject::new).toList();
+            return userRepository.findAllByDepartmentAndRole(getCurrentUser().getDepartment(), Role.MEMBER)
+                    .stream().filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
+                    .map(UserViewObject::new).toList();
         }
         return null;
     }

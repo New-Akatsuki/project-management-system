@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.controller;
+package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +21,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class ManMonthController {
+public class ManMonthAPI {
         private final UserService userService;
         private final TaskService taskService;
         private final ProjectService projectService;
         private final DepartmentService departmentService;
-
 
         @GetMapping("/get-task-data")
         public ResponseEntity<List<TaskViewObject>> getTaskData() {
