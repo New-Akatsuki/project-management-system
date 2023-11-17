@@ -425,7 +425,15 @@
                     taskData.phase = parseInt(newSectionId.split('-')[0], 10);
                     taskData.parent = null;
                     taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
-                    updateTask(taskData)
+                    updateTask(taskData,false,{
+                        title: 'Successfully Moved!',
+                        body: '<span class="fw-bolder text-danger">'+taskData.name+'</span> is moved from <span class="fw-bolder text-danger">'+
+                            settings.phases.filter(val => val.id === parseInt(originalSectionId.split('-')[0], 10))[0].name+
+                            '</span> Phase to <span class="fw-bolder text-danger">'+settings.phases.filter(val => val.id === parseInt(newSectionId.split('-')[0], 10))[0].name+'</span> Phase.',
+                        icon:'bx bx-check-circle',
+                        color:'text-success'
+                    })
+
                 },
             }).disableSelection();
         }
@@ -725,7 +733,7 @@
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task, refresh = true) {
+        function updateTask(task, refresh = true,toastData) {
 
             $.ajax({
                 url: '/update-task',
@@ -761,6 +769,17 @@
                             item.actual_due_date = null;
                             settings.tasks.filter(val => val.id === item.id)[0] = item;
                         });
+
+                        //check if this task have parent and siblings, then set the parent task to incomplete
+                        if(data.parent){
+                            const siblings = settings.tasks.filter(val => val.parent === data.parent);
+                            //if siblings all status is true, make parent status true
+                            if(siblings.every(val => !val.status)) {
+                                settings.tasks.filter(val => val.id === data.parent)[0].status = false;
+                                settings.tasks.filter(val => val.id === data.parent)[0].actual_hours = null;
+                                settings.tasks.filter(val => val.id === data.parent)[0].actual_due_date = null;
+                            }
+                        }
                     }
 
                     resetSubtaskDate(data)
@@ -778,7 +797,7 @@
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
-                    buildToast({
+                    buildToast(toastData||{
                         title: 'Successfully Updated!',
                         body: 'Task '+data.name+' is successfully updated.',
                         icon:'bx bx-check-circle',

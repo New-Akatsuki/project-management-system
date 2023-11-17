@@ -13,7 +13,6 @@ public interface ProjectService {
 
     Project saveProject(ProjectFormInput projectFormInput);
     List<ProjectListViewObject> getAllProjects();
-    List<ProjectViewObject> getAllProjectViewObjects();
     ProjectViewObject getProjectById(Long id);
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();

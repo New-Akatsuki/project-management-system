@@ -60,6 +60,8 @@ public class TaskServiceImpl implements TaskService {
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
+        //reset subtask date
+        resetSubTaskDate(modifyTask);
         var resultTask = taskRepository.save(modifyTask);
         if(modifyTask.isStatus()){
             makeChildComplete(modifyTask);
@@ -84,8 +86,6 @@ public class TaskServiceImpl implements TaskService {
                 }
             }
         }
-        //reset subtask date
-        resetSubTaskDate(modifyTask);
         return resultTask;
     }
 

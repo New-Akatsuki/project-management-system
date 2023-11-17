@@ -140,7 +140,7 @@ function taskBoard(options) {
         let dataIds = settings.tasks.map(val => val.id)||[];
         console.log('tasks',settings.tasks)
         console.log('dataIds',dataIds,!dataIds.includes(1))
-        settings.tasks.filter(data => data.parent === null|| !dataIds.includes(data.parent)).forEach((item, index, array) => {
+        settings.tasks.filter(data => data.parent === null|| !dataIds.includes(data.parent)||new Date(data.end_date) < new Date()).forEach((item, index, array) => {
             const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
             const priClass = item.priority === 'high' ? 'danger' : item.priority === 'medium' ? 'warning' : 'success';
             const task_container = `

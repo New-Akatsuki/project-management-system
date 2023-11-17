@@ -32,8 +32,8 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/new")
-    public ModelAndView createProject(){
-        return new ModelAndView("project-create", "projectFormInput", new ProjectFormInput());
+    public String createProject(){
+        return "project-create";
     }
 
     @GetMapping("/projects/{id}/working-area")
