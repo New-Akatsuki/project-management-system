@@ -1,6 +1,5 @@
 package org.blank.projectmanagementsystem.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
@@ -16,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,8 +30,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void saveNotification(Notification notification) {
+    public Notification saveNotification(Notification notification) {
         notificationRepo.save(notification);
+        return notification;
     }
 
     @Transactional(readOnly = true)
@@ -77,4 +76,21 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    @Override
+    public List<Notification> getNotificationById() {
+        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
+    }
+
+    @Override
+    public void deleteNotificationById(Long id) {
+        notificationRepo.deleteById(id);
+    }
+
+    @Override
+    public void setNotificationIsRead(Long id) {
+        Notification notification= notificationRepo.getReferenceById(id);
+        notification.setIsRead(true);
+        log.info("hhh {}",notification);
+        notificationRepo.save(notification);
+    }
 }

@@ -101,8 +101,8 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-            <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
-            <li class="breadcrumb-item active">Create Issue</li>
+            <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
+            <li class="breadcrumb-item active">Edit Issue</li>
         </ol>
     </nav>
     <!-- End Page Title -->
@@ -606,7 +606,7 @@
 </script>
 
 <script>
-    const issueId = window.location.pathname.split('/').pop();
+    var issueId = window.location.pathname.split('/').reverse()[1];
     $(document).ready(function () {
         $.ajax({
             url: "/get-issue-details/" + issueId,

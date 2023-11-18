@@ -55,6 +55,7 @@ public class NotificationAspect {
                     .link("/project/" + result.getId())
                     .type(NotificationType.PROJECT)
                     .recipient(user)
+                    .isRead(false)
                     .build();
 
             result.getContractMembers().forEach(contractMember -> {
@@ -89,6 +90,7 @@ public class NotificationAspect {
                     .link("/issue/" + result.getId())
                     .type(NotificationType.ISSUE)
                     .recipient(result.getPic())
+                    .isRead(false)
                     .build();
             notificationService.saveNotification(notification);
             notificationService.sendNotification(notification, result.getPic().getId());
@@ -107,6 +109,7 @@ public class NotificationAspect {
                     .date(LocalDate.now())
                     .link("/task/" + result.getId())
                     .type(NotificationType.TASK)
+                    .isRead(false)
                     .build();
 
             result.getAssignees().forEach(assignee -> {
@@ -132,6 +135,7 @@ public class NotificationAspect {
                         .link("/task/" + result.getId())
                         .type(NotificationType.TASK)
                         .recipient(result.getProject().getProjectManager())
+                        .isRead(false)
                         .build();
                 notificationService.saveNotification(notification);
                 notificationService.sendNotification(notification, result.getProject().getProjectManager().getId());

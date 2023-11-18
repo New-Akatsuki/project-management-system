@@ -81,13 +81,47 @@
 
     <style>
         .modal {
-            --bs-modal-width: 500px;
+            --bs-modal-width: 450px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 140px;
         }
 
         .btn-icon {
             height: 40px;
         }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+
     </style>
+    <style>
+        /* Add this style for the dim overlay */
+        #dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            pointer-events: auto; /* Updated to block interactions with elements beneath */
+        }
+
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 1.8rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            z-index: 10001; /* Update z-index to be higher than #dim-overlay */
+            display: none;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -192,7 +226,8 @@
                     <div>
                         <label for="dir-cause" class="form-label">Direct Cause</label>
                         <div id="dir-cause"></div>
-                        <span class="text-danger error-message" id="dirCauseError">Direct cause must not be empty!</span>
+                        <span class="text-danger error-message"
+                              id="dirCauseError">Direct cause must not be empty!</span>
                     </div>
 
                     <div>
@@ -285,13 +320,39 @@
             </div>
         </div>
     </div>
+    <!--    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+    <!--        &lt;!&ndash; Modal content goes here &ndash;&gt;-->
+    <!--        <div class="circle">-->
+    <!--            <div class="checkmark"></div>-->
+    <!--        </div>-->
+    <!--        <h2>Success!</h2>-->
+    <!--        <p>Your action was successful.</p>-->
+    <!--        <button onclick="closeModal()">Close</button>-->
+    <!--    </div>-->
     <!-- End Card -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <!-- Removed the modal-header and moved the close button to the modal-body -->
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.5rem; position: absolute; top: 0; right: 0;"></button>
+                    <div class="text-center">
+                        <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
+                        <h2 style="font-size: 2rem;">Success!</h2>
+                        <p>Issue Creation was successful.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+    </div>
+    <div id="dim-overlay"></div>
 </main>
 <!-- End #main -->
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script th:src="@{/js/text-editor.js}"></script>
-
 <script>
     // Function to toggle the toolbar
     function clean() {
@@ -323,10 +384,24 @@
 <script>
     $(document).ready(function () {
         $('.js-example-basic-single').select2();
+
     });
 </script>
 
 <script>
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
+
     function populateSelect(selector, options) {
         let select = $(selector);
         $.each(options, function (index, value) {
@@ -376,6 +451,7 @@
                 }
             });
         }
+
         input.on('input', toggleError);
 
         modalButton.click(resetModal);
@@ -554,16 +630,18 @@
         // Convert to JSON string
         const jsonString = JSON.stringify(issueObj);
         console.log(jsonString);
+        toggleLoadingSpinner(true);
         $.ajax({
             url: '/create-issue',
             type: 'POST',
             contentType: "application/json",
             data: jsonString,
-
             success: function (response) {
+                toggleLoadingSpinner(false);
                 displaySuccessModal();
             },
             error: function (response) {
+                toggleLoadingSpinner(false);
                 alert("Issue creation failed");
             }
         });
@@ -613,34 +691,18 @@
 </script>
 <script>
     function displaySuccessModal() {
-        // Create a modal element
-        var modal = $('<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" \
-    style="display: flex !important;\
-    align-items: center;\
-    justify-content: center;">\
-                    <div class="modal-dialog" role="document" style=" margin-top: 200px;">\
-                        <div class="modal-content">\
-                            <div class="modal-body">\
-                                <h4 style="text-align: center; color: green">Issue Created Successfully</h4>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </div>');
-
-        // Append the modal to the body
-        $('body').append(modal);
-
+        let modalBox = $('#successModal')
         // Show the modal
-        modal.modal('show');
+        modalBox.modal('show');
 
-        // Set a timeout to close the modal after 2 seconds
+        // Hide the modal after 3 seconds
         setTimeout(function () {
-            modal.modal('hide');
+            modalBox.modal('hide');
             window.location.href = "/issues";
-        }, 1000);
+        }, 2000);
 
         // Handle close event of the modal
-        modal.on('hidden.bs.modal', function () {
+        modalBox.on('hidden.bs.modal', function () {
             window.location.href = "/issues";
         });
     }

@@ -132,12 +132,12 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item"><a th:href="@{/all-issues}">Issue</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
                 <li class="breadcrumb-item active">Display Issue</li>
             </ol>
         </nav>
     </div>
-    <span id="userId" sec:authentication="principal.id" class="d-none"></span>
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
     <div class="tabs">
         <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
         <label for="tab1" class="tabs__label">Solved</label>
@@ -175,7 +175,7 @@
 
     $(document).ready(function () {
         let issues = [];
-        let userId = $('#userId').text();
+        let userId = $('#userId').val();
 
         $.ajax({
             url: '/get-issue-by-pic/' + userId,

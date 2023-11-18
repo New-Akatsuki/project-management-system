@@ -25,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
+  
     private final UserService userService;
     private final ClientService clientService;
     private final DepartmentService departmentService;
@@ -53,9 +54,6 @@ public class AuthController {
 
         return "index";
     }
-
-
-
 
     @PostMapping("/process_login")
     public ModelAndView processLogin() {

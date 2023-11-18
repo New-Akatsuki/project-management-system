@@ -23,7 +23,6 @@ public class Notification implements Serializable {
 
     private String message;
 
-    @Column(nullable = false)
     private LocalDate date;
 
     private String link;
@@ -34,4 +33,10 @@ public class Notification implements Serializable {
     @JsonIgnore
     @ManyToOne
     private User recipient;
+
+    private Boolean isRead;
+
+    public Notification(Boolean isRead) {
+        this.isRead = isRead;
+    }
 }
