@@ -16,4 +16,6 @@ public interface NotificationService {
     List<Notification> getNotificationById();
 
     void deleteNotificationById(Long id);
+
+    void setNotificationIsRead(Long id);
 }

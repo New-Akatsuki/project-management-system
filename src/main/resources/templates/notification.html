@@ -117,7 +117,38 @@
                 console.log("No notifications selected for deletion.");
             }
         });
+
+        // Add event listener for the notification click to mark as read
+        $(document).on("click", ".notification", function (e) {
+            // Check if the click occurred on the checkbox
+            if (!$(e.target).is("input[type='checkbox']")) {
+                console.log("Clicked");
+                var notificationId = $(this).find("input[type='checkbox']").val();
+                console.log(notificationId);
+                markNotificationAsRead(notificationId);
+            }
+        });
+
+
     });
+
+    function markNotificationAsRead(id) {
+        // Make an AJAX request to mark the notification as read
+        $.ajax({
+            url: "/mark-as-read/" + id, // Include the id in the URL
+            type: "POST",
+            contentType: "application/json",
+            success: function (response) {
+                console.log(response);
+                // Optionally, you can update the UI or perform additional actions after marking as read
+            },
+            error: function (error) {
+                console.error("Error marking notification as read:", error);
+                // Handle the error or display a message to the user
+            }
+        });
+    }
+
 
     function fetchNotifications() {
         $.ajax({
@@ -138,20 +169,20 @@
     function createNotification(date, id, isRead, link, message, type) {
         var dotClass = isRead ? "read" : "unread";
         var notificationElement = `
-            <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass}" style="margin-bottom: 10px; border-radius: 10px;">
-                <div class="d-flex w-100 gap-3">
-                    <div class="w-100 d-flex gap-2">
-                        <label><input class="form-check-input me-1" type="checkbox" value="${id}"></label>
-                        <div class="w-100">
-                            <h5 class="mb-1">${message}</h5>
-                            <p class="mb-1">${type}</p>
+                <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass}" style="margin-bottom: 10px; border-radius: 10px;">
+                    <div class="d-flex w-100 gap-3">
+                        <div class="w-100 d-flex gap-2">
+                            <label><input class="form-check-input me-1" type="checkbox" value="${id}"></label>
+                            <div class="w-100">
+                                <h5 class="mb-1">${message}</h5>
+                                <p class="mb-1">${type}</p>
+                            </div>
                         </div>
+                        <small class="col-1 text-end text-body-secondary">${date}</small>
+                        ${!isRead ? '<div class="unread-dot"></div>' : ''}
                     </div>
-                    <small class="col-1 text-end text-body-secondary">${date}</small>
-                    ${!isRead ? '<div class="unread-dot"></div>' : ''}
-                </div>
-            </a>
-        `;
+                </a>
+            `;
         return notificationElement;
     }
 
@@ -173,21 +204,21 @@
 
         // Add a checkbox at the top to check all checkboxes
         notificationList.append(`
-            <div class="d-flex w-100 gap-3 m-3">
-                <div class="w-100 d-flex gap-2 align-items-center">
-                    <label><input id="checkAll" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
-                    <div class="w-100">
-                        <h5 class="mb-1">Check All</h5>
-                    </div>
-                    <div class="bin-icon" style="padding-right: 20px">
-                        <!-- Add your bin icon here -->
-                        <a href="#" class="bin-icon-link">
-                            <h4><i class="bi bi-trash"></i></h4>
-                        </a>
+                <div class="d-flex w-100 gap-3 m-3">
+                    <div class="w-100 d-flex gap-2 align-items-center">
+                        <label><input id="checkAll" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
+                        <div class="w-100">
+                            <h5 class="mb-1">Check All</h5>
+                        </div>
+                        <div class="bin-icon" style="padding-right: 20px">
+                            <!-- Add your bin icon here -->
+                            <a href="#" class="bin-icon-link">
+                                <h4><i class="bi bi-trash"></i></h4>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `);
+            `);
 
         // Iterate through jsonData and append notifications
         jsonData.forEach(function (notification) {
@@ -209,7 +240,7 @@
 
         // Make an AJAX request to delete notifications
         $.ajax({
-            url: "/delete-notifications",  // Replace with the actual endpoint in your RestController
+            url: "/delete-notifications", // Replace with the actual endpoint in your RestController
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(ids),
@@ -224,7 +255,6 @@
             }
         });
     }
-
 
     function checkAll() {
         var checkboxes = $(".notification input[type='checkbox']");

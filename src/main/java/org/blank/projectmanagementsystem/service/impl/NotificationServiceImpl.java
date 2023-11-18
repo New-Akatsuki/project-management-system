@@ -81,4 +81,12 @@ public class NotificationServiceImpl implements NotificationService {
     public void deleteNotificationById(Long id) {
         notificationRepo.deleteById(id);
     }
+
+    @Override
+    public void setNotificationIsRead(Long id) {
+        Notification notification= notificationRepo.getReferenceById(id);
+        notification.setIsRead(true);
+        log.info("hhh {}",notification);
+        notificationRepo.save(notification);
+    }
 }
