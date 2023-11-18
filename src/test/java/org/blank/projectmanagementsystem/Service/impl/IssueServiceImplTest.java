@@ -39,8 +39,7 @@ public class IssueServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
-
-    private IssueService issueServiceImpl;
+    private IssueServiceImpl issueServiceImpl;
 
     @BeforeEach
     void setUp() {

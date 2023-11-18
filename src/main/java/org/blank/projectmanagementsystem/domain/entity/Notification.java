@@ -34,4 +34,6 @@ public class Notification implements Serializable {
     @JsonIgnore
     @ManyToOne
     private User recipient;
+
+    private Boolean isRead;
 }
