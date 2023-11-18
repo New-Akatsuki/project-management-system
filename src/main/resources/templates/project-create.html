@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>DIR-ACE TECHNOLOGY</title>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and Popper.js for Modal Box End -->
+
+    <link href="/css/single-select.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="/css/hope.css">
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/select2.css">
+
+
+    <style>
+        .card .card-header {
+            background: linear-gradient(to right, #0074cc, #999);
+            color: #fff;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card .card-header h3 {
+            color: #fff;
+            margin: 10px;
+        }
+    </style>
+    <style>
+        .card-body {
+            background: white;
+        }
+    </style>
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            height: 100%;
+            line-height: 30px;
+        }
+    </style>
+
+    <style>
+        .modal {
+            --bs-modal-width: 500px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+        .error-msg{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item active">Create Project</li>
+        </ol>
+    </nav>
+    <!-- End Page Title -->
+    <div class="card" style="border-radius: 20px;">
+        <div class="card-header">
+            <h3><i class="bi bi-pencil-square"></i> Create Project</h3>
+        </div>
+        <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
+
+            <form id="create-project">
+                <div class="container d-flex flex-column gap-2">
+                    <div class="d-flex gap-3">
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="title" class="form-label">Name</label>
+                            <input class="form-control" type="text" name="title" id="title"
+                                   placeholder="Enter Project Name"/>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="titleError">Enter Project Name</span>
+                        </div>
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="department">Department</label>
+                            <select class="js-example-basic-single select-box2 form-select"
+                                    id="department" style="width: 100%; height: 100%;">
+                                <option value="default" selected disabled>Choose Department</option>
+                            </select>
+                            <span class="text-danger" id="departmentError">Department must be selected.</span>
+                        </div>
+
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="member">Add Member</label>
+                            <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger"
+                                  id="contractMemberError">Contract member must be selected.</span>
+                        </div>
+
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="foc">Add FOC Member</label>
+                            <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                            <div class="replace" style="height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-50 p-0">
+                            <label for="start-date" class="form-label d-block">Start Date</label>
+                            <input class="datepicker-style form-control" type="text" id="start-date"
+                                   placeholder="Enter start date" autocomplete="false"/>
+                            <div class="invalid-feedback" id="start-date_error"></div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="startDateError">Start date must be chosen.</span>
+                        </div>
+
+                        <div class="d-flex flex-column w-50 p-0">
+                            <label for="end-date" class="form-label d-block">End Date</label>
+                            <input class="datepicker-style form-control" type="text" id="end-date"
+                                   placeholder="Enter end date" autocomplete="false"/>
+                            <div class="invalid-feedback" id="end-date_error"></div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="endDateError">End date must be chosen.</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="ao">Architecture Outlines</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="arc-select-box" id="ao" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <a id="addArchitectureButton" class="icon-add-btn">
+                                    <i class='bx bx-plus m-0 p-0'></i>
+                                </a>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="arcOutlinesError">Architecture outline must be selected.</span>
+                        </div>
+
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="so">System Outlines</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="sysOutline-select-box" id="so" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <a id="addSystemOutlineButton" class="icon-add-btn">
+                                    <i class='bx bx-plus m-0 p-0'></i>
+                                </a>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="sysOutlinesError">System outline must be selected.</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <!-- Left Set -->
+                        <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
+                            <label for="client" class="mb-0">Client</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <!-- First Select Box with Default Value -->
+                                <select class="js-example-basic-single select-box form-select"
+                                        id="client" style="width: 100%; height: 100%;">
+                                    <option value="default" selected disabled>Select Client</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                                <a id="addClientButton" class="icon-add-btn">
+                                    <i class='bx bx-plus m-0 p-0'></i>
+                                </a>
+                            </div>
+                            <span class="text-danger" id="clientError">You must choose a Client.</span>
+                        </div>
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="deli">Deliverables</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="deliverable-select-box" id="deli" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <a id="addDeliverablesButton" class="icon-add-btn">
+                                    <i class='bx bx-plus m-0 p-0'></i>
+                                </a>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="deliverablesError">Deliverable must be selected.</span>
+                        </div>
+
+
+                    </div>
+
+
+                    <div>
+                        <label for="objective" class="form-label">Objective</label>
+                        <div id="objective"></div>
+                        <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
+                    </div>
+
+                    <div>
+                        <label for="background">Background</label>
+                        <div id="background"></div>
+                        <span class="text-danger" id="backgroundError">Background must not be empty!</span>
+                    </div>
+                    <div class="align-self-end">
+                        <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
+                        <input type="submit" id="submitButton" class="btn btn-primary" value="Create Project">
+                    </div>
+                </div>
+                <!--  Hidden Items    -->
+                <input type="hidden" name="member" id="memberInput">
+                <input type="hidden" name="objective" id="objectiveInput">
+                <input type="hidden" name="background" id="backgroundInput">
+                <input type="hidden" name="foc" id="focInput">
+
+                <!-- Hidden Items End -->
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Client Modal -->
+    <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for adding a new client -->
+                    <form>
+                        <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
+                        <div class="form-group">
+                            <label for="clientName" class="form-label">Client Name</label>
+                            <input type="text" class="form-control" id="clientName" name="name" required
+                                   placeholder="Enter client name">
+                            <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="clientEmail" name="email" required
+                                   placeholder="Enter email">
+                            <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                                   placeholder="Enter phone number">
+                            <span class="d-none error-msg"
+                                  id="clientPhoneNumberError">Client phone number must not be empty!</span>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                        <button type="button" onclick="addClient()" class="btn btn-primary">Add Client</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    Add Architecture Outline-->
+    <div class="modal fade" id="architectureAddModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="architectureName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
+                            <span class="d-none error-msg" id="architectureNameError">Architecture outline name must not be empty!</span>
+                            <span class="d-none error-msg" id="architectureSameNameError">This name already exist.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="architectureType">Type</label>
+                            <select class="form-control" id="architectureType" required>
+                                <option value="IDE">IDE</option>
+                                <option value="FRAMEWORK">Framework</option>
+                                <option value="LIBRARY">Library</option>
+                                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                                <option value="SCRIPT_LANGUAGE">Script Language</option>
+                                <option value="MARKUP_LANGUAGE">Markup Language</option>
+                                <option value="DATABASE">Database</option>
+                                <option value="VCS">Version Control System</option>
+                                <option value="API">API</option>
+                                <option value="TESTING">Testing</option>
+                                <option value="ALGORITHM">Algorithm</option>
+                                <option value="DESIGN_PATTERN">Design Pattern</option>
+                                <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                            <span class="d-none error-msg" id="architectureTypeError">Architecture outline type must not be empty!</span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addArchitecture()">Add Architecture</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Add System Outline-->
+    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog"
+         aria-labelledby="addSystemOutlineModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="OutlineName" class="form-label">System Outline Name</label>
+                            <input type="text" class="form-control" id="OutlineName" name="name" required>
+                        </div>
+                        <span class="d-none error-msg" id="systemOutlineNameError">System outline name must not be empty!</span>
+                        <span class="d-none error-msg" id="systemOutlineSameNameError">This name already exist!</span>
+                    </form>
+                    <!-- Add Bootstrap classes to the form elements for better styling -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <button type="button" onclick="addSystemOutline()" class="btn btn-primary">Add Outline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Deliverables-->
+    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
+         aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="mt-4">
+                        <div class="form-group">
+                            <label for="deliverablesName" class="form-label">Deliverable Method</label>
+                            <input type="text" class="form-control" id="deliverablesName" name="name" required
+                                   placeholder="Enter new deliverables method">
+                        </div>
+                        <span class="d-none error-msg" id="deliverablesNameError">Deliverables method must not be empty!</span>
+                        <span class="d-none error-msg" id="deliverablesSameNameError">This name already exist!</span>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <button type="button" onclick="addDeliverable()" class="btn btn-primary">Add
+                        Deliverables
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Card -->
+</main>
+<!-- End #main -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!--    <script src="/js/select2.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+<script>
+    // Function to toggle the toolbar
+    function clean() {
+        $('#title').val("");
+        quillObjective.root.innerHTML = "";
+        quillBackground.root.innerHTML = "";
+        $('#client').val("default").trigger('change');
+        $('#member').val(null).trigger('change');
+        $('#foc').val(null).trigger('change');
+    }
+
+    let quillObjective = new Quill("#objective", aa);
+    let quillBackground = new Quill("#background", aa);
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'objective');
+        toggleToolbar(1, 'background');
+    })
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Function to populate options from JSON data
+        // Initialize Select2 for both select boxes
+        $('.js-example-basic-single').select2();
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '/clients',
+                type: 'GET',
+                success: function (data) {
+                    populateSelect('.js-example-basic-single.select-box', data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+    function populateSelect(selector, options) {
+        let select = $(selector);
+        $.each(options, function (index, value) {
+            select.append('<option value="' + value.id + '">' + value.name + '</option>');
+        })
+    }
+
+    function updateSelect(selector, option) {
+        let select = $(selector);
+        select.append('<option value="' + option.id + '">' + option.name + '</option>');
+    }
+</script>
+<script>
+    $.ajax({
+        url: '/get-users',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#member,#foc').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+
+            $('#member').select2({
+                placeholder: 'Choose Member',
+                closeOnSelect: true,
+                width: '100%'
+            });
+
+            $('#foc').select2({
+                placeholder: 'Choose FOC Member',
+                closeOnSelect: true,
+                width: '100%'
+            });
+
+            // When an option is selected in #member, disable it in #foc
+            $('#member').on('select2:select', function (e) {
+                var selectedOption = e.params.data.id;
+                $('#foc option[value="' + selectedOption + '"]').prop('disabled', true);
+                $('#foc').trigger('change');
+            });
+
+            // When an option is unselected in #member, enable it in #foc
+            $('#member').on('select2:unselect', function (e) {
+                var unselectedOption = e.params.data.id;
+                $('#foc option[value="' + unselectedOption + '"]').prop('disabled', false);
+                $('#foc').trigger('change');
+            });
+
+            // When an option is selected in #foc, disable it in #member
+            $('#foc').on('select2:select', function (e) {
+                var selectedOption = e.params.data.id;
+                $('#member option[value="' + selectedOption + '"]').prop('disabled', true);
+                $('#member').trigger('change');
+            });
+
+            // When an option is unselected in #foc, enable it in #member
+            $('#foc').on('select2:unselect', function (e) {
+                var unselectedOption = e.params.data.id;
+                $('#member option[value="' + unselectedOption + '"]').prop('disabled', false);
+                $('#member').trigger('change');
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/deliverables',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#deli').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/architectures',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#ao').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/system-outlines',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#so').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+</script>
+<script>
+
+
+    $('#deli').select2({
+        placeholder: 'Choose Deliverables ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+    $('#ao').select2({
+        placeholder: 'Choose Outlines ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+    $('#so').select2({
+        placeholder: 'Choose Outlines ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+</script>
+
+<script>
+    $('.text-danger').hide();
+    $('#create-project').submit(function (e) {
+        console.log("Submit button clicked")
+        e.preventDefault();
+        // Reset errors
+        // $('.text-danger').hide();
+        let name = $('#title').val();
+        let department = parseInt($('#department').val(), 10);
+        let startDate = new Date($('#start-date').val());
+        let endDate = new Date($('#end-date').val());
+        let so = $('#so').val().map(val => parseInt(val, 10));
+        let ao = $('#ao').val().map(val => parseInt(val, 10));
+        let deli = $('#deli').val().map(val => parseInt(val, 10));
+        let member = $('#member').val().map(val => parseInt(val, 10));
+        let foc = $('#foc').val().map(val => parseInt(val, 10));
+        let client = parseInt($('#client').val(), 10);
+        let objective = quillObjective.root.innerHTML;
+        let background = quillBackground.root.innerHTML;
+
+        let errors = [];
+
+        if (name === '') {
+            errors.push('#titleError');
+        }
+        if (isNaN(department) || department === 'default' || department === null) {
+            errors.push('#departmentError');
+        }
+        if (isNaN(client) || client === 'default' || client === null) {
+            errors.push('#clientError');
+        }
+        if (!so || so.length === 0) {
+            errors.push('#sysOutlinesError');
+        }
+        if (!ao || ao.length === 0) {
+            errors.push('#arcOutlinesError');
+        }
+        if (!deli || deli.length === 0) {
+            errors.push('#deliverablesError');
+        }
+        if (!member || member.length === 0) {
+            errors.push('#contractMemberError');
+        }
+        if (objective === '' || objective === '<p><br></p>') {
+            errors.push('#objectiveError');
+        }
+        if (background === '' || background === '<p><br></p>') {
+            errors.push('#backgroundError');
+        }
+
+
+        // Display all errors at once
+        for (let error of errors) {
+            $(error).show();
+        }
+
+        // If there are errors, stop further processing
+        if (errors.length > 0) {
+            return false;
+        }
+
+        // If no errors, proceed with the AJAX request
+        const projObj = {
+            id: null,
+            name: name,
+            department: department,
+            startDate: startDate,
+            endDate: endDate,
+            background: background,
+            objective: objective,
+            systemOutlines: so,
+            architectureOutlines: ao,
+            deliverables: deli,
+            contractMembers: member,
+            focMembers: foc,
+            client: client,
+        };
+        // Convert to JSON string
+        const jsonString = JSON.stringify(projObj);
+        // console.log(projObj);
+
+        $.ajax({
+            url: '/add-project',
+            type: 'POST',
+            contentType: "application/json",
+            data: jsonString,
+            success: function (response) {
+                buildToast({
+                    title: 'Successfully Created!',
+                    body: 'Project created successfully',
+                    icon:'bx bx-check-circle',
+                    color:'text-success'
+                })
+                $('#liveToast').toast('show');
+                //redirect to projects
+                window.location.href = "/projects";
+            },
+            error: function (response) {
+                alert("Project creation failed");
+            }
+        });
+    });
+
+    function buildToast(data={
+        title: 'Error!',
+        body: 'something went wrong :(',
+        icon:'bx bx-error-circle',
+        color:'text-danger'
+    }) {
+
+    $('#toastModal').remove();
+    const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
+                                  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                       <i class="${data.icon} ${data.color} fs-5 me-2"></i>
+                                       <strong class="me-auto ${data.color}">${data.title}</strong>
+                                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                      ${data.body}
+                                    </div>
+                                  </div>
+                                </div>`;
+    $('body').append(toast);
+    }
+</script>
+<script>
+    $('.text-danger').hide();
+
+    // Function to hide the relevant error message when user interacts with input/select
+    function hideErrorOnInteraction(input, error) {
+        input.on('input', function () {
+            error.hide();
+        });
+
+        input.on('change', function () {
+            error.hide();
+        });
+    }
+
+    // Event listeners for input fields
+    hideErrorOnInteraction($('#title'), $('#titleError'));
+    hideErrorOnInteraction($('#department'), $('#departmentError'));
+    hideErrorOnInteraction($('#member'), $('#contractMemberError'));
+    hideErrorOnInteraction($('#client'), $('#clientError'));
+    hideErrorOnInteraction($('#start-date'), $('#startDateError'));
+    hideErrorOnInteraction($('#end-date'), $('#endDateError'));
+    hideErrorOnInteraction($('#so'), $('#sysOutlinesError'));
+    hideErrorOnInteraction($('#ao'), $('#arcOutlinesError'));
+    hideErrorOnInteraction($('#deli'), $('#deliverablesError'));
+
+
+    // Event listeners for Quill text editors
+    quillObjective.on('text-change', function () {
+        $('#objectiveError').hide();
+    });
+    quillBackground.on('text-change', function () {
+        $('#backgroundError').hide();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#start-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $('#start-date').val(dateText).trigger('change'),
+        });
+
+        $("#end-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $('#end-date').val(dateText).trigger('change'),
+        });
+        //check name input
+        checkDatesValidation("start-date", "end-date");
+        //form validate
+        formValidate("form-wizard1")
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/get-department',
+            type: 'GET',
+            success: function (data) {
+                console.log("Department data : ", data);
+                populateSelect('.js-example-basic-single.select-box2', data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+</script>
+<script>
+    $('#addDeliverablesButton').click(function () {
+        let modalID = $('#addDeliverablesModal');
+        $('#deliverablesName').val('');
+        $('#deliverablesNameError').addClass('d-none');
+        $('#deliverablesSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addDeliverable() {
+        let name = $('#deliverablesName').val();
+        if(name === '') {
+            $('#deliverablesNameError').removeClass('d-none');
+            $('#deliverablesName').focus();
+        }else{
+            let newDeliverable = {
+                id: null,
+                name: name
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-deliverable", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newDeliverable),
+                dataType: 'json',
+                success: function (data) {
+                    updateSelect('.deliverable-select-box', data);
+                    $("#addDeliverablesModal").modal('hide').data('bs.modal', null);
+                    $('#deliverablesSameNameError').addClass('d-none');
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#deliverablesSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+
+    $('#addSystemOutlineButton').click(function(){
+        let modalID = $('#addSystemOutlineModal');
+        $('#OutlineName').val('');
+        $('#systemOutlineNameError').addClass('d-none');
+        $('#systemOutlineSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addSystemOutline() {
+        let name = $('#OutlineName').val();
+        if (name === '') {
+            $('#systemOutlineNameError').removeClass('d-none');
+            $('#OutlineName').focus();
+
+        }else{
+            let newSystemOutline = {
+                id: null,
+                name: name,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-system-outline", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newSystemOutline),
+                dataType: 'json',
+                success: function (data) {
+                    updateSelect('.sysOutline-select-box', data);
+                    $("#addSystemOutlineModal").modal('hide').data('bs.modal', null);
+                    $('#systemOutlineSameNameError').addClass('d-none');
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#systemOutlineSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+
+    $('#addArchitectureButton').click(function () {
+        let modalID = $('#architectureAddModal');
+        $('#architectureName').val('');
+        $('#architectureTypeError').hide();
+        $('#architectureNameError').addClass('d-none');
+        $('#architectureSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addArchitecture() {
+        let name = $('#architectureName').val();
+        let type = $('#architectureType').val();
+        if (name === '' || name == '' || name == null) {
+            $('#architectureNameError').removeClass('d-none');
+            $('#architectureName').focus();
+        } else {
+            let newArchitecture = {
+                id: null,
+                name: name,
+                type: type
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-architecture", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newArchitecture),
+                dataType: 'json',
+                success: function (data) {
+                    $('#architectureAddModal').modal('toggle');
+                    updateSelect('.arc-select-box', data);
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#architectureSameNameError').removeClass('d-none');
+                }
+            });
+        }
+
+    }
+
+    $('#addClientButton').click(function () {
+        let modalID = $('#addClientModal');
+        $('#clientName').val('');
+        $('#clientEmail').val('');
+        $('#clientPhoneNumber').val('');
+        $('#clientNameError').addClass('d-none');
+        $('#clientEmailError').addClass('d-none');
+        $('#clientPhoneNumberError').addClass('d-none');
+        $('#clientSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addClient() {
+        let addname = $('#clientName').val();
+        let addemail = $('#clientEmail').val();
+        let addphoneNumber = $('#clientPhoneNumber').val();
+
+        if (addname === '') {
+            $('#clientNameError').removeClass('d-none');
+        }
+
+        if (addemail === '') {
+            $('#clientEmailError').removeClass('d-none');
+        }
+
+        if (addphoneNumber === '') {
+            $('#clientPhoneNumberError').removeClass('d-none');
+        }else{
+            let newClient = {
+                name: addname,
+                email: addemail,
+                phoneNumber: addphoneNumber,
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/add-client",
+                contentType: "application/json",
+                data: JSON.stringify(newClient),
+                dataType: 'json',
+                success: function (data) {
+                    $("#addClientModal").modal('toggle');
+                    updateSelect('.js-example-basic-single.select-box', data);
+                    $('#clientSameNameError').addClass('d-none');
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#clientSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+</script>
+<script>
+    hideErrorOnInteraction($('#deliverablesName'),$('#deliverablesNameError'));
+    hideErrorOnInteraction($('#clientName'),$('#clientNameError'));
+    hideErrorOnInteraction($('#clientEmail'),$('#clientEmailError'));
+    hideErrorOnInteraction($('#clientPhoneNumber'),$('#clientPhoneNumberError'));
+    hideErrorOnInteraction($('#architectureName'),$('#architectureNameError'));
+    hideErrorOnInteraction($('#OutlineName'), $('#systemOutlineNameError'));
+</script>
+</body>
+</html>

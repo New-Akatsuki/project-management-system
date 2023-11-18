@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- CSS for datepicker -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="/css/style.css"/>
+    <link rel="stylesheet" href="/css/kanban.css">
+    <link rel="stylesheet" href="/css/select2.css">
+    <style>
+
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button[type="submit"] {
+            background-color: #1DA1F2;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Styles for the modal fade animation */
+        .modal.fade .modal-dialog {
+            transition: opacity 0.3s ease; /* Add a transition for fading in */
+            opacity: 0; /* Start with opacity 0 */
+        }
+
+        .modal.fade.show .modal-dialog {
+            opacity: 1; /* Fade in the modal when it is shown */
+        }
+
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 100%;
+            font-family: sans-serif;
+        }
+
+        .tabs__label {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        .tabs__radio {
+            display: none;
+        }
+
+        .tabs__content {
+            order: 1;
+            width: 100%;
+            line-height: 1.5;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .tabs__radio:checked + .tabs__label {
+            font-weight: bold;
+            color: #009578;
+            border-bottom: 2px solid #009578;
+        }
+
+        .tabs__radio:checked + .tabs__label + .tabs__content {
+            display: initial;
+        }
+
+        .accordion-body{
+            overflow-y: scroll;
+            padding: 15px!important;
+        }
+
+        .bd-success{
+            background-color: #d4edda!important;
+        }
+        .bd-danger{
+            background-color: #f8d7da!important;
+        }
+        .bod-success{
+            border: 2px solid #8cf3ad !important;
+        }
+
+    </style>
+
+    <style>
+        .inputmodalbox, .dateInputBox {
+            display: inline-block;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Project</a></li>
+                <li class="breadcrumb-item active">Tasks</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <div class="card vh-100 shadow-none">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
+                <label><select id="projectSelect" style="width: 300px" class="select-box2 form-select"></select></label>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="tabs">
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+                <label for="tab1" class="tabs__label">Pending</label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Pending Task Cards -->
+                    <div id="pendingContainer" class="row"></div>
+                </div>
+
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+                <label for="tab2" class="tabs__label">Overdue
+                    <span id="overdueBadge" class="badge bg-danger badge-number d-none">0</span></label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Overdue Task Cards -->
+                    <div id="overdueContainer" class="row"></div>
+                </div>
+
+                <input type="radio" class="tabs__radio" name="tabs-example" id="tab3">
+                <label for="tab3" class="tabs__label">Completed</label>
+                <div class="tabs__content container">
+                    <br>
+                    <!-- Container for Completed Task Cards -->
+                    <div id="completedContainer" class="row"></div>
+                </div>
+            </div>
+
+        </div>
+        <div id="modalPlaceholder"></div>
+    </div>
+</main>
+<!-- End #main -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script src="/js/validation.js"></script>
+
+<script>
+    // Add fade animation to the modal
+    $('#taskModal').on('show.bs.modal', function () {
+        $(this).find('.modal-dialog').addClass('fade');
+    });
+
+    function setupDatePicker(elementId, minDate, maxDate) {
+        $(elementId).datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: minDate,
+            maxDate: maxDate,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
+        });
+    }
+
+    $.ajax({
+        url: `/get-projects`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (index, value) {
+                $('#projectSelect').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+
+    $('#projectSelect').select2();
+
+</script>
+
+<script src="/js/userTaskView.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $(".dateInputBox").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+        });
+        getDataAndBuildTaskView();
+        function getDataAndBuildTaskView(){
+            let projectId = $('#projectSelect').val();
+            $.ajax({
+                url: `/get-tasks/${projectId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    taskBoard({
+                        tasks: data
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        $('#projectSelect').on('change', function () {
+            getDataAndBuildTaskView();
+        });
+
+
+    });
+
+</script>
+</body>
+</html>

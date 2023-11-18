@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.ArchitectureType;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -14,15 +17,17 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Architecture {
+public class Architecture implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true, nullable = false, length = 25)
     private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ArchitectureType Type;
+    private ArchitectureType type;
+  
+    private boolean status;
 }

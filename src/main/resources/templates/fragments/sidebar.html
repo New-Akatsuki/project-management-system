@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+    <head>
+      <meta charset="utf-8"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+      <title>Side Bar</title>
+      <meta content="" name="description"/>
+      <meta content="" name="keywords"/>
+
+      <!-- Google Fonts -->
+      <link href="https://fonts.gstatic.com" rel="preconnect"/>
+      <link
+              href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet"
+      />
+
+      <!-- Template Main JS File -->
+      <link th:href="@{vendor/bootstrap/js/bootstrap.bundle.min.js}" rel="stylesheet"/>
+
+      <!-- Favicons -->
+      <link th:href="@{images/favicon.png}" rel="icon">
+      <link th:href="@{images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+      <link
+              th:href="@{vendor/bootstrap-icons/bootstrap-icons.css}"
+              rel="stylesheet"
+      />
+      <link th:href="@{vendor/boxicons/css/boxicons.min.css}" rel="stylesheet"/>
+      <link th:href="@{vendor/remixicon/remixicon.css}" rel="stylesheet"/>
+
+      <!-- Template Main CSS File -->
+      <link th:href="@{css/style.css}" rel="stylesheet"/>
+    </head>
+    <body>
+    <!-- ======= Sidebar ======= -->
+    <aside th:fragment="sidebar" id="sidebar" class="sidebar">
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','DH','PM')">
+                <a class="nav-link" th:href="@{/}">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC')">
+                <a class="nav-link" th:href="@{/department}">
+                    <i class="bi bi-briefcase"></i>
+                    <span>Department</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/projects}">
+                    <i class="bi bi-journals"></i>
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/issues}">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Issues</span>
+                </a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','DH','PM')">
+                <a class="nav-link"  th:href="@{/users}">
+                    <i class="bi bi-person-video3"></i>
+                    <span>User Management</span>
+                </a>
+            </li>
+
+
+            <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
+                <a class="nav-link" th:href="@{/pm/contract-info}">
+                    <i class="bi bi-info-square-fill"></i>
+                    <span>Contract Info</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/profile}">
+                    <i class="bi bi-person"></i>
+                    <span>User Profile</span>
+                </a>
+            </li>
+        </ul>
+
+        <script>
+            const activePage = window.location.pathname;
+            const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+            navLinks.forEach(link => {
+                if(activePage==="/"){
+                    navLinks[0].classList.add("active");
+                }else if (link.href.includes(`${activePage}`)) {
+                    link.classList.add("active");
+                    link.classList.add("active-color");
+                } else {
+                    link.classList.remove("active");
+                    link.classList.remove("active-color");
+                }
+            });
+        </script>
+
+    </aside>
+    <!-- End Sidebar-->
+
+
+    <!-- Vendor JS Files -->
+
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+
+    </body>
+    </html>

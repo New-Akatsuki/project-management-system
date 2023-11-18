@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">project</a></li>
+                <li class="breadcrumb-item active">details</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+    <section>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="display-6 fs-4 fw-bold">
+                    Project Details Info
+                </span>
+                <a class="icon-add-btn">
+                    <i class='bx bx-edit m-0 p-0'></i>
+                </a>
+            </div>
+            <!--            Outer card body -->
+            <div class="card-body row px-4 px-md-5">
+                <div id="projectName" class="display-6 mb-4 fw-bold px-3" th:text="${currentProject.name}"></div>
+                <!--                client info -->
+                <div class="col-12 col-md-7 px-3">
+                    <div class="row px-3">
+                        <table class="table table-sm table-striped-columns table-bordered">
+                            <tbody>
+                            <tr>
+                                <th class="col-4 ps-3">Client name</th>
+                                <td id="clientName" th:text="${currentProject.client}"></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Project Manager</th>
+                                <td id="pmName" th:text="${currentProject.projectManager}"></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Department</th>
+                                <td id="depName" th:text="${currentProject.department}">Unknown person</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-striped-columns table-bordered">
+                            <tbody>
+                            <tr>
+                                <th class="col-4 ps-3">Start date</th>
+                                <td id="startDate" class="col-8" th:text="${currentProject.startDate}">Unknown date</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">End date</th>
+                                <td id="endDate" th:text="${currentProject.endDate}">Unknown date</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Duration</th>
+                                <td id="Duration" th:text="${currentProject.duration}">Unknown date</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 d-flex col-md-5 px-3">
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="ps-2 col-6">Contract Members</th>
+                            </tr>
+                        </thead>
+                        <tbody th:each="conMember : ${currentProject.contractMembers}">
+                            <tr>
+                                <td class="ps-2" th:text="${conMember}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="ps-2 col-6">FOC Members</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="focMember : ${currentProject.focMembers}">
+                        <tr>
+                            <td class="ps-2" th:text="${focMember}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-12 px-3">
+                    <div class="accordion mb-3" id="background">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                    <span class="display-6 fs-5 fw-bold">Background</span>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                 data-bs-parent="#background">
+                                <div id="backgroundText" class="accordion-body text-justify" th:text="${currentProject.background}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 px-3">
+                    <div class="accordion mb-3" id="objective">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="true"
+                                        aria-controls="collapseTwo">
+                                    <span class="display-6 fs-5 fw-bold">Objective</span>
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show"
+                                 data-bs-parent="#objective">
+                                <div id="objectiveText" class="accordion-body text-justify" th:text="${currentProject.background}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 px-3">
+                    <div class="accordion mb-3" id="systemOutline">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="true"
+                                        aria-controls="collapseThree">
+                                    <span class="display-6 fs-5 fw-bold">System Outlines</span>
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse show"
+                                 data-bs-parent="#systemOutline">
+                                <div class="accordion-body p-2">
+                                    <ul class="list-group" th:each="sys : ${currentProject.systemOutlines}">
+                                        <li class="list-group-item" th:text="${sys}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 px-3">
+                    <div class="accordion mb-3" id="architecture">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFour" aria-expanded="true"
+                                        aria-controls="collapseFour">
+                                    <span class="display-6 fs-5 fw-bold">Architecture Outlines</span>
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse show"
+                                 data-bs-parent="#architecture">
+                                <div class="accordion-body p-2">
+                                    <ul class="list-group" th:each="arch : ${currentProject.architectureOutlines}">
+                                        <li class="list-group-item" th:text="${arch}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 px-3">
+                    <div class="accordion mb-3" id="deliverable">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFive" aria-expanded="true"
+                                        aria-controls="collapseFive">
+                                    <span class="display-6 fs-5 fw-bold">Deliverables</span>
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse show"
+                                 data-bs-parent="#deliverable">
+                                <div class="accordion-body p-2">
+                                    <ul class="list-group" th:each="deli : ${currentProject.deliverables}">
+                                        <li class="list-group-item" th:text="${deli}"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!-- End Main Content-->
+
+</main>
+<!-- End #main -->
+
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>

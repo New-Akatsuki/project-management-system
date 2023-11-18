@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet"/>
+  <!-- Library / Plugin Css Build -->
+  <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+  <!-- Dark Css -->
+  <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+  <!-- Single Select -->
+  <!--  <link rel="stylesheet" href="/css/single-select.css">-->
+
+
+  <!--    <link rel="stylesheet" href="/css/datatable.css"/>-->
+  <!--    <script src="/js/ajax-jquery.js"></script>-->
+  <!--    <script src="/js/datatable.js"></script>-->
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+
+<main id="main" class="main">
+  <!-- Breadcrumb part-->
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">member list</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Main Content -->
+
+  <div class="conatiner-fluid content-inner mt-n5 py-0">
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <div class="header-title">
+                <h4 class="card-title">Member List</h4>
+                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
+              </div>
+
+            </div>
+          </div>
+          <div class="card-body px-">
+            <div class="table-responsive">
+              <table id="user-list-table" class="display" style="width: 100%;">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Main Content-->
+</main>
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Edit User Modal-->
+<div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-5">Edit User Role And Department</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="form-group">
+
+            <input type="hidden" class="form-control" id="editId">
+            <label for="editName">Name</label>
+            <input type="text" class="form-control" id="editName">
+          </div>
+
+          <div class="form-group">
+            <label for="editEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmail" name="email">
+          </div>
+
+          <div class="form-group">
+            <label  class="form-label" for="editDepartment"> Department </label>
+            <select class="form-select"  id="editDepartment" name="editDepartment" >
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="editUserRole" class="form-label">Role</label>
+            <select class="form-select"  id="editUserRole" name="editUserRole" >
+              <option value="PM">PM</option>
+              <option value="MEMBER" selected>Member</option>
+
+              <!-- Add more role options as needed -->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create New Member Modal-->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Create New Member</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name">
+          </div>
+          <div class="form-group">
+            <label for="name">Email</label>
+            <input type="text" class="form-control" id="email">
+          </div>
+          <div class="form-group">
+            <label  class="form-label" for="department"> Department </label>
+            <select class="form-select"  id="department" name="department">
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newUserRole" class="form-label">Role</label>
+            <select class="form-select"  id="newUserRole" name="role" >
+              <option value="PM">PM</option>
+              <option value="MEMBER" >Member</option>
+              <!-- Add more role options as needed -->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" onclick="addNewMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Confirmation Modal-->
+<div class="modal fade" id="confirmationMemberModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalMemberLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalMemberLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body">
+        Are you sure you want to <span id="confirmationMemberAction"></span> this member?
+        <div id="confirmationMemberMessage"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"  id="confirmMemberButton">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/member-list-view.js"></script>
+</body>
+</html>

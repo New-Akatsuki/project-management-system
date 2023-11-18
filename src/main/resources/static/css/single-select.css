@@ -1,0 +1,145 @@
+::selection {
+    color: #fff;
+    background: #4285f4;
+}
+
+.s-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+}
+
+.select-btn, .s-li {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.select-btn {
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+.select-btn i {
+    transition: transform 0.3s linear;
+}
+
+.s-wrapper.active .select-btn i {
+    transform: rotate(-180deg);
+}
+
+.s-content {
+    display: none;
+    margin-top: 8px;
+    padding: 10px; /* Adjusted padding */
+    background: #fff;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    border: 1px solid #ccc;
+    animation: fade-down 0.3s ease-in-out;
+}
+.s-content>*{
+    z-index: 1;
+}
+
+.s-wrapper.active .s-content {
+    display: block;
+}
+
+.s-content .search {
+    position: relative;
+}
+
+.search i {
+    top: 50%;
+    left: 8px; /* Adjusted left position */
+    color: #999;
+    pointer-events: none;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
+
+
+.search input {
+    height: 30px; /* Adjusted height */
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    /*padding: 0 15px 0 28px; !* Adjusted padding *!*/
+    border: 1px solid #B3B3B3;
+    padding-left: 27px;
+    padding-block: 18px;
+}
+
+.search input:focus {
+    padding-left: 27px; /* Adjusted padding */
+    border: 1px solid #4285f4; /* Adjusted border */
+}
+
+.search input::placeholder {
+    color: #bfbfbf;
+}
+
+.s-content .options {
+    margin-top: 5px; /* Adjusted margin-top */
+    max-height: 100px; /* Adjusted max-height */
+    overflow-y: auto;
+    padding-left: 19px!important;
+    margin-bottom: 0!important;
+}
+
+.options::-webkit-scrollbar {
+    width: 7px;
+}
+
+.options::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+.options::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 25px;
+}
+
+.options::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+}
+
+.options li {
+    height: 30px; /* Adjusted height */
+    padding: 0 8px; /* Adjusted padding */
+    animation: fade-in 0.3s ease-in-out;
+}
+
+.options li:hover,
+li.selected {
+    border-radius: 5px;
+    background: #f2f2f2;
+}
+
+@keyframes fade-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in{
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

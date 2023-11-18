@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <meta content="" name="description" />
+  <meta content="" name="keywords" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet" />
+  <!-- Library / Plugin Css Build -->
+  <link rel="stylesheet" href="/css/core/libs.min.css">
+
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <!-- DataTables JS -->
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+  <!-- Breadcrumb part-->
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active">project-list</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <!-- Main Content -->
+  <div class="container-fluid content-inner mt-n5 py-0">
+    <div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <div class="header-title">
+                <h4 class="card-title">Project List</h4>
+                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" th:href="@{/projects/new}">New Project</a>
+
+              </div>
+            </div>
+            <div class="card-body px-">
+              <div class="table-responsive">
+                <table class="table table-sm" style="width:100%;" id="project"><thead>
+                  <tr class="ligth">
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Due Date</th>
+                    <th>Client</th>
+                    <th>Status</th>
+                    <th style="min-width: 100px">Action</th>
+
+                  </tr>
+                  </thead>
+
+
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- End Main Content-->
+</main>
+<!-- End #main -->
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script src="/js/project-table.js"></script>
+
+</body>
+</html>
+
+

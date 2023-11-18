@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>DIR-ACE TECHNOLOGY</title>
+  <!-- Favicons -->
+  <link th:href="@{/images/DAT.png}" rel="icon">
+  <meta content="" name="description"/>
+  <meta content="" name="keywords"/>
+  <!-- Bootstrap CSS for modal box -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"
+  />
+
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+
+  <link
+          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"
+  />
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+  <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+  />
+
+
+<!--  jQuery cdn link -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  <!-- Hope Ui Design System Css -->
+  <link rel="stylesheet" href="/css/hope.css">
+  <!-- Library / Plugin Css Build -->
+  <link rel="stylesheet" href="/css/libs.min.css">
+
+  <!--    icon-->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+  <!-- Customizer Css -->
+  <link rel="stylesheet" href="/css/customizer.min.css">
+
+  <!-- RTL Css -->
+  <link rel="stylesheet" href="/css/rtl.min.css">
+  <!--    selectbox-->
+  <link rel="stylesheet" href="/css/multiple-select.css">
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet"/>
+  <style>
+    .imgContainer{
+      width: 125px;
+      height: 125px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      object-fit: cover;
+    }
+
+    .profilePhoto {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .imgContainer img,.profilePhoto img{
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 50%;  /* Ensure the image inside is also a circle */
+    }
+  </style>
+
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Profile</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item">Users</li>
+        <li class="breadcrumb-item active">Profile</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+<!--            <img th:src="@{{filename}(filename=${currentUser.imgUrl})}" alt="Profile" class="rounded-circle object-fit-cover" style="width: 200px; height: 200px;">-->
+            <img class="profilePhoto" th:if="${base64Image != null}" th:src="'data:' + ${imageType} + ';base64,' + ${base64Image}" alt="User Photo"/>
+            <img class="profilePhoto" th:unless="${base64Image != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+
+            <h2 th:text="${currentUser.name}"></h2>
+            <h3 th:text="${currentUser.userRole}"></h3>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xl-8">
+
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                <h5 class="card-title">Profile Details</h5>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.name}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Username</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.username}"></div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Role</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.userRole}"></div>
+                </div>
+
+
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Department</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.department.name}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Phone</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.phone}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Email</div>
+                  <div class="col-lg-9 col-md-8" th:text="${currentUser.email}"></div>
+                </div>
+
+              </div>
+
+              <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                <!-- Profile Edit Form -->
+                  <form th:action="@{/edit-user-in-profile}" th:method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                    <label for class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                    <div class="col-md-8 col-lg-9">
+                      <!-- Display the selected photo or default photo -->
+                      <img class="imgContainer" th:if="${base64Image != null}" th:src="'data:' + ${imageType} + ';base64,' + ${base64Image}" alt="User Photo"/>
+                      <img class="imgContainer" th:unless="${base64Image != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
+                      <!-- File input for uploading a new photo -->
+                      <div class="pt-2">
+                        <input type="file" id="editPhoto" name="photoUrl" style="display: none;" accept="image/*" onchange="handleFileChange()" th:value="${currentUser.photoData}">
+                        <p id="typeError" style="color: red;"></p>
+                        <p id="sizeError" style="color: red;"></p>
+                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image" onclick="document.getElementById('editPhoto').click()"><i class="bi bi-upload"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image" onclick="removePhoto()"><i class="bi bi-trash"></i></a>
+                      </div>
+
+                      <input type="hidden" id="isNull" name="isNull" value="false">
+
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="editFullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="name" type="text" class="form-control" id="editFullName" th:value="${currentUser.name}">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="editUserName" class="col-md-4 col-lg-3 col-form-label">UserName</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="username" type="text" class="form-control" id="editUserName" th:value="${currentUser.username}">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="editUserRole" class="col-md-4 col-lg-3 col-form-label">Role</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="userRole" type="text" class="form-control" id="editUserRole" th:value="${currentUser.userRole}">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="editPhone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="phone" type="text" class="form-control" id="editPhone" th:value="${currentUser.phone}">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="editEmail" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="email" class="form-control" id="editEmail" th:value="${currentUser.email}">
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </form><!-- End Profile Edit Form -->
+
+              </div>
+
+              <div class="tab-pane fade pt-3" id="profile-settings">
+              </div>
+              <div class="tab-pane fade pt-3" id="profile-change-password">
+                <!-- Change Password Form -->
+                  <form id="changePasswordForm">
+                  <div class="mb-3">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Old Password"/>
+                      <label id="password-labelOld" for="currentPassword" class="form-label d-flex align-items-center">
+                        <i class="bx bx-lock-alt me-2"></i>Current Password
+                      </label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="button" id="passwordToggleOld">
+                      <i id="passwordIconOld" class="bi bi-eye-slash"></i>
+                    </button>
+                  </div>
+                    <div id="currentPasswordError" class="text-danger mt-2"></div>
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$" />
+
+                        <!--<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password" onblur="checkInputValidation('password', 'New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />-->
+                        <label id="password-label" for="newPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>New Password
+                        </label>
+                      </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                        <i id="passwordIcon" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="newPasswordError" class="text-danger mt-2"></div>
+                  </div>
+
+
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password" onblur="checkInputValidation('confirmPassword', 'Confirm New Password', /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/);" />
+                        <label id="password-label2" for="confirmPassword" class="form-label d-flex align-items-center">
+                          <i class="bx bx-lock-alt me-2"></i>Confirm New Password
+                        </label>
+                      </div>
+                      <button class="btn btn-outline-secondary" type="button" id="passwordToggle2">
+                        <i id="passwordIcon2" class="bi bi-eye-slash"></i>
+                      </button>
+                    </div>
+                    <div id="confirmPasswordError" class="text-danger mt-2"></div>
+                  </div>
+                    <div id="errorMessage" class="text-danger mt-3"></div>
+
+                  <div class="d-flex justify-content-end mx-auto">
+                    <div class="text-center">
+                      <button type="button" class="btn btn-primary" id="resetButton" onclick="validatePassword()">Change Password</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
+
+<script th:src="@{/js/single-select.js}"></script>
+
+<script src="/js/ch-pwd.js"></script>
+
+
+<script>
+  function displayPhoto() {
+    var input = document.getElementById('editPhoto');
+    // var img = document.getElementById('selectedPhoto');
+    var img=document.querySelector('.imgContainer');
+
+    var file = input.files[0];
+
+    if (file) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function removePhoto() {
+    let img = document.querySelector('.imgContainer');
+    img.src = "/images/profile.jpg"; // Set default photo when removing the selected one
+    let isNull = document.getElementById('isNull');
+    isNull.value = "true"; // Set the value of the isNull input to true
+    $('#editPhoto').val(''); // Clear the file input
+    // Set the value of the editPhoto input to null
+    document.getElementById('editPhoto').value = null;
+  }
+
+</script>
+<!--</script>-->
+<script>
+  function handleFileChange(){
+    displayPhoto();
+    validateImage();
+  }
+  function validateImage() {
+    var input = document.getElementById('editPhoto');
+    var maxSizeInBytes = 1024 * 1024; // 1MB
+    var allowedTypes = ['image/jpeg', 'image/png'];
+
+    if (input.files.length > 0) {
+      var fileSize = input.files[0].size;
+      var fileType = input.files[0].type;
+
+      if (fileSize > maxSizeInBytes) {
+        document.getElementById('sizeError').innerText = 'File size exceeds the limit (1MB)';
+        input.value = ''; // Clear the input field
+      } else {
+        document.getElementById('sizeError').innerText = '';
+      }
+
+      if (!allowedTypes.includes(fileType)) {
+        document.getElementById('typeError').innerText = 'Invalid file type. Allowed types: JPEG, PNG';
+        input.value = ''; // Clear the input field
+      } else {
+        document.getElementById('typeError').innerText = '';
+      }
+    }
+  }
+</script>
+</body>
+</html>

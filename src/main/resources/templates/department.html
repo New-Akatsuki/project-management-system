@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">Department</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+
+    <div class="container-fluid content-inner mt-n5 py-0">
+        <div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title">Department</h4>
+                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">Add New Department</a>
+
+
+                            </div>
+                        </div>
+                        <div class="card-body px-">
+                            <div class="table-responsive">
+                                <table id="department-table" class="display" style="width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- End Main Content-->
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!--Modal box-->
+<!--Add department-->
+<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your form fields for adding a new member here -->
+                <form>
+                    <div class="form-group">
+                        <label for="name">Department Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addDepartment()" data-bs-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Department Modal-->
+<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="departmentEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5">Edit Department</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <input type="hidden" class="form-control" id="editId">
+                        <label for="editDepartmentName">Name</label>
+                        <input type="text" class="form-control" id="editDepartmentName">
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="editDepartment()" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<script>
+<!--   For Department Table-->
+    let departmentList =[];
+    $(document).ready(function () {
+        //Make an AJAX request to fetch data from the Rest API point
+        $.ajax({
+            url: '/departments',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('All department list: ', data);
+                departmentList = data;
+                //Render the data into the DataTable
+                renderDepartmentListTable(data);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error: ', error);
+            }
+        });
+    });
+
+function renderDepartmentListTable(items) {
+    if ($.fn.DataTable.isDataTable('#department-table')) {
+        $('#department-table').DataTable().destroy();
+    }
+    return $('#department-table').DataTable({
+        data: items,
+        columns: [
+            {data: 'id'},
+            {data: 'name'},
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `<button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>`;
+                }
+            }
+        ]
+    });
+}
+
+
+
+
+
+
+// For add Department
+    function addDepartment() {
+        let addDepartment= {
+           id:$("#id").val(),
+            name:$("#name").val(),};
+
+        console.log(addDepartment);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/department-create",
+            data: JSON.stringify(addDepartment),
+            dataType: 'json',
+            success: function (data) {
+                // departmentList.push(data)
+                console.log(departmentList);
+                location.reload();
+                // renderDepartmentListTable(departmentList);
+            },
+            error: function (error) {
+                console.log('Error adding new department:', error);
+            }
+        });
+    }
+
+    //For Display Edit Department Modal
+    function displayEditDepartmentModal(id) {
+    const department = departmentList.find(department => department.id === id);
+    console.log("Department Edit ", department);
+    // Check if department is found
+    if (department) {
+        //populate modal fields with department data
+        $('#editId').val(department.id);
+        $('#editDepartmentName').val(department.name);
+        //show the modal
+        $("#departmentEditModal").modal('show');
+    } else {
+        console.log("Department not found for ID:", id);
+    }
+}
+
+    // function displayEditDepartmentModal(departmentId) {
+    //     const department = departmentList.find(department => department.id === departmentId);
+    //     console.log("Department Edit ", department)
+    //     //populate modal fields with department data
+    //     $('#editId').val(department.id);
+    //     $('#editDepartmentName').val(department.name);
+    //     //show the modal
+    //     $("#departmentEditModal").modal('show');
+    // }
+function editDepartment() {
+    let id = $('#editId').val();
+    let name = $('#editDepartmentName').val();
+    let updatedDepartment = {
+        id: id,
+        name: name,
+    };
+    console.log("updatedDepartment", updatedDepartment);
+    // Make a PUT request to update the department data
+    $.ajax({
+        url: `/department-edit/${id}`,
+        method: 'PUT',
+        data: JSON.stringify(updatedDepartment),
+        dataType: 'json',
+        contentType: 'application/json', // Corrected contentType value
+        success: function (data) {
+            console.log('Data received:', data);
+            location.reload();
+        },
+        error: function (xhr, error) {
+            console.log(xhr.responseText)
+            console.log('Error fetching data:', error);
+        }
+    });
+}
+
+
+</script>
+</body>
+</html>
