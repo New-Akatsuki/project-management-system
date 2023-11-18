@@ -5,8 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
 import org.blank.projectmanagementsystem.domain.entity.Project;
+import org.blank.projectmanagementsystem.domain.formInput.AmountDto;
 import org.blank.projectmanagementsystem.repository.AmountRepository;
+import org.blank.projectmanagementsystem.repository.ProjectRepository;
 import org.blank.projectmanagementsystem.service.AmountService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +19,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AmountServiceImp implements AmountService {
     private final AmountRepository amountRepository;
+    private final ProjectService projectService;
+    private final ProjectRepository projectRepository;
 
+
+//    @Override
+//    public boolean isDevelopmentPhaseExists(Long projectId, DevelopmentPhase developmentPhase) {
+//        return amountRepository.findByProjectIdAndDevelopmentPhase(projectId, developmentPhase) != null;
+//    }
 
     @Override
-    public Amount save(Amount amount) {
-        return amountRepository.save(amount);
+    public AmountDto save(AmountDto amountFormInput) {
+        Project project = projectRepository.findById(amountFormInput.getProjectId()).orElseThrow();
+        Amount amount = Amount.builder()
+                .project(project)
+                .developmentPhase(amountFormInput.getDevelopmentPhase())
+                .amount(amountFormInput.getAmount())
+                .build();
+        amountRepository.save(amount);
+        return AmountDto.builder()
+                .id(amount.getId())
+                .projectId(amount.getProject().getId())
+                .developmentPhase(amount.getDevelopmentPhase())
+                .amount(amount.getAmount())
+                .build();
     }
 
     @Override

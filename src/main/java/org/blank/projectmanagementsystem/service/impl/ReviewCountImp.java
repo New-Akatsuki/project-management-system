@@ -5,9 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
+import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.ReviewCount;
+import org.blank.projectmanagementsystem.domain.formInput.ReviewDto;
+import org.blank.projectmanagementsystem.repository.ProjectRepository;
 import org.blank.projectmanagementsystem.repository.ReviewCountRepository;
 import org.blank.projectmanagementsystem.service.AmountService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.ReviewCountService;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +23,33 @@ import java.util.List;
 public class ReviewCountImp implements ReviewCountService {
     private final ReviewCountRepository reviewCountRepository;
     private final AmountService amountService;
+    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
+
+
+//    @Override
+//    public boolean isDevelopmentPhaseExists(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType) {
+//        return reviewCountRepository.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType) != null;
+//    }
+
+
     @Override
-    public ReviewCount save(ReviewCount reviewCount) {
-        return reviewCountRepository.save(reviewCount);
+    public ReviewDto save(ReviewDto reviewDto) {
+        Project project = projectRepository.findById(reviewDto.getProjectId()).orElseThrow();
+        ReviewCount reviewCount = ReviewCount.builder()
+                .project(project)
+                .developmentPhase(reviewDto.getDevelopmentPhase())
+                .reviewerType(reviewDto.getReviewerType())
+                .count(reviewDto.getCount())
+                .build();
+        reviewCountRepository.save(reviewCount);
+        return ReviewDto.builder()
+                .id(reviewCount.getId())
+                .projectId(reviewCount.getProject().getId())
+                .developmentPhase(reviewCount.getDevelopmentPhase())
+                .reviewerType(reviewCount.getReviewerType())
+                .count(reviewCount.getCount())
+                .build();
     }
 
     @Override

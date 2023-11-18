@@ -1,15 +1,16 @@
 package org.blank.projectmanagementsystem.service;
 
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
-import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
-import org.blank.projectmanagementsystem.domain.entity.Project;
+import org.blank.projectmanagementsystem.domain.formInput.AmountDto;
 
 import java.util.List;
 
 public interface AmountService {
 
-        Amount save(Amount amount);
+//        boolean isDevelopmentPhaseExists(Long projectId, DevelopmentPhase developmentPhase);
+
+        AmountDto save(AmountDto amountFormInput);
         List<Amount> getAllAmount();
         List<Amount> findByProjectId(Long projectId);
 

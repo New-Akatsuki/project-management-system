@@ -15,9 +15,7 @@
 <div class="row">
     <div class="col-md-6">
         <label for="selectAProject">Select A Project</label>
-        <select id="selectAProject" class="project-select form-select">
-            <option value="#">Select a project</option>
-        </select>
+        <select id="selectAProject" class="project-select form-select"></select>
     </div>
 </div>
 <!-- Button trigger modal -->
@@ -30,29 +28,37 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Project's Data</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <!-- Number Input Boxes in the Same Line -->
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="developmentPhase">Choose the Development Phase</label>
-                            <select id="developmentPhase" class="form-select development-phase-selector">
-                                <option value="BASIC_DESIGN">BASIC DESIGN</option>
-                                <option value="DETAILED_DESIGN">DETAILED DESIGN</option>
-                                <option value="CODING">CODING</option>
-                                <option value="UNIT_TESTING">UNIT_TESTING</option>
-                                <option value="INTEGRATION_TESTING">INTEGRATION_TESTING</option>
-                            </select>
-                        </div>
+                        <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">BASIC DESIGN:</label>
+                        <input class="form-control" id="basicDesignScreenCount" type="number">
                     </div>
+
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="amount">Amount : </label>
-                            <input class="form-control" id="amount" type="number">
-                        </div>
+                        <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">DETAILED DESIGN:</label>
+                        <input class="form-control" id="detailedDesignScreenCount" type="number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="codeLineCount" class="form-label" id="codeLineLabel">CODING:</label>
+                        <input class="form-control" id="codeLineCount" type="number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="unitTestCount" class="form-label" id="unitTestLabel">UNIT TESTING:</label>
+                        <input class="form-control" id="unitTestCount" type="number">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="integrationTestCount" class="form-label" id="integrationTestLabel">INTEGRATION TESTING:</label>
+                        <input class="form-control" id="integrationTestCount" type="number">
                     </div>
                 </div>
             </div>
@@ -75,7 +81,7 @@
         $('#selectAProject').select2();
     });
 
-
+    // AJAX request to fetch project data
     $.ajax({
         url: '/get-project-data',
         type: 'GET',
@@ -91,45 +97,54 @@
     });
 
     function addProjectDataAmount() {
+        // Retrieve values from input fields
         let projectId = $('#selectAProject').val();
+        let basicDesignScreenCount = $('#basicDesignScreenCount').val();
+        let detailedDesignScreenCount = $('#detailedDesignScreenCount').val();
+        let codeLineCount = $('#codeLineCount').val();
+        let unitTestCount = $('#unitTestCount').val();
+        let integrationTestCount = $('#integrationTestCount').val();
 
-        console.log('Selected Project ID:', projectId);
-
+        // Check if a project is selected
         if (!projectId || projectId === '#') {
             alert('Please select a project.');
             return;
         }
 
-        console.log('Project selected:', projectId);
+        // Create an array of AmountDto objects
+        let addAmounts = [
+            { id: null, projectId: projectId, developmentPhase: 'BASIC_DESIGN', amount: basicDesignScreenCount },
+            { id: null, projectId: projectId, developmentPhase: 'DETAILED_DESIGN', amount: detailedDesignScreenCount },
+            { id: null, projectId: projectId, developmentPhase: 'CODING', amount: codeLineCount },
+            { id: null, projectId: projectId, developmentPhase: 'UNIT_TESTING', amount: unitTestCount },
+            { id: null, projectId: projectId, developmentPhase: 'INTEGRATION_TESTING', amount: integrationTestCount }
+        ];
 
-        let addAmount = {
-            id: null,
-            amount: $("#amount").val(),
-            developmentPhase: $("#developmentPhase").val(),
-            projectId: projectId,  // Assign the selected project ID
-        };
-
+        // AJAX request to the backend to add the amounts
         $.ajax({
             url: '/api/amount/add-amount',
             method: 'POST',
-            data: JSON.stringify(addAmount),
+            data: JSON.stringify(addAmounts),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
+                // Close the modal on success
                 $("#exampleModal").modal('hide');
                 console.log(data);
             },
             error: function (xhr, status, error) {
                 console.log(status);
                 console.log(xhr.responseText);
-                console.error('Error adding amount:', error);
-                console.log(projectId);
+                console.error('Error adding amounts:', error);
             }
         });
 
-        // Clear the modal inputs if needed
-        $('#developmentPhase').val(null).trigger('change');
-        $('#amount').val('');
+        // Clear the modal inputs
+        $('#basicDesignScreenCount').val('');
+        $('#detailedDesignScreenCount').val('');
+        $('#codeLineCount').val('');
+        $('#unitTestCount').val('');
+        $('#integrationTestCount').val('');
     }
 </script>
 </body>
