@@ -13,7 +13,7 @@ function checkCurrentPassword() {
         type: 'POST',
         url: '/users/check-current-password', // Replace with the actual server endpoint
         contentType: 'application/json',
-        data: JSON.stringify({ currentPassword: currentPassword }),
+        data: JSON.stringify({currentPassword: currentPassword}),
         success: function (data) {
             console.log('Current password is correct:', data);
             checkCurrentPassword = currentPassword;
@@ -76,8 +76,12 @@ function checkValidateion() {
 
     if (errorMessage !== '') {
         $('#errorMessage').text(errorMessage); // Display accumulated error messages
-        validationPasses = false;
+        $('#changePasswordBtn').prop('disabled', true);
+        return false;
+    }else{
+        $('#changePasswordBtn').prop('disabled', false);
     }
+    return true;
 }
 
 
@@ -86,7 +90,6 @@ function validatePassword() {
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
     let currentPassword = $('#currentPassword').val();
-    let validationPasses = true;
 
     let changePassword = {
         currentPassword: currentPassword,
@@ -94,79 +97,77 @@ function validatePassword() {
         confirmPassword: confirmPassword
     }
 
-    checkValidateion();
 
-    if (validationPasses) {
-            // Serialize form data
-            $.ajax({
-                type: 'POST',
-                url: '/users/change-password',
-                contentType: 'application/json',
-                data: JSON.stringify(changePassword),
-                success: function (data) {
-                    console.log('Password changed successfully:', data);
-                    // $('#profile-overview').tab('show');
-                    $('#currentPassword').val('');
-                    $('#newPassword').val('');
-                    $('#confirmPassword').val('');
-                },
-                error: function (xhr, error) {
-                    console.log(xhr.responseText);
-                    console.error('Error changing password:', error.responseText);
+    if (checkValidateion()) {
+        // Serialize form data
+        $.ajax({
+            type: 'POST',
+            url: '/users/change-password',
+            contentType: 'application/json',
+            data: JSON.stringify(changePassword),
+            success: function (data) {
+                console.log('Password changed successfully:', data);
+                // $('#profile-overview').tab('show');
+                $('#currentPassword').val('');
+                $('#newPassword').val('');
+                $('#confirmPassword').val('');
+            },
+            error: function (xhr, error) {
+                console.log(xhr.responseText);
+                console.error('Error changing password:', error.responseText);
 
-                    $('#errorMessage').text('Error changing password: ' + error.responseText);
-                }
-            });
-        }
-        return false;
+                $('#errorMessage').text('Error changing password: ' + error.responseText);
+            }
+        });
     }
-
+    return false;
+}
 
 
 $(document).ready(function () {
 
-        $('#passwordToggleOld').on('click', function () {
-            var oldPasswordField = $('#currentPassword');
-            var oldPasswordIcon = $('#passwordIconOld');
+    $('#passwordToggleOld').on('click', function () {
+        var oldPasswordField = $('#currentPassword');
+        var oldPasswordIcon = $('#passwordIconOld');
 
-            // Toggle password visibility
-            if (oldPasswordField.attr('type') === 'password') {
-                oldPasswordField.attr('type', 'text');
-                oldPasswordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-            } else {
-                oldPasswordField.attr('type', 'password');
-                oldPasswordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-            }
-        });
-
-        $('#passwordToggle').on('click', function () {
-            var passwordField = $('#newPassword');
-            var passwordIcon = $('#passwordIcon');
-
-            // Toggle password visibility
-            if (passwordField.attr('type') === 'password') {
-                passwordField.attr('type', 'text');
-                passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-            } else {
-                passwordField.attr('type', 'password');
-                passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-            }
-        });
-
-        $('#passwordToggle2').on('click', function () {
-            var confirmPasswordField = $('#confirmPassword');
-            var confirmPasswordIcon = $('#passwordIcon2');
-
-            // Toggle password visibility
-            if (confirmPasswordField.attr('type') === 'password') {
-                confirmPasswordField.attr('type', 'text');
-                confirmPasswordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
-            } else {
-                confirmPasswordField.attr('type', 'password');
-                confirmPasswordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
-            }
-        });
+        // Toggle password visibility
+        if (oldPasswordField.attr('type') === 'password') {
+            oldPasswordField.attr('type', 'text');
+            oldPasswordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+        } else {
+            oldPasswordField.attr('type', 'password');
+            oldPasswordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+        }
     });
+
+    $('#passwordToggle').on('click', function () {
+        var passwordField = $('#newPassword');
+        var passwordIcon = $('#passwordIcon');
+
+        // Toggle password visibility
+        if (passwordField.attr('type') === 'password') {
+            passwordField.attr('type', 'text');
+            passwordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+        } else {
+            passwordField.attr('type', 'password');
+            passwordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+        }
+    });
+
+    $('#passwordToggle2').on('click', function () {
+        var confirmPasswordField = $('#confirmPassword');
+        var confirmPasswordIcon = $('#passwordIcon2');
+
+        // Toggle password visibility
+        if (confirmPasswordField.attr('type') === 'password') {
+            confirmPasswordField.attr('type', 'text');
+            confirmPasswordIcon.removeClass('bi-eye-slash').addClass('bi-eye');
+        } else {
+            confirmPasswordField.attr('type', 'password');
+            confirmPasswordIcon.removeClass('bi-eye').addClass('bi-eye-slash');
+        }
+    });
+});
 
 
 

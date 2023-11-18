@@ -313,7 +313,7 @@
 
                   <div class="d-flex justify-content-end mx-auto">
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary" id="resetButton" onclick="validatePassword()">Change Password</button>
+                      <button type="button" class="btn btn-primary" id="changePasswordBtn" onclick="validatePassword()">Change Password</button>
                     </div>
                   </div>
                 </form>
@@ -344,14 +344,13 @@
 
 <script>
   function displayPhoto() {
-    var input = document.getElementById('editPhoto');
+    let input = document.getElementById('editPhoto');
     // var img = document.getElementById('selectedPhoto');
-    var img=document.querySelector('.imgContainer');
-
-    var file = input.files[0];
+    let img=document.querySelector('.imgContainer');
+    let file = input.files[0];
 
     if (file) {
-      var reader = new FileReader();
+      let reader = new FileReader();
 
       reader.onload = function(e) {
         img.src = e.target.result;
@@ -378,13 +377,13 @@
     validateImage();
   }
   function validateImage() {
-    var input = document.getElementById('editPhoto');
-    var maxSizeInBytes = 1024 * 1024; // 1MB
-    var allowedTypes = ['image/jpeg', 'image/png'];
+    let input = document.getElementById('editPhoto');
+    let maxSizeInBytes = 1024 * 1024; // 1MB
+    let allowedTypes = ['image/jpeg', 'image/png'];
 
     if (input.files.length > 0) {
-      var fileSize = input.files[0].size;
-      var fileType = input.files[0].type;
+      let fileSize = input.files[0].size;
+      let fileType = input.files[0].type;
 
       if (fileSize > maxSizeInBytes) {
         document.getElementById('sizeError').innerText = 'File size exceeds the limit (1MB)';
