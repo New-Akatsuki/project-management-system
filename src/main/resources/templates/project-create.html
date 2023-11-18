@@ -91,6 +91,30 @@
             color: red;
         }
     </style>
+    <style>
+        #dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            pointer-events: auto; /* Updated to block interactions with elements beneath */
+        }
+
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 1.8rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            z-index: 10001; /* Update z-index to be higher than #dim-overlay */
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -417,7 +441,9 @@
             </div>
         </div>
     </div>
-
+    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+    </div>
+    <div id="dim-overlay"></div>
     <!-- End Card -->
 </main>
 <!-- End #main -->
@@ -437,6 +463,19 @@
 
 
 <script>
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
+
     // Function to toggle the toolbar
     function clean() {
         $('#title').val("");
@@ -623,20 +662,6 @@
         let client = parseInt($('#client').val(), 10);
         let objective = quillObjective.root.innerHTML;
         let background = quillBackground.root.innerHTML;
-        //
-        // console.log("Name :", name);
-        // console.log("Department :", department);
-        // console.log("Start Date :", startDate);
-        // console.log("End Date :", endDate);
-        // console.log("System Outlines :", so);
-        // console.log("Architecture Outlines :", ao);
-        // console.log("Deliverables :", deli);
-        // console.log("Contract Members :", member);
-        // console.log("FOC Members :", foc);
-        // console.log("Client :", client);
-        // console.log("Objective :", objective);
-        // console.log("Background :", background);
-
         let errors = [];
 
         if (name === '') {
@@ -673,7 +698,6 @@
             errors.push('#backgroundError');
         }
 
-
         // Display all errors at once
         for (let error of errors) {
             $(error).show();
@@ -703,7 +727,7 @@
         // Convert to JSON string
         const jsonString = JSON.stringify(projObj);
         // console.log(projObj);
-
+        toggleLoadingSpinner(true);
         $.ajax({
             url: '/add-project',
             type: 'POST',
@@ -711,9 +735,11 @@
             data: jsonString,
             success: function (response) {
                 alert("Project created successfully");
+                toggleLoadingSpinner(false);
             },
             error: function (response) {
                 alert("Project creation failed");
+                toggleLoadingSpinner(false);
             }
         });
     });
