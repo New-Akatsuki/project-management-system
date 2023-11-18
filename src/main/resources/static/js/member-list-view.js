@@ -2,6 +2,7 @@
     <!--For Member List Table-->
     let userList = [];
     $(document).ready(function () {
+        $('.text-danger').hide();
     // Make an AJAX request to fetch data from the REST API endpoint
     $.ajax({
         url: '/get-users', // Replace with your actual API endpoint
@@ -77,10 +78,7 @@
             data: JSON.stringify(addMember),
             dataType: 'json',
             success: function (data) {
-                $("#name").val('')
-                $("#email").val('')
-                $("#newUserRole").val('')
-                $("#department").val('')
+                $('#addMemberModal').modal('hide');
                 userList.push(data)
                 console.log(userList);
                 renderMemberListTable(userList);
@@ -128,44 +126,6 @@
     }
 
 
-    function editUserRoleAndDepartment(){
-        //Get updated user information form modal fields
-        let id = $('#editId').val();
-        let name = $('#editName').val();
-        let email = $('#editEmail').val();
-        let department = $('#editDepartment').val();
-        let role= $('#editUserRole').val();
-        // Prepare updated user object
-        let updatedUser = {
-            id:id,
-            name: name,
-            email: email,
-            department: department,
-            role: role,
-        };
-        console.log("updatedUser", updatedUser);
-        //Make a PUT request to update the user data
-        $.ajax({
-            url: `/user-edit/${id}`, // Replace with your actual API endpoint
-            method: 'PUT',
-            data: JSON.stringify(updatedUser),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (data) {
-                console.log('Data received:', data);
-                location.reload();
-                // // Hide the modal
-                // $('#userEditModal').modal('hide');
-                // // Reload the DataTable with new data
-                // renderMemberListTable(updatedUser);
-            },
-            error: function (xhr,error) {
-                console.log(xhr.responseText)
-                console.log('Error fetching data:', error);
-            }
-
-        });
-    }
 
         //Make a PUT request to update the user data
 
@@ -179,11 +139,13 @@
         $('#editEmail').val(user.email);
         $('#editDepartment').val(user.departmentId);
         $('#editUserRole').val(user.role);
-        // Disable the "name" field
-        $('#editName').prop('disabled', true);
+        // // Disable the "name" field
+        // $('#editName').prop('disabled', true);
         // Show the modal
         $('#userEditModal').modal('show');
     }
+
+
     // For get department
     $(document).ready(function(){
         $.ajax({
@@ -219,30 +181,75 @@
             }
         });
     })
+
+    let nameInput=$("#name");
+    let emailInput=$("#email");
+
+    let nameError=$("#nameError");
+    let emailError=$("#emailError");
+    let departmentInput=$('#department')
+    let departmentError=$('#departmentError')
+    let roleInput=$('#newUserRole')
+    let roleError=$('#roleError')
     function validateAndAddMember(){
-        const nameInput=document.getElementById("name");
-        const emailInput=document.getElementById("email");
-        const nameError=document.getElementById("nameError");
-        const emailError=document.getElementById("emailError");
-
-        //Reset error message
-        nameError.style.display = 'none';
-        emailError.style.display = 'none';
-
         //Validation
         let isValid =true;
-        if(nameInput.value.trim() === ''){
-            nameError.style.display ='block';
+        if(nameInput.val().trim() === ''){
+            nameError.show()
             isValid =false;
         }
-        if(emailInput.value.trim() === ''){
-            emailError.style.display ='block';
+        if(emailInput.val().trim() === ''){
+            emailError.show()
+            isValid =false;
+        }
+        if(departmentInput.val() == null){
+            departmentError.show()
+            isValid =false;
+        }
+        if(roleInput.val() == null){
+            roleError.show()
             isValid =false;
         }
         if(isValid){
             addNewMember();
         }
+
     }
+    $('#addMemberModalButton').click(function(){
+        $('.text-danger').hide();
+        $("#name").val('')
+        $("#email").val('')
+        $("#newUserRole").val('')
+        $("#department").val('')
+        $('#addMemberModal').modal('show');
+    })
+
+    nameInput.on('input', ()=>{
+        toggleError(nameError,nameInput)
+    })
+
+    emailInput.on('input', ()=>{
+        toggleError(emailError,emailInput)
+    })
+
+    departmentInput.on('change',function(){
+        departmentError.hide();
+    })
+    roleInput.on('change',function(){
+        roleError.hide();
+    })
+
+
+    function toggleError(error,input){
+        if(error && input){
+            error.toggleClass('d-none', input.val().trim() !== '');
+        }
+    }
+
+
+
+
+
 
 
 
