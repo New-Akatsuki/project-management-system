@@ -46,6 +46,7 @@
     <!-- Template Main CSS File -->
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/kanban.css">
+    <link rel="stylesheet" href="/css/select2.css">
     <style>
 
         .modal-content {
@@ -183,7 +184,11 @@
     <!-- End Page Title -->
     <div class="card vh-100 shadow-none">
         <div class="card-header">
-            <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
+                <label><select id="projectSelect" style="width: 300px" class="select-box2 form-select"></select></label>
+            </div>
+
         </div>
         <div class="card-body">
             <div class="tabs">
@@ -228,6 +233,7 @@
 
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
@@ -252,6 +258,24 @@
         });
     }
 
+    $.ajax({
+        url: `/get-projects`,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (index, value) {
+                $('#projectSelect').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+
+    $('#projectSelect').select2();
 
 </script>
 
@@ -259,6 +283,7 @@
 
 <script>
     $(document).ready(function () {
+
         $(".dateInputBox").datepicker({
             dateFormat: "yy-mm-dd",
             showOtherMonths: true,
@@ -266,20 +291,29 @@
             changeMonth: true,
             changeYear: true,
         });
+        getDataAndBuildTaskView();
+        function getDataAndBuildTaskView(){
+            let projectId = $('#projectSelect').val();
+            $.ajax({
+                url: `/get-tasks/${projectId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    taskBoard({
+                        tasks: data
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
 
-        $.ajax({
-            url: `/get-task-data`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                taskBoard({
-                    tasks: data
-                });
-            },
-            error: function (error) {
-                console.log(error);
-            }
+        $('#projectSelect').on('change', function () {
+            getDataAndBuildTaskView();
         });
+
+
     });
 
 </script>

@@ -27,17 +27,17 @@ public class ManMonthAPI {
         private final ProjectService projectService;
         private final DepartmentService departmentService;
 
-        @GetMapping("/get-task-data")
-        public ResponseEntity<List<TaskViewObject>> getTaskData() {
-                List<TaskViewObject> tasks = taskService.getAllTasks();
-                return ResponseEntity.ok(tasks);
-        }
-
-        @GetMapping("/get-project-data")
-        public ResponseEntity<List<ProjectViewObject>> getProject() {
-                List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
-                return ResponseEntity.ok(projects);
-        }
+//        @GetMapping("/get-task-data")
+//        public ResponseEntity<List<TaskViewObject>> getTaskData() {
+//                List<TaskViewObject> tasks = taskService.getAllTasks();
+//                return ResponseEntity.ok(tasks);
+//        }
+//
+//        @GetMapping("/get-project-data")
+//        public ResponseEntity<List<ProjectViewObject>> getProject() {
+//                List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
+//                return ResponseEntity.ok(projects);
+//        }
 
         @GetMapping("/get-department-data")
         public ResponseEntity<List<Department>> getDepartment() {

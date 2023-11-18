@@ -119,17 +119,6 @@ public class ProjectServiceImpl implements ProjectService {
         };
     }
 
-    @Override
-    public List<ProjectViewObject> getAllProjectViewObjects() {
-        var user = getCurrentUser();
-        return switch (user.getRole()) {
-            case PMO,SDQC -> projectRepository.findAll().stream().map(ProjectViewObject::new).toList();
-            case DH-> projectRepository.findAllByDepartment(user.getDepartment()).stream().map(ProjectViewObject::new).toList();
-            case PM ->projectRepository.findAllByProjectManager(user).stream().map(ProjectViewObject::new).toList();
-            case MEMBER-> projectRepository.findAllProjectsByUserInMembers(user).stream().map(ProjectViewObject::new).toList();
-            default -> throw new IllegalStateException("Invalid user");
-        };
-    }
 
     @Override
     public ProjectViewObject getProjectById(Long id) {

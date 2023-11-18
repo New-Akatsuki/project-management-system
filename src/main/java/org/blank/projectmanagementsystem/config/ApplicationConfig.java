@@ -22,8 +22,4 @@ import java.util.Map;
 @EnableAspectJAutoProxy
 @EnableAsync(proxyTargetClass = true)
 public class ApplicationConfig {
-    @Bean
-    public SessionRegistry sessionRegistry(){
-        return new SessionRegistryImpl();
-    }
 }

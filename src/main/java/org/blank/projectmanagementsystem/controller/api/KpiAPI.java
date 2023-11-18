@@ -25,23 +25,23 @@ public class KpiAPI {
     private final ReviewCountService reviewCountService;
     private final AmountService amountService;
 
-    @GetMapping("/get-project-data")
-    public ResponseEntity<List<ProjectViewObject>> getProject() {
-        List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
-        return ResponseEntity.ok(projects);
-    }
-
-    @GetMapping("/get-review-count")
-    public ResponseEntity<List<ReviewCount>> getReviewCount() {
-        List<ReviewCount> reviewCounts = reviewCountService.getAllReviewCount();
-        return ResponseEntity.ok(reviewCounts);
-    }
-
-    @GetMapping("/get-amount")
-    public ResponseEntity<List<Amount>> getAmountCount(){
-        List<Amount> amounts = amountService.getAllAmount();
-        return ResponseEntity.ok(amounts);
-    }
+//    @GetMapping("/get-project-data")
+//    public ResponseEntity<List<ProjectViewObject>> getProject() {
+//        List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
+//        return ResponseEntity.ok(projects);
+//    }
+//
+//    @GetMapping("/get-review-count")
+//    public ResponseEntity<List<ReviewCount>> getReviewCount() {
+//        List<ReviewCount> reviewCounts = reviewCountService.getAllReviewCount();
+//        return ResponseEntity.ok(reviewCounts);
+//    }
+//
+//    @GetMapping("/get-amount")
+//    public ResponseEntity<List<Amount>> getAmountCount(){
+//        List<Amount> amounts = amountService.getAllAmount();
+//        return ResponseEntity.ok(amounts);
+//    }
 
     @GetMapping("/calculateAllKPIs/{projectId}")
     public Map<String, Map<String, Double>> calculateAllKPIs(@PathVariable Long projectId) {
