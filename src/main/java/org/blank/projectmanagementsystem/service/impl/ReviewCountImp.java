@@ -24,7 +24,6 @@ public class ReviewCountImp implements ReviewCountService {
     private final ReviewCountRepository reviewCountRepository;
     private final AmountService amountService;
     private final ProjectRepository projectRepository;
-    private final ProjectService projectService;
 
 
 //    @Override
