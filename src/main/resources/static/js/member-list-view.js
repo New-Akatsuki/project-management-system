@@ -125,9 +125,47 @@
     });
     }
 
-
-
+    // Edit Member
+    function editUserRoleAndDepartment(){
+        //Get updated user information form modal fields
+        let id = $('#editId').val();
+        let name = $('#editName').val();
+        let email = $('#editEmail').val();
+        let department = $('#editDepartment').val();
+        let role= $('#editUserRole').val();
+        // Prepare updated user object
+        let updatedUser = {
+            id:id,
+            name: name,
+            email: email,
+            department: department,
+            role: role,
+        };
+        console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
+        $.ajax({
+            url: /user-edit/${id}, // Replace with your actual API endpoint
+            method: 'PUT',
+            data: JSON.stringify(updatedUser),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                console.log('Data received:', data);
+                location.reload();
+                // // Hide the modal
+                // $('#userEditModal').modal('hide');
+                // // Reload the DataTable with new data
+                // renderMemberListTable(updatedUser);
+            },
+            error: function (xhr,error) {
+                console.log(xhr.responseText)
+                console.log('Error fetching data:', error);
+            }
+
+        });
+    }
+
+
 
     //For display edit user modal
     function displayEditUserModal(userId) {
@@ -181,7 +219,7 @@
             }
         });
     })
-
+    // For Add Member
     let nameInput=$("#name");
     let emailInput=$("#email");
 
@@ -239,6 +277,65 @@
         roleError.hide();
     })
 
+
+    //For Edit Member
+
+    let editNameInput = $("#editName");
+    let editEmailInput = $("#editEmail");
+    let editDepartmentInput = $('#editDepartment');
+    let editRoleInput = $('#editUserRole');
+    let editNameError = $("#editNameError");
+    let editEmailError = $("#editEmailError");
+    let editDepartmentError = $('#editDepartmentError');
+    let editRoleError = $('#editRoleError');
+
+    function validateAndEditMember() {
+        let isValid = true;
+        if (editNameInput.val().trim() === '') {
+            editNameError.show();
+            isValid = false;
+        }
+        if (editEmailInput.val().trim() === '') {
+            editEmailError.show();
+            isValid = false;
+        }
+        if (editDepartmentInput.val() == null) {
+            editDepartmentError.show();
+            isValid = false;
+        }
+        if (editRoleInput.val() == null) {
+            editRoleError.show();
+            isValid = false;
+        }
+        if (isValid) {
+            editUserRoleAndDepartment();
+        }
+    }
+
+    $('#editMemberModalButton').click(function () {
+        $('.edit-text-danger').hide();
+        $("#editName").val('');
+        $("#editEmail").val('');
+        $("#editUserRole").val('');
+        $("#editDepartment").val('');
+        $('#editMemberModal').modal('show');
+    })
+
+    editNameInput.on('input', () => {
+        toggleError(editNameError, editNameInput);
+    })
+
+    editEmailInput.on('input', () => {
+        toggleError(editEmailError, editEmailInput);
+    })
+
+    editDepartmentInput.on('change', function () {
+        editDepartmentError.hide();
+    })
+
+    editRoleInput.on('change', function () {
+        editRoleError.hide();
+    })
 
     function toggleError(error,input){
         if(error && input){
