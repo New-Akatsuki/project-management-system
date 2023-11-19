@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 import org.blank.projectmanagementsystem.domain.formInput.ReviewDto;
 import org.blank.projectmanagementsystem.service.ReviewCountService;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +23,25 @@ public class ReviewAPI {
     public ResponseEntity<List<ReviewDto>> addReview(@RequestBody List<ReviewDto> reviewDtoList) {
         log.info("reviewDto: {}", reviewDtoList);
         List<ReviewDto> saveReview = reviewDtoList.stream()
-                .map(reviewCountService::save)
+                .map(reviewCountService::saveOrUpdate)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(saveReview);
     }
 
 
-//    @GetMapping("/check-existing-development-phase")
-//    public ResponseEntity<?> checkExistingDevelopmentPhase(
-//            @RequestParam Long projectId,
-//            @RequestParam DevelopmentPhase developmentPhase,
-//            @RequestParam ReviewerType reviewerType) {
-//        boolean exists = reviewCountService.isDevelopmentPhaseExists(projectId, developmentPhase, reviewerType);
-//        return ResponseEntity.ok(exists);
-//    }
-
+    @GetMapping("/get-review/{projectId}/{reviewerType}")
+    public ResponseEntity<List<ReviewDto>> getReview(@PathVariable Long projectId, @PathVariable ReviewerType reviewerType) {
+        List<ReviewDto> reviewDtoList = reviewCountService.findByProjectId(projectId).stream()
+                .filter(reviewCount -> reviewCount.getReviewerType().equals(reviewerType))
+                .map(reviewCount -> ReviewDto.builder()
+                        .id(reviewCount.getId())
+                        .projectId(reviewCount.getProject().getId())
+                        .developmentPhase(reviewCount.getDevelopmentPhase())
+                        .reviewerType(reviewCount.getReviewerType())
+                        .count(reviewCount.getCount())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(reviewDtoList);
+    }
 }

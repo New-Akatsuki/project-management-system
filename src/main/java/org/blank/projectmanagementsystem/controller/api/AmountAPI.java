@@ -20,25 +20,29 @@ import java.util.stream.Collectors;
 public class AmountAPI {
     private final AmountService amountService;
 
-
-    @PostMapping("/add-amount")
-    public ResponseEntity<List<AmountDto>> addAmounts(@RequestBody List<AmountDto> amountList) {
+    @PostMapping("/add-or-update-amount")
+    public ResponseEntity<List<AmountDto>> addOrUpdateAmounts(@RequestBody List<AmountDto> amountList) {
         List<AmountDto> savedAmounts = amountList.stream()
-                .map(amountService::save)
+                .map(amountService::saveOrUpdate)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(savedAmounts);
     }
 
 
-//    @GetMapping("/check-existing-development-phase")
-//    public ResponseEntity<?> checkExistingDevelopmentPhase(
-//            @RequestParam Long projectId,
-//            @RequestParam DevelopmentPhase developmentPhase) {
-//        boolean exists = amountService.isDevelopmentPhaseExists(projectId, developmentPhase);
-//        return ResponseEntity.ok(exists);
-//    }
 
+    @GetMapping("/get-amount/{projectId}")
+    public ResponseEntity<List<AmountDto>> getAmounts(@PathVariable Long projectId) {
+        List<AmountDto> amounts = amountService.findByProjectId(projectId).stream()
+                .map(amount -> AmountDto.builder()
+                        .id(amount.getId())
+                        .projectId(amount.getProject().getId())
+                        .developmentPhase(amount.getDevelopmentPhase())
+                        .amount(amount.getAmount())
+                        .build())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(amounts);
+    }
 
 
 }

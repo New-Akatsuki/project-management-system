@@ -41,9 +41,10 @@
     </div>
 </div>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add Project's Data
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="prepareModal('update')">
+    Update Project's Data
 </button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -87,7 +88,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addProjectDataAmount()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
             </div>
         </div>
     </div>
@@ -118,14 +119,28 @@
         }
     });
 
-    function addProjectDataAmount() {
-        // Retrieve values from input fields
+    function prepareModal(action) {
+        // Reset modal inputs
+        $('#basicDesignScreenCount').val('');
+        $('#detailedDesignScreenCount').val('');
+        $('#codeLineCount').val('');
+        $('#unitTestCount').val('');
+        $('#integrationTestCount').val('');
+
+        // Change modal title and button label
+        if (action === 'add') {
+            $('.modal-title').text('Add Project\'s Data');
+            $('.btn-primary').text('Add');
+        } else if (action === 'update') {
+            $('.modal-title').text('Update Project\'s Data');
+            $('.btn-primary').text('Update');
+            // Fetch existing data and populate the modal inputs
+            fetchExistingData();
+        }
+    }
+
+    function fetchExistingData() {
         let projectId = $('#selectAProject').val();
-        let basicDesignScreenCount = $('#basicDesignScreenCount').val();
-        let detailedDesignScreenCount = $('#detailedDesignScreenCount').val();
-        let codeLineCount = $('#codeLineCount').val();
-        let unitTestCount = $('#unitTestCount').val();
-        let integrationTestCount = $('#integrationTestCount').val();
 
         // Check if a project is selected
         if (!projectId || projectId === '#') {
@@ -133,18 +148,97 @@
             return;
         }
 
-        // Create an array of AmountDto objects
-        let addAmounts = [
-            { id: null, projectId: projectId, developmentPhase: 'BASIC_DESIGN', amount: basicDesignScreenCount },
-            { id: null, projectId: projectId, developmentPhase: 'DETAILED_DESIGN', amount: detailedDesignScreenCount },
-            { id: null, projectId: projectId, developmentPhase: 'CODING', amount: codeLineCount },
-            { id: null, projectId: projectId, developmentPhase: 'UNIT_TESTING', amount: unitTestCount },
-            { id: null, projectId: projectId, developmentPhase: 'INTEGRATION_TESTING', amount: integrationTestCount }
-        ];
+        // Make an AJAX request to fetch existing data
+        $.ajax({
+            url: '/api/amount/get-amount/' + projectId,
+            type: 'GET',
+            success: function (data) {
+                // Populate the modal inputs with existing data
+                data.forEach(function (amount) {
+                    switch (amount.developmentPhase) {
+                        case 'BASIC_DESIGN':
+                            $('#basicDesignScreenCount').val(amount.amount);
+                            break;
+                        case 'DETAILED_DESIGN':
+                            $('#detailedDesignScreenCount').val(amount.amount);
+                            break;
+                        case 'CODING':
+                            $('#codeLineCount').val(amount.amount);
+                            break;
+                        case 'UNIT_TESTING':
+                            $('#unitTestCount').val(amount.amount);
+                            break;
+                        case 'INTEGRATION_TESTING':
+                            $('#integrationTestCount').val(amount.amount);
+                            break;
+                        // Add more cases for other development phases if needed
+                    }
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching existing data:', error);
+            }
+        });
+    }
+
+
+    function addOrUpdateAmount() {
+        // Retrieve values from input fields
+        let projectId = $('#selectAProject').val();
+
+        // Check if a project is selected
+        if (!projectId || projectId === '#') {
+            alert('Please select a project.');
+            return;
+        }
+
+        // Create an array to store AmountDto objects
+        let addAmounts = [];
+
+        // Helper function to check if the development phase already exists
+        function isDevelopmentPhaseExists(developmentPhase) {
+            return addAmounts.some(amount => amount.developmentPhase === developmentPhase);
+        }
+
+        // Add BASIC DESIGN amount if it's not null and doesn't already exist
+        let basicDesignScreenCount = $('#basicDesignScreenCount').val();
+        if (basicDesignScreenCount !== null && basicDesignScreenCount !== '' && !isDevelopmentPhaseExists('BASIC_DESIGN')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'BASIC_DESIGN', amount: basicDesignScreenCount });
+        }
+
+        // Add DETAILED DESIGN amount if it's not null and doesn't already exist
+        let detailedDesignScreenCount = $('#detailedDesignScreenCount').val();
+        if (detailedDesignScreenCount !== null && detailedDesignScreenCount !== '' && !isDevelopmentPhaseExists('DETAILED_DESIGN')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'DETAILED_DESIGN', amount: detailedDesignScreenCount });
+        }
+
+        // Add CODING amount if it's not null and doesn't already exist
+        let codeLineCount = $('#codeLineCount').val();
+        if (codeLineCount !== null && codeLineCount !== '' && !isDevelopmentPhaseExists('CODING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'CODING', amount: codeLineCount });
+        }
+
+        // Add UNIT TESTING amount if it's not null and doesn't already exist
+        let unitTestCount = $('#unitTestCount').val();
+        if (unitTestCount !== null && unitTestCount !== '' && !isDevelopmentPhaseExists('UNIT_TESTING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'UNIT_TESTING', amount: unitTestCount });
+        }
+
+        // Add INTEGRATION TESTING amount if it's not null and doesn't already exist
+        let integrationTestCount = $('#integrationTestCount').val();
+        if (integrationTestCount !== null && integrationTestCount !== '' && !isDevelopmentPhaseExists('INTEGRATION_TESTING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'INTEGRATION_TESTING', amount: integrationTestCount });
+        }
+
+        // Check if addAmounts is empty (no new developments to add)
+        if (addAmounts.length === 0) {
+            alert('No new developments to add.');
+            return;
+        }
 
         // AJAX request to the backend to add the amounts
         $.ajax({
-            url: '/api/amount/add-amount',
+            url: '/api/amount/add-or-update-amount',
             method: 'POST',
             data: JSON.stringify(addAmounts),
             contentType: 'application/json; charset=utf-8',
@@ -157,7 +251,7 @@
             error: function (xhr, status, error) {
                 console.log(status);
                 console.log(xhr.responseText);
-                console.error('Error adding amounts:', error);
+                console.error('Error adding/updating amounts:', error);
             }
         });
 
@@ -168,6 +262,8 @@
         $('#unitTestCount').val('');
         $('#integrationTestCount').val('');
     }
+
+
 </script>
 </body>
 

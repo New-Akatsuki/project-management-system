@@ -10,7 +10,7 @@ public interface AmountService {
 
 //        boolean isDevelopmentPhaseExists(Long projectId, DevelopmentPhase developmentPhase);
 
-        AmountDto save(AmountDto amountFormInput);
+        AmountDto saveOrUpdate(AmountDto amountFormInput);
         List<Amount> getAllAmount();
         List<Amount> findByProjectId(Long projectId);
 

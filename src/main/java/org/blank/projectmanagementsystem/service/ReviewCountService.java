@@ -10,10 +10,11 @@ import java.util.List;
 public interface ReviewCountService {
 
 //     boolean isDevelopmentPhaseExists(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType);
-    ReviewDto save(ReviewDto reviewDto);
+    ReviewDto saveOrUpdate(ReviewDto reviewDto);
 
     List<ReviewCount> getAllReviewCount();
 
+    List<ReviewCount> findByProjectId(Long projectId);
     double calculateBasicDesignKpi(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType);
 
     ReviewCount findByProjectIdAndDevelopmentPhaseAndReviewerType(Long projectId, DevelopmentPhase developmentPhase, ReviewerType reviewerType);
