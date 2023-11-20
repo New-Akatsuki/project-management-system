@@ -279,7 +279,7 @@
                     }));
                 });
 
-                if(notification.projectId) {
+                if(notification && notification.projectId) {
                     $('#projectSelect').val(notification.projectId).trigger('change');
                 }
 
