@@ -1091,12 +1091,25 @@
                 $('#ao').val(arcOutlineIds).trigger('change');
                 $('#so').val(sysOutlineIds).trigger('change');
 
+
+                notifyMultiSelect('#foc', contractMemberIds);
+                notifyMultiSelect('#member', focMemberIds);
+
             },
             error: function (data) {
                 console.log(data);
             }
         });
     });
+
+    function notifyMultiSelect(target='', options=[]) {
+            options.forEach(option=>{
+                console.log(target, option)
+                $(target+' option[value="' + option + '"]').prop('disabled', true);
+                $(target).trigger('change');
+            });
+
+    }
 
     function clean() {
         $('#title').val("");
