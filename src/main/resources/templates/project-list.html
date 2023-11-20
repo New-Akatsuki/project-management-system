@@ -1,55 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DIR-ACE TECHNOLOGY</title>
-  <meta content="" name="description" />
-  <meta content="" name="keywords" />
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect" />
-  <link
-          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"
-  />
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
 
-  <link   href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
 
-  <!-- Favicons -->
-  <link th:href="@{/images/DAT.png}" rel="icon">
-  <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
-  <link
-          th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-          rel="stylesheet"
-  />
-  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet" />
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
-  <!-- Library / Plugin Css Build -->
+    <!-- Hope Ui Design System Css -->
+    <link href="/css/pagination.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
 
-  <link rel="stylesheet" href="/css/hope.css">
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-  <!-- Custom Css -->
-  <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
 
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
 
-  <!-- Customizer Css -->
-  <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
 
-  <!-- RTL Css -->
-  <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-  <!-- DataTables JS -->
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
 
-  <!-- Template Main CSS File -->
-  <link href="/css/style.css" rel="stylesheet" />
+        .project-list-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .project-card {
+            flex: 1;
+            background: #fff;
+            margin-bottom: 20px;
+            border: 1px solid rgba(152, 165, 178, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .card-body {
+            padding: 20px;
+            height: 100%; /* Set the height to 100% */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 0 5px 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+        .badge-green {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge-yellow {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .badge-red {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .card-title {
+            color: #333; /* Dark gray font color */
+            margin-bottom: 8px; /* Adjust as needed for spacing */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Additional style for small font size */
+        .small-font-size {
+            font-size: 15px !important;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            padding-inline: 15px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: black;
+        }
+    </style>
+    <!-- ... (previous HTML code) ... -->
+
 </head>
 
 <body>
@@ -58,80 +147,175 @@
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
 <main id="main" class="main">
-  <!-- Breadcrumb part-->
-  <div class="pagetitle">
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">project-list</li>
-      </ol>
-    </nav>
-  </div>
-  <!-- End Page Title -->
-
-  <!-- Main Content -->
-  <div class="container-fluid content-inner mt-5 py-0">
-    <div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <div class="header-title">
-                <h4 class="card-title">Project List</h4>
-                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" th:href="@{/projects/new}">New Project</a>
-
-              </div>
-            </div>
-            <div class="card-body px-">
-              <div class="table-responsive">
-                <table class="table table-sm" style="width:100%;" id="project"><thead>
-                  <tr class="ligth">
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Due Date</th>
-                    <th>Client</th>
-                    <th>Status</th>
-                    <th style="min-width: 100px">Action</th>
-
-                  </tr>
-                  </thead>
-
-
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">project-list</li>
+            </ol>
+        </nav>
     </div>
-  </div>
+    <h3><i class="bi bi-folder2"></i>&nbspProject List View</h3>
 
-
-
-  <!-- End Main Content-->
+    <div class="search-box mb-3">
+        <label for="issueSearch"></label>
+        <div class="input-group" style="position: relative">
+                <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+        <i class="bi bi-search"></i>&nbsp;
+    </span>
+            <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search issues..."
+                   style="padding-left: 40px ">
+        </div>
+    </div>
+    <!-- End Page Title -->
+    <div class="project-list-container row">
+    </div>
+    <div id="pagination-container"></div>
+    <!-- End Main Content-->
 </main>
 <!-- End #main -->
 
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+<script src="/js/pagination.js"></script>
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<script src="/js/project-table.js"></script>
+<!-- Include Fuse.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let projectList = [];
+        // Make an AJAX request to fetch data from the REST API endpoint
+        $.ajax({
+            url: '/get-projects', // Replace with your actual API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('All project list:', data);
+                projectList = data;
+                getSuccess();
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
 
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="/js/notification.js"></script>
-<script src="/js/init-notification.js"></script>
+        function getSuccess() {
+            const fuseOptions = {
+                keys: ['name', 'department', 'client', 'status'],
+                threshold: 0.3,
+            };
 
+            const fuse = new Fuse(projectList, fuseOptions);
+
+            const itemsPerPage = 5;
+            const paginationContainer = $('#pagination-container');
+            const projectListContainer = $('.project-list-container');
+            const issueSearchInput = $('#issueSearch');
+
+            function performFuzzySearch(searchTerm) {
+                if (searchTerm.trim() === '') {
+                    // If search term is empty, render the entire project list
+                    renderProjectList(projectList);
+                    initializePagination(projectList);
+                } else {
+                    const results = fuse.search(searchTerm.toLowerCase());
+                    renderProjectList(results);
+                    initializePagination(results);
+                }
+            }
+
+            function renderProjectCard(project) {
+                const {name, department, endDate, client, status, id} = project;
+                const titleClass = name.length > 20 ? 'small-font-size' : '';
+
+                const badgeColorClass = status === 'COMPLETED'
+                    ? 'badge-green'
+                    : status === 'PENDING'
+                        ? 'badge-yellow'
+                        : 'badge-red';
+
+                const borderTopColor = badgeColorClass === 'badge-green'
+                    ? '#28a745'
+                    : badgeColorClass === 'badge-yellow'
+                        ? '#ffc107'
+                        : '#dc3545';
+
+                return `
+        <div class="col-md-4">
+          <a href="/projects/${id}/working-area" class="card-link">
+            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 230px">
+              <div class="card-body">
+                <div class="card-title ${titleClass} mt-2 mb-2">${name}</div>
+                <div class="container mb-3">
+                  <p class="card-text"><span><i class="bi bi-laptop"></i>&nbsp${department}</span></p>
+                  <p class="card-text"><span><i class="bi bi-calendar2-x"></i>&nbsp${endDate}</span></p>
+                  <p class="card-text"><span><i class="bi bi-person"></i>&nbsp${client}</span></p>
+                </div>
+              </div>
+              <span class="badge ${badgeColorClass}">${status}</span>
+            </div>
+          </a>
+        </div>
+      `;
+            }
+
+            function renderProjectList(projectList) {
+                projectListContainer.empty();
+
+                const linkCard = `
+        <div class="col-md-4">
+          <a href="/projects/new" class="card-link">
+            <div class="card project-card" style="height: 230px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
+              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
+                <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      `;
+                projectListContainer.append(linkCard);
+
+                projectList.forEach(function (project) {
+                    projectListContainer.append(renderProjectCard(project));
+                });
+            }
+
+            function initializePagination(dataSource) {
+                paginationContainer.pagination({
+                    dataSource: dataSource,
+                    pageSize: itemsPerPage,
+                    showSizeChanger: true,
+                    callback: function (dataSource, pagination) {
+                        renderProjectList(dataSource);
+                    }
+                });
+            }
+
+            issueSearchInput.on('input', function () {
+                const searchTerm = $(this).val();
+                performFuzzySearch(searchTerm);
+            });
+
+            // Initialization
+            initializePagination(projectList);
+        }
+    });
+</script>
 </body>
 </html>
 

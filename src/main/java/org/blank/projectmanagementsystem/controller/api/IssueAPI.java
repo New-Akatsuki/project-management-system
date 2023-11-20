@@ -96,7 +96,7 @@ public class IssueAPI {
     }
 
     @PostMapping("/add-solution")
-    public ResponseEntity<Issue> addSolutiontoIssue(@RequestBody IssueSolveFormInput issueSolveFormInput) {
+    public ResponseEntity<Issue> addSolutionToIssue(@RequestBody IssueSolveFormInput issueSolveFormInput) {
         log.info("add solution to issue {} \n\n", issueSolveFormInput);
         return ResponseEntity.ok(issueService.addSolutiontoIssue(issueSolveFormInput));
     }

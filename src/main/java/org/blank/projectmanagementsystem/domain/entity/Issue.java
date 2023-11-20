@@ -46,7 +46,7 @@ public class Issue implements Serializable {
 
     private boolean solved=false;
 
-    @Column(length = 700)
+    @Column(columnDefinition = "longtext")
     private String impact;
 
     @Column(nullable = false, columnDefinition = "longtext")
