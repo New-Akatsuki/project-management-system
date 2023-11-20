@@ -19,4 +19,6 @@ public interface ProjectService {
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
     List<ProjectViewObject> getProjectsByDepartment(Integer departmentId);
     Project getProject(long projectId);
+    Project getProjectByID(Long id);
+    Project updateProject(ProjectFormInput projectFormInput);
 }

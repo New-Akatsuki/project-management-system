@@ -28,10 +28,16 @@ public class ProjectAPI {
         return proj;
     }
     @PostMapping("/add-project")
-
     public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projectFormInput) {
         log.info("create project {} \n\n", projectFormInput);
         return ResponseEntity.ok(projectService.saveProject(projectFormInput));
+    }
+
+    @GetMapping("/get-projectDetails-byId/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
+        log.info("get project by id {} \n\n", id);
+        Project project = projectService.getProjectByID(id);
+        return ResponseEntity.ok(project);
     }
 
 }

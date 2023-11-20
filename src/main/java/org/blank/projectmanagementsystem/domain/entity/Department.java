@@ -13,10 +13,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class Department implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -25,6 +23,9 @@ public class Department implements Serializable {
     @Column(unique = true,nullable = false,length = 100)
     private String name;
 
-    private boolean active=true;
+    private boolean active;
 
+    public Department() {
+        this.active = true;
+    }
 }

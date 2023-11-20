@@ -74,7 +74,7 @@
 
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
-                <a class="nav-link" th:href="@{/pm/contract-info}">
+                <a class="nav-link" th:href="@{/contractInfo}">
                     <i class="bi bi-info-square-fill"></i>
                     <span>Contract Info</span>
                 </a>
@@ -94,7 +94,7 @@
             navLinks.forEach(link => {
                 if(activePage==="/"){
                     navLinks[0].classList.add("active");
-                }else if (link.href.includes(`${activePage}`)) {
+                }else if (link.href.includes(`${activePage.split("/")[1]}`)) {
                     link.classList.add("active");
                     link.classList.add("active-color");
                 } else {

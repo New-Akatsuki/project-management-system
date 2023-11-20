@@ -69,7 +69,7 @@
                 <span class="display-6 fs-4 fw-bold">
                     Project Details Info
                 </span>
-                <a class="icon-add-btn">
+                <a class="icon-add-btn" id="editButton">
                     <i class='bx bx-edit m-0 p-0'></i>
                 </a>
             </div>
@@ -265,7 +265,18 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 
+<script>
 
+    $(document).ready(function () {
+        var projectId = window.location.pathname.split('/').reverse()[1];
+        $("#editButton").click(function () {
+            window.location.href = "/projects/" +projectId+"/edit";
+        });
+    });
+</script>
 </body>
 </html>

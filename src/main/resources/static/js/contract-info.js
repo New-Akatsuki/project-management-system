@@ -59,6 +59,69 @@ $(document).ready(function () {
         }
     });
 });
+//Edit Client for validation
+
+$(document).ready(function () {
+    $('#editClientName').on('blur', function () {
+        let name = $('#editClientName').val();
+        let editClientNameError = $('#editClientNameError');
+        if (name.trim() === '') {
+            editClientNameError.removeClass('d-none');
+        }
+    });
+
+    $('#editClientEmail').on('blur', function () {
+        let email = $('#editClientEmail').val();
+        let editClientEmailError = $('#editClientEmailError');
+        if (email === '') {
+            editClientEmailError.removeClass('d-none');
+        }
+    });
+
+    $('#editClientPhoneNumber').on('blur', function () {
+        let phoneNumber = $('#editClientPhoneNumber').val();
+        let editClientPhError = $('#editClientPhError');
+        if (phoneNumber === '') {
+            editClientPhError.removeClass('d-none');
+        }
+    });
+
+    $('#editClient').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        let name = $('#editClientName').val();
+        let email = $('#editClientEmail').val();
+        let phoneNumber = $('#editClientPhoneNumber').val();
+        let editClient = {
+            name: name,
+            email: email,
+            phoneNumber: phoneNumber
+        };
+
+        let editClientNameError = $('#editClientNameError');
+        let editClientEmailError = $('#editClientEmailError');
+        let editClientPhError = $('#editClientPhError');
+
+        if (name === '') {
+            editClientNameError.removeClass('d-none');
+        }
+        if (email === '') {
+            editClientEmailError.removeClass('d-none');
+        }
+        if (phoneNumber === '') {
+            editClientPhError.removeClass('d-none');
+        }
+
+
+        if (name === '' || email === '' || phoneNumber === '') {
+            console.log("error");
+            return false;
+        } else {
+            $('#editClientModal').modal('hide');
+            $.fn.updateClient();
+        }
+    });
+});
 
 
 
@@ -98,6 +161,45 @@ $(document).ready(function () {
         }
     });
 });
+
+//edit deliverable for validation
+$(document).ready(function () {
+    $('#editDeliverableName').on('blur', function () {
+        let name = $('#editDeliverableName').val();
+        let editDeliverableNameError = $('#editDeliverableNameError');
+        if (name === '') {
+            editDeliverableNameError.removeClass('d-none');
+        }
+    });
+
+    $('#editDeliverable').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        let name = $('#editDeliverableName').val();
+
+        let deliverable = {
+            name: name,
+
+        };
+
+        let editDeliverableNameError = $('#editDeliverableNameError');
+
+
+        if (name === '') {
+            editDeliverableNameError.removeClass('d-none');
+        }
+        if(name === '')
+        {
+            console.log("error");
+            return false;
+        }
+        else {
+            $('#editDeliverableModal').modal('hide');
+            $.fn.updateDeliverable();
+        }
+    });
+});
+
 
 $(document).ready(function () {
     $('#architectureName').on('blur', function () {
@@ -147,6 +249,57 @@ $(document).ready(function () {
 });
 
 
+
+$(document).ready(function () {
+    $('#editArchitectureName').on('blur', function () {
+        let name = $('#editArchitectureName').val();
+        let type= $('#edtiArchitectureType').val();
+        let edtiArchitectureNameError = $('#editArchitectureNameError');
+        let editArchitectureTypeError = $('#editArchitectureTypeError');
+        if (name === '') {
+            editArchitectureNameError.removeClass('d-none');
+        }
+        if (type === '') {
+            editArchitectureTypeError.removeClass('d-none');
+        }
+    });
+
+    $('#editArchitecture').click(function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        let name = $('#editArchitectureName').val();
+        let type= $('#editArchitectureType').val();
+
+        let architecture = {
+            name: name,
+            type: type
+
+        };
+
+        let editArchitectureNameError = $('#editArchitectureNameError');
+
+
+        if (name === '') {
+            editArchitectureNameError.removeClass('d-none');
+        }
+        if(type=== ''){
+            editArchitectureTypeError.removeClass('d-none');
+        }
+        if(name === '' || type === '')
+        {
+            console.log("error");
+            return false;
+        }
+        else {
+            $('#editArchitectureModal').modal('hide');
+            $.fn.updateArchitecture();
+        }
+    });
+});
+
+
+
+
 $(document).ready(function () {
     $('#OutlineName').on('blur', function () {
         let name = $('#OutlineName').val();
@@ -183,6 +336,37 @@ $(document).ready(function () {
         }
     });
 });
+
+
+$(document).ready(function () {
+    $('#editOutlineName').on('blur', function () {
+        let name = $('#editOutlineName').val();
+        let editSystemOutlineNameError = $('#editSystemOutlineNameError');
+        if (name === '') {
+            editSystemOutlineNameError.removeClass('d-none');
+        }
+    });
+
+    $('#editOutline').click(function (event) {
+        event.preventDefault();
+
+        let name = $('#editOutlineName').val();
+        let editSystemOutlineNameError = $('#editSystemOutlineNameError');
+
+        if (name === '') {
+            editSystemOutlineNameError.removeClass('d-none');
+            console.log("error",name);
+        } else {
+            console.log("no error", name)
+            // Your logic for when the name is not empty
+            $('#editSystemOutlineModal').modal('hide');
+            $.fn.updateSystemOutline(); // Call the updateSystemOutline() function
+        }
+    });
+});
+
+
+
 
 
 

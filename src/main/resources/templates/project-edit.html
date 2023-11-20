@@ -116,7 +116,6 @@
             display: none;
         }
     </style>
-
 </head>
 
 <body>
@@ -129,13 +128,13 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-            <li class="breadcrumb-item active">Create Project</li>
+            <li class="breadcrumb-item active">Edit Project</li>
         </ol>
     </nav>
     <!-- End Page Title -->
     <div class="card" style="border-radius: 20px;">
         <div class="card-header">
-            <h3><i class="bi bi-pencil-square"></i> Create Project</h3>
+            <h3><i class="bi bi-pencil-square"></i> Edit Project</h3>
         </div>
         <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
 
@@ -159,9 +158,7 @@
                             </select>
                             <span class="text-danger" id="departmentError">Department must be selected.</span>
                         </div>
-
                     </div>
-
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="member">Add Member</label>
@@ -182,7 +179,7 @@
                         <div class="d-flex flex-column w-50 p-0">
                             <label for="start-date" class="form-label d-block">Start Date</label>
                             <input class="datepicker-style form-control" type="text" id="start-date"
-                                   placeholder="Enter start date" autocomplete="off"/>
+                                   placeholder="Enter start date" autocomplete="false"/>
                             <div class="invalid-feedback" id="start-date_error"></div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="startDateError">Start date must be chosen.</span>
@@ -191,7 +188,7 @@
                         <div class="d-flex flex-column w-50 p-0">
                             <label for="end-date" class="form-label d-block">End Date</label>
                             <input class="datepicker-style form-control" type="text" id="end-date"
-                                   placeholder="Enter end date" autocomplete="off"/>
+                                   placeholder="Enter end date" autocomplete="false"/>
                             <div class="invalid-feedback" id="end-date_error"></div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="endDateError">End date must be chosen.</span>
@@ -255,11 +252,7 @@
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="deliverablesError">Deliverable must be selected.</span>
                         </div>
-
-
                     </div>
-
-
                     <div>
                         <label for="objective" class="form-label">Objective</label>
                         <div id="objective"></div>
@@ -272,7 +265,7 @@
                         <span class="text-danger" id="backgroundError">Background must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
+                        <input type="button" class="btn btn-danger" value="Reset" onclick="clean()">
                         <input type="submit" id="submitButton" class="btn btn-primary" value="Create Project">
                     </div>
                 </div>
@@ -454,7 +447,7 @@
                     <div class="text-center">
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Project creation was successful.</p>
+                        <p>Project update was successful.</p>
                     </div>
                 </div>
             </div>
@@ -474,8 +467,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
         integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!--    <script src="/js/select2.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
@@ -495,15 +486,6 @@
     }
 
     // Function to toggle the toolbar
-    function clean() {
-        $('#title').val("");
-        quillObjective.root.innerHTML = "";
-        quillBackground.root.innerHTML = "";
-        $('#client').val("default").trigger('change');
-        $('#member').val(null).trigger('change');
-        $('#foc').val(null).trigger('change');
-    }
-
     let quillObjective = new Quill("#objective", aa);
     let quillBackground = new Quill("#background", aa);
     //document element ready
@@ -693,6 +675,7 @@
 
 <script>
     $('.text-danger').hide();
+    var projectId = window.location.pathname.split('/').reverse()[1];
     $('#create-project').submit(function (e) {
         console.log("Submit button clicked")
         e.preventDefault();
@@ -752,7 +735,7 @@
 
         // If no errors, proceed with the AJAX request
         const projObj = {
-            id: null,
+            id: projectId,
             name: name,
             department: department,
             startDate: startDate,
@@ -776,6 +759,7 @@
             contentType: "application/json",
             data: jsonString,
             success: function (response) {
+                console.log(response)
                 toggleLoadingSpinner(false);
                 displaySuccessModal();
             },
@@ -890,8 +874,10 @@
         $('#deliverablesName').val('');
         $('#deliverablesNameError').addClass('d-none');
         $('#deliverablesSameNameError').addClass('d-none');
-        modalID.off('shown.bs.modal');
         modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
     });
     function addDeliverable() {
         let name = $('#deliverablesName').val();
@@ -1067,6 +1053,65 @@
     hideErrorOnInteraction($('#clientPhoneNumber'),$('#clientPhoneNumberError'));
     hideErrorOnInteraction($('#architectureName'),$('#architectureNameError'));
     hideErrorOnInteraction($('#OutlineName'), $('#systemOutlineNameError'));
+</script>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/get-projectDetails-byId/" + projectId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log("Project Data : ",data);
+                var contractMemberIds = data.contractMembers.map(function(member) {
+                    return member.id;
+                });
+                var focMemberIds = data.focMembers.map(function(member) {
+                    return member.id;
+                });
+                var deliverableIds = data.deliverables.map(function(deliverable) {
+                    return deliverable.id;
+                });
+                var arcOutlineIds = data.architectures.map(function(arc) {
+                    return arc.id;
+                });
+                var sysOutlineIds = data.systemOutlines.map(function(sys) {
+                    return sys.id;
+                });
+                quillObjective.root.innerHTML = data.objective;
+                quillBackground.root.innerHTML = data.background;
+                $('#title').val(data.name);
+                $('#client').val(data.client.id).trigger('change');
+                $('#member').val(contractMemberIds).trigger('change');
+                $('#foc').val(focMemberIds).trigger('change');
+                $('#department').val(data.department.id).trigger('change');
+                $('#start-date').val(data.startDate);
+                $('#end-date').val(data.endDate);
+                $('#deli').val(deliverableIds).trigger('change');
+                $('#ao').val(arcOutlineIds).trigger('change');
+                $('#so').val(sysOutlineIds).trigger('change');
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+    function clean() {
+        $('#title').val("");
+        quillObjective.root.innerHTML = "";
+        quillBackground.root.innerHTML = "";
+        $('#client').val("default").trigger('change');
+        $('#member').val(null).trigger('change');
+        $('#foc').val(null).trigger('change');
+        $('#department').val("default").trigger('change');
+        $('#start-date').val("");
+        $('#end-date').val("");
+        $('#deli').val(null).trigger('change');
+        $('#ao').val(null).trigger('change');
+        $('#so').val(null).trigger('change');
+    }
 </script>
 <script>
     function displaySuccessModal() {

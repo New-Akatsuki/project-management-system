@@ -2,10 +2,12 @@ package org.blank.projectmanagementsystem;
 
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ArchitectureType;
+import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.repository.*;
+import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -29,25 +31,28 @@ import java.util.Set;
 public class ProjectManagementSystemApplication {
 
     public static void main(String[] args) {
-       SpringApplication.run(ProjectManagementSystemApplication.class, args);
+        SpringApplication.run(ProjectManagementSystemApplication.class, args);
 
     }
-  
-   @Bean
-   CommandLineRunner runner(
-           UserService userService, PasswordEncoder passwordEncoder,
-           ProjectService projectService,
-           ClientRepository clientRepository,
-           SystemOutlineRepository systemOutlineRepository,
-           ArchitectureRepository architectureRepository,
-           DeliverableRepository deliverableRepository
-   ){
-       return args -> {
 
-           Department department = new Department(null, "IT", true);
-           Department department2 = new Department(null, "HR", true);
-           userService.saveDepartment(department);
-           userService.saveDepartment(department2);
+    @Bean
+    CommandLineRunner runner(
+            UserService userService, PasswordEncoder passwordEncoder,
+            ProjectService projectService,
+            ClientRepository clientRepository,
+            SystemOutlineRepository systemOutlineRepository,
+            ArchitectureRepository architectureRepository,
+            DeliverableRepository deliverableRepository,
+            NotificationService notificationService
+    ) {
+        return args -> {
+
+            Department department = new Department(null, "IT", true);
+            Department department2 = new Department(null, "HR", true);
+            userService.saveDepartment(department);
+            userService.saveDepartment(department2);
+
+
 
             // save demo data after start
             var pmo = userService.save(
@@ -61,7 +66,6 @@ public class ProjectManagementSystemApplication {
                             .active(true)
                             .build()
             );
-
             var dh = userService.save(
                     User.builder()
                             .name("Department Head")
@@ -125,43 +129,40 @@ public class ProjectManagementSystemApplication {
                     Deliverable.builder().id(null).name("Deliverable 1").build()
             );
 
-            Project projectEntity = Project.builder()
-                    .name("Project 1")
-                    .projectManager(pm)
-                    .background("background")
-                    .objective("objective")
-                    .startDate(LocalDate.now())
-                    .endDate(LocalDate.now())
-                    .department(pm.getDepartment())
-                    .client(client)
-                    .duration("2 years")
-                    .systemOutlines(new HashSet<>())
-                    .architectures(new HashSet<>())
-                    .deliverables(new HashSet<>())
-                    .build();
-            projectEntity.getSystemOutlines().add(systemOutlines);
-            projectEntity.getArchitectures().add(architectureOutline);
-            projectEntity.getDeliverables().add(deliverable);
-
-
-//            log.info("\n\nProject: {} \n\n", projectEntity);
-
-            projectService.saveProject(
-                    ProjectFormInput.builder()
-                            .name("Project 1")
-                            .background("background")
-                            .objective("objective")
-                            .startDate(LocalDate.now())
-                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
-                            .architectureOutlines(List.of(1L))
-                            .systemOutlines(List.of(1L))
-                            .deliverables(List.of(1L))
-                            .client(1L)
-                            .contractMembers(List.of(pmo.getId()))
-                            .focMembers(List.of(member.getId()))
-                            .department(1)
-                            .build()
-            );
+//            Project projectEntity = Project.builder()
+//                    .name("Project 1")
+//                    .projectManager(pm)
+//                    .background("background")
+//                    .objective("objective")
+//                    .startDate(LocalDate.now())
+//                    .endDate(LocalDate.now())
+//                    .department(pm.getDepartment())
+//                    .client(client)
+//                    .duration("2 years")
+//                    .systemOutlines(new HashSet<>())
+//                    .architectures(new HashSet<>())
+//                    .deliverables(new HashSet<>())
+//                    .build();
+//            projectEntity.getSystemOutlines().add(systemOutlines);
+//            projectEntity.getArchitectures().add(architectureOutline);
+//            projectEntity.getDeliverables().add(deliverable);
+//
+//            projectService.saveProject(
+//                    ProjectFormInput.builder()
+//                            .name("Project 1")
+//                            .background("background")
+//                            .objective("objective")
+//                            .startDate(LocalDate.now())
+//                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
+//                            .architectureOutlines(List.of(1L))
+//                            .systemOutlines(List.of(1L))
+//                            .deliverables(List.of(1L))
+//                            .client(1L)
+//                            .contractMembers(List.of(pmo.getId()))
+//                            .focMembers(List.of(member.getId()))
+//                            .department(1)
+//                            .build()
+//            );
 
         };
     }

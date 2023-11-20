@@ -1,7 +1,7 @@
 function checkInputValidation(element_id, element_name, pattern, min_length) {
     const nameInput = document.getElementById(element_id);
     const msg_div = document.getElementById(`${element_id}_error`);
-    const patternMismatchMsg = element_id === "email" ? "Please enter a valid email address." : `Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`;
+    const patternMismatchMsg = nameInput.type === "email" ? "Please enter a valid email address." : `Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`;
 
     if (!element_id) {
         return;
@@ -41,7 +41,7 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
             nameInput.setCustomValidity(""); // Clear custom validation message
             if (pattern){
                 if (!nameInput.value.match(pattern)) {
-                    showPatternInvalidMsg(nameInput,msg_div,element_name);
+                    showPatternInvalidMsg(nameInput,msg_div,element_name,patternMismatchMsg);
                 }else {
                     nameInput.setCustomValidity("");
                     nameInput.classList.remove("is-invalid");
@@ -67,10 +67,10 @@ function checkInputValidation(element_id, element_name, pattern, min_length) {
     };
 }
 
-function showPatternInvalidMsg(element,msg_div,element_name) {
+function showPatternInvalidMsg(element,msg_div,element_name,errorText) {
     element.setCustomValidity(`Invalid ${element_name}. Must have at least one digit,lowercase letter, uppercase letter, and be at least 8 characters long.`);
     element.classList.add("is-invalid");
-    msg_div.textContent = `Invalid ${element_name}. Must have at least one digit, one lowercase letter, one uppercase letter, and be at least 8 characters long.`;
+    msg_div.textContent = errorText;
 }
 
 

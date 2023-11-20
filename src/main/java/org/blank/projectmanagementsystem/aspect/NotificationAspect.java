@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,10 +52,12 @@ public class NotificationAspect {
             User user = getCurrentUser();
             Notification notification = Notification.builder()
                     .message("Project " + result.getName() + " has been created")
-                    .date(LocalDate.now())
-                    .link("/project/" + result.getId())
+                    .date(LocalDateTime.now())
+                    .link("/projects")
                     .type(NotificationType.PROJECT)
+                    .projectId(result.getId())
                     .recipient(user)
+                    .isRead(false)
                     .build();
 
             result.getContractMembers().forEach(contractMember -> {
@@ -85,10 +88,11 @@ public class NotificationAspect {
         if (result!=null){
             Notification notification = Notification.builder()
                     .message("You have been assigned to issue [" + result.getTitle()+ "] as a PIC")
-                    .date(LocalDate.now())
+                    .date(LocalDateTime.now())
                     .link("/issue/" + result.getId())
                     .type(NotificationType.ISSUE)
                     .recipient(result.getPic())
+                    .isRead(false)
                     .build();
             notificationService.saveNotification(notification);
             notificationService.sendNotification(notification, result.getPic().getId());
@@ -104,9 +108,12 @@ public class NotificationAspect {
         if (result!=null){
             Notification notification = Notification.builder()
                     .message("You have been assigned to task [" + result.getName()+ "] as a assignee")
-                    .date(LocalDate.now())
-                    .link("/task/" + result.getId())
+                    .date(LocalDateTime.now())
+                    .link("/projects")
                     .type(NotificationType.TASK)
+                    .projectId(result.getProjectId())
+                    .taskId(result.getId())
+                    .isRead(false)
                     .build();
 
             result.getAssignees().forEach(assignee -> {
@@ -127,11 +134,12 @@ public class NotificationAspect {
             User user = getCurrentUser();
             if (result.isStatus()){
                 Notification notification = Notification.builder()
-                        .message("Task " + result.getName()+ " has been completed by "+ user.getName())
-                        .date(LocalDate.now())
-                        .link("/task/" + result.getId())
+                        .message("Task " + result.getName()+ " has been completed.")
+                        .date(LocalDateTime.now())
+                        .link("/projects")
                         .type(NotificationType.TASK)
                         .recipient(result.getProject().getProjectManager())
+                        .isRead(false)
                         .build();
                 notificationService.saveNotification(notification);
                 notificationService.sendNotification(notification, result.getProject().getProjectManager().getId());

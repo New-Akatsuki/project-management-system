@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>DIR-ACE TECHNOLOGY</title>
@@ -17,22 +17,22 @@
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
     <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-            rel="stylesheet"
+          rel="stylesheet"
     />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/css/hope.css">
+
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
     <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
 
-
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-
     <!-- Dark Css -->
     <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
-
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
 
@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    </head>
+</head>
 
 <body>
 <!-- ======= Header ======= -->
@@ -63,38 +63,32 @@
     </div>
     <!-- End Page Title -->
 
+    <input type="hidden" id="currentRole" th:value="${#authentication.principal.role}"/>
+    <input type="hidden" id="currentDepartment" th:value="${#authentication.principal.department}"/>
+
     <!-- Main Content -->
-    <div class="conatiner-fluid content-inner mt-n5 py-0">
-        <div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Member List</h4>
-                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
-                            </div>
-                        </div>
-                        <div class="card-body px-">
-                            <div class="table-responsive">
-                                <table id="user-list-table" class="display" style="width: 100%;">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid mt-2 py-0">
+        <div class="container-fluid d-flex justify-content-between mb-4 bg-white p-3 rounded-2 shadow">
+            <span class="display-6 fs-3 fw-bold">Users</span>
+            <button id="addUserModalBtn" class="btn btn-sm btn-primary d-flex justify-content-center align-items-center">
+                <i class="bx bx-plus fs-4 me-2"></i><span class="fs-6">New</span>
+            </button>
+        </div>
+
+
+        <div class="table-responsive">
+            <table id="user-list-table" class="display" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
     <!-- End Main Content-->
@@ -103,111 +97,116 @@
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Template Main JS File -->
 
-<script src="/js/main.js"></script>
 
 <!-- Edit User Modal-->
 <div class="modal fade" id="userEditModal" tabindex="-1" aria-labelledby="userEditModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fs-5">Edit User Role And Department</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+        <form id="addEditMemberForm" class="text-dark">
+            <div class="modal-content" style="width: 500px;!important;">
+                <div class="modal-header">
+                    <h5 class="modal-title fs-5">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="modal-body">
+                        <div class="form-group">
 
-                        <input type="hidden" class="form-control" id="editId">
-                        <label for="editName">Name</label>
-                        <input type="text" class="form-control" id="editName">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email">
-                    </div>
+                            <input type="hidden" class="form-control" id="editId">
+                            <label for="editName">Name</label>
+                            <input type="text" class="form-control" id="editName" required placeholder="Enter name">
+                            <span class="invalid-feedback" id="editName_error">Name must not be blank!. </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="email" required placeholder="Enter email">
+                            <span class="invalid-feedback" id="editEmail_error">Email must not be blank! </span>
+                        </div>
 
-                    <div class="form-group">
-                        <label  class="form-label" for="editDepartment"> Department </label>
-                        <select class="form-select"  id="editDepartment" name="editDepartment" required>
+                        <div class="form-group">
+                            <label class="form-label" for="editDepartment"> Department </label>
+                            <select class="form-select" id="editDepartment" name="editDepartment" required>
+                            </select>
+                            <span class="invalid-feedback" id="editDepartment_error">Department must be selected!</span>
+                        </div>
 
-                        </select>
-                    </div>
+                        <div class="form-group">
 
-                    <div class="form-group">
-
-                        <label for="editUserRole" class="form-label">Role</label>
-                        <select class="form-select"  id="editUserRole" name="editUserRole" required>
-                            <option value="PMO" >PMO</option>
-                            <option value="SDQC"> SDQC </option>
-                            <option value="SDQC"> SDQC </option>
-                            <option value="DH">DH</option>
-                            <option value="PM">PM</option>
-                            <option value="MEMBER">Member</option>
-                            <!-- Add more role options as needed -->
-                        </select>
+                            <label for="editUserRole" class="form-label">Role</label>
+                            <select class="form-select" id="editUserRole" name="editUserRole" required>
+                                <option value="PMO" sec:authorize="hasAuthority('PMO')">PMO</option>
+                                <option value="SDQC" sec:authorize="hasAuthority('PMO')"> SDQC</option>
+                                <option value="DH" sec:authorize="hasAuthority('PMO')">DH</option>
+                                <option value="PM" sec:authorize="hasAnyAuthority('PMO','DH')">PM</option>
+                                <option value="MEMBER" sec:authorize="hasAnyAuthority('PMO','DH','PM')">Member</option>
+                                <!-- Add more role options as needed -->
+                            </select>
+                            <span class="invalid-feedback" id="editUserRole_error">Role must be selected.</span>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary">Update</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
 <!-- Create New Member Modal-->
-<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5">Create New Member</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+        <form id="addNewMemberForm" class="text-dark">
+            <div class="modal-content" style="width: 500px;!important;">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Create New User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Email</label>
-                        <input type="text" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label  class="form-label" for="department"> Department </label>
-
-                                                <select class="form-select"  id="department" name="department" required>
-                                                </select>
-
-
-                    </div>
-                    <div class="form-group">
-                        <label for="newUserRole" class="form-label">Role</label>
-                        <select class="form-select"  id="newUserRole" name="role" required>
-
-                                                <option value="PMO" selected>PMO</option>
-                                                <option value="SDQC"> SDQC </option>
-                                                <option value="DH">DH</option>
-                                                <option value="PM">PM</option>
-                                                <option value="MEMBER">Member</option>
-                                                <!-- Add more role options as needed -->
-                                              </select>
-
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" required autocomplete="off" placeholder="Enter name">
+                            <span class="invalid-feedback" id="name_error">Enter your Name. </span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" required autocomplete="off" placeholder="Enter email">
+                            <span class="invalid-feedback" id="email_error">Email must not be blank.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="department"> Department </label>
+                            <select class="form-select" id="department" name="department" required>
+                            </select>
+                            <span class="invalid-feedback" id="department_error">Department must be selected.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUserRole" class="form-label">Role</label>
+                            <select class="form-select" id="newUserRole" name="role" required>
+                                <option value="" selected>Select role</option>
+                                <option value="PMO" sec:authorize="hasAuthority('PMO')">PMO</option>
+                                <option value="SDQC" sec:authorize="hasAuthority('PMO')"> SDQC</option>
+                                <option value="DH" sec:authorize="hasAuthority('PMO')">DH</option>
+                                <option value="PM" sec:authorize="hasAnyAuthority('PMO','DH')">PM</option>
+                                <option value="MEMBER" sec:authorize="hasAnyAuthority('PMO','DH','PM')">Member</option>
+                            </select>
+                            <span class="invalid-feedback" id="newUserRole_error">Role must be selected.</span>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="addNewMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
 
 <!--Confirmation Modal-->
-<div class="modal fade" id="confirmationMemberModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalMemberLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationMemberModal" tabindex="-1" role="dialog"
+     aria-labelledby="confirmationModalMemberLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -221,12 +220,45 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"  id="confirmMemberButton">Confirm</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmMemberButton">Confirm
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script src="/js/main.js"></script>
 <script src="/js/member-list-view.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script src="/js/validation.js"></script>
+
+<!-- Reusable form validation script -->
+<script>
+    // Invoke the validation function for different forms
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        checkInputValidation('name', 'Name', null, null);
+        checkInputValidation('email', 'Email', emailPattern, null);
+        checkInputValidation('department', 'Department', null, null);
+        checkInputValidation('newUserRole', 'Role', null, null);
+
+        checkInputValidation('editName', 'Name', null, null);
+        checkInputValidation('editEmail', 'Email', emailPattern, null);
+        checkInputValidation('editDepartment', 'Department', null, null);
+        checkInputValidation('editUserRole', 'Role', null, null);
+
+        $('#addUserModalBtn').on('click',()=>{
+            $('#addMemberModal').modal('show');
+            resetInput();
+        });
+
+        formValidate('addNewMemberForm', addNewMember);
+        formValidate('addEditMemberForm', editUserRoleAndDepartment);
+
+    });
+</script>
 
 </body>
 </html>

@@ -220,6 +220,7 @@
 
         </div>
         <div id="modalPlaceholder"></div>
+        <div id="toastPlace"></div>
     </div>
 </main>
 <!-- End #main -->
@@ -239,6 +240,12 @@
 <script src="/js/main.js"></script>
 <script src="/js/validation.js"></script>
 
+<script src="/js/userTaskView.js"></script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+
 <script>
     // Add fade animation to the modal
     $('#taskModal').on('show.bs.modal', function () {
@@ -257,29 +264,76 @@
             onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
         });
     }
+    generateTaskView();
+    function generateTaskView(notification) {
+        $.ajax({
+            url: `/get-projects`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#projectSelect').empty();
+                $.each(data, function (index, value) {
+                    $('#projectSelect').append($('<option>', {
+                        value: value.id,
+                        text: value.name
+                    }));
+                });
 
-    $.ajax({
-        url: `/get-projects`,
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            $.each(data, function (index, value) {
-                $('#projectSelect').append($('<option>', {
-                    value: value.id,
-                    text: value.name
-                }));
-            });
-        },
-        error: function (error) {
-            console.log(error);
-        }
+                if(notification && notification.projectId) {
+                    $('#projectSelect').val(notification.projectId).trigger('change');
+                }
+
+                getDataAndBuildTaskView();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+        $('#projectSelect').select2();
+    }
+
+    function getDataAndBuildTaskView(){
+        let projectId = $('#projectSelect').val();
+        $.ajax({
+            url: `/get-tasks/${projectId}`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                taskBoard({
+                    tasks: data
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    $('#projectSelect').on('change', function () {
+        getDataAndBuildTaskView();
     });
 
-    $('#projectSelect').select2();
+    // function playSound(issue) {
+    //     let audio = new Audio(`/audio/${issue}.mp3`);
+    //     audio.play();
+    // }
 
+    function notify(notification){
+       generateTaskView(notification);
+       if(notification){
+           buildToast({
+               title: notification.type==='TASK'?'Task notification': notification.type==='PROJECT'?'Project notification':'Issue notification',
+               body: notification.message,
+               icon: 'bx bx-bell',
+               color: 'text-success',
+           });
+           $('#liveToast').toast('show');
+
+       }
+    }
 </script>
 
-<script src="/js/userTaskView.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -291,28 +345,6 @@
             changeMonth: true,
             changeYear: true,
         });
-        getDataAndBuildTaskView();
-        function getDataAndBuildTaskView(){
-            let projectId = $('#projectSelect').val();
-            $.ajax({
-                url: `/get-tasks/${projectId}`,
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    taskBoard({
-                        tasks: data
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
-
-        $('#projectSelect').on('change', function () {
-            getDataAndBuildTaskView();
-        });
-
 
     });
 

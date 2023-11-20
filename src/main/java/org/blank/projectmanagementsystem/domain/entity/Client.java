@@ -34,4 +34,7 @@ public class Client implements Serializable {
     private String phoneNumber;
 
     private boolean status;
+
+
+
 }

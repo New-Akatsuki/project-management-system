@@ -48,4 +48,8 @@ public class ProjectController {
         return new ModelAndView("project-details-info","currentProject",project);
     }
 
+    @GetMapping("/projects/{id}/edit")
+    public String projectEditView(){
+        return "project-edit";
+    }
 }

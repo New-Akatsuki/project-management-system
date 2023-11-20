@@ -22,5 +22,4 @@ import java.util.Map;
 @EnableAspectJAutoProxy
 @EnableAsync(proxyTargetClass = true)
 public class ApplicationConfig {
-
 }

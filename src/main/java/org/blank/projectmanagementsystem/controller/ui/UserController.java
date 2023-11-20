@@ -32,14 +32,6 @@ public class UserController {
     @GetMapping("/users")
     public String userList() {
         User user = userService.getCurrentUser();
-        if (user.getRole()== Role.PM){
-            log.info("user role is PM\n\n\n");
-            return "user-list-pm";
-        }
-        if(user.getRole()== Role.DH){
-            log.info("user role is DH\n\n\n");
-            return "user-list-dh";
-        }
         return "user-list";
     }
 
