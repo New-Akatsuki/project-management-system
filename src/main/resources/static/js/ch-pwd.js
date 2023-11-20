@@ -84,13 +84,16 @@ function checkValidateion() {
 
     if (errorMessage !== '') {
         $('#errorMessage').text(errorMessage); // Display accumulated error messages
-        validationPasses = false;
+        $('#changePasswordBtn').prop('disabled', true);
+        return false;
+    }else{
+        $('#changePasswordBtn').prop('disabled', false);
     }
-
     if (currentPassword === newPassword) {
         validationPasses = false;
     }
     return validationPasses;
+    return true;
 }
 
 //eg for change pwd
@@ -105,19 +108,13 @@ function validatePassword() {
     let confirmPassword = $('#confirmPassword').val();
     let currentPassword = $('#currentPassword').val();
 
+    let changePassword = {
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword
+    }
+
     if (checkValidateion()) {
-
-        if(newPassword === currentPassword){
-            $('#errorMessage').text('Old password and new password must not be the same.');
-            return false;
-        }
-
-        let changePassword = {
-            currentPassword: currentPassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword
-        }
-
         // Serialize form data
         $.ajax({
             type: 'POST',
@@ -139,7 +136,6 @@ function validatePassword() {
             }
         });
     }
-
     return false;
 }
 

@@ -2,10 +2,12 @@ package org.blank.projectmanagementsystem;
 
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ArchitectureType;
+import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.repository.*;
+import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -29,25 +31,28 @@ import java.util.Set;
 public class ProjectManagementSystemApplication {
 
     public static void main(String[] args) {
-       SpringApplication.run(ProjectManagementSystemApplication.class, args);
+        SpringApplication.run(ProjectManagementSystemApplication.class, args);
 
     }
-  
-   @Bean
-   CommandLineRunner runner(
-           UserService userService, PasswordEncoder passwordEncoder,
-           ProjectService projectService,
-           ClientRepository clientRepository,
-           SystemOutlineRepository systemOutlineRepository,
-           ArchitectureRepository architectureRepository,
-           DeliverableRepository deliverableRepository
-   ){
-       return args -> {
 
-           Department department = new Department(null, "IT", true);
-           Department department2 = new Department(null, "HR", true);
-           userService.saveDepartment(department);
-           userService.saveDepartment(department2);
+
+    CommandLineRunner runner(
+            UserService userService, PasswordEncoder passwordEncoder,
+            ProjectService projectService,
+            ClientRepository clientRepository,
+            SystemOutlineRepository systemOutlineRepository,
+            ArchitectureRepository architectureRepository,
+            DeliverableRepository deliverableRepository,
+            NotificationService notificationService
+    ) {
+        return args -> {
+
+            Department department = new Department(null, "IT", true);
+            Department department2 = new Department(null, "HR", true);
+            userService.saveDepartment(department);
+            userService.saveDepartment(department2);
+
+
 
             // save demo data after start
             var pmo = userService.save(
@@ -61,7 +66,6 @@ public class ProjectManagementSystemApplication {
                             .active(true)
                             .build()
             );
-
             var dh = userService.save(
                     User.builder()
                             .name("Department Head")

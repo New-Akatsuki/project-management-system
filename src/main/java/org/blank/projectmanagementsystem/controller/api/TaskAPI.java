@@ -24,10 +24,10 @@ public class TaskAPI {
     private final PhaseService phaseService;
     private final ProjectService projectService;
 
-    @GetMapping("/get-phase-data")
+    @GetMapping("/get-all-project-data")
     public ResponseEntity<Map<String,Object>> getPhaseData(@RequestParam long projectId) {
         var phaseList =  phaseService.getPhases(projectId);
-        var taskList = taskService.getAllTasks();
+        var taskList = taskService.getTasksByProject(projectId);
         var projectMembers = projectService.getProjectMembers(projectId);
         var project = projectService.getProject(projectId);
         return ResponseEntity.ok(
@@ -57,9 +57,9 @@ public class TaskAPI {
         return ResponseEntity.ok(phaseDto);
     }
 
-    @GetMapping("/get-task-data")
-    public ResponseEntity<List<TaskViewObject>> getTaskById() {
-        List<TaskViewObject> tasks = taskService.getAllTasks();
+    @GetMapping("/get-tasks/{projectId}")
+    public ResponseEntity<List<TaskViewObject>> getTasksByProjectId(@PathVariable Long projectId) {
+        List<TaskViewObject> tasks = taskService.getMemberTaskByProject(projectId);
         return ResponseEntity.ok(tasks);
     }
 

@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PhaseRepository extends JpaRepository<Phase, Long> {
-    List<Phase> findByProject(Project project);
+    //find phase by project id
+    List<Phase> findByProjectId(Long projectId);
 }

@@ -27,8 +27,7 @@ public class PhaseServiceImpl implements PhaseService {
 
     @Override
     public List<PhaseDto> getPhases(long projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow();
-        return phaseRepository.findByProject(project).stream().map(Phase::mapToDto).toList();
+        return phaseRepository.findByProjectId(projectId).stream().map(Phase::mapToDto).toList();
     }
 
     @Override

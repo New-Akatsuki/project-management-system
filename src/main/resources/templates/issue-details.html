@@ -86,14 +86,39 @@
             }
         }
     </style>
+    <style>
+        #dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            pointer-events: auto; /* Updated to block interactions with elements beneath */
+        }
+
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 1.8rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            z-index: 10001; /* Update z-index to be higher than #dim-overlay */
+            display: none;
+        }
+    </style>
 </head>
 <body>
+
 <!-- ======= Header ======= -->
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
 <main id="main" class="main">
-    <span id="userId" sec:authentication="principal.id" class="d-none"></span>
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
     <!-- Breadcrumb part-->
     <div class="page-title">
         <nav>
@@ -384,6 +409,9 @@
             </form>
         </div>
     </div>
+    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+    </div>
+    <div id="dim-overlay"></div>
 </main>
 <!-- End #main -->
 <!-- Vendor JS Files -->
@@ -413,11 +441,24 @@
     })
 </script>
 <script>
-    const issueId = window.location.pathname.split('/').pop();
+    var issueId = window.location.pathname.split('/').reverse()[1];
     console.log(issueId);
-    let userId = $('#userId').text();
+    let userId = $('#userId').val();
+    console.log("User Id : "+userId);
 </script>
 <script>
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
     // Function to format date with month name and time in AM/PM format without seconds
     function formatDate(date) {
         const options = {
@@ -432,11 +473,13 @@
     }
 
     $(document).ready(function () {
+        toggleLoadingSpinner(true);
         $.ajax({
             url: "/get-issue-details/" + issueId,
             type: "GET",
             dataType: "json",
             success: function (data) {
+                toggleLoadingSpinner(false);
                 let jsonData = data;
                 console.log("Data :", jsonData);
                 const detailsUploadDate = document.getElementById('details-upload-date');
@@ -534,7 +577,7 @@
         let coAction = coActionContent.root.innerHTML;
         let preAction = preActionContent.root.innerHTML;
         let impact = impactContent.root.innerHTML;
-        let issueId = window.location.pathname.split('/').pop();
+        let issueId = window.location.pathname.split('/').reverse()[1];
         let errors = [];
 
         if (coAction === '' || coAction === '<p><br></p>') {
@@ -638,5 +681,8 @@
         hideAllErrorMessages();
     });
 </script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 </body>
 </html>

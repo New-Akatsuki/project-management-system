@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -97,7 +99,18 @@ public class SecurityConfig {
                         .rememberMeServices(rememberMeServices())
                         .tokenValiditySeconds(60 * 60 * 24)//1 day
                 )
+                .sessionManagement(session -> session
+                        .maximumSessions(1)//1 user 1 session
+                        .maxSessionsPreventsLogin(false)//if user already login, then user can't login again
+                        .expiredUrl("/login")//if user already login, then user can't login again
+                        .sessionRegistry(sessionRegistry())//session registry
+                )
                 .build();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry(){
+        return new SessionRegistryImpl();
     }
 
     @Bean

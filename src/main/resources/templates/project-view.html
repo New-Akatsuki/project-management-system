@@ -341,7 +341,7 @@
 
         function fetchKanbanData() {
             $.ajax({
-                url: `/get-phase-data?projectId=${projectId}`,
+                url: `/get-all-project-data?projectId=${projectId}`,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -363,7 +363,7 @@
 
         function fetchGanttData() {
             $.ajax({
-                url: `/get-phase-data?projectId=${projectId}`,
+                url: `/get-all-project-data?projectId=${projectId}`,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -423,5 +423,8 @@
     }
 
 </script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 </body>
 </html>

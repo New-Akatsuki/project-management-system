@@ -6,6 +6,7 @@ function taskBoard(options) {
         options
     );
 
+
     function init() {
         build_tasks()
         buildBadge()
@@ -13,10 +14,11 @@ function taskBoard(options) {
 
 
     function buildBadge() {
+        let dataIds = settings.tasks.map(val => val.id)||[];
         const badge = document.getElementById('overdueBadge');
-        const overDueCount = settings.tasks.filter(item => !item.status && new Date(item.end_date) < new Date()).length;
-        const pendingCount = settings.tasks.filter(item => !item.status).length;
-        const completeCount = settings.tasks.filter(item => item.status).length;
+        const overDueCount = settings.tasks.filter(item => !item.status && new Date(item.end_date) < new Date()&&(item.parent === null|| !dataIds.includes(item.parent))).length;
+        const pendingCount = settings.tasks.filter(item => !item.status &&(item.parent === null|| !dataIds.includes(item.parent))).length;
+        const completeCount = settings.tasks.filter(item => item.status&&(item.parent === null|| !dataIds.includes(item.parent))).length;
         if (overDueCount > 0) {
             badge.classList.remove('d-none');
             badge.innerText = overDueCount;
@@ -135,7 +137,10 @@ function taskBoard(options) {
         $('#overdueContainer').empty();
         $('#completedContainer').empty();
 
-        settings.tasks.filter(data => data.parent === null).forEach((item, index, array) => {
+        let dataIds = settings.tasks.map(val => val.id)||[];
+        console.log('tasks',settings.tasks)
+        console.log('dataIds',dataIds,!dataIds.includes(1))
+        settings.tasks.filter(data => data.parent === null|| !dataIds.includes(data.parent)||new Date(data.end_date) < new Date()).forEach((item, index, array) => {
             const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
             const priClass = item.priority === 'high' ? 'danger' : item.priority === 'medium' ? 'warning' : 'success';
             const task_container = `
@@ -284,6 +289,8 @@ function taskBoard(options) {
         const task = item ? item : settings.tasks.filter(data => data.id === taskId)[0] || simpleTask;
         const priorityClass = task.priority === 'high' ? 'priority-high' : task.priority === 'medium' ? 'priority-medium' : 'priority-low';
         const completeBtnText = task.status ? 'completed' : 'Mark complete';
+        const subtaskList = settings.tasks.filter(val => val.parent === task.id);
+        const isExpandAccordion = subtaskList.length > 0;
 
         const view = `
             <div class="offcanvas offcanvas-end" tabindex="-1" id="taskViewModal" aria-labelledby="taskViewModalLabel">
@@ -337,8 +344,24 @@ function taskBoard(options) {
                                 ${task.description || 'No description'}
                             </span>
                         </div>
-                     
-                      </div>
+                         <div class="d-flex flex-column gap-1 col-12">
+                            <div class="accordion mb-3" id="subtask-view-offcanvas">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button${isExpandAccordion ? '' : ' collapsed'}" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="${isExpandAccordion}"
+                                                aria-controls="collapseOne">
+                                            <span id="subtask-accordion-header" class="display-6 fs-5 fw-bold">Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span></span>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse${isExpandAccordion ? ' show' : ''}"
+                                         data-bs-parent="#subtask-view-offcanvas">
+                                        <div class="accordion-body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
               </div>
             </div>
             `;
@@ -353,6 +376,8 @@ function taskBoard(options) {
         //append as first child of offcanvas-header
         $(`.offcanvas-header #btn-area`).prepend(btn);
 
+        //append subtasks
+        renderSubtask(task.id)
 
         function updateTaskStatus() {
             let taskData = task;
@@ -378,6 +403,43 @@ function taskBoard(options) {
             });
         }
 
+    }
+
+    function renderSubtask(taskId) {
+        $('#subtask-accordion-header').empty();
+        $(`#subtask-view-offcanvas .accordion-body`).empty();
+        const subtaskList = settings.tasks.filter(val => val.parent === taskId);
+        //append subtasks
+        subtaskList.forEach((item) => {
+            const dueDateColor = new Date(item.end_date) < new Date() ? 'text-danger' : '';
+            const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
+            const subtask = `
+                    <div id="${item.id}-offcanvas-subtask" class="kb-subtask-body  ${dueDateColor}">
+                            <span class="flex-1 fs-4 d-flex align-items-center justify-content-center">
+                                ${doneIcon}
+                            </span>
+                            <span class="kb-subtask-name flex-7">${item.name}</span>
+                            <span class="kb-subtask-due-date flex-3 d-flex flex-column subtask-date-font-size text-end me-3">
+                                <span style="font-size: 9px">Due date</span>
+                                <span>${new Date(item.end_date).toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            })}</span>
+                            </span>                                                             
+                        </div>                   
+                `;
+
+            $(`#subtask-view-offcanvas .accordion-body`).append(subtask)
+
+            $(`#${item.id}-offcanvas-subtask`).on('click', () => {
+                $('#taskViewModal').offcanvas('hide');
+                //create offcanvas
+                buildTaskViewModal(item.id);
+                //show offcanvas
+                $('#taskViewModal').offcanvas('show');
+            })
+        })
+        $('#subtask-accordion-header').append(`Subtasks <span class="ms-2 badge bg-primary">${subtaskList.length}</span>`)
     }
 
 

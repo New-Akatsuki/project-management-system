@@ -1,6 +1,5 @@
 package org.blank.projectmanagementsystem.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pusher.rest.Pusher;
@@ -10,12 +9,12 @@ import org.blank.projectmanagementsystem.domain.entity.Notification;
 import org.blank.projectmanagementsystem.repository.NotificationRepo;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,8 +30,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void saveNotification(Notification notification) {
+    public Notification saveNotification(Notification notification) {
         notificationRepo.save(notification);
+        return notification;
     }
 
     @Transactional(readOnly = true)
@@ -41,6 +41,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
     }
 
+    @Async
     @Override
     public void sendNotification(Notification notification, long id) {
 
@@ -76,7 +77,20 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> getNotificationById(Long id) {
+    public List<Notification> getNotificationById() {
         return notificationRepo.findAllByRecipientEmailOrRecipientUsername(getUsername(), getUsername());
+    }
+
+    @Override
+    public void deleteNotificationById(Long id) {
+        notificationRepo.deleteById(id);
+    }
+
+    @Override
+    public void setNotificationIsRead(Long id) {
+        Notification notification= notificationRepo.getReferenceById(id);
+        notification.setIsRead(true);
+        log.info("hhh {}",notification);
+        notificationRepo.save(notification);
     }
 }

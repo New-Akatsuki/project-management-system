@@ -24,6 +24,10 @@
 
     <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
+
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
 
@@ -31,8 +35,6 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/quilltext.css">
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <style>
         .tabs {
             display: flex;
@@ -132,12 +134,12 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item"><a th:href="@{/all-issues}">Issue</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
                 <li class="breadcrumb-item active">Display Issue</li>
             </ol>
         </nav>
     </div>
-    <span id="userId" sec:authentication="principal.id" class="d-none"></span>
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
     <div class="tabs">
         <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
         <label for="tab1" class="tabs__label">Solved</label>
@@ -165,17 +167,27 @@
 <!-- End #main -->
 
 <!-- Vendor JS Files -->
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!-- ajax -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
 <script>
     let solvedIssues = [];
     let unsolvedIssues = [];
 
     $(document).ready(function () {
         let issues = [];
-        let userId = $('#userId').text();
+        let userId = $('#userId').val();
 
         $.ajax({
             url: '/get-issue-by-pic/' + userId,
@@ -320,5 +332,8 @@
         return new Date(date).toLocaleDateString('en-US', options);
     }
 </script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 </body>
 </html>

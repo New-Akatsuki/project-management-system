@@ -46,6 +46,7 @@
     <!-- Template Main CSS File -->
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/kanban.css">
+    <link rel="stylesheet" href="/css/select2.css">
     <style>
 
         .modal-content {
@@ -183,7 +184,11 @@
     <!-- End Page Title -->
     <div class="card vh-100 shadow-none">
         <div class="card-header">
-            <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
+                <label><select id="projectSelect" style="width: 300px" class="select-box2 form-select"></select></label>
+            </div>
+
         </div>
         <div class="card-body">
             <div class="tabs">
@@ -215,6 +220,7 @@
 
         </div>
         <div id="modalPlaceholder"></div>
+        <div id="toastPlace"></div>
     </div>
 </main>
 <!-- End #main -->
@@ -228,10 +234,17 @@
 
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <script src="/js/validation.js"></script>
+
+<script src="/js/userTaskView.js"></script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 
 <script>
     // Add fade animation to the modal
@@ -251,24 +264,39 @@
             onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
         });
     }
+    generateTaskView();
+    function generateTaskView(notification) {
+        $.ajax({
+            url: `/get-projects`,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#projectSelect').empty();
+                $.each(data, function (index, value) {
+                    $('#projectSelect').append($('<option>', {
+                        value: value.id,
+                        text: value.name
+                    }));
+                });
 
+                if(notification && notification.projectId) {
+                    $('#projectSelect').val(notification.projectId).trigger('change');
+                }
 
-</script>
-
-<script src="/js/userTaskView.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $(".dateInputBox").datepicker({
-            dateFormat: "yy-mm-dd",
-            showOtherMonths: true,
-            selectOtherMonths: true,
-            changeMonth: true,
-            changeYear: true,
+                getDataAndBuildTaskView();
+            },
+            error: function (error) {
+                console.log(error);
+            }
         });
 
+        $('#projectSelect').select2();
+    }
+
+    function getDataAndBuildTaskView(){
+        let projectId = $('#projectSelect').val();
         $.ajax({
-            url: `/get-task-data`,
+            url: `/get-tasks/${projectId}`,
             type: "GET",
             dataType: "json",
             success: function (data) {
@@ -280,6 +308,44 @@
                 console.log(error);
             }
         });
+    }
+
+    $('#projectSelect').on('change', function () {
+        getDataAndBuildTaskView();
+    });
+
+    // function playSound(issue) {
+    //     let audio = new Audio(`/audio/${issue}.mp3`);
+    //     audio.play();
+    // }
+
+    function notify(notification){
+       generateTaskView(notification);
+       if(notification){
+           buildToast({
+               title: notification.type==='TASK'?'Task notification': notification.type==='PROJECT'?'Project notification':'Issue notification',
+               body: notification.message,
+               icon: 'bx bx-bell',
+               color: 'text-success',
+           });
+           $('#liveToast').toast('show');
+
+       }
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".dateInputBox").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+        });
+
     });
 
 </script>
