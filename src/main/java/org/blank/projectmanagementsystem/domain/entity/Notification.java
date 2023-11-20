@@ -7,6 +7,7 @@ import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -23,12 +24,16 @@ public class Notification implements Serializable {
 
     private String message;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String link;
 
     @Enumerated(EnumType.STRING)
     private NotificationType type;
+
+    private long projectId;
+
+    private long taskId;
 
     @JsonIgnore
     @ManyToOne

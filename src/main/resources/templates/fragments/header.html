@@ -57,12 +57,12 @@
 
             <li class="nav-item dropdown">
 
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-primary badge-number">4</span>
+                    <span id="noti-badge" class="badge bg-danger badge-number"></span>
                 </a><!-- End Notification Icon -->
 
-                <ul id="notiArea" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                <ul id="notiArea" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications pt-0" style="max-height: 350px!important; padding-bottom: 43px;">
 
 
                 </ul><!-- End Notification Dropdown Items -->
@@ -82,17 +82,17 @@
                              th:unless="${photoData != null}" th:src="@{/images/profile.jpg}" alt="Default Image"/>
                     </th:block>
 
-                    <span class="d-none d-md-block dropdown-toggle ps-2" sec:authentication="principal.username"></span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${#authentication.principal.name}"></span>
                 </a>
 
                 <th:block th:with="auth=${#authentication.getPrincipal()}">
                     <input id="userId" disabled type="hidden" th:value="${auth.id}"/>
                 </th:block>
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile pt-0">
                     <li class="dropdown-header">
-                        <h6 sec:authentication="principal.username" id="login-user-name"></h6>
-                        <span id="role" sec:authentication="principal.authorities[0]"></span>
+                        <h6 th:text="${#authentication.principal.name}" id="login-user-name"></h6>
+                        <span id="role" th:text="${#authentication.principal.userRole}"></span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -117,6 +117,7 @@
             </li><!-- End Profile Nav -->
         </ul>
     </nav>
+
 
 </header>
 <!-- End Header -->

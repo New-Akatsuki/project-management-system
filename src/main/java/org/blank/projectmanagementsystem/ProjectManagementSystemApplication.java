@@ -35,7 +35,7 @@ public class ProjectManagementSystemApplication {
 
     }
 
-    @Bean
+
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
             ProjectService projectService,
@@ -167,25 +167,6 @@ public class ProjectManagementSystemApplication {
                             .build()
             );
 
-            Notification notification2 = notificationService.saveNotification(
-                    Notification.builder()
-                            .message("You have been assigned to a task")
-                            .date(LocalDate.now())
-                            .link("/projects/2")
-                            .type(NotificationType.PROJECT)
-                            .recipient(userService.getUserById(5L))
-                            .isRead(true)
-                            .build());
-
-            Notification notification3 = notificationService.saveNotification(
-                    Notification.builder()
-                            .message("You have been assigned to a task")
-                            .date(LocalDate.now())
-                            .link("/projects/3")
-                            .type(NotificationType.PROJECT)
-                            .recipient(userService.getUserById(5L))
-                            .isRead(false)
-                            .build());
         };
     }
 }

@@ -98,6 +98,9 @@
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/js/main.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 <script>
     let jsonData = [];
 
@@ -132,22 +135,22 @@
 
     });
 
-    function markNotificationAsRead(id) {
-        // Make an AJAX request to mark the notification as read
-        $.ajax({
-            url: "/mark-as-read/" + id, // Include the id in the URL
-            type: "POST",
-            contentType: "application/json",
-            success: function (response) {
-                console.log(response);
-                // Optionally, you can update the UI or perform additional actions after marking as read
-            },
-            error: function (error) {
-                console.error("Error marking notification as read:", error);
-                // Handle the error or display a message to the user
-            }
-        });
-    }
+    // function markNotificationAsRead(id) {
+    //     // Make an AJAX request to mark the notification as read
+    //     $.ajax({
+    //         url: "/mark-as-read/" + id, // Include the id in the URL
+    //         type: "POST",
+    //         contentType: "application/json",
+    //         success: function (response) {
+    //             console.log(response);
+    //             // Optionally, you can update the UI or perform additional actions after marking as read
+    //         },
+    //         error: function (error) {
+    //             console.error("Error marking notification as read:", error);
+    //             // Handle the error or display a message to the user
+    //         }
+    //     });
+    // }
 
 
     function fetchNotifications() {
@@ -166,19 +169,24 @@
         });
     }
 
+
+
     function createNotification(date, id, isRead, link, message, type) {
-        var dotClass = isRead ? "read" : "unread";
-        var notificationElement = `
-                <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass}" style="margin-bottom: 10px; border-radius: 10px;">
+        let dotClass = isRead ? "read" : "unread";
+        let since = timeSince(date)
+        let notificationElement = `
+                <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass} p-3" style="margin-bottom: 10px; border-radius:5px;">
                     <div class="d-flex w-100 gap-3">
                         <div class="w-100 d-flex gap-2">
                             <label><input class="form-check-input me-1" type="checkbox" value="${id}"></label>
-                            <div class="w-100">
-                                <h5 class="mb-1">${message}</h5>
-                                <p class="mb-1">${type}</p>
+                            <div class="w-100 d-flex flex-column gap-3">
+                                <p class="mb-1 fw-bold">${message}</p>
+                                <div class="d-flex justify-content-between align-items-end">
+                                     <span class="mb-1 bg-primary rounded-5 text-white fw-bolder py-1 px-2" style="font-size: 10px">${type}</span>
+                                     <small class="text-end text-body-secondary fw-bold" style="font-size: 12px;">${since}</small>
+                                </div>
                             </div>
                         </div>
-                        <small class="col-1 text-end text-body-secondary">${date}</small>
                         ${!isRead ? '<div class="unread-dot"></div>' : ''}
                     </div>
                 </a>
@@ -206,9 +214,9 @@
         notificationList.append(`
                 <div class="d-flex w-100 gap-3 m-3">
                     <div class="w-100 d-flex gap-2 align-items-center">
-                        <label><input id="checkAll" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
+                        <label><input id="checkAll" style="font-size: 14px;" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
                         <div class="w-100">
-                            <h5 class="mb-1">Check All</h5>
+                            <h5 class="mb-1">Select all</h5>
                         </div>
                         <div class="bin-icon" style="padding-right: 20px">
                             <!-- Add your bin icon here -->
