@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.service.impl;
+    package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project saveProject(ProjectFormInput projectFormInput) {
         //get project manager data
-        String pmUsername = "pm@gmail.com";
+        String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
