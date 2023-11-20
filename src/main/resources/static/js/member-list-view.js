@@ -2,6 +2,7 @@
     <!--For Member List Table-->
     let userList = [];
     $(document).ready(function () {
+        $('.text-danger').hide();
     // Make an AJAX request to fetch data from the REST API endpoint
     $.ajax({
         url: '/get-users', // Replace with your actual API endpoint
@@ -77,10 +78,7 @@
             data: JSON.stringify(addMember),
             dataType: 'json',
             success: function (data) {
-                $("#name").val('')
-                $("#email").val('')
-                $("#newUserRole").val('')
-                $("#department").val('')
+                $('#addMemberModal').modal('hide');
                 userList.push(data)
                 console.log(userList);
                 renderMemberListTable(userList);
@@ -127,7 +125,7 @@
     });
     }
 
-
+    // Edit Member
     function editUserRoleAndDepartment(){
         //Get updated user information form modal fields
         let id = $('#editId').val();
@@ -146,7 +144,7 @@
         console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
         $.ajax({
-            url: `/user-edit/${id}`, // Replace with your actual API endpoint
+            url: '/user-edit/'+id, // Replace with your actual API endpoint
             method: 'PUT',
             data: JSON.stringify(updatedUser),
             dataType: 'json',
@@ -167,7 +165,7 @@
         });
     }
 
-        //Make a PUT request to update the user data
+
 
     //For display edit user modal
     function displayEditUserModal(userId) {
@@ -179,11 +177,13 @@
         $('#editEmail').val(user.email);
         $('#editDepartment').val(user.departmentId);
         $('#editUserRole').val(user.role);
-        // Disable the "name" field
-        $('#editName').prop('disabled', true);
+        // // Disable the "name" field
+        // $('#editName').prop('disabled', true);
         // Show the modal
         $('#userEditModal').modal('show');
     }
+
+
     // For get department
     $(document).ready(function(){
         $.ajax({
@@ -219,6 +219,137 @@
             }
         });
     })
+    // For Add Member
+    let nameInput=$("#name");
+    let emailInput=$("#email");
+
+    let nameError=$("#nameError");
+    let emailError=$("#emailError");
+    let departmentInput=$('#department')
+    let departmentError=$('#departmentError')
+    let roleInput=$('#newUserRole')
+    let roleError=$('#roleError')
+    function validateAndAddMember(){
+        //Validation
+        let isValid =true;
+        if(nameInput.val().trim() === ''){
+            nameError.show()
+            isValid =false;
+        }
+        if(emailInput.val().trim() === ''){
+            emailError.show()
+            isValid =false;
+        }
+        if(departmentInput.val() == null){
+            departmentError.show()
+            isValid =false;
+        }
+        if(roleInput.val() == null){
+            roleError.show()
+            isValid =false;
+        }
+        if(isValid){
+            addNewMember();
+        }
+
+    }
+    $('#addMemberModalButton').click(function(){
+        $('.text-danger').hide();
+        $("#name").val('')
+        $("#email").val('')
+        $("#newUserRole").val('')
+        $("#department").val('')
+        $('#addMemberModal').modal('show');
+    })
+
+    nameInput.on('input', ()=>{
+        toggleError(nameError,nameInput)
+    })
+
+    emailInput.on('input', ()=>{
+        toggleError(emailError,emailInput)
+    })
+
+    departmentInput.on('change',function(){
+        departmentError.hide();
+    })
+    roleInput.on('change',function(){
+        roleError.hide();
+    })
+
+
+    //For Edit Member
+
+    let editNameInput = $("#editName");
+    let editEmailInput = $("#editEmail");
+    let editDepartmentInput = $('#editDepartment');
+    let editRoleInput = $('#editUserRole');
+    let editNameError = $("#editNameError");
+    let editEmailError = $("#editEmailError");
+    let editDepartmentError = $('#editDepartmentError');
+    let editRoleError = $('#editRoleError');
+
+    function validateAndEditMember() {
+        let isValid = true;
+        if (editNameInput.val().trim() === '') {
+            editNameError.show();
+            isValid = false;
+        }
+        if (editEmailInput.val().trim() === '') {
+            editEmailError.show();
+            isValid = false;
+        }
+        if (editDepartmentInput.val() == null) {
+            editDepartmentError.show();
+            isValid = false;
+        }
+        if (editRoleInput.val() == null) {
+            editRoleError.show();
+            isValid = false;
+        }
+        if (isValid) {
+            editUserRoleAndDepartment();
+        }
+    }
+
+    $('#editMemberModalButton').click(function () {
+        $('.edit-text-danger').hide();
+        $("#editName").val('');
+        $("#editEmail").val('');
+        $("#editUserRole").val('');
+        $("#editDepartment").val('');
+        $('#editMemberModal').modal('show');
+    })
+
+    editNameInput.on('input', () => {
+        toggleError(editNameError, editNameInput);
+    })
+
+    editEmailInput.on('input', () => {
+        toggleError(editEmailError, editEmailInput);
+    })
+
+    editDepartmentInput.on('change', function () {
+        editDepartmentError.hide();
+    })
+
+    editRoleInput.on('change', function () {
+        editRoleError.hide();
+    })
+
+    function toggleError(error,input){
+        if(error && input){
+            error.toggleClass('d-none', input.val().trim() !== '');
+        }
+    }
+
+
+
+
+
+
+
+
 
 
 

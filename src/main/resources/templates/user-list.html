@@ -23,7 +23,7 @@
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
     <link rel="stylesheet" href="/css/hope.css">
-    
+
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
@@ -123,15 +123,18 @@
                         <input type="hidden" class="form-control" id="editId">
                         <label for="editName">Name</label>
                         <input type="text" class="form-control" id="editName">
+                        <span class="text-danger d-none" id="editNameError" >Name must not be blank!. </span>
                     </div>
                     <div class="form-group">
                         <label for="editEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="editEmail" name="email">
+                        <span class="text-danger d-none" id="editEmailError">Email must not be blank! </span>
                     </div>
 
                     <div class="form-group">
                         <label  class="form-label" for="editDepartment"> Department </label>
                         <select class="form-select"  id="editDepartment" name="editDepartment" required>
+                            <span class="text-danger d-none" id="editDepartmentError">Department must be selected!</span>
 
                         </select>
                     </div>
@@ -148,19 +151,20 @@
                             <option value="MEMBER">Member</option>
                             <!-- Add more role options as needed -->
                         </select>
+                        <span class="text-danger d-none" id="editUserRoleError">Role must be selected.</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" onclick="editUserRoleAndDepartment()" class="btn btn-primary">Update</button>
+                <button type="button" onclick="validateAndEditMember()" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Create New Member Modal-->
-<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="modal-header">
@@ -172,16 +176,19 @@
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name">
+                        <span class="text-danger" id="nameError">Enter your Name. </span>
                     </div>
                     <div class="form-group">
                         <label for="name">Email</label>
                         <input type="text" class="form-control" id="email">
+                        <span class="text-danger" id="emailError" style="display: none;">Email must not be blank.</span>
                     </div>
                     <div class="form-group">
                         <label  class="form-label" for="department"> Department </label>
 
                                                 <select class="form-select"  id="department" name="department" required>
                                                 </select>
+                        <span class="text-danger" id="departmentError">Department must be selected.</span>
 
 
                     </div>
@@ -196,13 +203,14 @@
                                                 <option value="MEMBER">Member</option>
                                                 <!-- Add more role options as needed -->
                                               </select>
+                        <span class="text-danger" id="roleError">Role must be selected.</span>
 
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="addNewMember()" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                <button type="button" onclick="validateAndAddMember()" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
