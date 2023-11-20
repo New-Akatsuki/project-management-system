@@ -13,6 +13,7 @@ public class ProjectMapper {
     //FormInput to Entity
     public Project mapToProject(ProjectFormInput projectFormInput){
         return Project.builder()
+                .id(projectFormInput.getId())
                 .name(projectFormInput.getName())
                 .background(projectFormInput.getBackground())
                 .objective(projectFormInput.getObjective())

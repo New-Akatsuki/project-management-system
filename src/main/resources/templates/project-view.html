@@ -165,7 +165,7 @@
                         data-bs-target="#taskModal">
                     KPI
                 </button>
-                <button type="button" class="border-0 bg-white icon-btn-hover px-1" onclick="window.location.href='/projects/1/details'">
+                <button type="button" class="border-0 bg-white icon-btn-hover px-1" id="projectDetails">
                     <i class="bx bx-detail "></i></button>
                 <button type="button" id="fullscreen_button" class="border-0 bg-white hover-nav px-1 icon-btn-hover">
                     <i class="bx bx-expand "></i></button>
@@ -421,6 +421,13 @@
             btn.innerHTML=`<i class="bx bx-expand"></i>`;
         }
     }
+
+    $(document).ready(function () {
+        var projectId = window.location.pathname.split('/').reverse()[1];
+        $("#projectDetails").click(function () {
+            window.location.href = "/projects/" +projectId+"/details";
+        });
+    });
 
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>

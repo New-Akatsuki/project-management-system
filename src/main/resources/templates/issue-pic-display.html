@@ -21,7 +21,7 @@
     <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
+    <link href="/css/pagination.css" rel="stylesheet"/>
     <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
     <!-- Hope Ui Design System Css -->
     <link rel="stylesheet" href="/css/hope.css">
@@ -287,8 +287,6 @@
 </div>
     `;
     }
-
-
     // Function to update the tab content based on the issues array
     function updateTabContent(issuesArray, tabContentId, paginationContainer) {
         const tabContent = document.getElementById(tabContentId);
