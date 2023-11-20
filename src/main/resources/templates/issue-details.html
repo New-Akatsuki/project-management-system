@@ -98,7 +98,6 @@
             display: none;
             pointer-events: auto; /* Updated to block interactions with elements beneath */
         }
-
         .spinner-border {
             position: fixed;
             top: 50%;
@@ -445,8 +444,7 @@
     console.log(issueId);
     let userId = $('#userId').val();
     console.log("User Id : "+userId);
-</script>
-<script>
+
     function toggleLoadingSpinner(show) {
         const dimOverlay = $('#dim-overlay');
         const spinner = $('#loadingSpinner');
@@ -459,6 +457,8 @@
             spinner.hide();
         }
     }
+</script>
+<script>
     // Function to format date with month name and time in AM/PM format without seconds
     function formatDate(date) {
         const options = {
@@ -473,13 +473,11 @@
     }
 
     $(document).ready(function () {
-        toggleLoadingSpinner(true);
         $.ajax({
             url: "/get-issue-details/" + issueId,
             type: "GET",
             dataType: "json",
             success: function (data) {
-                toggleLoadingSpinner(false);
                 let jsonData = data;
                 console.log("Data :", jsonData);
                 const detailsUploadDate = document.getElementById('details-upload-date');
@@ -488,7 +486,6 @@
                 } else {
                     detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(jsonData.modifiedAt)}</span></p>`;
                 }
-
                 if (jsonData.createdByUserId == userId) {
                     $("#linkIssueEditPage").removeClass("d-none");
                 }
@@ -577,7 +574,6 @@
         let coAction = coActionContent.root.innerHTML;
         let preAction = preActionContent.root.innerHTML;
         let impact = impactContent.root.innerHTML;
-        let issueId = window.location.pathname.split('/').reverse()[1];
         let errors = [];
 
         if (coAction === '' || coAction === '<p><br></p>') {
@@ -598,6 +594,8 @@
         if (errors.length > 0) {
             return false;
         }
+
+        toggleLoadingSpinner(true);
         let solution = {
             "id": issueId,
             "coAction": coAction,
@@ -611,11 +609,14 @@
             data: JSON.stringify(solution),
             dataType: "json",
             success: function (data) {
+                toggleLoadingSpinner(false);
                 console.log("Data: ", data);
                 window.location.reload();
             },
             error: function (e) {
+                toggleLoadingSpinner(false);
                 console.log("ERROR: ", e);
+                alert("Error occurred while solving the issue!");
             }
         });
     });
