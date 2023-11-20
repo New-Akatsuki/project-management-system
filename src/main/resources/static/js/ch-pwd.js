@@ -102,7 +102,6 @@ function checkValidateion() {
 
 
 function validatePassword() {
-    $('#changePasswordForm').preventDefault();
     $('#errorMessage').empty();
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
