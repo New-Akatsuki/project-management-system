@@ -1302,6 +1302,13 @@ h6 {
   border: 1px solid #bad1e5 !important;
   border-radius: 5px!important;
   height: 100%;
+  color: #273b5e;
+}
+
+.form-select{
+  border: 1px solid #bad1e5 !important;
+  border-radius: 5px!important;
+  color: #273b5e;
 }
 
 .icon-add-btn{

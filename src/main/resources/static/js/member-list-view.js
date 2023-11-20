@@ -1,16 +1,12 @@
-<!--For Member List Table-->
 let userList = [];
 $(document).ready(function () {
     $('.text-danger').hide();
-    // Make an AJAX request to fetch data from the REST API endpoint
     $.ajax({
-        url: '/get-users', // Replace with your actual API endpoint
+        url: '/get-users',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log('All user list:', data);
             userList = data;
-            // Render the data into the DataTable
             renderMemberListTable(data);
         },
         error: function (error) {
@@ -73,11 +69,38 @@ function addNewMember() {
             userList.push(data)
             console.log(userList);
             renderMemberListTable(userList);
+            resetInput();
         },
         error: function (error) {
             console.log('Error adding new member:', error);
         }
     });
+}
+
+function resetInput() {
+    $("#name").val('').removeClass("is-valid");
+    $("#email").val('').removeClass("is-valid");
+    $("#newUserRole").val('').removeClass("is-valid");
+    $("#department").val('').removeClass("is-valid");
+    //remove validation error of form
+    $("#name_error").removeClass("is-invalid");
+    $("#email_error").removeClass("is-invalid");
+    $("#newUserRole_error").removeClass("is-invalid");
+    $("#department_error").removeClass("is-invalid");
+    $("#addNewMemberForm").removeClass("was-validated");
+}
+
+function resetEditInput() {
+    $("#editName").val('').removeClass("is-valid");
+    $("#editEmail").val('').removeClass("is-valid");
+    $("#editUserRole").val('').removeClass("is-valid");
+    $("#editDepartment").val('').removeClass("is-valid");
+    //remove validation error of form
+    $("#editName_error").removeClass("is-invalid");
+    $("#editEmail_error").removeClass("is-invalid");
+    $("#editUserRole_error").removeClass("is-invalid");
+    $("#editDepartment_error").removeClass("is-invalid");
+    $("#addEditMemberForm").removeClass("was-validated");
 }
 
 <!--Build Toggle Member Btn-->
@@ -141,12 +164,13 @@ function editUserRoleAndDepartment() {
         dataType: 'json',
         contentType: 'application/json',
         success: function (data) {
-            console.log('Data received:', data);
-            location.reload();
-            // // Hide the modal
-            // $('#userEditModal').modal('hide');
-            // // Reload the DataTable with new data
-            // renderMemberListTable(updatedUser);
+            $('#userEditModal').modal('hide');
+            const indexToUpdate = userList.findIndex(val => val.id === data.id);
+            if (indexToUpdate !== -1) {
+                userList[indexToUpdate] = data;
+            }
+            renderMemberListTable(userList);
+            resetEditInput();
         },
         error: function (xhr, error) {
             console.log(xhr.responseText)
@@ -176,14 +200,23 @@ function displayEditUserModal(userId) {
 
 // For get department
 $(document).ready(function () {
+    const currentRole = $('#currentRole').val();
+    const currentDepartment = $('#currentDepartment').val();
+
     $.ajax({
         url: '/get-department',
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log("Returned Data : ", data);
             // Clear existing options
             $('#department').empty();
+            $('#editDepartment').empty();
+
+                $('#department').append($('<option>', {
+                    value: '',
+                    text: "Select department",
+                }));
+
 
             // Append new options
             $.each(data, function (index, value) {
@@ -192,16 +225,17 @@ $(document).ready(function () {
                     text: value.name
                 }));
             });
-
-            $('#editDepartment').empty();
-
-            // Append new options
+            // append edit option
             $.each(data, function (index, value) {
                 $('#editDepartment').append($('<option>', {
                     value: value.id,
                     text: value.name
                 }));
             });
+
+
+            // Append new options
+
         },
         error: function (xhr, status, error) {
             // Handle errors
