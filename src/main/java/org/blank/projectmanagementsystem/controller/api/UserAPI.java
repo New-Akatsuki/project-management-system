@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
 public class UserAPI {
     private final UserService userService;
     private final DepartmentService departmentService;
+    private final SessionRegistry sessionRegistry;
 
     @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
     @GetMapping("/get-users")
@@ -44,13 +48,30 @@ public class UserAPI {
     @PutMapping("/member/status/{id}")
     public ResponseEntity<User> updateMemberStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
         User user = userService.getUserById(id); // Change this to retrieve a specific user by id
-
         if (user != null) {
             user.setActive(newStatus);
             User updatedUser = userService.save(user); // Change Client to User since it seems like a typo
+            if(!updatedUser.isActive()){
+                logoutUser(updatedUser.getUsername());
+            }
             return ResponseEntity.ok(updatedUser);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    private void logoutUser(String username) {
+        List<Object> loggedUsers = sessionRegistry.getAllPrincipals();
+        log.info("\n\n\n\n\n\n ============================\n\nall principals : {}\n\n==========================\n\n\n\n\n\n", loggedUsers);
+        for (Object principal : loggedUsers) {
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                if (userDetails.getUsername().equals(username)) {
+                    List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
+                    for (SessionInformation sessionInformation : sessions) {
+                        sessionInformation.expireNow();
+                    }
+                }
+            }
         }
     }
 

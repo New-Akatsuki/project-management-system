@@ -341,7 +341,7 @@
 
         function fetchKanbanData() {
             $.ajax({
-                url: `/get-phase-data?projectId=${projectId}`,
+                url: `/get-all-project-data?projectId=${projectId}`,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
@@ -363,7 +363,7 @@
 
         function fetchGanttData() {
             $.ajax({
-                url: `/get-phase-data?projectId=${projectId}`,
+                url: `/get-all-project-data?projectId=${projectId}`,
                 type: "GET",
                 dataType: "json",
                 success: function (data) {
