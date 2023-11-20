@@ -67,38 +67,53 @@
     <!-- End Page Title -->
 
     <!-- Main Content -->
-    <div class="conatiner-fluid content-inner mt-5 py-0">
-        <div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Member List</h4>
-                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>
-                            </div>
-                        </div>
-                        <div class="card-body px-">
-                            <div class="table-responsive">
-                                <table id="user-list-table" class="display" style="width: 100%;">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Department</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid content-inner mt-5 py-0">
+        <button class="btn btn-sm btn-primary">
+            <i class="bx bx-plus fs-3 me-2"></i>Add New Member
+        </button>
+        <div class="table-responsive">
+            <table id="user-list-table" class="display" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+            </table>
         </div>
+<!--        <div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-sm-12">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-header d-flex justify-content-between">-->
+<!--                                <h4 class="card-title">Users</h4>-->
+<!--                                <a class="btn btn-primary position-absolute top-0 end-0 mt-4 me-4" data-bs-toggle="modal" data-bs-target="#addMemberModal">Add New Member</a>-->
+<!--                        </div>-->
+<!--                        <div class="card-body px-">-->
+<!--                            <div class="table-responsive">-->
+<!--                                <table id="user-list-table" class="display" style="width: 100%;">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th>ID</th>-->
+<!--                                        <th>Name</th>-->
+<!--                                        <th>Email</th>-->
+<!--                                        <th>Department</th>-->
+<!--                                        <th>Role</th>-->
+<!--                                        <th>Status</th>-->
+<!--                                        <th>Action</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
     <!-- End Main Content-->
 </main>
@@ -195,13 +210,11 @@
                     <div class="form-group">
                         <label for="newUserRole" class="form-label">Role</label>
                         <select class="form-select"  id="newUserRole" name="role" required>
-
                                                 <option value="PMO" selected>PMO</option>
                                                 <option value="SDQC"> SDQC </option>
                                                 <option value="DH">DH</option>
                                                 <option value="PM">PM</option>
                                                 <option value="MEMBER">Member</option>
-                                                <!-- Add more role options as needed -->
                                               </select>
                         <span class="text-danger" id="roleError">Role must be selected.</span>
 
