@@ -144,7 +144,7 @@
         console.log("updatedUser", updatedUser);
         //Make a PUT request to update the user data
         $.ajax({
-            url: /user-edit/${id}, // Replace with your actual API endpoint
+            url: '/user-edit/'+id, // Replace with your actual API endpoint
             method: 'PUT',
             data: JSON.stringify(updatedUser),
             dataType: 'json',
