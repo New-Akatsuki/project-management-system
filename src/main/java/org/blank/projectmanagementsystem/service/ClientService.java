@@ -8,7 +8,5 @@ public interface ClientService {
     Client save(Client client);
     List<Client> getAllClients();
     Client getClientById(Long id);
-
-    Client updateClientStatus(Long id, boolean status);
-
+   // Client updateClientStatus(Long id, boolean status);
 }

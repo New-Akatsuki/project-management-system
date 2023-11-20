@@ -41,9 +41,9 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                { data: 'name' },
-                { data: 'email' },
-                { data: 'phoneNumber' },
+                {data: 'name'},
+                {data: 'email'},
+                {data: 'phoneNumber'},
                 {
                     data: 'status',
                     render: function (data, type, row) {
@@ -68,7 +68,6 @@ $(document).ready(function () {
     }
 
 
-
     /*===================================================
     Build the deliverable table
      ===================================================*/
@@ -86,7 +85,7 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                { data: 'name' },
+                {data: 'name'},
 
                 {
                     data: 'status',
@@ -112,52 +111,50 @@ $(document).ready(function () {
     }
 
 
-
-
     /*===================================================
     Build the architecture table
      ===================================================*/
 
 
-        function renderArchitectureTable(items) {
-            if ($.fn.DataTable.isDataTable('#architecture')) {
-                $('#architecture').DataTable().destroy();
-            }
+    function renderArchitectureTable(items) {
+        if ($.fn.DataTable.isDataTable('#architecture')) {
+            $('#architecture').DataTable().destroy();
+        }
 
-            return $('#architecture').DataTable({
-                data: items,
-                columns: [
-                    {
-                        data: 'id',
-                        render: function (data, type, row, meta) {
-                            return meta.row + 1;
-                        }
-                    },
-                    { data: 'name' },
-                    { data: 'type' },
+        return $('#architecture').DataTable({
+            data: items,
+            columns: [
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                {data: 'name'},
+                {data: 'type'},
 
-                    {
-                        data: 'status',
-                        render: function (data, type, row) {
+                {
+                    data: 'status',
+                    render: function (data, type, row) {
 
-                            return `
+                        return `
                         <div id="toggleBtnArchitectureGp${row.id}" class="btn-group" role="group" aria-label="Architecture Status">
                            ${buildToggleArchitectureBtn(data, row.id)}
                         </div>
                     `;
-                        }
-                    },
-                    {
-                        data: 'id',
-                        render: function (data, type, row, meta) {
-                            return `
+                    }
+                },
+                {
+                    data: 'id',
+                    render: function (data, type, row, meta) {
+                        return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="$.fn.openEditArchitectureModal(${row.id})">Edit</button>
                     `;
-                        }
-                    },
-                ]
-            });
-        }
+                    }
+                },
+            ]
+        });
+    }
 
 
     /*===================================================
@@ -178,7 +175,7 @@ $(document).ready(function () {
                         return meta.row + 1;
                     }
                 },
-                { data: 'name' },
+                {data: 'name'},
 
                 {
                     data: 'status',
@@ -330,6 +327,7 @@ $(document).ready(function () {
             }
         });
     }
+
     /*===================================================
             update deliverable to database
      ===================================================*/
@@ -337,6 +335,9 @@ $(document).ready(function () {
         // Get updated deliverable information from modal fields
         let id = $('#editDeliverableId').val();
         let name = $('#editDeliverableName').val();
+        if (name === '') {
+            return;
+        }
 
         // Prepare updated deliverable object
         let updatedDeliverable = {
@@ -390,6 +391,10 @@ $(document).ready(function () {
         let email = $('#editClientEmail').val();
         let phoneNumber = $('#editClientPhoneNumber').val();
 
+        if (name === '' || email === '' || phoneNumber === '') {
+            return;
+        }
+
         // Prepare updated deliverable object
         let updatedClient = {
             id: id,
@@ -435,7 +440,6 @@ $(document).ready(function () {
     }
 
 
-
     /*===================================================
           update architecture to database
    ===================================================*/
@@ -444,6 +448,10 @@ $(document).ready(function () {
         let id = $('#editArchitectureId').val();
         let name = $('#editArchitectureName').val();
         let type = $('#editArchitectureType').val();
+
+        if (name === '' || type === '') {
+            return;
+        }
 
 
         // Prepare updated deliverable object
@@ -496,50 +504,50 @@ $(document).ready(function () {
         // Get updated deliverable information from modal fields
         let id = $('#editOutlineId').val();
         let name = $('#editOutlineName').val();
+        if (name !== '') {
+            // Prepare updated deliverable object
+            let updatedSystemOutline = {
+                id: id,
+                name: name,
 
-        // Prepare updated deliverable object
-        let updatedSystemOutline = {
-            id: id,
-            name: name,
+            };
 
-        };
+            console.log("Updated SystemOutline: ", updatedSystemOutline)
+            // Make a PUT request to update the deliverable data
+            $.ajax({
+                type: "PUT",
+                url: "/system-outline/update", // Endpoint to update deliverable data by ID
+                contentType: "application/json",
+                data: JSON.stringify(updatedSystemOutline),
+                dataType: 'json',
+                success: function (data) {
+                    // Handle success response if needed
+                    console.log("SUCCESS: ", data);
 
-        console.log("Updated SystemOutline: ", updatedSystemOutline)
-        // Make a PUT request to update the deliverable data
-        $.ajax({
-            type: "PUT",
-            url: "/system-outline/update", // Endpoint to update deliverable data by ID
-            contentType: "application/json",
-            data: JSON.stringify(updatedSystemOutline),
-            dataType: 'json',
-            success: function (data) {
-                // Handle success response if needed
-                console.log("SUCCESS: ", data);
+                    console.log("contractINfo", contractInfo);
+                    // Update the systemOutline in the contractInfo object
+                    contractInfo.systems = contractInfo.systems.map(systemOutline => {
+                        if (systemOutline.id === data.id) {
+                            return data;
+                        }
+                        return systemOutline;
+                    })
 
-                console.log("contractINfo", contractInfo);
-                // Update the systemOutline in the contractInfo object
-                contractInfo.systems = contractInfo.systems.map(systemOutline => {
-                    if (systemOutline.id === data.id) {
-                        return data;
-                    }
-                    return systemOutline;
-                })
+                    //reload Table
+                    renderSystemOutlineTable(contractInfo.systems);
 
-                //reload Table
-                renderSystemOutlineTable(contractInfo.systems);
+                    // Close the modal after updating
+                    $('#editSystemOutlineModal').modal('hide');
 
-                // Close the modal after updating
-                $('#editSystemOutlineModal').modal('hide');
-
-            },
-            error: function (xhr, status, error) {
-                console.log("ERROR: ", xhr.responseText);
-                // Optionally, close the modal on error if desired
-                $('#editSystemOutlineModal').modal('hide');
-            }
-        });
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    // Optionally, close the modal on error if desired
+                    $('#editSystemOutlineModal').modal('hide');
+                }
+            });
+        }
     }
-
 
 
     /*===================================================
@@ -547,11 +555,9 @@ $(document).ready(function () {
     ===================================================*/
 
 
-
     /*===================================================
          delete architecture to database
  ===================================================*/
-
 
 
     /*===================================================
@@ -571,7 +577,7 @@ $(document).ready(function () {
     /*===================================================
             open edit Client modal
     ===================================================*/
-   function openEditClientModal(clientId) {
+    function openEditClientModal(clientId) {
 
         const client = contractInfo.clients.filter(client => client.id === clientId)[0];
 
@@ -584,8 +590,6 @@ $(document).ready(function () {
         // Show the edit deliverable modal
         $('#editClientModal').modal('show');
     }
-
-
 
 
     /*===================================================
@@ -622,7 +626,7 @@ $(document).ready(function () {
     $.fn.addDeliverable = addDeliverable;
     $.fn.openEditDeliverableModal = openEditDeliverableModal;
     $.fn.updateDeliverable = updateDeliverable;
-    $.fn.buildToggleDeliverable= buildToggleDeliverableBtn;
+    $.fn.buildToggleDeliverable = buildToggleDeliverableBtn;
 
 
     /*===================================================
@@ -637,7 +641,6 @@ $(document).ready(function () {
     $.fn.buildToggleUserBtn = buildToggleUserBtn;
 
 
-
     /*===================================================
       export architecture functions to global scope
   ===================================================*/
@@ -649,13 +652,12 @@ $(document).ready(function () {
     $.fn.buildToggleArchitectureBtn = buildToggleArchitectureBtn;
 
 
-
     /*===================================================
       export systemOutline functions to global scope
   ===================================================*/
 
 
-    $.fn.addSystemOutline= addSystemOutline;
+    $.fn.addSystemOutline = addSystemOutline;
     $.fn.openEditSystemOutlineModal = openEditSystemOutlineModal;
     $.fn.updateSystemOutline = updateSystemOutline;
     $.fn.buildToggleSystemOutlineBtn = buildToggleSystemOutlineBtn;
@@ -672,7 +674,7 @@ function toggleClientStatus(id, newStatus) {
     $('#confirmationClientModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmClientButton').on('click', function(event) {
+    $('#confirmClientButton').on('click', function (event) {
         // Prevent form submission and page refresh
         event.preventDefault();
 
@@ -683,13 +685,13 @@ function toggleClientStatus(id, newStatus) {
         $.ajax({
             url: `/client/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function(contractInfo) {
+            success: function (contractInfo) {
                 // Handle success response, update UI if necessary
                 console.log('Client status updated successfully:', contractInfo);
                 buildToggleUserBtn(contractInfo.status, contractInfo.id);
                 // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error response
                 console.error('Error updating client status:', error);
             }
@@ -707,7 +709,7 @@ function toggleDeliverableStatus(id, newStatus) {
     $('#confirmationDeliverableModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmDeliverableButton').on('click', function(event) {
+    $('#confirmDeliverableButton').on('click', function (event) {
         // Prevent form submission and page refresh
         event.preventDefault();
 
@@ -718,13 +720,13 @@ function toggleDeliverableStatus(id, newStatus) {
         $.ajax({
             url: `/deliverable/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function(contractInfo) {
+            success: function (contractInfo) {
                 // Handle success response, update UI if necessary
                 console.log('Deliverable status updated successfully:', contractInfo);
                 buildToggleDeliverableBtn(contractInfo.status, contractInfo.id);
                 // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error response
                 console.error('Error updating deliverable status:', error);
             }
@@ -741,7 +743,7 @@ function toggleArchitectureStatus(id, newStatus) {
     $('#confirmationArchitectureModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmArchitectureButton').on('click', function(event) {
+    $('#confirmArchitectureButton').on('click', function (event) {
         // Prevent form submission and page refresh
         event.preventDefault();
 
@@ -752,13 +754,13 @@ function toggleArchitectureStatus(id, newStatus) {
         $.ajax({
             url: `/architecture/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function(contractInfo) {
+            success: function (contractInfo) {
                 // Handle success response, update UI if necessary
                 console.log('Architecture status updated successfully:', contractInfo);
                 buildToggleArchitectureBtn(contractInfo.status, contractInfo.id);
                 // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error response
                 console.error('Error updating architecture status:', error);
             }
@@ -766,7 +768,6 @@ function toggleArchitectureStatus(id, newStatus) {
         $('#confirmArchitectureButton').off('click');
     });
 }
-
 
 
 function toggleSystemOutlineStatus(id, newStatus) {
@@ -777,7 +778,7 @@ function toggleSystemOutlineStatus(id, newStatus) {
     $('#confirmationSystemOutlineModal').modal('show');
 
     // Set event listener for modal confirm button
-    $('#confirmSystemOutlineButton').on('click', function(event) {
+    $('#confirmSystemOutlineButton').on('click', function (event) {
         // Prevent form submission and page refresh
         event.preventDefault();
 
@@ -788,13 +789,13 @@ function toggleSystemOutlineStatus(id, newStatus) {
         $.ajax({
             url: `/system-outline/status/${id}?newStatus=${newStatus}`,
             type: 'PUT',
-            success: function(contractInfo) {
+            success: function (contractInfo) {
                 // Handle success response, update UI if necessary
                 console.log('SystemOutline status updated successfully:', contractInfo);
                 buildToggleSystemOutlineBtn(contractInfo.status, contractInfo.id);
                 // Assuming 'renderClientTable' updates the client table with new data
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle error response
                 console.error('Error updating SystemOutline status:', error);
             }
@@ -807,7 +808,7 @@ function toggleSystemOutlineStatus(id, newStatus) {
 /*===================================================
         build toggle button
   ====================================================*/
-function buildToggleUserBtn(status,id){
+function buildToggleUserBtn(status, id) {
     $(`#toggleUserBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
@@ -815,7 +816,8 @@ function buildToggleUserBtn(status,id){
     $(`#toggleBtnGp${id}`).append(btn)
     return btn;
 }
-function buildToggleDeliverableBtn(status,id){
+
+function buildToggleDeliverableBtn(status, id) {
     $(`#toggleDeliverableBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
@@ -823,7 +825,8 @@ function buildToggleDeliverableBtn(status,id){
     $(`#toggleBtndeliverableGp${id}`).append(btn)
     return btn;
 }
-function buildToggleArchitectureBtn(status,id){
+
+function buildToggleArchitectureBtn(status, id) {
     $(`#toggleArchitectureBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';
@@ -831,7 +834,8 @@ function buildToggleArchitectureBtn(status,id){
     $(`#toggleBtnArchitectureGp${id}`).append(btn)
     return btn;
 }
-function buildToggleSystemOutlineBtn(status,id){
+
+function buildToggleSystemOutlineBtn(status, id) {
     $(`#toggleSystemOutlineBtn${id}`).remove();
     const statusText = status ? 'Disabled' : 'Active';
     const statusClass = status ? 'secondary' : 'success';

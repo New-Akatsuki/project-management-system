@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
 
-    @Override
+    /*@Override
     @Transactional
     public Client updateClientStatus(Long id, boolean status) {
         Client client = clientRepository.findById(id).orElse(null);
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
             clientRepository.save(client);
         }
         return client;
-    }
+    }*/
 
 
 

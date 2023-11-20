@@ -261,7 +261,7 @@
               </div>
               <div class="tab-pane fade pt-3" id="profile-change-password">
                 <!-- Change Password Form -->
-                  <form id="changePasswordForm">
+                  <form id="changePasswordForm" method="post">
                   <div class="mb-3">
                   <div class="input-group">
                     <div class="form-floating">
@@ -274,7 +274,7 @@
                       <i id="passwordIconOld" class="bi bi-eye-slash"></i>
                     </button>
                   </div>
-                    <div id="currentPasswordError" class="text-danger mt-2"></div>
+                    <span id="currentPasswordError" class="text-danger mt-2"></span>
                   </div>
 
                   <div class="mb-3">
@@ -291,7 +291,7 @@
                         <i id="passwordIcon" class="bi bi-eye-slash"></i>
                       </button>
                     </div>
-                    <div id="newPasswordError" class="text-danger mt-2"></div>
+                    <span id="newPasswordError" class="text-danger mt-2"></span>
                   </div>
 
 
@@ -307,7 +307,8 @@
                         <i id="passwordIcon2" class="bi bi-eye-slash"></i>
                       </button>
                     </div>
-                    <div id="confirmPasswordError" class="text-danger mt-2"></div>
+
+                    <span id="confirmPasswordError" class="text-danger mt-2"></span>
                   </div>
                     <div id="errorMessage" class="text-danger mt-3"></div>
 

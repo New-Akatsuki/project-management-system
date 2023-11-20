@@ -44,34 +44,42 @@ function checkValidateion() {
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
     let currentPassword = $('#currentPassword').val();
+    let validationPasses = true;
 
     let errorMessage = ''; // Initialize an empty error message
 
     if (currentPassword.trim() === '') {
         errorMessage += 'Please enter current password.\n';
+        validationPasses = false;
     }
 
     if (newPassword.trim() === '') {
         errorMessage += 'Please enter new password.\n';
+        validationPasses = false;
     }
 
     if (confirmPassword.trim() === '') {
         errorMessage += 'Please enter confirm password.\n';
+        validationPasses = false;
     }
 
     if (currentPassword.trim() === '' || newPassword.trim() === '' || confirmPassword.trim() === '') {
         errorMessage += 'Please fill all the fields.\n';
+        validationPasses = false;
     }
 
     if (currentPassword === newPassword) {
         errorMessage += 'Old password and new password must not be the same.\n';
+        validationPasses = false;
     }
 
     if (newPassword !== confirmPassword) {
         errorMessage += 'Passwords do not match.\n';
+        validationPasses = false;
     }
     if (checkCurrentPassword !== currentPassword) {
         errorMessage += 'Current password is incorrect.\n';
+        validationPasses = false;
     }
 
     if (errorMessage !== '') {
@@ -81,11 +89,20 @@ function checkValidateion() {
     }else{
         $('#changePasswordBtn').prop('disabled', false);
     }
+    if (currentPassword === newPassword) {
+        validationPasses = false;
+    }
+    return validationPasses;
     return true;
 }
 
+//eg for change pwd
+
+
+
 
 function validatePassword() {
+    $('#changePasswordForm').preventDefault();
     $('#errorMessage').empty();
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
@@ -96,7 +113,6 @@ function validatePassword() {
         newPassword: newPassword,
         confirmPassword: confirmPassword
     }
-
 
     if (checkValidateion()) {
         // Serialize form data
