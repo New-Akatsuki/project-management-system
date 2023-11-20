@@ -274,8 +274,20 @@
             }
 
             function renderProjectList(projectList) {
-                projectListContainer.empty();
+                projectList.sort((a, b) => {
+                    // Compare by status first (ONGOING, PENDING, COMPLETED)
+                    const statusOrder = { ONGOING: 1, PENDING: 2, COMPLETED: 3 };
+                    const statusComparison = statusOrder[a.status] - statusOrder[b.status];
 
+                    // If status is different, return the status comparison
+                    if (statusComparison !== 0) {
+                        return statusComparison;
+                    }
+
+                    // If status is the same, compare by due date
+                    return new Date(a.endDate) - new Date(b.endDate);
+                });
+                projectListContainer.empty();
                 const linkCard = `
         <div class="col-md-4">
           <a href="/projects/new" class="card-link">

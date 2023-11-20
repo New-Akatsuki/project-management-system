@@ -35,7 +35,7 @@ public class ProjectManagementSystemApplication {
 
     }
 
-
+    @Bean
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
             ProjectService projectService,
@@ -129,43 +129,40 @@ public class ProjectManagementSystemApplication {
                     Deliverable.builder().id(null).name("Deliverable 1").build()
             );
 
-            Project projectEntity = Project.builder()
-                    .name("Project 1")
-                    .projectManager(pm)
-                    .background("background")
-                    .objective("objective")
-                    .startDate(LocalDate.now())
-                    .endDate(LocalDate.now())
-                    .department(pm.getDepartment())
-                    .client(client)
-                    .duration("2 years")
-                    .systemOutlines(new HashSet<>())
-                    .architectures(new HashSet<>())
-                    .deliverables(new HashSet<>())
-                    .build();
-            projectEntity.getSystemOutlines().add(systemOutlines);
-            projectEntity.getArchitectures().add(architectureOutline);
-            projectEntity.getDeliverables().add(deliverable);
-
-
-//            log.info("\n\nProject: {} \n\n", projectEntity);
-
-            projectService.saveProject(
-                    ProjectFormInput.builder()
-                            .name("Project 1")
-                            .background("background")
-                            .objective("objective")
-                            .startDate(LocalDate.now())
-                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
-                            .architectureOutlines(List.of(1L))
-                            .systemOutlines(List.of(1L))
-                            .deliverables(List.of(1L))
-                            .client(1L)
-                            .contractMembers(List.of(pmo.getId()))
-                            .focMembers(List.of(member.getId()))
-                            .department(1)
-                            .build()
-            );
+//            Project projectEntity = Project.builder()
+//                    .name("Project 1")
+//                    .projectManager(pm)
+//                    .background("background")
+//                    .objective("objective")
+//                    .startDate(LocalDate.now())
+//                    .endDate(LocalDate.now())
+//                    .department(pm.getDepartment())
+//                    .client(client)
+//                    .duration("2 years")
+//                    .systemOutlines(new HashSet<>())
+//                    .architectures(new HashSet<>())
+//                    .deliverables(new HashSet<>())
+//                    .build();
+//            projectEntity.getSystemOutlines().add(systemOutlines);
+//            projectEntity.getArchitectures().add(architectureOutline);
+//            projectEntity.getDeliverables().add(deliverable);
+//
+//            projectService.saveProject(
+//                    ProjectFormInput.builder()
+//                            .name("Project 1")
+//                            .background("background")
+//                            .objective("objective")
+//                            .startDate(LocalDate.now())
+//                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
+//                            .architectureOutlines(List.of(1L))
+//                            .systemOutlines(List.of(1L))
+//                            .deliverables(List.of(1L))
+//                            .client(1L)
+//                            .contractMembers(List.of(pmo.getId()))
+//                            .focMembers(List.of(member.getId()))
+//                            .department(1)
+//                            .build()
+//            );
 
         };
     }
