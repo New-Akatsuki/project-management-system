@@ -138,18 +138,20 @@
             display: initial;
         }
 
-        .accordion-body{
+        .accordion-body {
             overflow-y: scroll;
-            padding: 15px!important;
+            padding: 15px !important;
         }
 
-        .bd-success{
-            background-color: #d4edda!important;
+        .bd-success {
+            background-color: #d4edda !important;
         }
-        .bd-danger{
-            background-color: #f8d7da!important;
+
+        .bd-danger {
+            background-color: #f8d7da !important;
         }
-        .bod-success{
+
+        .bod-success {
             border: 2px solid #8cf3ad !important;
         }
 
@@ -264,7 +266,9 @@
             onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
         });
     }
+
     generateTaskView();
+
     function generateTaskView(notification) {
         $.ajax({
             url: `/get-projects`,
@@ -279,16 +283,13 @@
                     }));
                 });
 
-                if(notification && notification.projectId) {
-                    $('#projectSelect').val(notification.projectId).trigger('change');
-                }
-
-                if(!(data !=null &&data.length > 0)){
+                if (!(data != null && data.length > 0)) {
                     $('#projectSelect').append($('<option>', {
                         value: '',
                         text: 'No projects found'
                     }));
                 }
+
 
                 getDataAndBuildTaskView();
             },
@@ -300,13 +301,13 @@
         $('#projectSelect').select2();
     }
 
-    function getDataAndBuildTaskView(){
+    function getDataAndBuildTaskView() {
         let projectId = $('#projectSelect').val();
-        if(projectId === null || projectId === undefined || projectId === ''){
+        if (projectId === null || projectId === undefined || projectId === '') {
             taskBoard({
                 tasks: []
             });
-        }else{
+        } else {
             $.ajax({
                 url: `/get-tasks/${projectId}`,
                 type: "GET",
@@ -329,18 +330,22 @@
     });
 
 
-    function notify(notification){
-       generateTaskView(notification);
-       if(notification){
-           buildToast({
-               title: notification.type==='TASK'?'Task notification': notification.type==='PROJECT'?'Project notification':'Issue notification',
-               body: notification.message,
-               icon: 'bx bx-bell',
-               color: 'text-success',
-           });
-           $('#liveToast').toast('show');
-
-       }
+    function notify(notification) {
+        if (notification && notification.projectId) {
+            const selectedProject = $('#projectSelect').val();
+            if (selectedProject === notification.projectId) {
+                generateTaskView(notification.projectId);
+            }
+        }
+        if (notification) {
+            buildToast({
+                title: notification.type === 'TASK' ? 'Task notification' : notification.type === 'PROJECT' ? 'Project notification' : 'Issue notification',
+                body: notification.message,
+                icon: 'bx bx-bell',
+                color: 'text-success',
+            });
+            $('#liveToast').toast('show');
+        }
     }
 </script>
 

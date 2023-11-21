@@ -21,27 +21,8 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class KpiAPI {
-    private final ProjectService projectService;
     private final ReviewCountService reviewCountService;
     private final AmountService amountService;
-
-//    @GetMapping("/get-project-data")
-//    public ResponseEntity<List<ProjectViewObject>> getProject() {
-//        List<ProjectViewObject> projects = projectService.getAllProjectViewObjects();
-//        return ResponseEntity.ok(projects);
-//    }
-//
-//    @GetMapping("/get-review-count")
-//    public ResponseEntity<List<ReviewCount>> getReviewCount() {
-//        List<ReviewCount> reviewCounts = reviewCountService.getAllReviewCount();
-//        return ResponseEntity.ok(reviewCounts);
-//    }
-//
-//    @GetMapping("/get-amount")
-//    public ResponseEntity<List<Amount>> getAmountCount(){
-//        List<Amount> amounts = amountService.getAllAmount();
-//        return ResponseEntity.ok(amounts);
-//    }
 
     @GetMapping("/calculateAllKPIs/{projectId}")
     public Map<String, Map<String, Double>> calculateAllKPIs(@PathVariable Long projectId) {
@@ -70,30 +51,6 @@ public class KpiAPI {
 
         return results;
     }
-
-//    @GetMapping("/calculateAllKPIs/{projectId}/{reviewerType}")
-//    public Map<String, Double> calculateAllKPIs(@PathVariable Long projectId, @PathVariable ReviewerType reviewerType) {
-//        Map<String, Double> results = new HashMap<>();
-//
-//        List<Amount> amounts = amountService.findByProjectId(projectId);
-//
-//        for (Amount amount : amounts) {
-//            DevelopmentPhase developmentPhase = amount.getDevelopmentPhase();
-//
-//            ReviewCount reviewCount = reviewCountService.findByProjectIdAndDevelopmentPhaseAndReviewerType(projectId, developmentPhase, reviewerType);
-//
-//            if (reviewCount != null) {
-//                reviewerType = reviewCount.getReviewerType();
-//                double kpi = reviewCountService.calculateBasicDesignKpi(projectId, developmentPhase, reviewerType);
-//
-//                results.put(developmentPhase.name(), kpi);
-//            } else {
-//                results.put(developmentPhase.name(), 0.0);
-//            }
-//        }
-//
-//        return results;
-//    }
 
 
 }

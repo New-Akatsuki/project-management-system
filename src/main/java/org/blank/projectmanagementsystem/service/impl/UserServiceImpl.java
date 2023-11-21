@@ -140,11 +140,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM')")
     public List<UserViewObject> getAllUsers() {
         var currentUser = getCurrentUser();
         Role currentRole = currentUser.getRole();
-        if(currentRole == Role.PMO){
+        if(currentRole == Role.PMO||currentRole== Role.SDQC){
             return userRepository.findAll().stream()
                     .filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
                     .map(UserViewObject::new).toList();

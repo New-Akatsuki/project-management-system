@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,7 @@ public class ReviewCount implements Serializable {
     private DevelopmentPhase developmentPhase;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(nullable = false)
     private Project project;
 }
