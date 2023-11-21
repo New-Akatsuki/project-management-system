@@ -71,9 +71,13 @@
         }
     </style>
     <style>
-        .select2-container--default .select2-selection--multiple {
-            height: 100%;
-            line-height: 30px;
+        .select2-container--default .select2-search--inline .select2-search__field {
+            padding-left: 10px;
+            background: transparent;
+            border: none;
+            outline: 0;
+            box-shadow: none;
+            -webkit-appearance: textfield;
         }
     </style>
 
@@ -115,6 +119,13 @@
             z-index: 10001; /* Update z-index to be higher than #dim-overlay */
             display: none;
         }
+
+        .form-control{
+            border: 1px solid #bad1e5 !important;
+            border-radius: 5px!important;
+            height: 40px;
+            color: #273b5e;
+        }
     </style>
 
 </head>
@@ -133,26 +144,22 @@
         </ol>
     </nav>
     <!-- End Page Title -->
-    <div class="card" style="border-radius: 20px;">
-        <div class="card-header">
-            <h3><i class="bi bi-pencil-square"></i> Create Project</h3>
-        </div>
-        <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
-
+    <div class="card" style="border-radius: 18px; margin: 20px 28px">
+        <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Project</h2>
             <form id="create-project">
                 <div class="container d-flex flex-column gap-2">
                     <div class="d-flex gap-3">
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="title" class="form-label">Name</label>
-                            <input class="form-control" type="text" name="title" id="title"
+                            <label for="title" class="form-label text-black">Name</label>
+                            <input class="form-control title" type="text" name="title" id="title"
                                    placeholder="Enter Project Name"/>
-                            <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="titleError">Enter Project Name</span>
                         </div>
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="department">Department</label>
+                            <label for="department" class="form-label text-black">Department</label>
                             <select class="js-example-basic-single select-box2 form-select"
                                     id="department" style="width: 100%; height: 100%;">
                                 <option value="default" selected disabled>Choose Department</option>
@@ -164,7 +171,7 @@
 
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="member">Add Member</label>
+                            <label for="member" class="form-label text-black">Add Member</label>
                             <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger"
@@ -173,14 +180,14 @@
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="foc">Add FOC Member</label>
+                            <label for="foc" class="form-label text-black">Add FOC Member</label>
                             <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                         </div>
                     </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-50 p-0">
-                            <label for="start-date" class="form-label d-block">Start Date</label>
+                            <label for="start-date" class="form-label d-block text-black">Start Date</label>
                             <input class="datepicker-style form-control" type="text" id="start-date"
                                    placeholder="Enter start date" autocomplete="off"/>
                             <div class="invalid-feedback" id="start-date_error"></div>
@@ -189,7 +196,7 @@
                         </div>
 
                         <div class="d-flex flex-column w-50 p-0">
-                            <label for="end-date" class="form-label d-block">End Date</label>
+                            <label for="end-date" class="form-label d-block text-black">End Date</label>
                             <input class="datepicker-style form-control" type="text" id="end-date"
                                    placeholder="Enter end date" autocomplete="off"/>
                             <div class="invalid-feedback" id="end-date_error"></div>
@@ -199,7 +206,7 @@
                     </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="ao">Architecture Outlines</label>
+                            <label for="ao" class="form-label text-black">Architecture Outlines</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="arc-select-box" id="ao" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
@@ -213,7 +220,7 @@
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="so">System Outlines</label>
+                            <label for="so" class="form-label text-black">System Outlines</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="sysOutline-select-box" id="so" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
@@ -228,7 +235,7 @@
                     <div class="d-flex gap-3">
                         <!-- Left Set -->
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
-                            <label for="client" class="mb-0">Client</label>
+                            <label for="client" class="mb-0 text-black">Client</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box form-select"
@@ -244,7 +251,7 @@
                         </div>
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="deli">Deliverables</label>
+                            <label for="deli" class="form-label text-black">Deliverables</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="deliverable-select-box" id="deli" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
@@ -261,13 +268,13 @@
 
 
                     <div>
-                        <label for="objective" class="form-label">Objective</label>
+                        <label for="objective" class="form-label text-black">Objective</label>
                         <div id="objective"></div>
                         <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
                     </div>
 
                     <div>
-                        <label for="background">Background</label>
+                        <label for="background" class="form-label text-black">Background</label>
                         <div id="background"></div>
                         <span class="text-danger" id="backgroundError">Background must not be empty!</span>
                     </div>
@@ -323,7 +330,6 @@
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
                         <button type="button" onclick="addClient()" class="btn btn-primary">Add Client</button>
-
                     </form>
                 </div>
             </div>
