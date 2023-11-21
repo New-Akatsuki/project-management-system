@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,9 @@ public class Amount {
     @Column(nullable = false)
     private int amount;
 
-
     @ManyToOne
     @JoinColumn(nullable = false)
+    @JsonIgnore
     private Project project;
 
 

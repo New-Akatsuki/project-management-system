@@ -25,7 +25,6 @@ public class AmountAPI {
         List<AmountDto> savedAmounts = amountList.stream()
                 .map(amountService::saveOrUpdate)
                 .collect(Collectors.toList());
-
         return ResponseEntity.ok(savedAmounts);
     }
 

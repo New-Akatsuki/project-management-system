@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -125,6 +125,7 @@
 
 <!-- Start #main -->
 <main id="main" class="main">
+    <input type="hidden" id="projectId" th:value="${projectId}"/>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
@@ -675,7 +676,7 @@
 
 <script>
     $('.text-danger').hide();
-    var projectId = window.location.pathname.split('/').reverse()[1];
+    const projectId = $('#projectId').val();
     $('#create-project').submit(function (e) {
         console.log("Submit button clicked")
         e.preventDefault();

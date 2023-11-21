@@ -78,23 +78,24 @@ function addNewMember() {
 }
 
 function resetInput() {
-    $("#name").val('').removeClass("is-valid");
-    $("#email").val('').removeClass("is-valid");
-    $("#newUserRole").val('').removeClass("is-valid");
-    $("#department").val('').removeClass("is-valid");
+    $("#name").removeClass("is-valid is-invalid");
+    $("#email").removeClass("is-valid is-invalid");
+    $("#newUserRole").removeClass("is-valid is-invalid");
+    $("#department").removeClass("is-valid is-invalid");
     //remove validation error of form
     $("#name_error").removeClass("is-invalid");
     $("#email_error").removeClass("is-invalid");
     $("#newUserRole_error").removeClass("is-invalid");
     $("#department_error").removeClass("is-invalid");
-    $("#addNewMemberForm").removeClass("was-validated");
+    $("#addNewMemberForm").removeClass("was-validated").trigger('reset');
 }
 
 function resetEditInput() {
-    $("#editName").val('').removeClass("is-valid");
-    $("#editEmail").val('').removeClass("is-valid");
-    $("#editUserRole").val('').removeClass("is-valid");
-    $("#editDepartment").val('').removeClass("is-valid");
+    $("#editName, #editEmail, #editUserRole, #editDepartment").val('').removeClass("is-valid is-invalid");
+    $("#editName, #editEmail, #editUserRole, #editDepartment").each(function() {
+        this.setCustomValidity("");
+    });
+
     //remove validation error of form
     $("#editName_error").removeClass("is-invalid");
     $("#editEmail_error").removeClass("is-invalid");
@@ -170,7 +171,6 @@ function editUserRoleAndDepartment() {
                 userList[indexToUpdate] = data;
             }
             renderMemberListTable(userList);
-            resetEditInput();
         },
         error: function (xhr, error) {
             console.log(xhr.responseText)
@@ -183,6 +183,7 @@ function editUserRoleAndDepartment() {
 
 //For display edit user modal
 function displayEditUserModal(userId) {
+    resetEditInput();
     const user = userList.find(user => user.id === userId);
     console.log("Edit Modal User  ", user)
     // Populate modal fields with user data
@@ -191,9 +192,6 @@ function displayEditUserModal(userId) {
     $('#editEmail').val(user.email);
     $('#editDepartment').val(user.departmentId);
     $('#editUserRole').val(user.role);
-    // // Disable the "name" field
-    // $('#editName').prop('disabled', true);
-    // Show the modal
     $('#userEditModal').modal('show');
 }
 

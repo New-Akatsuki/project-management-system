@@ -41,6 +41,11 @@
     <!-- Single Select -->
     <!--  <link rel="stylesheet" href="/css/single-select.css">-->
 
+    <style>
+        input:focus {
+            color: #0a245b!important; /* Replace with your desired color value */
+        }
+    </style>
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -250,8 +255,11 @@
         checkInputValidation('editUserRole', 'Role', null, null);
 
         $('#addUserModalBtn').on('click',()=>{
-            $('#addMemberModal').modal('show');
+            console.log('clicked')
             resetInput();
+            const myForm = document.getElementById('addNewMemberForm');
+            myForm.reset();
+            $('#addMemberModal').modal('show');
         });
 
         formValidate('addNewMemberForm', addNewMember);
