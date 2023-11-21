@@ -89,6 +89,7 @@
             display: none;
             pointer-events: auto; /* Updated to block interactions with elements beneath */
         }
+
         .spinner-border {
             position: fixed;
             top: 50%;
@@ -98,6 +99,17 @@
             height: 2.8rem;
             z-index: 10001; /* Update z-index to be higher than #dim-overlay */
             display: none;
+        }
+        .ql-container {
+            width: 100%;
+            margin: 0;
+            border-radius: 0;
+            overflow: hidden;
+        }
+    </style>
+    <style>
+        .custom-border {
+            border: 2px solid red; /* Change 'red' to the color you prefer */
         }
     </style>
 </head>
@@ -124,162 +136,56 @@
     <div class="card rounded-card" style="margin: 20px 28px;">
         <!--Outer card body -->
         <div class="card-body" style="padding: 15px 30px 0 30px; margin-top: 10px">
-            <div class="col-12 px-3">
+            <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
-                    <h3 style="color: black;"><i class="bi bi-pip"></i> Display Issue Details</h3>
+                    <h3 style="color: black;"><span id="title"></span></h3>
                     <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
                         <i class='bx bx-edit'></i>
                     </a>
                 </div>
-                <div class="accordion mb-3" id="title">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#title-box" aria-expanded="true"
-                                    aria-controls="title-box">
-                                <span class="display-6 fs-5 fw-bold">Title</span>
-                            </button>
-                        </h2>
-                        <div id="title-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#title">
-                            <div class="accordion-body">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <table class="table table-sm table-striped-columns table-bordered custom-border"
+                       style="margin-right: 20px;">
+                    <tbody>
+                    <tr>
+                        <th class="col-4 ps-3 text-black">PIC</th>
+                        <td class="ps-3 text-black" id="pic"></td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-black">Responsible Party</th>
+                        <td class="ps-3 text-black" id="resParty"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-sm table-striped-columns table-bordered custom-border">
+                    <tbody>
+                    <tr>
+                        <th class="col-4 ps-3 text-black">Category</th>
+                        <td class="ps-3 text-black" id="category"></td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-black">Place</th>
+                        <td class="ps-3 text-black" id="place"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="pic">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#pic-box" aria-expanded="true"
-                                    aria-controls="pic-box">
-                                <span class="display-6 fs-5 fw-bold">PIC</span>
-                            </button>
-                        </h2>
-                        <div id="pic-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#pic">
-                            <div class="accordion-body">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3:">Content</h5>
+                <div id="content" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Direct Cause</h5>
+                <div id="dirCause" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Root Cause</h5>
+                <div id="rootCause" class="text-black"></div>
             </div>
 
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="category">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#category-box" aria-expanded="true"
-                                    aria-controls="category-box">
-                                <span class="display-6 fs-5 fw-bold">Category</span>
-                            </button>
-                        </h2>
-                        <div id="category-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#category">
-                            <div class="accordion-body">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="resParty">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#res-party" aria-expanded="true"
-                                    aria-controls="res-party">
-                                <span class="display-6 fs-5 fw-bold">Responsible Party</span>
-                            </button>
-                        </h2>
-                        <div id="res-party" class="accordion-collapse collapse show"
-                             data-bs-parent="#resParty">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="issuePlace">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#res-party" aria-expanded="true"
-                                    aria-controls="place">
-                                <span class="display-6 fs-5 fw-bold">Place</span>
-                            </button>
-                        </h2>
-                        <div id="place" class="accordion-collapse collapse show"
-                             data-bs-parent="#issuePlace">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="content">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true"
-                                    aria-controls="collapseOne">
-                                <span class="display-6 fs-5 fw-bold">Content</span>
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show"
-                             data-bs-parent="#content">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="direct-cause">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="true"
-                                    aria-controls="collapseTwo">
-                                <span class="display-6 fs-5 fw-bold">Direct Cause</span>
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse show"
-                             data-bs-parent="#direct-cause">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="root-cause">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="true"
-                                    aria-controls="collapseThree">
-                                <span class="display-6 fs-5 fw-bold">Root Cause</span>
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse show"
-                             data-bs-parent="#root-cause">
-                            <div class="accordion-body">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div id="details-upload-date" style="padding-right: 35px">
         </div>
@@ -387,14 +293,17 @@
                 </div>
                 <br>
 
-                <div class="d-flex justify-content-end" >
-                    <button class="btn btn-sm btn-gray rounded d-none" style="margin-right: 5px;padding: 10px 15px" id="solveBackBtn" onclick="backToSolutionCard();">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-sm btn-gray rounded d-none" style="margin-right: 5px;padding: 10px 15px"
+                            id="solveBackBtn" onclick="backToSolutionCard();">
                         <i class="bi bi-backspace"></i>&nbsp;Back
                     </button>
-                    <button class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" type="reset" id="solveReset">
+                    <button class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px"
+                            type="reset" id="solveReset">
                         <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
                     </button>
-                    <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                    <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
+                            id="submitButton">
                         <i class="bi bi-save"></i>&nbsp;Update
                     </button>
                 </div>
@@ -437,7 +346,7 @@
     var issueId = window.location.pathname.split('/').reverse()[1];
     console.log(issueId);
     let userId = $('#userId').val();
-    console.log("User Id : "+userId);
+    console.log("User Id : " + userId);
 
     function toggleLoadingSpinner(show) {
         const dimOverlay = $('#dim-overlay');
@@ -484,21 +393,21 @@
                     $("#linkIssueEditPage").removeClass("d-none");
                 }
                 // Update each section with corresponding data
-                updateContent("title-box", jsonData.title);
-                updateContent("pic-box", jsonData.pic);
-                updateContent("category-box", jsonData.category);
+                updateContent("title", jsonData.title);
+                updateContent("pic", jsonData.pic);
+                updateContent("category", jsonData.category);
                 updateContent("place", jsonData.place);
-                updateContent("res-party", jsonData.responsibleParty);
-                updateContentForQuill("collapseOne", jsonData.content);
-                updateContentForQuill("collapseTwo", jsonData.directCause);
-                updateContentForQuill("collapseThree", jsonData.rootCause);
+                updateContent("resParty", jsonData.responsibleParty);
+                updateContentForQuill('content', jsonData.content);
+                updateContentForQuill('dirCause', jsonData.directCause);
+                updateContentForQuill('rootCause', jsonData.rootCause);
             }
         });
     });
 
     // Function to update the content of the spans and generate a table
     function updateContentForQuill(sectionId, data) {
-        const container = document.querySelector(`#${sectionId} .accordion-body`);
+        const container = document.querySelector(`#${sectionId}`);
         if (container) {
             const quill = new Quill(container, {
                 modules: {
@@ -514,9 +423,8 @@
     }
 
     function updateContent(sectionId, data) {
-        const container = document.querySelector(`#${sectionId} .accordion-body`);
+        const container = document.querySelector(`#${sectionId}`);
         if (container) {
-            container.style.padding = '12px 15px 12px 15px';
             container.innerHTML = data; // Clear previous content
         }
     }
