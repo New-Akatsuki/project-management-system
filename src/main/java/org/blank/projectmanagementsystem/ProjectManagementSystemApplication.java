@@ -35,14 +35,16 @@ public class ProjectManagementSystemApplication {
 
     }
 
-//    @Bean
+
+    @Bean
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
             ProjectService projectService,
             ClientRepository clientRepository,
             SystemOutlineRepository systemOutlineRepository,
             ArchitectureRepository architectureRepository,
-            DeliverableRepository deliverableRepository
+            DeliverableRepository deliverableRepository,
+            NotificationService notificationService
     ) {
         return args -> {
 
@@ -56,7 +58,7 @@ public class ProjectManagementSystemApplication {
             // save demo data after start
             var pmo = userService.save(
                     User.builder()
-                            .name("U Thein Oo")
+                            .name("Project Manager Officer")
                             .username("pmo")
                             .email("pmo@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
@@ -67,18 +69,18 @@ public class ProjectManagementSystemApplication {
             );
             var dh = userService.save(
                     User.builder()
-                            .name("Ma Aye Thwel")
+                            .name("Department Head")
                             .username("dh")
                             .email("dh@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.DH)
-                            .department(department2)
+                            .department(department)
                             .active(true)
                             .build()
             );
             var pm = userService.save(
                     User.builder()
-                            .name("Mg Mg")
+                            .name("Project Manager")
                             .username("pm")
                             .email("pm@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
@@ -90,7 +92,7 @@ public class ProjectManagementSystemApplication {
 
             var sdqc = userService.save(
                     User.builder()
-                            .name("Ko Khun")
+                            .name("Software Developer Quality Control")
                             .username("sdqc")
                             .email("sdqc@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
@@ -104,73 +106,6 @@ public class ProjectManagementSystemApplication {
                             .name("Member")
                             .username("member")
                             .email("member@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member1 = userService.save(
-                    User.builder()
-                            .name("Khun Aung Paing")
-                            .username("khun")
-                            .email("khunaungpaing@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member2 = userService.save(
-                    User.builder()
-                            .name("Ye Phone")
-                            .username("yephone")
-                            .email("yephone@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member3 = userService.save(
-                    User.builder()
-                            .name("Sar Sar")
-                            .username("sarsar")
-                            .email("sarsar@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member4 = userService.save(
-                    User.builder()
-                            .name("M min Hein")
-                            .username("mminhein")
-                            .email("mminhein@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member5 = userService.save(
-                    User.builder()
-                            .name("Myat Noe Nwe")
-                            .username("myatnoenwe")
-                            .email("myatnoenwe@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-
-            var member6 = userService.save(
-                    User.builder()
-                            .name("Poe Ei Mon")
-                            .username("poeeimon")
-                            .email("poeeimon@gmail.com")
                             .password(passwordEncoder.encode("Khun1234"))
                             .role(Role.MEMBER)
                             .department(department2)
@@ -194,41 +129,6 @@ public class ProjectManagementSystemApplication {
             var deliverable = deliverableRepository.save(
                     Deliverable.builder().id(null).name("Deliverable 1").build()
             );
-
-//            Project projectEntity = Project.builder()
-//                    .name("Project 1")
-//                    .projectManager(pm)
-//                    .background("background")
-//                    .objective("objective")
-//                    .startDate(LocalDate.now())
-//                    .endDate(LocalDate.now())
-//                    .department(pm.getDepartment())
-//                    .client(client)
-//                    .duration("2 years")
-//                    .systemOutlines(new HashSet<>())
-//                    .architectures(new HashSet<>())
-//                    .deliverables(new HashSet<>())
-//                    .build();
-//            projectEntity.getSystemOutlines().add(systemOutlines);
-//            projectEntity.getArchitectures().add(architectureOutline);
-//            projectEntity.getDeliverables().add(deliverable);
-//
-//            projectService.saveProject(
-//                    ProjectFormInput.builder()
-//                            .name("Project 1")
-//                            .background("background")
-//                            .objective("objective")
-//                            .startDate(LocalDate.now())
-//                            .endDate(LocalDate.of(2024, Month.JANUARY, 1))
-//                            .architectureOutlines(List.of(1L))
-//                            .systemOutlines(List.of(1L))
-//                            .deliverables(List.of(1L))
-//                            .client(1L)
-//                            .contractMembers(List.of(pmo.getId()))
-//                            .focMembers(List.of(member.getId()))
-//                            .department(1)
-//                            .build()
-//            );
 
         };
     }

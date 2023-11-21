@@ -48,18 +48,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <style>
-        .card .card-header {
-            background: linear-gradient(to right, #6a0572, #00b4d8);
-            color: #fff;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .card .card-header h3 {
-            color: #fff;
-            margin: 10px;
-        }
-    </style>
-    <style>
         .card-body {
             background: white;
         }
@@ -131,18 +119,15 @@
         </ol>
     </nav>
     <!-- End Page Title -->
-    <div class="card" style="border-radius: 20px;">
-        <div class="card-header">
-            <h3><i class="bi bi-pencil-square"></i> Create Issue</h3>
-        </div>
-        <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
-
+    <div class="card" style="border-radius: 18px; margin: 20px 28px">
+        <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Issue</h2>
             <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
                   id="create-issue">
                 <div class="container d-flex flex-column gap-2">
 
-                    <div class="flex-1">
-                        <label for="title" class="form-label">Title</label>
+                    <div class="flex-1 mb-2">
+                        <label for="title" class="form-label text-black">Title</label>
                         <input class="form-control" type="text" name="title" id="title"
                                placeholder="Enter issue title"/>
                         <span class="text-danger error-message" id="titleError">Title must not be blank.</span>
@@ -151,7 +136,7 @@
                     <div class="d-flex gap-3">
                         <!-- Left Set -->
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
-                            <label for="issue_category" class="mb-0">Category</label>
+                            <label for="issue_category" class="mb-0 text-black">Category</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box form-select"
@@ -167,7 +152,7 @@
 
                         <!-- Right Set -->
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
-                            <label for="issue_place" class="mb-0">Issue Place</label>
+                            <label for="issue_place" class="mb-0 text-black">Issue Place</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <!-- Second Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box1 form-select"
@@ -183,9 +168,9 @@
                         </div>
                     </div>
 
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 mb-2">
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
-                            <label for="issue_category" class="mb-0">Responsible Party</label>
+                            <label for="issue_category" class="mb-0 text-black">Responsible Party</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box3 form-select"
@@ -200,7 +185,7 @@
                         </div>
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="issue-pic">Issue PIC</label>
+                            <label for="issue-pic" class="text-black">Issue PIC</label>
                             <select class="js-example-basic-single select-box2 form-select"
                                     id="issue-pic" style="width: 100%; height: 100%;">
                                 <option value="default" selected disabled>Select an option</option>
@@ -210,26 +195,33 @@
                     </div>
 
                     <div>
-                        <label for="content" class="form-label">Content</label>
+                        <label for="content" class="form-label text-black">Content</label>
                         <div id="content"></div>
                         <span class="text-danger error-message" id="contentError">Content must not be empty!</span>
                     </div>
 
                     <div>
-                        <label for="dir-cause" class="form-label">Direct Cause</label>
+                        <label for="dir-cause" class="form-label text-black">Direct Cause</label>
                         <div id="dir-cause"></div>
                         <span class="text-danger error-message"
                               id="dirCauseError">Direct cause must not be empty!</span>
                     </div>
 
-                    <div>
-                        <label for="root-cause">Root Cause</label>
+                    <div class="mb-3">
+                        <label for="root-cause" class="text-black">Root Cause</label>
                         <div id="root-cause"></div>
                         <span class="text-danger error-message" id="rootCauseError">Root cause must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
-                        <input type="submit" id="submitButton" class="btn btn-primary" value="Create issue">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="location.href='/issues';">
+                            <i class="bi bi-backspace"></i>&nbsp;Back
+                        </a>
+                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
+                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
+                        </a>
+                        <a class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                            <i class="bi bi-save"></i>&nbsp;Create
+                        </a>
                     </div>
                 </div>
                 <!--  Hidden Items    -->
@@ -246,21 +238,25 @@
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Add New Category</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Category</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <div style="align-items: center;">
+                <form id="addCategoryForm">
+                    <div style="align-items: center; padding: 15px">
                         <input type="text" class="form-control" id="addCategory"/>
                         <span class="text-danger" id="addCategoryError">The category must not be blank.</span>
-                        <span class="text-danger" id="addCategorySameError">This category already exist.</span>
+                        <span class="text-danger" id="addCategorySameError">This category already exists.</span>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="saveAddCategory" class="btn btn-primary">Save</button>
-                </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" id="saveAddCategory" style="margin-right: 15px; padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -312,16 +308,6 @@
             </div>
         </div>
     </div>
-    <!--    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-    <!--        &lt;!&ndash; Modal content goes here &ndash;&gt;-->
-    <!--        <div class="circle">-->
-    <!--            <div class="checkmark"></div>-->
-    <!--        </div>-->
-    <!--        <h2>Success!</h2>-->
-    <!--        <p>Your action was successful.</p>-->
-    <!--        <button onclick="closeModal()">Close</button>-->
-    <!--    </div>-->
-    <!-- End Card -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
@@ -345,6 +331,7 @@
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script th:src="@{/js/text-editor.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
 <script>
     // Function to toggle the toolbar
     function clean() {
@@ -514,7 +501,15 @@
         'resPartyModal',
         $('#addResPartySameError')
     );
-
+    function formValidation(formId){
+        const form = document.getElementById(formId)
+        form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("Form submitted");
+        });
+    }
+    formValidation('addCategoryForm');
 </script>
 <script>
     $(document).ready(function () {
@@ -544,7 +539,7 @@
 <script>
     // $('.text-danger').hide();
 
-    $('#create-issue').submit(function (e) {
+    $('#submitButton').click(function (e) {
         e.preventDefault();
 
         // Reset errors
