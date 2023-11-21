@@ -24,6 +24,7 @@
 
             const channel = pusher.subscribe(`my-channel-${userId}`);
             channel.bind(`noti-event`, function (data) {
+                // playSound();
                 let notification = JSON.parse(data);
                 let dateArray = notification.date;
                 notification.date = new Date(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6]);
@@ -53,7 +54,7 @@
             newNoti.forEach((noti,i) => {
                 let since = timeSince(noti.date);
                 const icon = noti.type === 'TASK' ? 'bi-list-task' : 'bi-chat-left-text-fill';
-                let notiItem = `<a id="${i}" href="${noti.link}">
+                let notiItem = `<a id="${i}-noti-drop" href="${noti.link}">
                                 <li class="notification-item" style="cursor: pointer; min-height: 90px;">
                                 <i class="bi ${icon} text-warning"></i>
                                 <div>
@@ -63,7 +64,7 @@
                             </li></a>
                             <hr class="dropdown-divider">`;
                 $('#noti-item-layout').append(notiItem);
-                $(`#${i}`).click(function () {
+                $(`#${i}-noti-drop`).click(function () {
                     markNotificationAsRead(noti.id);
                 });
             });
@@ -79,6 +80,11 @@
         init();
     }
 })(jQuery);
+
+// function playSound() {
+//     let audio = new Audio(`/audio/noti.wav`);
+//     audio.play();
+// }
 
 function markNotificationAsRead(id) {
     // Make an AJAX request to mark the notification as read
