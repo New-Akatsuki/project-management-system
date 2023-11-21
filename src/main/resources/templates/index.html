@@ -50,7 +50,9 @@
             font-size: 48px;
             color: #007bff; /* Change the color as needed */
         }
-
+        #kpiRatioHeadingContainer {
+            display: none;
+        }
 
     </style>
 </head>
@@ -160,16 +162,16 @@
     </div>
 
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12">
-                <h4>KPI RATIO</h4>
-                <div class="kpiChart">
-                    <canvas id="kpiChart"></canvas>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12" id="kpiRatioHeadingContainer">
+                    <h4>KPI RATIO</h4>
+                    <div class="kpiChart">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
     <!-- End Main Content-->
