@@ -33,7 +33,6 @@
                 if (notify) {
                     notify(notification);
                 }
-
             });
         }
 
@@ -54,7 +53,7 @@
             newNoti.forEach((noti,i) => {
                 let since = timeSince(noti.date);
                 const icon = noti.type === 'TASK' ? 'bi-list-task' : 'bi-chat-left-text-fill';
-                let notiItem = `<a id="${i}-noti-drop" href="${noti.link}">
+                let notiItem = `<a id="${i}-noti-item" href="${noti.link}">
                                 <li class="notification-item" style="cursor: pointer; min-height: 90px;">
                                 <i class="bi ${icon} text-warning"></i>
                                 <div>
@@ -64,7 +63,7 @@
                             </li></a>
                             <hr class="dropdown-divider">`;
                 $('#noti-item-layout').append(notiItem);
-                $(`#${i}-noti-drop`).click(function () {
+                $(`#${i}-noti-item`).click(function () {
                     markNotificationAsRead(noti.id);
                 });
             });
