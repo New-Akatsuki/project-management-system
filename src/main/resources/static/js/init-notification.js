@@ -23,6 +23,7 @@ function buildToast(data={
 }
 
 
+
 $.ajax({
     url: "/notifications",
     type: "GET",
@@ -30,4 +31,28 @@ $.ajax({
         $("#notiArea").notification({notifications: data});
     }
 });
+
+let audio;
+
+// Play a muted sound on page load to enable automatic playback later
+document.addEventListener('DOMContentLoaded', function () {
+    playMutedSound();
+});
+
+
+function playMutedSound() {
+    // Create a muted audio element
+    audio = new Audio('/audio/noti.wav');
+    audio.muted = true;
+    audio.play().then(() => {
+        // Once the muted sound has played, unmute it
+        audio.muted = false;
+    });
+}
+
+function playNotificationSound() {
+    // Play the actual notification sound
+    audio = new Audio('/audio/noti.wav');
+    audio.play();
+}
 

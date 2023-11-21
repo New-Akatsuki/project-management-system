@@ -20,17 +20,15 @@
                 cluster: 'ap1'
             });
 
-            console.log('userId', userId)
-
             const channel = pusher.subscribe(`my-channel-${userId}`);
             channel.bind(`noti-event`, function (data) {
-                playSound();
+                playNotificationSound();
                 let notification = JSON.parse(data);
                 let dateArray = notification.date;
                 notification.date = new Date(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6]);
                 vendor.notifications.push(notification);
                 buildNotificationListItem();
-                if (notify) {
+                if (notify!==undefined) {
                     notify(notification);
                 }
             });
@@ -80,10 +78,6 @@
     }
 })(jQuery);
 
-function playSound() {
-    let audio = new Audio(`/audio/noti.wav`);
-    audio.play();
-}
 
 function markNotificationAsRead(id) {
     // Make an AJAX request to mark the notification as read
