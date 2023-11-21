@@ -144,7 +144,31 @@
     </div>
     <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
     <div class="tabs" style="padding:0 10px">
-        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2" checked>
+        <label for="tab2" class="tabs__label">Unsolved</label>
+
+        <div class="tabs__content" style="padding: 10px; position: relative;">
+            <!-- Search input for Unsolved tab -->
+            <div class="input-group" style="position: relative">
+            <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+                <i class="bi bi-search"></i>&nbsp;
+            </span>
+                <input type="text" id="unsolvedSearch" class="form-control z-0" placeholder="Search issues..."
+                       style="padding-left: 40px ">
+            </div>
+
+            <a class="btn btn-sm btn-secondary rounded" style="position: absolute; top: -35px; right: 10px;" th:href="@{/issues}">
+                <i class="bi bi-backspace"></i>&nbspBack
+            </a>
+            <!-- Content for Unsolved tab -->
+            <div id="unsolvedTabContent"></div>
+            <div class="pagination-container" id="paginationContainerUnsolved">
+                <ul class="pagination" id="paginationUnsolved"></ul>
+            </div>
+        </div>
+
+
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1">
         <label for="tab1" class="tabs__label">Solved</label>
 
         <div class="tabs__content" style="padding: 10px; position: relative;">
@@ -167,28 +191,6 @@
             </div>
         </div>
 
-        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
-        <label for="tab2" class="tabs__label">Unsolved</label>
-
-        <div class="tabs__content" style="padding: 10px; position: relative;">
-            <!-- Search input for Unsolved tab -->
-            <div class="input-group" style="position: relative">
-            <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
-                <i class="bi bi-search"></i>&nbsp;
-            </span>
-                <input type="text" id="unsolvedSearch" class="form-control z-0" placeholder="Search issues..."
-                       style="padding-left: 40px ">
-            </div>
-
-            <a class="btn btn-sm btn-secondary rounded" style="position: absolute; top: -35px; right: 10px;" th:href="@{/issues}">
-                <i class="bi bi-backspace"></i>&nbspBack
-            </a>
-            <!-- Content for Unsolved tab -->
-            <div id="unsolvedTabContent"></div>
-            <div class="pagination-container" id="paginationContainerUnsolved">
-                <ul class="pagination" id="paginationUnsolved"></ul>
-            </div>
-        </div>
     </div>
 
 </main>
@@ -292,7 +294,7 @@
         const tabContent = document.getElementById(tabContentId);
         tabContent.innerHTML = '';
         if (issuesArray.length === 0) {
-            tabContent.innerHTML='<h4 id="issueNotFound" class="mb-3">Issue Not Found</h4>';
+            tabContent.innerHTML='<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>';
         }else{
             // Sort the issues by the latest upload or modification date
             const sortedIssues = issuesArray.sort((a, b) => {

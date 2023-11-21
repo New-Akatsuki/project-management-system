@@ -264,21 +264,25 @@
     <div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Add New Place</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Place</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <div style="align-items: center;">
-                        <input type="text" class="form-control" id="addPlace"/>
-                        <span class="text-danger" id="addPlaceError">The place must not be blank.</span>
-                        <span class="text-danger" id="addPlaceSameError">This place already exist.</span>
-                    </div>
+                <form id="addPlaceForm">
+                <div style="align-items: center; padding: 15px">
+                    <input type="text" class="form-control" id="addPlace"/>
+                    <span class="text-danger" id="addPlaceError">The place must not be blank.</span>
+                    <span class="text-danger" id="addPlaceSameError">This place already exist.</span>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveAddPlace">Save</button>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveAddPlace" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -287,24 +291,27 @@
     <div class="modal fade" id="resPartyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5">Add New Responsible Party</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Responsible Party</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <div style="align-items: center;">
+                <form id="addResPartyForm">
+                    <div style="align-items: center; padding: 15px">
                         <input type="text" class="form-control" id="addResParty"/>
                         <span class="text-danger"
                               id="addResPartyError">The responsible party must not be blank.</span>
                         <span class="text-danger"
                               id="addResPartySameError">This responsible party already exist.</span>
                     </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveAddResParty" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" id="saveAddResParty" class="btn btn-primary">Save</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -510,6 +517,8 @@
         });
     }
     formValidation('addCategoryForm');
+    formValidation('addPlaceForm');
+    formValidation('addResPartyForm');
 </script>
 <script>
     $(document).ready(function () {

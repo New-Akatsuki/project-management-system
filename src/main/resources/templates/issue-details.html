@@ -20,21 +20,19 @@
           rel="stylesheet"/>
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
-    <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/hope.css">
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
-
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
-
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
-
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
     <!-- Quill text -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
@@ -43,19 +41,12 @@
 
     <style>
         .rounded-card {
+            background: white;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .card-header {
-            background: linear-gradient(to right, #6a0572, #00b4d8);
-            padding: 15px;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
     <style>
         .noSolution {
@@ -130,17 +121,16 @@
     <!-- End Page Title -->
 
     <!-- Main Content -->
-    <div class="card rounded-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 style="color: white; margin-left:15px"><i class="bi bi-pip"></i> Display Issue Details</h3>
-            <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
-                <i class='bx bx-edit'></i>
-            </a>
-        </div>
-
+    <div class="card rounded-card" style="margin: 20px 28px;">
         <!--Outer card body -->
-        <div class="card-body" style="padding: 25px 20px 0 20px; margin-top: 10px">
+        <div class="card-body" style="padding: 15px 30px 0 30px; margin-top: 10px">
             <div class="col-12 px-3">
+                <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
+                    <h3 style="color: black;"><i class="bi bi-pip"></i> Display Issue Details</h3>
+                    <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
+                        <i class='bx bx-edit'></i>
+                    </a>
+                </div>
                 <div class="accordion mb-3" id="title">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -294,16 +284,15 @@
         <div id="details-upload-date" style="padding-right: 35px">
         </div>
     </div>
-    <div class="card rounded-card solution">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
-            <a class="icon-add-btn d-none" id="editSolution">
-                <i class='bx bx-edit'></i>
-            </a>
-        </div>
-
+    <div class="card rounded-card solution" style="margin: 20px 28px;">
         <!--Outer card body -->
-        <div class="card-body" style="padding: 25px 20px 0 20px; margin-top: 10px">
+        <div class="card-body" style="padding: 15px 30px 0 30px; margin-top: 10px">
+            <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
+                <h3 style="color: black; margin-left:15px"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
+                <a class="icon-add-btn d-none" id="editSolution" style="margin-right: 15px">
+                    <i class='bx bx-edit'></i>
+                </a>
+            </div>
             <div class="col-12 px-3">
                 <div class="accordion mb-3" id="co-action">
                     <div class="accordion-item">
@@ -370,13 +359,12 @@
 
     <span class="noSolution d-none">There is no solution for this issue yet.</span>
 
-    <div class="card rounded-card solveForm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 style="color: white; margin-left:15px"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
-        </div>
-
+    <div class="card rounded-card solveForm" style="margin: 20px 28px;">
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px; margin: 10px">
+        <div class="card-body" style="padding: 15px 40px 15px 40px; margin: 10px">
+            <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
+                <h3 style="color: black;"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
+            </div>
             <form>
                 <div>
                     <label for="co-action">Corrective Action</label>
@@ -398,13 +386,19 @@
                     <span class="text-danger error-message" id="impactError">Impact must not be empty!</span>
                 </div>
                 <br>
-                <div class="d-flex justify-content-end gap-3 mt-2" id="solveFormSubmitDiv">
-                    <button class="btn btn-secondary d-none" id="solveBackBtn" type="button"
-                            onclick="backToSolutionCard()">Cancel
+
+                <div class="d-flex justify-content-end" >
+                    <button class="btn btn-sm btn-gray rounded d-none" style="margin-right: 5px;padding: 10px 15px" id="solveBackBtn" onclick="backToSolutionCard();">
+                        <i class="bi bi-backspace"></i>&nbsp;Back
                     </button>
-                    <button class="btn btn-danger" type="reset" id="solveReset">Reset</button>
-                    <button type="submit" class="btn btn-primary">Solve Issue</button>
+                    <button class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" type="reset" id="solveReset">
+                        <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                        <i class="bi bi-save"></i>&nbsp;Update
+                    </button>
                 </div>
+
             </form>
         </div>
     </div>

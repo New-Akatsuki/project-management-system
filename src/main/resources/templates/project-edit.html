@@ -38,14 +38,6 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <!-- Quill text -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/quilltext.css">
-
-
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <link rel="stylesheet" href="/css/hope.css">
@@ -71,9 +63,13 @@
         }
     </style>
     <style>
-        .select2-container--default .select2-selection--multiple {
-            height: 100%;
-            line-height: 30px;
+        .select2-container--default .select2-search--inline .select2-search__field {
+            padding-left: 10px;
+            background: transparent;
+            border: none;
+            outline: 0;
+            box-shadow: none;
+            -webkit-appearance: textfield;
         }
     </style>
 
@@ -115,7 +111,40 @@
             z-index: 10001; /* Update z-index to be higher than #dim-overlay */
             display: none;
         }
+
+        .form-control{
+            border: 1px solid #bad1e5 !important;
+            border-radius: 5px!important;
+            height: 40px;
+            color: #273b5e;
+        }
+        .datepicker-style {
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
     </style>
+    <style>
+        .modal {
+            --bs-modal-width: 450px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 140px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -128,40 +157,38 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-            <li class="breadcrumb-item active">Edit Project</li>
+            <li class="breadcrumb-item active">Create Project</li>
         </ol>
     </nav>
     <!-- End Page Title -->
-    <div class="card" style="border-radius: 20px;">
-        <div class="card-header">
-            <h3><i class="bi bi-pencil-square"></i> Edit Project</h3>
-        </div>
-        <div class="card-body" style="padding: 30px; border-radius: 0 0 20px 20px">
-
+    <div class="card" style="border-radius: 18px; margin: 20px 28px">
+        <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Project</h2>
             <form id="create-project">
                 <div class="container d-flex flex-column gap-2">
                     <div class="d-flex gap-3">
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="title" class="form-label">Name</label>
-                            <input class="form-control" type="text" name="title" id="title"
+                            <label for="title" class="form-label text-black">Name</label>
+                            <input class="form-control title" type="text" name="title" id="title"
                                    placeholder="Enter Project Name"/>
-                            <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="titleError">Enter Project Name</span>
                         </div>
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="department">Department</label>
+                            <label for="department" class="form-label text-black">Department</label>
                             <select class="js-example-basic-single select-box2 form-select"
                                     id="department" style="width: 100%; height: 100%;">
                                 <option value="default" selected disabled>Choose Department</option>
                             </select>
                             <span class="text-danger" id="departmentError">Department must be selected.</span>
                         </div>
+
                     </div>
+
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="member">Add Member</label>
+                            <label for="member" class="form-label text-black">Add Member</label>
                             <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger"
@@ -170,25 +197,25 @@
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="foc">Add FOC Member</label>
+                            <label for="foc" class="form-label text-black">Add FOC Member</label>
                             <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                         </div>
                     </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-50 p-0">
-                            <label for="start-date" class="form-label d-block">Start Date</label>
+                            <label for="start-date" class="form-label d-block text-black">Start Date</label>
                             <input class="datepicker-style form-control" type="text" id="start-date"
-                                   placeholder="Enter start date" autocomplete="false"/>
+                                   placeholder="Enter start date" autocomplete="off"/>
                             <div class="invalid-feedback" id="start-date_error"></div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="startDateError">Start date must be chosen.</span>
                         </div>
 
                         <div class="d-flex flex-column w-50 p-0">
-                            <label for="end-date" class="form-label d-block">End Date</label>
+                            <label for="end-date" class="form-label d-block text-black">End Date</label>
                             <input class="datepicker-style form-control" type="text" id="end-date"
-                                   placeholder="Enter end date" autocomplete="false"/>
+                                   placeholder="Enter end date" autocomplete="off"/>
                             <div class="invalid-feedback" id="end-date_error"></div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="endDateError">End date must be chosen.</span>
@@ -196,13 +223,12 @@
                     </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="ao">Architecture Outlines</label>
+                            <label for="ao" class="form-label text-black">Architecture Outlines</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="arc-select-box" id="ao" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addArchitectureButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addArchitectureButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="arcOutlinesError">Architecture outline must be selected.</span>
@@ -210,22 +236,21 @@
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="so">System Outlines</label>
+                            <label for="so" class="form-label text-black">System Outlines</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="sysOutline-select-box" id="so" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addSystemOutlineButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addSystemOutlineButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="sysOutlinesError">System outline must be selected.</span>
                         </div>
                     </div>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 mb-2">
                         <!-- Left Set -->
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
-                            <label for="client" class="mb-0">Client</label>
+                            <label for="client" class="mb-0 text-black">Client</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <!-- First Select Box with Default Value -->
                                 <select class="js-example-basic-single select-box form-select"
@@ -233,40 +258,46 @@
                                     <option value="default" selected disabled>Select Client</option>
                                     <!-- Add more options as needed -->
                                 </select>
-                                <a id="addClientButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addClientButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <span class="text-danger" id="clientError">You must choose a Client.</span>
                         </div>
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="deli">Deliverables</label>
+                            <label for="deli" class="form-label text-black">Deliverables</label>
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="deliverable-select-box" id="deli" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addDeliverablesButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addDeliverablesButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="deliverablesError">Deliverable must be selected.</span>
                         </div>
                     </div>
                     <div>
-                        <label for="objective" class="form-label">Objective</label>
-                        <div id="objective"></div>
-                        <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
+                        <label for="objective" class="form-label text-black">Objective</label>
+                        <!--                        <div id="objective"></div>-->
+                        <textarea rows="5" id="objective" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Objective"></textarea>
+                        <span class="text-danger" id="objectiveError" >Objective must not be empty!</span>
                     </div>
 
-                    <div>
-                        <label for="background">Background</label>
-                        <div id="background"></div>
+                    <div class="mb-3">
+                        <label for="background" class="form-label text-black">Background</label>
+                        <textarea rows="5" id="background" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Background"></textarea>
                         <span class="text-danger" id="backgroundError">Background must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <input type="button" class="btn btn-danger" value="Reset" onclick="clean()">
-                        <input type="submit" id="submitButton" class="btn btn-primary" value="Create Project">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="location.href='/projects';">
+                            <i class="bi bi-backspace"></i>&nbsp;Back
+                        </a>
+                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
+                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                            <i class="bi bi-save"></i>&nbsp;Create
+                        </button>
                     </div>
                 </div>
                 <!--  Hidden Items    -->
@@ -274,167 +305,159 @@
                 <input type="hidden" name="objective" id="objectiveInput">
                 <input type="hidden" name="background" id="backgroundInput">
                 <input type="hidden" name="foc" id="focInput">
-
                 <!-- Hidden Items End -->
             </form>
         </div>
     </div>
-
     <!-- Add Client Modal -->
-    <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Client</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- Form for adding a new client -->
-                    <form>
-                        <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
-                        <div class="form-group">
-                            <label for="clientName" class="form-label">Client Name</label>
-                            <input type="text" class="form-control" id="clientName" name="name" required
-                                   placeholder="Enter client name">
-                            <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="clientEmail" name="email" required
-                                   placeholder="Enter email">
-                            <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientPhoneNumber" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
-                                   placeholder="Enter phone number">
-                            <span class="d-none error-msg"
-                                  id="clientPhoneNumberError">Client phone number must not be empty!</span>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                        <button type="button" onclick="addClient()" class="btn btn-primary">Add Client</button>
-
-                    </form>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
+                    <div class="form-group">
+                        <label for="clientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" name="name" required
+                               placeholder="Enter client name">
+                        <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" name="email" required
+                               placeholder="Enter email">
+                        <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                               placeholder="Enter phone number">
+                        <span class="d-none error-msg"
+                              id="clientPhoneNumberError">Client phone number must not be empty!</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addClient()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
     <!--    Add Architecture Outline-->
-    <div class="modal fade" id="architectureAddModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="architectureAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Architecture Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="architectureName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
-                            <span class="d-none error-msg" id="architectureNameError">Architecture outline name must not be empty!</span>
-                            <span class="d-none error-msg" id="architectureSameNameError">This name already exist.</span>
-                        </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="architectureName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
+                        <span class="d-none error-msg" id="architectureNameError">Architecture outline name must not be empty!</span>
+                        <span class="d-none error-msg" id="architectureSameNameError">This name already exist.</span>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="architectureType">Type</label>
-                            <select class="form-control" id="architectureType" required>
-                                <option value="IDE">IDE</option>
-                                <option value="FRAMEWORK">Framework</option>
-                                <option value="LIBRARY">Library</option>
-                                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
-                                <option value="SCRIPT_LANGUAGE">Script Language</option>
-                                <option value="MARKUP_LANGUAGE">Markup Language</option>
-                                <option value="DATABASE">Database</option>
-                                <option value="VCS">Version Control System</option>
-                                <option value="API">API</option>
-                                <option value="TESTING">Testing</option>
-                                <option value="ALGORITHM">Algorithm</option>
-                                <option value="DESIGN_PATTERN">Design Pattern</option>
-                                <option value="CLOUD_COMPUTING">Cloud Computing</option>
-                                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
-                                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
-                                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <span class="d-none error-msg" id="architectureTypeError">Architecture outline type must not be empty!</span>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label class="form-label" for="architectureType">Type</label>
+                        <select class="form-control" id="architectureType" required>
+                            <option value="IDE">IDE</option>
+                            <option value="FRAMEWORK">Framework</option>
+                            <option value="LIBRARY">Library</option>
+                            <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                            <option value="SCRIPT_LANGUAGE">Script Language</option>
+                            <option value="MARKUP_LANGUAGE">Markup Language</option>
+                            <option value="DATABASE">Database</option>
+                            <option value="VCS">Version Control System</option>
+                            <option value="API">API</option>
+                            <option value="TESTING">Testing</option>
+                            <option value="ALGORITHM">Algorithm</option>
+                            <option value="DESIGN_PATTERN">Design Pattern</option>
+                            <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                            <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                            <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                            <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <span class="d-none error-msg" id="architectureTypeError">Architecture outline type must not be empty!</span>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addArchitecture()">Add Architecture</button>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addArchitecture()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     <!--Add System Outline-->
-    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog"
-         aria-labelledby="addSystemOutlineModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New System Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="OutlineName" class="form-label">System Outline Name</label>
+                        <input type="text" class="form-control" id="OutlineName" name="name" required>
+                    </div>
+                    <span class="d-none error-msg" id="systemOutlineNameError">System outline name must not be empty!</span>
+                    <span class="d-none error-msg" id="systemOutlineSameNameError">This name already exist!</span>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addSystemOutline()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
                     </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="OutlineName" class="form-label">System Outline Name</label>
-                            <input type="text" class="form-control" id="OutlineName" name="name" required>
-                        </div>
-                        <span class="d-none error-msg" id="systemOutlineNameError">System outline name must not be empty!</span>
-                        <span class="d-none error-msg" id="systemOutlineSameNameError">This name already exist!</span>
-                    </form>
-                    <!-- Add Bootstrap classes to the form elements for better styling -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" onclick="addSystemOutline()" class="btn btn-primary">Add Outline</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!--Add Deliverables-->
-    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
-         aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Deliverable</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <form class="mt-4">
-                        <div class="form-group">
-                            <label for="deliverablesName" class="form-label">Deliverable Method</label>
-                            <input type="text" class="form-control" id="deliverablesName" name="name" required
-                                   placeholder="Enter new deliverables method">
-                        </div>
-                        <span class="d-none error-msg" id="deliverablesNameError">Deliverables method must not be empty!</span>
-                        <span class="d-none error-msg" id="deliverablesSameNameError">This name already exist!</span>
-                    </form>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="deliverablesName" class="form-label">Deliverable Method</label>
+                        <input type="text" class="form-control" id="deliverablesName" name="name" required
+                               placeholder="Enter new deliverables method">
+                    </div>
+                    <span class="d-none error-msg" id="deliverablesNameError">Deliverables method must not be empty!</span>
+                    <span class="d-none error-msg" id="deliverablesSameNameError">This name already exist!</span>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" onclick="addDeliverable()" class="btn btn-primary">Add
-                        Deliverables
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addDeliverable()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="spinner-border text-primary" role="status" id="loadingSpinner">
     </div>
     <div id="dim-overlay"></div>
@@ -447,7 +470,7 @@
                     <div class="text-center">
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Project update was successful.</p>
+                        <p>Project creation was successful.</p>
                     </div>
                 </div>
             </div>
@@ -467,6 +490,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
         integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!--    <script src="/js/select2.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
@@ -484,20 +509,6 @@
             spinner.hide();
         }
     }
-
-    // Function to toggle the toolbar
-    let quillObjective = new Quill("#objective", aa);
-    let quillBackground = new Quill("#background", aa);
-    //document element ready
-    document.addEventListener('DOMContentLoaded', function () {
-        const containers = document.querySelectorAll('.ql-container');
-        containers.forEach(item => {
-            item.classList.add('round-full-border');
-        });
-        toggleToolbar(0, 'objective');
-        toggleToolbar(1, 'background');
-    })
-
 
 </script>
 
@@ -691,15 +702,24 @@
         let member = $('#member').val().map(val => parseInt(val, 10));
         let foc = $('#foc').val().map(val => parseInt(val, 10));
         let client = parseInt($('#client').val(), 10);
-        let objective = quillObjective.root.innerHTML;
-        let background = quillBackground.root.innerHTML;
+        let objective = $('#objective').val();
+        let background = $('#background').val();
+        console.log("Start Date : "+startDate);
+        console.log("End Date : "+endDate);
         let errors = [];
+
 
         if (name === '') {
             errors.push('#titleError');
         }
         if (isNaN(department) || department === 'default' || department === null) {
             errors.push('#departmentError');
+        }
+        if (isNaN(startDate) ||startDate === '' || startDate === null || startDate === 'Invalid Date') {
+            errors.push('#startDateError');
+        }
+        if (isNaN(endDate) ||endDate === '' || endDate === null || endDate === 'Invalid Date') {
+            errors.push('#endDateError');
         }
         if (isNaN(client) || client === 'default' || client === null) {
             errors.push('#clientError');
@@ -716,10 +736,10 @@
         if (!member || member.length === 0) {
             errors.push('#contractMemberError');
         }
-        if (objective === '' || objective === '<p><br></p>') {
+        if (objective === '') {
             errors.push('#objectiveError');
         }
-        if (background === '' || background === '<p><br></p>') {
+        if (background === '') {
             errors.push('#backgroundError');
         }
 
@@ -759,7 +779,6 @@
             contentType: "application/json",
             data: jsonString,
             success: function (response) {
-                console.log(response)
                 toggleLoadingSpinner(false);
                 displaySuccessModal();
             },
@@ -777,8 +796,8 @@
         color:'text-danger'
     }) {
 
-    $('#toastModal').remove();
-    const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
+        $('#toastModal').remove();
+        const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
                                   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                     <div class="toast-header">
                                        <i class="${data.icon} ${data.color} fs-5 me-2"></i>
@@ -790,7 +809,7 @@
                                     </div>
                                   </div>
                                 </div>`;
-    $('body').append(toast);
+        $('body').append(toast);
     }
 </script>
 <script>
@@ -817,15 +836,8 @@
     hideErrorOnInteraction($('#so'), $('#sysOutlinesError'));
     hideErrorOnInteraction($('#ao'), $('#arcOutlinesError'));
     hideErrorOnInteraction($('#deli'), $('#deliverablesError'));
-
-
-    // Event listeners for Quill text editors
-    quillObjective.on('text-change', function () {
-        $('#objectiveError').hide();
-    });
-    quillBackground.on('text-change', function () {
-        $('#backgroundError').hide();
-    });
+    hideErrorOnInteraction($('#objective'), $('#objectiveError'));
+    hideErrorOnInteraction($('#background'), $('#backgroundError'));
 </script>
 <script>
     $(document).ready(function () {
@@ -874,10 +886,8 @@
         $('#deliverablesName').val('');
         $('#deliverablesNameError').addClass('d-none');
         $('#deliverablesSameNameError').addClass('d-none');
-        modalID.modal('show');
-        // Unbind previous event handlers
         modalID.off('shown.bs.modal');
-        // Use the 'shown.bs.modal' event to focus on the input
+        modalID.modal('show');
     });
     function addDeliverable() {
         let name = $('#deliverablesName').val();
@@ -1055,7 +1065,6 @@
     hideErrorOnInteraction($('#OutlineName'), $('#systemOutlineNameError'));
 </script>
 <script>
-
     $(document).ready(function () {
         $.ajax({
             url: "/get-projectDetails-byId/" + projectId,
@@ -1078,8 +1087,6 @@
                 var sysOutlineIds = data.systemOutlines.map(function(sys) {
                     return sys.id;
                 });
-                quillObjective.root.innerHTML = data.objective;
-                quillBackground.root.innerHTML = data.background;
                 $('#title').val(data.name);
                 $('#client').val(data.client.id).trigger('change');
                 $('#member').val(contractMemberIds).trigger('change');
@@ -1090,7 +1097,8 @@
                 $('#deli').val(deliverableIds).trigger('change');
                 $('#ao').val(arcOutlineIds).trigger('change');
                 $('#so').val(sysOutlineIds).trigger('change');
-
+                $('#objective').val(data.objective);
+                $('#background').val(data.background);
 
                 notifyMultiSelect('#foc', contractMemberIds);
                 notifyMultiSelect('#member', focMemberIds);
@@ -1103,30 +1111,13 @@
     });
 
     function notifyMultiSelect(target='', options=[]) {
-            options.forEach(option=>{
-                console.log(target, option)
-                $(target+' option[value="' + option + '"]').prop('disabled', true);
-                $(target).trigger('change');
-            });
+        options.forEach(option=>{
+            console.log(target, option)
+            $(target+' option[value="' + option + '"]').prop('disabled', true);
+            $(target).trigger('change');
+        });
 
     }
-
-    function clean() {
-        $('#title').val("");
-        quillObjective.root.innerHTML = "";
-        quillBackground.root.innerHTML = "";
-        $('#client').val("default").trigger('change');
-        $('#member').val(null).trigger('change');
-        $('#foc').val(null).trigger('change');
-        $('#department').val("default").trigger('change');
-        $('#start-date').val("");
-        $('#end-date').val("");
-        $('#deli').val(null).trigger('change');
-        $('#ao').val(null).trigger('change');
-        $('#so').val(null).trigger('change');
-    }
-</script>
-<script>
     function displaySuccessModal() {
         let modalBox = $('#successModal')
         // Show the modal
@@ -1142,6 +1133,22 @@
         modalBox.on('hidden.bs.modal', function () {
             window.location.href = "/projects";
         });
+    }
+
+    function clean() {
+        $('#title').val("");
+        $('#client').val("default").trigger('change');
+        $('#member').val(null).trigger('change');
+        $('#foc').val(null).trigger('change');
+        $('#department').val("default").trigger('change');
+        $('#start-date').val("");
+        $('#end-date').val("");
+        $('#deli').val(null).trigger('change');
+        $('#ao').val(null).trigger('change');
+        $('#so').val(null).trigger('change');
+        $('#objective').val();
+        $('#background').val();
+        $('.text-danger').hide();
     }
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
