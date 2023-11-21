@@ -384,7 +384,7 @@
         issueContainer.empty();
         // Display the items for the current page
         if (issues.length === 0) {
-            issueContainer.append('<h4 id="issueNotFound" class="mb-3">Issue Not Found</h4>');
+            issueContainer.append('<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>');
         } else {
             displayIssues(issues);
         }

@@ -197,7 +197,7 @@
                 <div class="tabs__content container">
                     <br>
                     <!-- Container for Pending Task Cards -->
-                    <div id="pendingContainer" class="row"></div>
+                    <div id="pendingContainer" class="row overflow-y-scroll"></div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
@@ -206,7 +206,7 @@
                 <div class="tabs__content container">
                     <br>
                     <!-- Container for Overdue Task Cards -->
-                    <div id="overdueContainer" class="row"></div>
+                    <div id="overdueContainer" class="row overflow-y-scroll"></div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab3">
@@ -214,7 +214,7 @@
                 <div class="tabs__content container">
                     <br>
                     <!-- Container for Completed Task Cards -->
-                    <div id="completedContainer" class="row"></div>
+                    <div id="completedContainer" class="row overflow-y-scroll"></div>
                 </div>
             </div>
 
@@ -283,6 +283,13 @@
                     $('#projectSelect').val(notification.projectId).trigger('change');
                 }
 
+                if(!(data !=null &&data.length > 0)){
+                    $('#projectSelect').append($('<option>', {
+                        value: '',
+                        text: 'No projects found'
+                    }));
+                }
+
                 getDataAndBuildTaskView();
             },
             error: function (error) {
@@ -295,29 +302,32 @@
 
     function getDataAndBuildTaskView(){
         let projectId = $('#projectSelect').val();
-        $.ajax({
-            url: `/get-tasks/${projectId}`,
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                taskBoard({
-                    tasks: data
-                });
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+        if(projectId === null || projectId === undefined || projectId === ''){
+            taskBoard({
+                tasks: []
+            });
+        }else{
+            $.ajax({
+                url: `/get-tasks/${projectId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    taskBoard({
+                        tasks: data
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
     }
 
     $('#projectSelect').on('change', function () {
         getDataAndBuildTaskView();
     });
 
-    // function playSound(issue) {
-    //     let audio = new Audio(`/audio/${issue}.mp3`);
-    //     audio.play();
-    // }
 
     function notify(notification){
        generateTaskView(notification);
@@ -345,6 +355,7 @@
             changeMonth: true,
             changeYear: true,
         });
+
 
     });
 

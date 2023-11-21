@@ -144,7 +144,7 @@ function taskBoard(options) {
             const doneIcon = item.status ? '<i class="bx bxs-check-circle"></i>' : '<i class="bx bx-check-circle"></i>';
             const priClass = item.priority === 'high' ? 'danger' : item.priority === 'medium' ? 'warning' : 'success';
             const task_container = `
-                    <div id="${item.id}" class="p-3 mb-2 border border-2 rounded-2">
+                    <div id="${item.id}-task" class="p-3 mb-2 border border-2 rounded-2">
                         <div class="kb-task-body">
                             <div class="kb-task-body-layout mb-2">
                                 <div class="kb-task-name-layout">
@@ -174,26 +174,27 @@ function taskBoard(options) {
 
             if (item.status) {
                 $('#completedContainer').append(task_container);
-                $(`#${item.id}`).addClass('bd-success');
-                $(`#${item.id}`).addClass('border-success');
+                $(`#${item.id}-task`).addClass('bd-success');
+                $(`#${item.id}-task`).addClass('border-success');
 
             } else if (!item.status && itemEndDate < new Date()) {
                $('#overdueContainer').append(task_container);
-                $(`#${item.id}`).addClass('bd-danger');
-                $(`#${item.id}`).addClass('border-danger');
+                $(`#${item.id}-task`).addClass('bd-danger');
+                $(`#${item.id}-task`).addClass('border-danger');
 
             } else {
+                console.log('pending',item.name,item.status, item.id)
                 $('#pendingContainer').append(task_container);
-                $(`#${item.id}`).addClass('bod-success');
+                $(`#${item.id}-task`).addClass('bod-success');
             }
 
-            $(`#${item.id}editTask`).on('click',()=>{
-                buildCompleteTaskModal(item.id)
-                $('#completeTaskModal').modal('show');
-            })
+            // $(`#${item.id}editTask`).on('click',()=>{
+            //     buildCompleteTaskModal(item.id)
+            //     $('#completeTaskModal').modal('show');
+            // })
 
 
-            $(`#${item.id} .kb-task-name-layout`).on('click', () => {
+            $(`#${item.id}-task .kb-task-name-layout`).on('click', () => {
                 //create offcanvas
                 buildTaskViewModal(item.id);
                 //show offcanvas
@@ -210,7 +211,7 @@ function taskBoard(options) {
                 $('#confirmModal').modal('hide');
             }
 
-            $(`#${item.id} .kb-task-status-layout`).on('click', () => {
+            $(`#${item.id}-task .kb-task-status-layout`).on('click', () => {
                 if (item.status) {
                     console.log('clicked complete')
                     renderConfirmModal(updateTaskStatus, "Are you sure to make this task incomplete?")

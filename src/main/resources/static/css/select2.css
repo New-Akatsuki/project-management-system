@@ -409,7 +409,7 @@
 
 .select2-container--default .select2-selection--multiple {
     line-height: unset !important;
-    min-height: 40px !important;
+    min-height: 40px;
 }
 
 .select2-container--classic .select2-selection--single .select2-selection__rendered {
