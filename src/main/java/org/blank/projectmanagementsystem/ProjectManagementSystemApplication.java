@@ -36,7 +36,7 @@ public class ProjectManagementSystemApplication {
     }
 
 
-//    @Bean
+    @Bean
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
             ProjectService projectService,
@@ -120,6 +120,10 @@ public class ProjectManagementSystemApplication {
                             .phoneNumber("123456789")
                             .build()
             );
+
+
+
+
             var systemOutlines = systemOutlineRepository.save(
                     SystemOutline.builder().id(null).name("BasicDesign").build()
             );

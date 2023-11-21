@@ -24,6 +24,8 @@ function calculateAllKPIs(id) {
         },
         success: function (results) {
             console.log(results)
+            $('#kpiRatioHeadingContainer').show();
+
             updateChart(results);
         },
         error: function (xhr) {
