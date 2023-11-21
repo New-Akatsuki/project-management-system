@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Project Design Amount</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Select2 CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+    <style>
+        body{
+            font-family: 'Arial', sans-serif;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid #2980b9;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="row">
+    <div class="col-md-6">
+        <label for="selectAProject">Select A Project</label>
+        <select id="selectAProject" class="project-select form-select"></select>
+    </div>
+</div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="prepareModal('update')">
+    Update Project's Data
+</button>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Project's Data</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Number Input Boxes in the Same Line -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">BASIC DESIGN:</label>
+                        <input class="form-control" id="basicDesignScreenCount" type="number">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">DETAILED DESIGN:</label>
+                        <input class="form-control" id="detailedDesignScreenCount" type="number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="codeLineCount" class="form-label" id="codeLineLabel">CODING:</label>
+                        <input class="form-control" id="codeLineCount" type="number">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="unitTestCount" class="form-label" id="unitTestLabel">UNIT TESTING:</label>
+                        <input class="form-control" id="unitTestCount" type="number">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="integrationTestCount" class="form-label" id="integrationTestLabel">INTEGRATION TESTING:</label>
+                        <input class="form-control" id="integrationTestCount" type="number">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    // Initialize Select2 for project selection
+    $(document).ready(function () {
+        $('#selectAProject').select2();
+    });
+
+    // AJAX request to fetch project data
+    $.ajax({
+        url: '/get-project-data',
+        type: 'GET',
+        success: function (data) {
+            // Populate the project dropdown
+            data.forEach(function (project) {
+                $('#selectAProject').append('<option value="' + project.id + '">' + project.name + '</option>');
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching project data:', error);
+        }
+    });
+
+    function prepareModal(action) {
+        // Reset modal inputs
+        $('#basicDesignScreenCount').val('');
+        $('#detailedDesignScreenCount').val('');
+        $('#codeLineCount').val('');
+        $('#unitTestCount').val('');
+        $('#integrationTestCount').val('');
+
+        // Change modal title and button label
+        if (action === 'add') {
+            $('.modal-title').text('Add Project\'s Data');
+            $('.btn-primary').text('Add');
+        } else if (action === 'update') {
+            $('.modal-title').text('Update Project\'s Data');
+            $('.btn-primary').text('Update');
+            // Fetch existing data and populate the modal inputs
+            fetchExistingData();
+        }
+    }
+
+    function fetchExistingData() {
+        let projectId = $('#selectAProject').val();
+
+        // Check if a project is selected
+        if (!projectId || projectId === '#') {
+            alert('Please select a project.');
+            return;
+        }
+
+        // Make an AJAX request to fetch existing data
+        $.ajax({
+            url: '/api/amount/get-amount/' + projectId,
+            type: 'GET',
+            success: function (data) {
+                // Populate the modal inputs with existing data
+                data.forEach(function (amount) {
+                    switch (amount.developmentPhase) {
+                        case 'BASIC_DESIGN':
+                            $('#basicDesignScreenCount').val(amount.amount);
+                            break;
+                        case 'DETAILED_DESIGN':
+                            $('#detailedDesignScreenCount').val(amount.amount);
+                            break;
+                        case 'CODING':
+                            $('#codeLineCount').val(amount.amount);
+                            break;
+                        case 'UNIT_TESTING':
+                            $('#unitTestCount').val(amount.amount);
+                            break;
+                        case 'INTEGRATION_TESTING':
+                            $('#integrationTestCount').val(amount.amount);
+                            break;
+                        // Add more cases for other development phases if needed
+                    }
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching existing data:', error);
+            }
+        });
+    }
+
+
+    function addOrUpdateAmount() {
+        // Retrieve values from input fields
+        let projectId = $('#selectAProject').val();
+
+        // Check if a project is selected
+        if (!projectId || projectId === '#') {
+            alert('Please select a project.');
+            return;
+        }
+
+        // Create an array to store AmountDto objects
+        let addAmounts = [];
+
+        // Helper function to check if the development phase already exists
+        function isDevelopmentPhaseExists(developmentPhase) {
+            return addAmounts.some(amount => amount.developmentPhase === developmentPhase);
+        }
+
+        // Add BASIC DESIGN amount if it's not null and doesn't already exist
+        let basicDesignScreenCount = $('#basicDesignScreenCount').val();
+        if (basicDesignScreenCount !== null && basicDesignScreenCount !== '' && !isDevelopmentPhaseExists('BASIC_DESIGN')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'BASIC_DESIGN', amount: basicDesignScreenCount });
+        }
+
+        // Add DETAILED DESIGN amount if it's not null and doesn't already exist
+        let detailedDesignScreenCount = $('#detailedDesignScreenCount').val();
+        if (detailedDesignScreenCount !== null && detailedDesignScreenCount !== '' && !isDevelopmentPhaseExists('DETAILED_DESIGN')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'DETAILED_DESIGN', amount: detailedDesignScreenCount });
+        }
+
+        // Add CODING amount if it's not null and doesn't already exist
+        let codeLineCount = $('#codeLineCount').val();
+        if (codeLineCount !== null && codeLineCount !== '' && !isDevelopmentPhaseExists('CODING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'CODING', amount: codeLineCount });
+        }
+
+        // Add UNIT TESTING amount if it's not null and doesn't already exist
+        let unitTestCount = $('#unitTestCount').val();
+        if (unitTestCount !== null && unitTestCount !== '' && !isDevelopmentPhaseExists('UNIT_TESTING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'UNIT_TESTING', amount: unitTestCount });
+        }
+
+        // Add INTEGRATION TESTING amount if it's not null and doesn't already exist
+        let integrationTestCount = $('#integrationTestCount').val();
+        if (integrationTestCount !== null && integrationTestCount !== '' && !isDevelopmentPhaseExists('INTEGRATION_TESTING')) {
+            addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'INTEGRATION_TESTING', amount: integrationTestCount });
+        }
+
+        // Check if addAmounts is empty (no new developments to add)
+        if (addAmounts.length === 0) {
+            alert('No new developments to add.');
+            return;
+        }
+
+        // AJAX request to the backend to add the amounts
+        $.ajax({
+            url: '/api/amount/add-or-update-amount',
+            method: 'POST',
+            data: JSON.stringify(addAmounts),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                // Close the modal on success
+                $("#exampleModal").modal('hide');
+                console.log(data);
+            },
+            error: function (xhr, status, error) {
+                console.log(status);
+                console.log(xhr.responseText);
+                console.error('Error adding/updating amounts:', error);
+            }
+        });
+
+        // Clear the modal inputs
+        $('#basicDesignScreenCount').val('');
+        $('#detailedDesignScreenCount').val('');
+        $('#codeLineCount').val('');
+        $('#unitTestCount').val('');
+        $('#integrationTestCount').val('');
+    }
+
+
+</script>
+</body>
+
+</html>
