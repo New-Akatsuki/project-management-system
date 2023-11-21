@@ -289,7 +289,12 @@
                         text: 'No projects found'
                     }));
                 }
-
+                if (notification && notification.projectId) {
+                    const selectedProject = $('#projectSelect').val();
+                    if (selectedProject === notification.projectId) {
+                        $('#projectSelect').val(notification.projectId).trigger('change');
+                    }
+                }
 
                 getDataAndBuildTaskView();
             },
@@ -331,12 +336,7 @@
 
 
     function notify(notification) {
-        if (notification && notification.projectId) {
-            const selectedProject = $('#projectSelect').val();
-            if (selectedProject === notification.projectId) {
-                generateTaskView(notification.projectId);
-            }
-        }
+        generateTaskView(notification);
         if (notification) {
             buildToast({
                 title: notification.type === 'TASK' ? 'Task notification' : notification.type === 'PROJECT' ? 'Project notification' : 'Issue notification',

@@ -147,7 +147,7 @@ public class ProjectServiceImpl implements ProjectService {
                 users.addAll(getProjectMembers(project.getId()));
             });
         });
-        return users;
+        return users.stream().distinct().toList();
     }
 
     @Override
