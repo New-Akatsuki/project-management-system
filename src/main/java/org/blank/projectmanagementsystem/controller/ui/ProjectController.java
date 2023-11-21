@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -43,17 +44,16 @@ public class ProjectController {
 
     @PreAuthorize("hasAuthority('PM')")
     @GetMapping("/projects/{id}/working-area")
-    public String workingAreaByProjectId(@PathVariable Long id, Model model) {
+    public String workingAreaByProjectId(@PathVariable Long id, Model model, @RequestParam(required = false) String name) {
         model.addAttribute("projectId", id);
+        model.addAttribute("projectName", name);
         return "project-view";
     }
 
     @PreAuthorize("hasAnyAuthority('PMO','Dh','PM')")
     @GetMapping("/projects/{id}/details")
-    public ModelAndView showProjectDetails(@PathVariable Long id, Model model){
+    public ModelAndView showProjectDetails(@PathVariable Long id){
         ProjectViewObject project = projectService.getProjectById(id);
-
-        model.addAttribute("projectId", id);
         return new ModelAndView("project-details-info","currentProject",project);
     }
 

@@ -55,7 +55,8 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">project</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/projects}">projects</a></li>
+                <li sec:authorize="hasAuthority('PM')" class="breadcrumb-item"><a th:href="@{working-area}">working-area</a></li>
                 <li class="breadcrumb-item active">details</li>
             </ol>
         </nav>
@@ -66,9 +67,9 @@
     <section>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h1 class="ms-2" th:text="${currentProject.name}">
+                <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
                 </h1>
-                <a sec:authorize="hasAuthority('PM')" th:href="/projects/${currentProject.id}/details" class="icon-add-btn" id="editButton">
+                <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
                     <i class='bx bx-edit m-0 p-0'></i>
                 </a>
             </div>
