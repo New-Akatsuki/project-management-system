@@ -28,10 +28,10 @@ public class Project implements Serializable {
     @Column(nullable = false,length = 50)
     private String name;
 
-    @Column(nullable = false,length = 500)
+    @Column(nullable = false,columnDefinition = "text")
     private String background;
 
-    @Column(nullable = false,length = 500)
+    @Column(nullable = false,columnDefinition = "text")
     private String objective;
 
     @Column(nullable = false)

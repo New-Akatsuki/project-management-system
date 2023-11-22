@@ -20,7 +20,10 @@
           rel="stylesheet"/>
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/hope.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/hope.css"> <!-- Bootstrap CSS for modal box -->
+
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
     <!--    icon-->
@@ -59,25 +62,6 @@
         }
     </style>
     <style>
-        .accordion-body {
-            padding: 0;
-            animation: fade-in 0.5s ease-in-out;
-        }
-
-        .accordion-button {
-            padding: 10px 14px 10px 14px;
-        }
-
-        @keyframes fade-in {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-    </style>
-    <style>
         #dim-overlay {
             position: fixed;
             top: 0;
@@ -107,11 +91,12 @@
             overflow: hidden;
         }
     </style>
-    <style>
-        .custom-border {
-            border: 2px solid red; /* Change 'red' to the color you prefer */
-        }
-    </style>
+<!--    <style>-->
+<!--        .custom-border {-->
+<!--            border: 1px solid #b4afaf; /* Change 'red' to your desired color */-->
+<!--            border-collapse: collapse; /* Optional: to collapse the border spacing */-->
+<!--        }-->
+<!--    </style>-->
 </head>
 <body>
 
@@ -125,7 +110,8 @@
     <div class="page-title">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Issue</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
                 <li class="breadcrumb-item active">Display Issue</li>
             </ol>
         </nav>
@@ -135,26 +121,26 @@
     <!-- Main Content -->
     <div class="card rounded-card" style="margin: 20px 28px;">
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px 30px 0 30px; margin-top: 10px">
-            <div class="col-12">
+        <div class="card-body" style="padding: 15px 40px 0 40px; margin-top: 10px">
+
                 <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
                     <h3 style="color: black;"><span id="title"></span></h3>
                     <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
                         <i class='bx bx-edit'></i>
                     </a>
                 </div>
-            </div>
+
             <div class="d-flex justify-content-between">
                 <table class="table table-sm table-striped-columns table-bordered custom-border"
                        style="margin-right: 20px;">
                     <tbody>
                     <tr>
-                        <th class="col-4 ps-3 text-black">PIC</th>
-                        <td class="ps-3 text-black" id="pic"></td>
+                        <th class="col-4 ps-3 pe-3 text-black" style="font-weight: 20">PIC</th>
+                        <td class="ps-3 pe-3 text-black" id="pic"></td>
                     </tr>
                     <tr>
-                        <th class="ps-3 text-black">Responsible Party</th>
-                        <td class="ps-3 text-black" id="resParty"></td>
+                        <th class="ps-3 pe-3 text-black">Responsible Party</th>
+                        <td class="ps-3 pe-3 text-black" id="resParty"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -162,19 +148,19 @@
                 <table class="table table-sm table-striped-columns table-bordered custom-border">
                     <tbody>
                     <tr>
-                        <th class="col-4 ps-3 text-black">Category</th>
-                        <td class="ps-3 text-black" id="category"></td>
+                        <th class="col-4 ps-3 pe-3 text-black">Category</th>
+                        <td class="ps-3 pe-3 text-black" id="category"></td>
                     </tr>
                     <tr>
-                        <th class="ps-3 text-black">Place</th>
-                        <td class="ps-3 text-black" id="place"></td>
+                        <th class="ps-3 pe-3 text-black">Place</th>
+                        <td class="ps-3 pe-3 text-black" id="place"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="mb-3">
-                <h5 class="bg-gray-color p-2 ps-3:">Content</h5>
+                <h5 class="bg-gray-color p-2 ps-3">Content</h5>
                 <div id="content" class="text-black"></div>
             </div>
             <div class="mb-3">
@@ -185,81 +171,33 @@
                 <h5 class="bg-gray-color p-2 ps-3">Root Cause</h5>
                 <div id="rootCause" class="text-black"></div>
             </div>
-
-        </div>
-        <div id="details-upload-date" style="padding-right: 35px">
+            <div id="details-upload-date" style="padding-right: 0">
+            </div>
         </div>
     </div>
     <div class="card rounded-card solution" style="margin: 20px 28px;">
         <!--Outer card body -->
-        <div class="card-body" style="padding: 15px 30px 0 30px; margin-top: 10px">
+        <div class="card-body" style="padding: 15px 40px 0 40px; margin-top: 10px">
             <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
-                <h3 style="color: black; margin-left:15px"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
-                <a class="icon-add-btn d-none" id="editSolution" style="margin-right: 15px">
+                <h3 style="color: black;"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
+                <a class="icon-add-btn d-none" id="editSolution">
                     <i class='bx bx-edit'></i>
                 </a>
             </div>
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="co-action">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#co-action-box" aria-expanded="true"
-                                    aria-controls="co-action-box">
-                                <span class="display-6 fs-5 fw-bold">Corrective Action</span>
-                            </button>
-                        </h2>
-                        <div id="co-action-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#co-action">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Corrective Action</h5>
+                <div id="coAction" class="text-black"></div>
             </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="pre-action">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#pre-action-box" aria-expanded="true"
-                                    aria-controls="pre-action-box">
-                                <span class="display-6 fs-5 fw-bold">Preventive Action</span>
-                            </button>
-                        </h2>
-                        <div id="pre-action-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#pre-action">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Preventive Action</h5>
+                <div id="preAction" class="text-black"></div>
             </div>
-
-            <div class="col-12 px-3">
-                <div class="accordion mb-3" id="impact">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#impact-box" aria-expanded="true"
-                                    aria-controls="impact-box">
-                                <span class="display-6 fs-5 fw-bold">Impact</span>
-                            </button>
-                        </h2>
-                        <div id="impact-box" class="accordion-collapse collapse show"
-                             data-bs-parent="#impact">
-                            <div class="accordion-body text-justify">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Impact</h5>
+                <div id="impact" class="text-black"></div>
             </div>
-        </div>
-        <div id="solution-upload-date" style="padding-right: 35px">
+            <div id="solution-upload-date" style="padding-right: 0">
+            </div>
         </div>
     </div>
 
@@ -269,17 +207,17 @@
         <!--Outer card body -->
         <div class="card-body" style="padding: 15px 40px 15px 40px; margin: 10px">
             <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
-                <h3 style="color: black;"><i class="bi bi-lightbulb"></i> Solve Issue</h3>
+                <h3 style="color: black;"><i class="bi  bi-lightbulb"></i> Solve Issue</h3>
             </div>
             <form>
                 <div>
-                    <label for="co-action">Corrective Action</label>
+                    <label>Corrective Action</label>
                 </div>
                 <div id="co-actionSolve"></div>
                 <span class="text-danger error-message" id="coActionError">Corrective Action must not be empty!</span>
                 <br>
                 <div>
-                    <label for="pre-action">Preventive Action</label>
+                    <label>Preventive Action</label>
                 </div>
                 <div id="pre-actionSolve"></div>
                 <span class="text-danger error-message" id="preActionError">Preventive Action must not be empty!</span>
@@ -458,9 +396,9 @@
                         detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(solutionJson.solutionModifiedAt)}</span></p>`;
                     }
                     // Update each section with corresponding data
-                    updateContentForQuill("co-action-box", solutionJson.coAction);
-                    updateContentForQuill("pre-action-box", solutionJson.preAction);
-                    updateContentForQuill("impact-box", solutionJson.impact);
+                    updateContentForQuill("coAction", solutionJson.coAction);
+                    updateContentForQuill("preAction", solutionJson.preAction);
+                    updateContentForQuill("impact", solutionJson.impact);
                     solutionData.push(solutionJson);
                 }
             },
