@@ -62,16 +62,21 @@
         </nav>
     </div>
     <!-- End Page Title -->
-
+    <input type="hidden" id="projectId" th:value="${currentProject.id}">
     <!-- Main Content -->
     <section>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
                 </h1>
-                <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
-                    <i class='bx bx-edit m-0 p-0'></i>
-                </a>
+                <div class="d-flex gap-2">
+                    <button sec:authorize="hasAuthority('PM')" class="btn btn-info icon-add-btn" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        KPI
+                    </button>
+                    <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
+                        <i class='bx bx-edit m-0 p-0'></i>
+                    </a>
+                </div>
             </div>
             <!--            Outer card body -->
             <div class="card-body row mx-1 px-3">
@@ -224,6 +229,111 @@
     </section>
     <!-- End Main Content-->
 
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add data for KPI</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tabs">
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+                        <label for="tab1" class="tabs__label d-flex align-items-center justify-content-center">
+                            Amount</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">Basic design:</label>
+                                        <input class="form-control" id="basicDesignScreenCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">Details design:</label>
+                                        <input class="form-control" id="detailedDesignScreenCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <label for="codeLineCount" class="form-label" id="codeLineLabel">Coding:</label>
+                                        <input class="form-control" id="codeLineCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label for="unitTestCount" class="form-label" id="unitTestLabel">Unit testing:</label>
+                                        <input class="form-control" id="unitTestCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="integrationTestCount" class="form-label" id="integrationTestLabel">Integration testing:</label>
+                                        <input class="form-control" id="integrationTestCount" type="number">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mt-2 justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+                        <label for="tab2" class="tabs__label d-flex align-items-center justify-content-center">
+                            Review</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="reviewerType" class="form-label">Select the Reviewer:</label>
+                                    <select id="reviewerType" class="form-select reviewer-type-selector" onchange="fetchExistingReview()">
+                                        <option value="INTERNAL">INTERNAL</option>
+                                        <option value="EXTERNAL">EXTERNAL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="basicDesignReviewCount" class="form-label" >Basic design review :</label>
+                                    <input class="form-control" id="basicDesignReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="detailedDesignReviewCount" class="form-label" >Details design review :</label>
+                                    <input class="form-control" id="detailedDesignReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <label for="codeLineReviewCount" class="form-label" >Coding review :</label>
+                                    <input class="form-control" id="codeLineReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="unitTestReviewCount" class="form-label" >Unit testing Review :</label>
+                                    <input class="form-control" id="unitTestReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="integrationTestReviewCount" class="form-label" >Integration testing:</label>
+                                    <input class="form-control" id="integrationTestReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2 justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="addOrUpdateReview()">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 <!-- End #main -->
 
@@ -240,6 +350,9 @@
 <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="/js/add-amount.js"></script>
+<script src="/js/add-review.js"></script>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
