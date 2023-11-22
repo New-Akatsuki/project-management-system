@@ -82,4 +82,14 @@ public class ForgotPasswordController {
         return "login";
     }
 
+    @GetMapping("/used-token")
+    public String UsedToken() {
+        return "used-token";
+    }
+
+    @GetMapping("/expired-token")
+    public String ExpiredToken() {
+        return "expired-token";
+    }
+
 }
