@@ -2,7 +2,6 @@
 let departmentList =[];
 $(document).ready(function () {
 
-
     //Make an AJAX request to fetch data from the Rest API point
     $.ajax({
         url: '/departments',
