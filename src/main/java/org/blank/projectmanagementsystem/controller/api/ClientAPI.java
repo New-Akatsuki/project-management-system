@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Client;
 import org.blank.projectmanagementsystem.service.ClientService;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ClientAPI {
     private final ClientService clientService;
 

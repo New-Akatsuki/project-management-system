@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ClientServiceTest {
     private ClientServiceImpl clientService;
 
     @Test
-    public void testSaveClientWhenRepositoryThrowsExceptionThenHandleGracefully() {
+    public void testSaveClient() {
         Client clientToSave = new Client();
         clientToSave.setId(1L);
         clientToSave.setName("Test Client");
@@ -41,7 +42,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    void testGetAllClientsWhenClientsExistThenReturnListOfClients() {
+    void testGetAllClients() {
         Client client1 = new Client();
         client1.setId(1L);
         client1.setName("John Doe");
@@ -78,7 +79,7 @@ public class ClientServiceTest {
     }
 
     @Test
-    void testGetClientByIdWhenValidIdThenReturnClient() {
+    void testGetClientById() {
         Long clientId = 1L;
         Client client = new Client();
         client.setId(clientId);
@@ -96,4 +97,46 @@ public class ClientServiceTest {
 
         verify(clientRepository, times(1)).findById(clientId);
     }
+    @Test
+    void testUpdateClient() {
+        Long clientId = 1L;
+
+        // Create a client with the initial data
+        Client initialClient = new Client();
+        initialClient.setId(clientId);
+        initialClient.setName("Test Client");
+        initialClient.setEmail("test@test.com");
+        initialClient.setPhoneNumber("1234567890");
+        initialClient.setStatus(true);
+
+        // Create a client with the updated data
+        Client updatedClientData = new Client();
+        updatedClientData.setName("Updated Client");
+        updatedClientData.setEmail("updated@test.com");
+        updatedClientData.setPhoneNumber("9876543210");
+        updatedClientData.setStatus(false);
+
+        // Mock the repository to return the initial client when findById is called
+        when(clientRepository.findById(clientId)).thenReturn(Optional.of(initialClient));
+
+        // Perform the update operation
+        clientService.updateClient(clientId, updatedClientData);
+
+        // Verify that the repository's save method was called with the updated client data
+        verify(clientRepository, times(1)).save(argThat(savedClient -> {
+            // Check if the saved client data matches the updated data
+            return savedClient.getId().equals(clientId) &&
+                    savedClient.getName().equals(updatedClientData.getName()) &&
+                    savedClient.getEmail().equals(updatedClientData.getEmail()) &&
+                    savedClient.getPhoneNumber().equals(updatedClientData.getPhoneNumber()) &&
+                    savedClient.isStatus() == updatedClientData.isStatus();
+        }));
+    }
+
+
+
+
 }
+
+
+

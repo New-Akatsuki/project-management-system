@@ -19,23 +19,13 @@ import java.util.List;
 
 public class ArchitectureServiceImpl implements ArchitectureService {
     private final ArchitectureRepository architectureRepository;
-
-
-
-
-
-
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public List<Architecture> getAllArchitectures() {
         return architectureRepository.findAll();
     }
 
-
-
-
-
-    @Override
+    /*@Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture updateArchitecture(Long id, Architecture architecture) {
         if (architectureRepository.existsById(id)) {
@@ -43,7 +33,7 @@ public class ArchitectureServiceImpl implements ArchitectureService {
             return architectureRepository.save(architecture);
         }
         return null;
-    }
+    }*/
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
@@ -54,6 +44,11 @@ public class ArchitectureServiceImpl implements ArchitectureService {
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Architecture getArchitectureById(Long id) {
+        return architectureRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Architecture findById(long id) {
         return architectureRepository.findById(id).orElse(null);
     }
 

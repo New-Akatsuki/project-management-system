@@ -1,5 +1,4 @@
 package org.blank.projectmanagementsystem.service.impl;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +25,17 @@ public class ClientServiceImpl implements ClientService {
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Client save(Client client) {
         return clientRepository.save(client);
+    }
+
+    public void updateClient(Long id, Client client) {
+        Client clientToUpdate = clientRepository.findById(id).orElse(null);
+        if (clientToUpdate != null) {
+            clientToUpdate.setName(client.getName());
+            clientToUpdate.setEmail(client.getEmail());
+            clientToUpdate.setPhoneNumber(client.getPhoneNumber());
+            clientToUpdate.setStatus(client.isStatus());
+            clientRepository.save(clientToUpdate);
+        }
     }
 
 
@@ -55,6 +65,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findById(id).orElse(null);
 
     }
+
 
 
 }

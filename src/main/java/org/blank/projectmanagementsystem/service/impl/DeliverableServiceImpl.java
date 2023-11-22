@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.entity.Client;
 import org.blank.projectmanagementsystem.domain.entity.Deliverable;
 import org.blank.projectmanagementsystem.repository.DeliverableRepository;
 import org.blank.projectmanagementsystem.service.DeliverableService;
@@ -42,6 +43,8 @@ public class DeliverableServiceImpl implements DeliverableService {
     public Deliverable findById(long id) {
         return deliverableRepository.findById(id).orElse(null);
     }
+
+
 
 
     @Override
