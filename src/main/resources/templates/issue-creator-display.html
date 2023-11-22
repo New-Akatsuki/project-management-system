@@ -178,6 +178,7 @@
             </div>
         </div>
 
+
         <input type="radio" class="tabs__radio" name="tabs-example" id="tab1">
         <label for="tab1" class="tabs__label">Solved</label>
 
@@ -200,6 +201,7 @@
                 <ul class="pagination" id="paginationSolved"></ul>
             </div>
         </div>
+
     </div>
 </main>
 <!-- End #main -->
@@ -297,7 +299,7 @@
         const tabContent = document.getElementById(tabContentId);
         tabContent.innerHTML = '';
         if (issuesArray.length === 0) {
-            tabContent.innerHTML='<h4 id="issueNotFound" class="mb-3">Issue Not Found</h4>';
+            tabContent.innerHTML='<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>';
         }else{
             // Sort the issues by the latest upload or modification date
             const sortedIssues = issuesArray.sort((a, b) => {

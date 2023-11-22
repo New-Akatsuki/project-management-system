@@ -167,6 +167,7 @@
             </div>
         </div>
 
+
         <input type="radio" class="tabs__radio" name="tabs-example" id="tab1">
         <label for="tab1" class="tabs__label">Solved</label>
 
@@ -189,6 +190,7 @@
                 <ul class="pagination" id="paginationSolved"></ul>
             </div>
         </div>
+
     </div>
 
 </main>
@@ -209,11 +211,6 @@
 <script src="/js/main.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="/js/notification.js"></script>
-<script src="/js/init-notification.js"></script>
-
 <script>
     let solvedIssues = [];
     let unsolvedIssues = [];
@@ -297,7 +294,7 @@
         const tabContent = document.getElementById(tabContentId);
         tabContent.innerHTML = '';
         if (issuesArray.length === 0) {
-            tabContent.innerHTML='<h4 id="issueNotFound" class="mb-3">Issue Not Found</h4>';
+            tabContent.innerHTML='<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>';
         }else{
             // Sort the issues by the latest upload or modification date
             const sortedIssues = issuesArray.sort((a, b) => {
@@ -380,5 +377,8 @@
         }
     });
 </script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 </body>
 </html>

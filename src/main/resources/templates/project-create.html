@@ -32,18 +32,13 @@
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="/css/theme-base-jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+          integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <!-- Quill text -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/quilltext.css">
-
-
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <script src="/js/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <link rel="stylesheet" href="/css/hope.css">
     <link href="/css/style.css" rel="stylesheet"/>
@@ -123,6 +118,31 @@
             height: 40px;
             color: #273b5e;
         }
+        .datepicker-style {
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+    </style>
+    <style>
+        .modal {
+            --bs-modal-width: 450px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 140px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+
     </style>
 
 </head>
@@ -168,7 +188,7 @@
 
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="member" class="form-label text-black">Contract Member</label>
+                            <label for="member" class="form-label text-black">Add Member</label>
                             <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger"
@@ -177,7 +197,7 @@
 
 
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="foc" class="form-label text-black">FOC Member (Optional)</label>
+                            <label for="foc" class="form-label text-black">Add FOC Member</label>
                             <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                         </div>
@@ -207,9 +227,8 @@
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="arc-select-box" id="ao" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addArchitectureButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addArchitectureButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="arcOutlinesError">Architecture outline must be selected.</span>
@@ -221,15 +240,14 @@
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="sysOutline-select-box" id="so" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addSystemOutlineButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addSystemOutlineButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="sysOutlinesError">System outline must be selected.</span>
                         </div>
                     </div>
-                    <div class="d-flex gap-3">
+                    <div class="d-flex gap-3 mb-2">
                         <!-- Left Set -->
                         <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
                             <label for="client" class="mb-0 text-black">Client</label>
@@ -240,9 +258,8 @@
                                     <option value="default" selected disabled>Select Client</option>
                                     <!-- Add more options as needed -->
                                 </select>
-                                <a id="addClientButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addClientButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <span class="text-danger" id="clientError">You must choose a Client.</span>
                         </div>
@@ -252,32 +269,35 @@
                             <div class="d-flex gap-2 w-100 p-0">
                                 <select class="deliverable-select-box" id="deli" multiple="multiple"
                                         style="width: 100%; height: 100%;"></select>
-                                <a id="addDeliverablesButton" class="icon-add-btn">
-                                    <i class='bx bx-plus m-0 p-0'></i>
-                                </a>
+                                <button type="button" class="btn btn-primary btn-icon" id="addDeliverablesButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger" id="deliverablesError">Deliverable must be selected.</span>
                         </div>
-
-
                     </div>
-
-
                     <div>
                         <label for="objective" class="form-label text-black">Objective</label>
-                        <div id="objective"></div>
-                        <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
+<!--                        <div id="objective"></div>-->
+                        <textarea rows="5" id="objective" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Objective"></textarea>
+                        <span class="text-danger" id="objectiveError" >Objective must not be empty!</span>
                     </div>
 
-                    <div>
+                    <div class="mb-3">
                         <label for="background" class="form-label text-black">Background</label>
-                        <div id="background"></div>
+                        <textarea rows="5" id="background" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Background"></textarea>
                         <span class="text-danger" id="backgroundError">Background must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <input type="reset" class="btn btn-danger" value="Reset" onclick="clean()">
-                        <input type="submit" id="submitButton" class="btn btn-primary" value="Create Project">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="location.href='/projects';">
+                            <i class="bi bi-backspace"></i>&nbsp;Back
+                        </a>
+                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
+                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                            <i class="bi bi-save"></i>&nbsp;Create
+                        </button>
                     </div>
                 </div>
                 <!--  Hidden Items    -->
@@ -285,66 +305,60 @@
                 <input type="hidden" name="objective" id="objectiveInput">
                 <input type="hidden" name="background" id="backgroundInput">
                 <input type="hidden" name="foc" id="focInput">
-
                 <!-- Hidden Items End -->
             </form>
         </div>
     </div>
-
     <!-- Add Client Modal -->
-    <div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Client</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <!-- Form for adding a new client -->
-                    <form>
-                        <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
-                        <div class="form-group">
-                            <label for="clientName" class="form-label">Client Name</label>
-                            <input type="text" class="form-control" id="clientName" name="name" required
-                                   placeholder="Enter client name">
-                            <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="clientEmail" name="email" required
-                                   placeholder="Enter email">
-                            <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="clientPhoneNumber" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
-                                   placeholder="Enter phone number">
-                            <span class="d-none error-msg"
-                                  id="clientPhoneNumberError">Client phone number must not be empty!</span>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                        <button type="button" onclick="addClient()" class="btn btn-primary">Add Client</button>
-                    </form>
-                </div>
+                    <div class="container" style="padding: 10px 15px 0 15px;">
+                    <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
+                    <div class="form-group">
+                        <label for="clientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" name="name" required
+                               placeholder="Enter client name">
+                        <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" name="email" required
+                               placeholder="Enter email">
+                        <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                               placeholder="Enter phone number">
+                        <span class="d-none error-msg"
+                              id="clientPhoneNumberError">Client phone number must not be empty!</span>
+                    </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addClient()" style="margin-right: 15px; padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
-
     <!--    Add Architecture Outline-->
-    <div class="modal fade" id="architectureAddModal" tabindex="-1" role="dialog" aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="architectureAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Architecture Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                    <div class="container" style="padding: 10px 15px 0 15px;">
                         <div class="form-group">
                             <label for="architectureName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
@@ -375,58 +389,55 @@
                             </select>
                             <span class="d-none error-msg" id="architectureTypeError">Architecture outline type must not be empty!</span>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addArchitecture()">Add Architecture</button>
-                </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addArchitecture()" style="margin-right: 15px; padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
     <!--Add System Outline-->
-    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog"
-         aria-labelledby="addSystemOutlineModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New System Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                    <div class="container" style="padding: 10px 15px 0 15px;">
                         <div class="form-group">
                             <label for="OutlineName" class="form-label">System Outline Name</label>
                             <input type="text" class="form-control" id="OutlineName" name="name" required>
                         </div>
                         <span class="d-none error-msg" id="systemOutlineNameError">System outline name must not be empty!</span>
                         <span class="d-none error-msg" id="systemOutlineSameNameError">This name already exist!</span>
-                    </form>
-                    <!-- Add Bootstrap classes to the form elements for better styling -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" onclick="addSystemOutline()" class="btn btn-primary">Add Outline</button>
-                </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addSystemOutline()" style="margin-right: 15px; padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
 
     <!--Add Deliverables-->
-    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
-         aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Deliverable</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
                 </div>
-                <div class="modal-body">
-                    <form class="mt-4">
+                    <div class="container" style="padding: 10px 15px 0 15px;">
                         <div class="form-group">
                             <label for="deliverablesName" class="form-label">Deliverable Method</label>
                             <input type="text" class="form-control" id="deliverablesName" name="name" required
@@ -434,17 +445,19 @@
                         </div>
                         <span class="d-none error-msg" id="deliverablesNameError">Deliverables method must not be empty!</span>
                         <span class="d-none error-msg" id="deliverablesSameNameError">This name already exist!</span>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
-                    <button type="button" onclick="addDeliverable()" class="btn btn-primary">Add
-                        Deliverables
-                    </button>
-                </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addDeliverable()" style="margin-right: 15px; padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
+
     <div class="spinner-border text-primary" role="status" id="loadingSpinner">
     </div>
     <div id="dim-overlay"></div>
@@ -472,11 +485,15 @@
 
 <script th:src="@{/js/form-wizard.js}"></script>
 <script th:src="@{/js/validation.js}"></script>
-<script src="/js/jquery-3.6.4.min.js"></script>
-<script src="/js/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/js/select2.js"></script>
+<!--    <script src="/js/select2.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
 <script>
@@ -492,29 +509,6 @@
             spinner.hide();
         }
     }
-
-    // Function to toggle the toolbar
-    function clean() {
-        $('#title').val("");
-        quillObjective.root.innerHTML = "";
-        quillBackground.root.innerHTML = "";
-        $('#client').val("default").trigger('change');
-        $('#member').val(null).trigger('change');
-        $('#foc').val(null).trigger('change');
-    }
-
-    let quillObjective = new Quill("#objective", aa);
-    let quillBackground = new Quill("#background", aa);
-    //document element ready
-    document.addEventListener('DOMContentLoaded', function () {
-        const containers = document.querySelectorAll('.ql-container');
-        containers.forEach(item => {
-            item.classList.add('round-full-border');
-        });
-        toggleToolbar(0, 'objective');
-        toggleToolbar(1, 'background');
-    })
-
 
 </script>
 
@@ -707,15 +701,24 @@
         let member = $('#member').val().map(val => parseInt(val, 10));
         let foc = $('#foc').val().map(val => parseInt(val, 10));
         let client = parseInt($('#client').val(), 10);
-        let objective = quillObjective.root.innerHTML;
-        let background = quillBackground.root.innerHTML;
+        let objective = $('#objective').val();
+        let background = $('#background').val();
+        console.log("Start Date : "+startDate);
+        console.log("End Date : "+endDate);
         let errors = [];
+
 
         if (name === '') {
             errors.push('#titleError');
         }
         if (isNaN(department) || department === 'default' || department === null) {
             errors.push('#departmentError');
+        }
+        if (isNaN(startDate) ||startDate === '' || startDate === null || startDate === 'Invalid Date') {
+            errors.push('#startDateError');
+        }
+        if (isNaN(endDate) ||endDate === '' || endDate === null || endDate === 'Invalid Date') {
+            errors.push('#endDateError');
         }
         if (isNaN(client) || client === 'default' || client === null) {
             errors.push('#clientError');
@@ -732,10 +735,10 @@
         if (!member || member.length === 0) {
             errors.push('#contractMemberError');
         }
-        if (objective === '' || objective === '<p><br></p>') {
+        if (objective === '') {
             errors.push('#objectiveError');
         }
-        if (background === '' || background === '<p><br></p>') {
+        if (background === '') {
             errors.push('#backgroundError');
         }
 
@@ -792,8 +795,8 @@
         color:'text-danger'
     }) {
 
-    $('#toastModal').remove();
-    const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
+        $('#toastModal').remove();
+        const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
                                   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                                     <div class="toast-header">
                                        <i class="${data.icon} ${data.color} fs-5 me-2"></i>
@@ -805,7 +808,7 @@
                                     </div>
                                   </div>
                                 </div>`;
-    $('body').append(toast);
+        $('body').append(toast);
     }
 </script>
 <script>
@@ -832,15 +835,8 @@
     hideErrorOnInteraction($('#so'), $('#sysOutlinesError'));
     hideErrorOnInteraction($('#ao'), $('#arcOutlinesError'));
     hideErrorOnInteraction($('#deli'), $('#deliverablesError'));
-
-
-    // Event listeners for Quill text editors
-    quillObjective.on('text-change', function () {
-        $('#objectiveError').hide();
-    });
-    quillBackground.on('text-change', function () {
-        $('#backgroundError').hide();
-    });
+    hideErrorOnInteraction($('#objective'), $('#objectiveError'));
+    hideErrorOnInteraction($('#background'), $('#backgroundError'));
 </script>
 <script>
     $(document).ready(function () {
@@ -1083,6 +1079,22 @@
         modalBox.on('hidden.bs.modal', function () {
             window.location.href = "/projects";
         });
+    }
+
+    function clean() {
+        $('#title').val("");
+        $('#client').val("default").trigger('change');
+        $('#member').val(null).trigger('change');
+        $('#foc').val(null).trigger('change');
+        $('#department').val("default").trigger('change');
+        $('#start-date').val("");
+        $('#end-date').val("");
+        $('#deli').val(null).trigger('change');
+        $('#ao').val(null).trigger('change');
+        $('#so').val(null).trigger('change');
+        $('#objective').val();
+        $('#background').val();
+        $('.text-danger').hide();
     }
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
