@@ -1,6 +1,5 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;

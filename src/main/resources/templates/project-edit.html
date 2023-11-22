@@ -168,7 +168,6 @@
             <form id="create-project">
                 <div class="container d-flex flex-column gap-2">
                     <div class="d-flex gap-3">
-
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="title" class="form-label text-black">Name</label>
                             <input class="form-control title" type="text" name="title" id="title"
@@ -176,17 +175,39 @@
                             <span class="text-danger" id="titleError">Enter Project Name</span>
                         </div>
 
+                        <!--                        <div class="d-flex flex-column w-100 p-0">-->
+                        <!--                            <label for="department" class="form-label text-black">Department</label>-->
+                        <!--                            <select class="js-example-basic-single select-box2 form-select"-->
+                        <!--                                    id="department" style="width: 100%; height: 100%;">-->
+                        <!--                                <option value="default" selected disabled>Choose Department</option>-->
+                        <!--                            </select>-->
+                        <!--                            <span class="text-danger" id="departmentError">Department must be selected.</span>-->
+                        <!--                        </div>-->
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="department" class="form-label text-black">Department</label>
-                            <select class="js-example-basic-single select-box2 form-select"
-                                    id="department" style="width: 100%; height: 100%;">
-                                <option value="default" selected disabled>Choose Department</option>
-                            </select>
-                            <span class="text-danger" id="departmentError">Department must be selected.</span>
+                            <label for="start-date" class="form-label d-block text-black">Start Date</label>
+                            <input class="datepicker-style form-control" type="text" id="start-date"
+                                   placeholder="Enter start date" autocomplete="off"/>
+                            <div class="invalid-feedback" id="start-date_error"></div>
+                            <!--                            <div class="replace" style="height: 100%;"></div>-->
+                            <span class="text-danger" id="startDateError">Start date must be chosen.</span>
                         </div>
-
                     </div>
 
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="duration" class="form-label text-black">Duration (Month)</label>
+                            <input class="form-control" type="number" id="duration"
+                                   placeholder="Enter Duration" autocomplete="off" min="1"/>
+                        </div>
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="end-date" class="form-label d-block text-black">End Date</label>
+                            <input class="datepicker-style form-control" type="text" id="end-date"
+                                   placeholder="Enter end date" autocomplete="off" disabled/>
+                            <div class="invalid-feedback" id="end-date_error"></div>
+                            <!--                            <div class="replace" style="height: 100%;"></div>-->
+                            <span class="text-danger" id="endDateError">End date must be chosen.</span>
+                        </div>
+                    </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="member" class="form-label text-black">Add Member</label>
@@ -195,31 +216,10 @@
                             <span class="text-danger"
                                   id="contractMemberError">Contract member must be selected.</span>
                         </div>
-
-
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="foc" class="form-label text-black">Add FOC Member</label>
                             <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-3">
-                        <div class="d-flex flex-column w-50 p-0">
-                            <label for="start-date" class="form-label d-block text-black">Start Date</label>
-                            <input class="datepicker-style form-control" type="text" id="start-date"
-                                   placeholder="Enter start date" autocomplete="off"/>
-                            <div class="invalid-feedback" id="start-date_error"></div>
-                            <div class="replace" style="height: 100%;"></div>
-                            <span class="text-danger" id="startDateError">Start date must be chosen.</span>
-                        </div>
-
-                        <div class="d-flex flex-column w-50 p-0">
-                            <label for="end-date" class="form-label d-block text-black">End Date</label>
-                            <input class="datepicker-style form-control" type="text" id="end-date"
-                                   placeholder="Enter end date" autocomplete="off"/>
-                            <div class="invalid-feedback" id="end-date_error"></div>
-                            <div class="replace" style="height: 100%;"></div>
-                            <span class="text-danger" id="endDateError">End date must be chosen.</span>
                         </div>
                     </div>
                     <div class="d-flex gap-3">
@@ -232,7 +232,8 @@
                                         class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
                             </div>
                             <div class="replace" style="height: 100%;"></div>
-                            <span class="text-danger" id="arcOutlinesError">Architecture outline must be selected.</span>
+                            <span class="text-danger"
+                                  id="arcOutlinesError">Architecture outline must be selected.</span>
                         </div>
 
 
@@ -280,23 +281,28 @@
                     <div>
                         <label for="objective" class="form-label text-black">Objective</label>
                         <!--                        <div id="objective"></div>-->
-                        <textarea rows="5" id="objective" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Objective"></textarea>
-                        <span class="text-danger" id="objectiveError" >Objective must not be empty!</span>
+                        <textarea rows="5" id="objective" style="min-height: 50px; width: 100%" class="form-control"
+                                  placeholder="Enter Objective"></textarea>
+                        <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
                     </div>
 
                     <div class="mb-3">
                         <label for="background" class="form-label text-black">Background</label>
-                        <textarea rows="5" id="background" style="min-height: 50px; width: 100%" class="form-control" placeholder="Enter Background"></textarea>
+                        <textarea rows="5" id="background" style="min-height: 50px; width: 100%" class="form-control"
+                                  placeholder="Enter Background"></textarea>
                         <span class="text-danger" id="backgroundError">Background must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="location.href='/projects';">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px"
+                           onclick="goBack();">
                             <i class="bi bi-backspace"></i>&nbsp;Back
                         </a>
-                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
-                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
-                        </a>
-                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+<!--                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px"-->
+<!--                           onclick="clean()">-->
+<!--                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset-->
+<!--                        </a>-->
+                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
+                                id="submitButton">
                             <i class="bi bi-save"></i>&nbsp;Create
                         </button>
                     </div>
@@ -471,7 +477,7 @@
                     <div class="text-center">
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Project creation was successful.</p>
+                        <p>Project update was successful.</p>
                     </div>
                 </div>
             </div>
@@ -713,14 +719,12 @@
         if (name === '') {
             errors.push('#titleError');
         }
-        if (isNaN(department) || department === 'default' || department === null) {
-            errors.push('#departmentError');
-        }
         if (isNaN(startDate) ||startDate === '' || startDate === null || startDate === 'Invalid Date') {
             errors.push('#startDateError');
         }
-        if (isNaN(endDate) ||endDate === '' || endDate === null || endDate === 'Invalid Date') {
+        if (isNaN(endDate) || endDate === '' || endDate === null || endDate === 'Invalid Date') {
             errors.push('#endDateError');
+            $('#duration').focus();
         }
         if (isNaN(client) || client === 'default' || client === null) {
             errors.push('#clientError');
@@ -829,11 +833,10 @@
 
     // Event listeners for input fields
     hideErrorOnInteraction($('#title'), $('#titleError'));
-    hideErrorOnInteraction($('#department'), $('#departmentError'));
     hideErrorOnInteraction($('#member'), $('#contractMemberError'));
     hideErrorOnInteraction($('#client'), $('#clientError'));
     hideErrorOnInteraction($('#start-date'), $('#startDateError'));
-    hideErrorOnInteraction($('#end-date'), $('#endDateError'));
+    hideErrorOnInteraction($('#duration'), $('#endDateError'));
     hideErrorOnInteraction($('#so'), $('#sysOutlinesError'));
     hideErrorOnInteraction($('#ao'), $('#arcOutlinesError'));
     hideErrorOnInteraction($('#deli'), $('#deliverablesError'));
@@ -1138,6 +1141,7 @@
 
     function clean() {
         $('#title').val("");
+        $('#duration').val("")
         $('#client').val("default").trigger('change');
         $('#member').val(null).trigger('change');
         $('#foc').val(null).trigger('change');
@@ -1147,9 +1151,48 @@
         $('#deli').val(null).trigger('change');
         $('#ao').val(null).trigger('change');
         $('#so').val(null).trigger('change');
-        $('#objective').val();
-        $('#background').val();
+        $('#objective').val("");
+        $('#background').val("");
         $('.text-danger').hide();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        // Initialize datepicker with a specific format
+        var dateFormat = 'mm/dd/yyyy';
+
+        $('#start-date').datepicker({
+            format: dateFormat,
+            autoclose: true
+        });
+
+        $('#end-date').datepicker({
+            format: dateFormat,
+            autoclose: true
+        });
+
+        // Update end date on change of start date or duration
+        $('#start-date, #duration').on('change input', function () {
+            updateEndDate();
+        });
+
+        function updateEndDate() {
+            var startDate = $('#start-date').datepicker('getDate');
+            var duration = parseInt($('#duration').val());
+
+            if (!isNaN(startDate) && !isNaN(duration)) {
+                var endDate = new Date(startDate);
+                endDate.setMonth(endDate.getMonth() + duration);
+
+                // Update the end date input
+                $('#end-date').datepicker('setDate', endDate);
+            }
+        }
+    });
+</script>
+<script>
+    function goBack() {
+        window.history.back();
     }
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
