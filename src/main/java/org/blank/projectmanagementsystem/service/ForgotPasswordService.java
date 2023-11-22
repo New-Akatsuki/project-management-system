@@ -21,14 +21,14 @@ import org.springframework.ui.Model;
 public class ForgotPasswordService {
     private final ForgotPasswordRepository fpRepo;
     private final JavaMailSender javaMailSender;
-    private final int HOURS = 2;
+    private final int DAYS = 3;
 
     public String generateToken() {
         return UUID.randomUUID().toString();
     }
 
     public LocalDateTime expireTimeRange () {
-        return LocalDateTime.now().plusHours(HOURS);
+        return LocalDateTime.now().plusHours(DAYS);
     }
 
     public void sendEmail(String to,String subject, String emailLink) throws MessagingException, UnsupportedEncodingException, jakarta.mail.MessagingException {
@@ -58,11 +58,11 @@ public class ForgotPasswordService {
         }
         else if (fwToken.isUsed()) {
             model.addAttribute("error", "The Token is already Used");
-            return "error";
+            return "used-token";
         }
         else if (isExpired(fwToken)) {
             model.addAttribute("error", "The Token is Expired");
-            return "error";
+            return "expired-token";
 
         }else {
             return "reset-password";

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title>Dir-Ace Technology</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
     <!-- Google Fonts -->
@@ -13,7 +13,7 @@
     <!-- Bootstrap CSS -->
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
-    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
     <!-- Bootstrap Icons -->
     <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
@@ -44,6 +44,7 @@
             border: 1px solid rgba(152, 165, 178, 0.85);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            border-inline-start: 6px solid #007bff;
         }
 
         .issue-card:hover {
@@ -126,18 +127,6 @@
             width: 30px;
         }
     </style>
-
-    <style>
-        .issue-card.solved {
-            border-inline-end: 4px solid #28a745; /* Solved status color */
-            border-inline-start: 6px solid #007bff; /* Solved status color */
-        }
-
-        .issue-card.unsolved {
-            border-inline-end: 4px solid #dc3545; /* Unsolved status color */
-            border-inline-start: 6px solid #007bff; /* Unsolved status color */
-        }
-    </style>
 </head>
 <body>
 <!-- ======= Header ======= -->
@@ -161,14 +150,14 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
+                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton">
+                    <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
+                </a>
                 <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">
                     <i class="bi bi-person"></i>&nbsp;Creator View
                 </a>
-                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/pic}">
+                <a class="btn btn-sm btn-secondary rounded" th:href="@{/issues/pic}">
                     <i class="bi bi-person"></i>&nbsp;PIC View
-                </a>
-                <a class="btn btn-sm btn-primary rounded" th:href="@{/issues/new}">
-                    <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
                 </a>
             </div>
         </div>
@@ -216,6 +205,8 @@
         <!-- Pagination Container -->
         <div id="pagination-container"></div>
     </div>
+
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 <!--&lt;!&ndash; jQuery &ndash;&gt;-->
@@ -385,8 +376,10 @@
         // Display the items for the current page
         if (issues.length === 0) {
             issueContainer.append('<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>');
+            $('#createIssueButton').removeClass('d-none');
         } else {
             displayIssues(issues);
+            $('#createIssueButton').addClass('d-none');
         }
     }
 
@@ -407,7 +400,7 @@
             var card = `
 <div class="col-md-12">
     <a href="/issues/${issue.id}/details" class="card-link">
-        <div class="card issue-card ${issue.solved ? 'solved' : 'unsolved'}" style="border-radius: 10px; position: relative;">
+        <div class="card issue-card" style="border-radius: 10px; position: relative;">
             <div class="card-body" style="padding: 20px">
                 <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
                     <h5>${issue.title}</h5>
@@ -471,5 +464,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

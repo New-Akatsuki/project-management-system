@@ -23,8 +23,10 @@ public class ProjectViewObject {
     private String background;
     private String objective;
     private List<String> systemOutlines;
-    private List<String> architectureOutlines;
+    private List<Architecture> architectureOutlines;
     private List<String> deliverables;
+    private List<ReviewViewObject> reviewCounts;
+    private List<AmountViewObject> amounts;
 
     public ProjectViewObject(Project project){
         id = project.getId();
@@ -40,7 +42,9 @@ public class ProjectViewObject {
         contractMembers = project.getContractMembers().stream().map(User::getName).toList();
         focMembers = project.getFocMembers().stream().map(User::getName).toList();
         systemOutlines = project.getSystemOutlines().stream().map(SystemOutline::getName).toList();
-        architectureOutlines = project.getArchitectures().stream().map(Architecture::getName).toList();
+        architectureOutlines = project.getArchitectures().stream().toList();
         deliverables = project.getDeliverables().stream().map(Deliverable::getName).toList();
+        reviewCounts = project.getReviewCounts().stream().map(ReviewViewObject::new).toList();
+        amounts = project.getAmounts().stream().map(AmountViewObject::new).toList();
     }
 }

@@ -468,6 +468,7 @@ h6 {
   position: relative;
   padding: 3px 8px;
   border-radius: 20px;
+  background: #f3f5fc;
 }
 .header-nav .nav-icon:hover{
   background: #d1dfff;
@@ -685,15 +686,16 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #0a245b;
   transition: 0.3s;
-  /*background: #f6f9ff;*/
+  font-family: "Manrope", sans-serif;
   padding: 10px 15px;
   border-radius: 4px;
 }
 
 .sidebar-nav .nav-link.active {
-  background-color: #f6f9ff;
+  background-color: #bcd4f8;
+  color: #0a245b;
 }
 
 
@@ -701,7 +703,6 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
 }
 
 .sidebar-nav .nav-link.collapsed {
@@ -1313,7 +1314,7 @@ h6 {
 
 .icon-add-btn{
   height: 41px;
-  background: dodgerblue;
+  background: var(--bs-primary);
   border-radius: 5px;
   color: white;
   text-decoration: none;
@@ -1324,7 +1325,7 @@ h6 {
 }
 .icon-add-btn:hover{
   cursor: pointer;
-  background: #1f79d2;
+  background: var(--bs-primary);
   color: white;
 }
 
@@ -1387,7 +1388,7 @@ h6 {
 }
 
 .bg-gray-color{
-    background-color: #ccc;
+    background-color: #edf4ff;
 }
 /*create flex-n (n is 1 to 10) */
 .flex-1{
@@ -1423,4 +1424,11 @@ h6 {
 .toast-place{
   top: 100px;
   right: 10px;
+}
+
+input:focus {
+  color: #0a245b!important; /* Replace with your desired color value */
+}
+textarea:focus {
+  color: #0a245b!important; /* Replace with your desired color value */
 }

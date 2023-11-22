@@ -17,7 +17,6 @@ import java.util.List;
 public class ProjectFormInput {
     private Long id;
     private String name;
-    private Integer department;
     private LocalDate startDate;
     private LocalDate endDate;
     private String background;

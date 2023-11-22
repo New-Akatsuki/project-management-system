@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>DIR-ACE TECHNOLOGY</title>
@@ -147,16 +147,10 @@
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
 <main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">project-list</li>
-            </ol>
-        </nav>
-    </div>
-    <h3><i class="bi bi-folder2"></i>&nbspProject List View</h3>
+
+    <input type="hidden" th:value="${#authentication.principal.role}" id="userRole">
+
+    <h4><i class="bi bi-journals"></i>&nbspProject List View</h4>
 
     <div class="search-box mb-3">
         <label for="issueSearch"></label>
@@ -164,7 +158,7 @@
                 <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
         <i class="bi bi-search"></i>&nbsp;
     </span>
-            <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search issues..."
+            <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search"
                    style="padding-left: 40px ">
         </div>
     </div>
@@ -173,16 +167,16 @@
     </div>
     <div id="pagination-container"></div>
     <!-- End Main Content-->
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/jquery-3.6.4.min.js"></script>
 <!-- DataTables JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.js"></script>
 
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -194,7 +188,7 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <!-- Include Fuse.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
+<script src="/js/fuse.min.js"></script>
 <script>
     $(document).ready(function () {
         let projectList = [];
@@ -240,8 +234,9 @@
 
             function renderProjectCard(project) {
                 const {name, department, endDate, client, status, id} = project;
+                const userRole = $('#userRole').val();
                 const titleClass = name.length > 20 ? 'small-font-size' : '';
-
+                const nextLink = userRole==='PM' ? `/projects/${id}/${name}/workspace`:`/projects/${id}/${name}/details`;
                 const badgeColorClass = status === 'COMPLETED'
                     ? 'badge-green'
                     : status === 'PENDING'
@@ -256,7 +251,7 @@
 
                 return `
         <div class="col-md-4">
-          <a href="/projects/${id}/working-area" class="card-link">
+          <a href="${nextLink}" class="card-link">
             <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 230px">
               <div class="card-body">
                 <div class="card-title ${titleClass} mt-2 mb-2">${name}</div>
@@ -274,6 +269,7 @@
             }
 
             function renderProjectList(projectList) {
+                const userRole = $('#userRole').val();
                 projectList.sort((a, b) => {
                     // Compare by status first (ONGOING, PENDING, COMPLETED)
                     const statusOrder = { ONGOING: 1, PENDING: 2, COMPLETED: 3 };
@@ -288,23 +284,32 @@
                     return new Date(a.endDate) - new Date(b.endDate);
                 });
                 projectListContainer.empty();
-                const linkCard = `
-        <div class="col-md-4">
-          <a href="/projects/new" class="card-link">
-            <div class="card project-card" style="height: 230px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
-              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
-                <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      `;
-                projectListContainer.append(linkCard);
+                if(userRole==='PM'){
+                    const linkCard = `
+                    <div class="col-md-4">
+                      <a href="/projects/new" class="card-link">
+                        <div class="card project-card" style="height: 230px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
+                          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
+                            <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  `;
+                    projectListContainer.append(linkCard);
+                }
 
                 projectList.forEach(function (project) {
                     projectListContainer.append(renderProjectCard(project));
                 });
+                if(userRole!=='PM'&&projectList.length===0){
+                    const html = `<div style="height: 60vh;" class="d-flex flex-column justify-content-center align-items-center">
+                                     <i class="bi bi-journal-x display-2 mb-3"></i>
+                                     <h3>No Projects Found!</h3>
+                                  </div>`;
+                    projectListContainer.append(html)
+                }
             }
 
             function initializePagination(dataSource) {
@@ -331,6 +336,11 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>
 

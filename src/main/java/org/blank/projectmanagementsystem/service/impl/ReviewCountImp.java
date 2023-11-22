@@ -5,9 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
+import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.ReviewCount;
+import org.blank.projectmanagementsystem.domain.formInput.ReviewDto;
+import org.blank.projectmanagementsystem.repository.ProjectRepository;
 import org.blank.projectmanagementsystem.repository.ReviewCountRepository;
 import org.blank.projectmanagementsystem.service.AmountService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.ReviewCountService;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +23,63 @@ import java.util.List;
 public class ReviewCountImp implements ReviewCountService {
     private final ReviewCountRepository reviewCountRepository;
     private final AmountService amountService;
+    private final ProjectRepository projectRepository;
+
+
+
+
+
     @Override
-    public ReviewCount save(ReviewCount reviewCount) {
-        return reviewCountRepository.save(reviewCount);
+    public ReviewDto saveOrUpdate(ReviewDto reviewDto) {
+        Project project = projectRepository.findById(reviewDto.getProjectId()).orElseThrow();
+
+        // Check if a ReviewCount already exists for the given project, development phase, and reviewer type
+        ReviewCount existingReviewCount = reviewCountRepository
+                .findByProjectIdAndDevelopmentPhaseAndReviewerType(
+                        reviewDto.getProjectId(),
+                        reviewDto.getDevelopmentPhase(),
+                        reviewDto.getReviewerType());
+
+        if (existingReviewCount != null) {
+            // If the ReviewCount already exists, update its count
+            existingReviewCount.setCount(reviewDto.getCount());
+            reviewCountRepository.save(existingReviewCount);
+
+            return ReviewDto.builder()
+                    .id(existingReviewCount.getId())
+                    .projectId(existingReviewCount.getProject().getId())
+                    .developmentPhase(existingReviewCount.getDevelopmentPhase())
+                    .reviewerType(existingReviewCount.getReviewerType())
+                    .count(existingReviewCount.getCount())
+                    .build();
+        } else {
+            // If the ReviewCount does not exist, create a new one
+            ReviewCount newReviewCount = ReviewCount.builder()
+                    .project(project)
+                    .developmentPhase(reviewDto.getDevelopmentPhase())
+                    .reviewerType(reviewDto.getReviewerType())
+                    .count(reviewDto.getCount())
+                    .build();
+            reviewCountRepository.save(newReviewCount);
+
+            return ReviewDto.builder()
+                    .id(newReviewCount.getId())
+                    .projectId(newReviewCount.getProject().getId())
+                    .developmentPhase(newReviewCount.getDevelopmentPhase())
+                    .reviewerType(newReviewCount.getReviewerType())
+                    .count(newReviewCount.getCount())
+                    .build();
+        }
     }
 
     @Override
     public List<ReviewCount> getAllReviewCount() {
         return reviewCountRepository.findAll();
+    }
+
+    @Override
+    public List<ReviewCount> findByProjectId(Long projectId) {
+        return reviewCountRepository.findByProjectId(projectId);
     }
 
     @Override

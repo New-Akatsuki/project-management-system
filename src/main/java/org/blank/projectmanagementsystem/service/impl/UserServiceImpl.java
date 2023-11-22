@@ -31,7 +31,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MailServiceImpl mailService;
+
+
 
     @Override
     public User save(User user) {
@@ -44,29 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user){
-        return userRepository.save(user);
-    }
-
-    @Override
     public void saveDepartment(Department department) {
         departmentRepository.save(department);
-    }
-
-
-
-    @Override
-    public void changeDefaultPassword(String password) {
-        //get current username from security context
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        //get user from database
-        User user = userRepository.findByUsernameOrEmail(username, username).orElse(null);
-        //change password
-        if (user != null) {
-            user.setPassword(passwordEncoder.encode(password));
-            user.setDefaultPassword(false);
-            userRepository.save(user);
-        }
     }
 
     @Override
@@ -100,6 +80,16 @@ public class UserServiceImpl implements UserService {
             user.setDefaultPassword(false);
             userRepository.save(user);
         }
+    }
+
+
+
+    @Override
+    public Boolean checkUserExistOrNotWithUsername(String username) {
+        if(Objects.equals(getUsername(), username)){
+            return false;
+        }
+        return userRepository.findByUsername(username).isPresent();
     }
 
 
@@ -140,11 +130,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @PreAuthorize("hasAnyAuthority('PMO','DH','PM')")
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM')")
     public List<UserViewObject> getAllUsers() {
         var currentUser = getCurrentUser();
         Role currentRole = currentUser.getRole();
-        if(currentRole == Role.PMO){
+        if(currentRole == Role.PMO||currentRole== Role.SDQC){
             return userRepository.findAll().stream()
                     .filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
                     .map(UserViewObject::new).toList();
@@ -184,10 +174,7 @@ public class UserServiceImpl implements UserService {
     private String getUsername(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-    @Override
-    public User getLoginUser() {
-        return userRepository.findByUsernameOrEmail(getUsername(),getUsername()).orElse(null);
-    }
+
 
     @Override
     public Optional<User> getEmail(String email) {
@@ -195,21 +182,5 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public User editUserProfile(ProfileEditFormInput profileEditFormInput) {
-        var user = getCurrentUser();
-        try{
-            user.setPhotoData(profileEditFormInput.getPhotoData());
-            user.setName(profileEditFormInput.getFullName());
-            user.setUsername(profileEditFormInput.getUserName());
-            user.setUserRole(profileEditFormInput.getUserRole());
-            user.setPhone(profileEditFormInput.getPhone());
-            user.setEmail(profileEditFormInput.getEmail());
-            return userRepository.save(user);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }

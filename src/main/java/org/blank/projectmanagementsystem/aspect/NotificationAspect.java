@@ -37,8 +37,7 @@ public class NotificationAspect {
     private final UserRepository userRepository;
 
     private User getCurrentUser(){
-//        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        var username = "pm";
+        var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElse(null);
     }
 
@@ -89,7 +88,7 @@ public class NotificationAspect {
             Notification notification = Notification.builder()
                     .message("You have been assigned to issue [" + result.getTitle()+ "] as a PIC")
                     .date(LocalDateTime.now())
-                    .link("/issue/" + result.getId())
+                    .link("/issues/"+result.getId()+"/details")
                     .type(NotificationType.ISSUE)
                     .recipient(result.getPic())
                     .isRead(false)
@@ -107,9 +106,9 @@ public class NotificationAspect {
     public void sendNotificationAfterTaskCreation(TaskViewObject result) throws JsonProcessingException {
         if (result!=null){
             Notification notification = Notification.builder()
-                    .message("You have been assigned to task [" + result.getName()+ "] as a assignee")
+                    .message("You have been assigned to [" + result.getName()+ "] task as a assignee")
                     .date(LocalDateTime.now())
-                    .link("/projects")
+                    .link("/projects?projectId="+result.getProjectId())
                     .type(NotificationType.TASK)
                     .projectId(result.getProjectId())
                     .taskId(result.getId())
@@ -134,9 +133,9 @@ public class NotificationAspect {
             User user = getCurrentUser();
             if (result.isStatus()){
                 Notification notification = Notification.builder()
-                        .message("Task " + result.getName()+ " has been completed.")
+                        .message("Task " + result.getName()+ " has been completed with "+result.getActualHours()+" hours by " + user.getName())
                         .date(LocalDateTime.now())
-                        .link("/projects")
+                        .link("/projects/"+result.getProject().getId()+"/workspace")
                         .type(NotificationType.TASK)
                         .recipient(result.getProject().getProjectManager())
                         .isRead(false)

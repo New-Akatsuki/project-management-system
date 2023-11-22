@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>DIR-ACE TECHNOLOGY</title>
@@ -55,27 +55,31 @@
     <div class="pagetitle">
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">project</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/projects}">projects</a></li>
+                <li sec:authorize="hasAuthority('PM')" class="breadcrumb-item"><a th:href="@{workspace}">workspace</a></li>
                 <li class="breadcrumb-item active">details</li>
             </ol>
         </nav>
     </div>
     <!-- End Page Title -->
-
+    <input type="hidden" id="projectId" th:value="${currentProject.id}">
     <!-- Main Content -->
     <section>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span class="display-6 fs-4 fw-bold">
-                    Project Details Info
-                </span>
-                <a class="icon-add-btn" id="editButton">
-                    <i class='bx bx-edit m-0 p-0'></i>
-                </a>
+                <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
+                </h1>
+                <div class="d-flex gap-2">
+                    <button sec:authorize="hasAuthority('PM')" class="btn btn-info icon-add-btn" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        KPI
+                    </button>
+                    <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
+                        <i class='bx bx-edit m-0 p-0'></i>
+                    </a>
+                </div>
             </div>
             <!--            Outer card body -->
-            <div class="card-body row px-4 px-md-5">
-                <div id="projectName" class="display-6 mb-4 fw-bold px-3" th:text="${currentProject.name}"></div>
+            <div class="card-body row mx-1 px-3">
                 <!--                client info -->
                 <div class="col-12 col-md-7 px-3">
                     <div class="row px-3">
@@ -122,9 +126,15 @@
                         </thead>
                         <tbody th:each="conMember : ${currentProject.contractMembers}">
                             <tr>
-                                <td class="ps-2" th:text="${conMember}"></td>
+                                <td class="ps-2" th:text="${'- '+conMember}"></td>
                             </tr>
                         </tbody>
+                        <tbody th:if="${currentProject.contractMembers.size() == 0}">
+                        <tr>
+                            <td class="ps-2 col-6 text-center">No contract members</td>
+                        </tr>
+                        </tbody>
+
                     </table>
 
                     <table class="table table-sm table-striped-columns table-bordered">
@@ -135,119 +145,221 @@
                         </thead>
                         <tbody th:each="focMember : ${currentProject.focMembers}">
                         <tr>
-                            <td class="ps-2" th:text="${focMember}"></td>
+                            <td class="ps-2" th:text="${'- '+focMember}"></td>
                         </tr>
                         </tbody>
+                        <tbody th:if="${currentProject.focMembers.size() == 0}">
+                        <tr>
+                            <td class="ps-2 col-6 text-center" style="color: #8A92A6">No contract members</td>
+                        </tr>
+                        </tbody>
+
                     </table>
 
                 </div>
 
-                <div class="col-12 px-3">
-                    <div class="accordion mb-3" id="background">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                    <span class="display-6 fs-5 fw-bold">Background</span>
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show"
-                                 data-bs-parent="#background">
-                                <div id="backgroundText" class="accordion-body text-justify" th:text="${currentProject.background}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-12 px-3 mt-2">
+                    <h3 class="ps-2 py-2 bg-gray-color">Background</h3>
+                    <p class="text-justify p-2" th:text="${currentProject.background}"></p>
                 </div>
                 <div class="col-12 px-3">
-                    <div class="accordion mb-3" id="objective">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseTwo" aria-expanded="true"
-                                        aria-controls="collapseTwo">
-                                    <span class="display-6 fs-5 fw-bold">Objective</span>
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse show"
-                                 data-bs-parent="#objective">
-                                <div id="objectiveText" class="accordion-body text-justify" th:text="${currentProject.background}">
-                                </div>
-                            </div>
+                    <h3 class="ps-2 py-2 bg-gray-color">Objective</h3>
+                    <p class="text-justify p-2" th:text="${currentProject.objective}"></p>
+                </div>
+
+
+
+                <div class="col-12 px-3 mt-2">
+                    <h3 class="ps-2 py-2 bg-gray-color">Architecture Outlines</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="arch,index : ${currentProject.architectureOutlines}">
+                            <td th:text="${index.count}"></td>
+                            <td th:text="${arch.name}"></td>
+                            <td th:text="${arch.type}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <th:block th:with="cols =${currentProject.amounts!=null and currentProject.amounts.size()>0?'col-md-4':'col-md-6'}">
+                <div th:class="'col-12 '+ ${cols} +' px-3'">
+                    <h3 class="ps-2 py-2 bg-gray-color">System Outlines</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="sys : ${currentProject.systemOutlines}">
+                            <td th:text="${'- '+sys}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    <div th:class="'col-12 '+ ${cols} +' px-3'">
+                    <h3 class="ps-2 py-2 bg-gray-color">Deliverables</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="deli : ${currentProject.deliverables}">
+                            <td th:text="${'- '+deli}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </th:block>
+                <div th:if="${currentProject.amounts!=null and currentProject.amounts.size()>0}" class="col-12 col-md-4 px-3">
+                    <h3 class="ps-2 py-2 bg-gray-color">Amount</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="amount : ${currentProject.amounts}">
+                            <td th:text="${amount.name}"></td>
+                            <td class="text-end" th:text="${amount.amount}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${currentProject.reviewCounts!=null and currentProject.reviewCounts.size()>0}" class="col-12 px-3">
+                    <h3 class="ps-2 py-2 bg-gray-color">Review</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>Internal Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'INTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>External Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'EXTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-12 col-md-4 px-3">
-                    <div class="accordion mb-3" id="systemOutline">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThree" aria-expanded="true"
-                                        aria-controls="collapseThree">
-                                    <span class="display-6 fs-5 fw-bold">System Outlines</span>
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse show"
-                                 data-bs-parent="#systemOutline">
-                                <div class="accordion-body p-2">
-                                    <ul class="list-group" th:each="sys : ${currentProject.systemOutlines}">
-                                        <li class="list-group-item" th:text="${sys}"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 px-3">
-                    <div class="accordion mb-3" id="architecture">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseFour" aria-expanded="true"
-                                        aria-controls="collapseFour">
-                                    <span class="display-6 fs-5 fw-bold">Architecture Outlines</span>
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse show"
-                                 data-bs-parent="#architecture">
-                                <div class="accordion-body p-2">
-                                    <ul class="list-group" th:each="arch : ${currentProject.architectureOutlines}">
-                                        <li class="list-group-item" th:text="${arch}"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4 px-3">
-                    <div class="accordion mb-3" id="deliverable">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseFive" aria-expanded="true"
-                                        aria-controls="collapseFive">
-                                    <span class="display-6 fs-5 fw-bold">Deliverables</span>
-                                </button>
-                            </h2>
-                            <div id="collapseFive" class="accordion-collapse collapse show"
-                                 data-bs-parent="#deliverable">
-                                <div class="accordion-body p-2">
-                                    <ul class="list-group" th:each="deli : ${currentProject.deliverables}">
-                                        <li class="list-group-item" th:text="${deli}"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
     </section>
     <!-- End Main Content-->
 
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add data for KPI</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tabs">
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+                        <label for="tab1" class="tabs__label d-flex align-items-center justify-content-center">
+                            Amount</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">Basic design:</label>
+                                        <input class="form-control" id="basicDesignScreenCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">Details design:</label>
+                                        <input class="form-control" id="detailedDesignScreenCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <label for="codeLineCount" class="form-label" id="codeLineLabel">Coding:</label>
+                                        <input class="form-control" id="codeLineCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label for="unitTestCount" class="form-label" id="unitTestLabel">Unit testing:</label>
+                                        <input class="form-control" id="unitTestCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="integrationTestCount" class="form-label" id="integrationTestLabel">Integration testing:</label>
+                                        <input class="form-control" id="integrationTestCount" type="number">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mt-2 justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+                        <label for="tab2" class="tabs__label d-flex align-items-center justify-content-center">
+                            Review</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="reviewerType" class="form-label">Select the Reviewer:</label>
+                                    <select id="reviewerType" class="form-select reviewer-type-selector" onchange="fetchExistingReview()">
+                                        <option value="INTERNAL">INTERNAL</option>
+                                        <option value="EXTERNAL">EXTERNAL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="basicDesignReviewCount" class="form-label" >Basic design review :</label>
+                                    <input class="form-control" id="basicDesignReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="detailedDesignReviewCount" class="form-label" >Details design review :</label>
+                                    <input class="form-control" id="detailedDesignReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <label for="codeLineReviewCount" class="form-label" >Coding review :</label>
+                                    <input class="form-control" id="codeLineReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="unitTestReviewCount" class="form-label" >Unit testing Review :</label>
+                                    <input class="form-control" id="unitTestReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="integrationTestReviewCount" class="form-label" >Integration testing:</label>
+                                    <input class="form-control" id="integrationTestReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2 justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="addOrUpdateReview()">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -260,23 +372,22 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 
+<script src="/js/jquery-3.6.4.min.js"></script>
 <!-- Bootstrap JS and Popper.js for Modal Box -->
-<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="/js/add-amount.js"></script>
+<script src="/js/add-review.js"></script>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
-
 <script>
-
-    $(document).ready(function () {
-        var projectId = window.location.pathname.split('/').reverse()[1];
-        $("#editButton").click(function () {
-            window.location.href = "/projects/" +projectId+"/edit";
-        });
-    });
+    function notify(notification) {
+        showToast(notification);
+    }
 </script>
+
 </body>
 </html>

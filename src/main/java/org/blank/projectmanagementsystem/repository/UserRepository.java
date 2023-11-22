@@ -15,23 +15,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
-
-    //    Optional<User> findByEmail(String email);
-//    Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
-
-    //select user where username = ? or email = ?
     Optional<User> findByUsernameOrEmail(String username, String email);
-
-    Optional<User> getReferenceByUsername(String username);
-
-    Long countByDepartment(Department department);
-
-//    @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.UserEditViewObject(i.id, i.imgUrl, i.name, i.username, i.userRole,i.phone,i.email) FROM User i WHERE i.id = ?1")
-//    Optional<UserViewObject> findByUserId(Long id);
-
     List<User> findAllByDepartment(Department department);
-
     List<User> findAllByDepartmentAndRole(Department department, Role role);
+    Optional<User> findByUsername(String username);
 }

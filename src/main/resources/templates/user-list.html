@@ -91,6 +91,7 @@
             </table>
         </div>
     </div>
+    <div id="toastPlace"></div>
     <!-- End Main Content-->
 </main>
 <!-- Vendor JS Files -->
@@ -250,8 +251,11 @@
         checkInputValidation('editUserRole', 'Role', null, null);
 
         $('#addUserModalBtn').on('click',()=>{
-            $('#addMemberModal').modal('show');
+            console.log('clicked')
             resetInput();
+            const myForm = document.getElementById('addNewMemberForm');
+            myForm.reset();
+            $('#addMemberModal').modal('show');
         });
 
         formValidate('addNewMemberForm', addNewMember);
@@ -259,6 +263,10 @@
 
     });
 </script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

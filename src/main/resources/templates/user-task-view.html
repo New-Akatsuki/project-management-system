@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title>Dir-Ace Technology</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
 
@@ -21,7 +21,7 @@
 
 
     <!-- Favicons -->
-    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
 
     <link
@@ -130,26 +130,28 @@
 
         .tabs__radio:checked + .tabs__label {
             font-weight: bold;
-            color: #009578;
-            border-bottom: 2px solid #009578;
+            color: #273b5e;
+            border-bottom: 2px solid #3577ff;
         }
 
         .tabs__radio:checked + .tabs__label + .tabs__content {
             display: initial;
         }
 
-        .accordion-body{
+        .accordion-body {
             overflow-y: scroll;
-            padding: 15px!important;
+            padding: 15px !important;
         }
 
-        .bd-success{
-            background-color: #d4edda!important;
+        .bd-success {
+            background-color: #d4edda !important;
         }
-        .bd-danger{
-            background-color: #f8d7da!important;
+
+        .bd-danger {
+            background-color: #f8d7da !important;
         }
-        .bod-success{
+
+        .bod-success {
             border: 2px solid #8cf3ad !important;
         }
 
@@ -181,6 +183,8 @@
             </ol>
         </nav>
     </div>
+
+    <input type="hidden" id="projectId" th:value="${pId}">
     <!-- End Page Title -->
     <div class="card vh-100 shadow-none">
         <div class="card-header">
@@ -194,27 +198,27 @@
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
                 <label for="tab1" class="tabs__label">Pending</label>
-                <div class="tabs__content container">
+                <div class="tabs__content container overflow-y-scroll">
                     <br>
                     <!-- Container for Pending Task Cards -->
-                    <div id="pendingContainer" class="row overflow-y-scroll"></div>
+                    <div id="pendingContainer" class="row"></div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
                 <label for="tab2" class="tabs__label">Overdue
                     <span id="overdueBadge" class="badge bg-danger badge-number d-none">0</span></label>
-                <div class="tabs__content container">
+                <div class="tabs__content container overflow-y-scroll">
                     <br>
                     <!-- Container for Overdue Task Cards -->
-                    <div id="overdueContainer" class="row overflow-y-scroll"></div>
+                    <div id="overdueContainer" class="row"></div>
                 </div>
 
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab3">
                 <label for="tab3" class="tabs__label">Completed</label>
-                <div class="tabs__content container">
+                <div class="tabs__content container overflow-y-scroll">
                     <br>
                     <!-- Container for Completed Task Cards -->
-                    <div id="completedContainer" class="row overflow-y-scroll"></div>
+                    <div id="completedContainer" class="row"></div>
                 </div>
             </div>
 
@@ -247,6 +251,7 @@
 <script src="/js/init-notification.js"></script>
 
 <script>
+    let currentTab;
     // Add fade animation to the modal
     $('#taskModal').on('show.bs.modal', function () {
         $(this).find('.modal-dialog').addClass('fade');
@@ -264,8 +269,12 @@
             onSelect: (dateText, inst) => $(elementId).val(dateText).trigger('change'),
         });
     }
+
     generateTaskView();
+
     function generateTaskView(notification) {
+        const selectedProject = $('#projectSelect').val();
+        const paramProjectId = $('#projectId').val();
         $.ajax({
             url: `/get-projects`,
             type: "GET",
@@ -279,15 +288,21 @@
                     }));
                 });
 
-                if(notification && notification.projectId) {
-                    $('#projectSelect').val(notification.projectId).trigger('change');
-                }
-
-                if(!(data !=null &&data.length > 0)){
+                if (!(data != null && data.length > 0)) {
                     $('#projectSelect').append($('<option>', {
                         value: '',
                         text: 'No projects found'
                     }));
+                }
+                if (notification && notification.projectId) {
+                    console.log(selectedProject,notification.projectId)
+                    if (parseInt(selectedProject,10) === notification.projectId) {
+                        $('#projectSelect').val(notification.projectId).trigger('change');
+                    }
+                }
+
+                if(paramProjectId){
+                    $('#projectSelect').val(paramProjectId).trigger('change');
                 }
 
                 getDataAndBuildTaskView();
@@ -300,13 +315,13 @@
         $('#projectSelect').select2();
     }
 
-    function getDataAndBuildTaskView(){
+    function getDataAndBuildTaskView() {
         let projectId = $('#projectSelect').val();
-        if(projectId === null || projectId === undefined || projectId === ''){
+        if (projectId === null || projectId === undefined || projectId === '') {
             taskBoard({
                 tasks: []
             });
-        }else{
+        } else {
             $.ajax({
                 url: `/get-tasks/${projectId}`,
                 type: "GET",
@@ -329,18 +344,10 @@
     });
 
 
-    function notify(notification){
-       generateTaskView(notification);
-       if(notification){
-           buildToast({
-               title: notification.type==='TASK'?'Task notification': notification.type==='PROJECT'?'Project notification':'Issue notification',
-               body: notification.message,
-               icon: 'bx bx-bell',
-               color: 'text-success',
-           });
-           $('#liveToast').toast('show');
+    function notify(notification) {
 
-       }
+        generateTaskView(notification);
+        showToast(notification);
     }
 </script>
 
@@ -359,6 +366,32 @@
 
     });
 
+</script>
+<script>
+    // Get all radio buttons
+    const radioButtons = document.querySelectorAll('.tabs__radio');
+
+    // Function to handle radio button change
+    function handleRadioChange(event) {
+        // Store the ID of the selected radio button
+        localStorage.setItem('selectedTab', event.target.id);
+    }
+
+    // Add change event listener to all radio buttons
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', handleRadioChange);
+    });
+
+    // On page load, check if there's a stored selected tab and set it
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectedTabId = localStorage.getItem('selectedTab');
+        if (selectedTabId) {
+            const selectedTab = document.getElementById(selectedTabId);
+            if (selectedTab) {
+                selectedTab.checked = true;
+            }
+        }
+    });
 </script>
 </body>
 </html>

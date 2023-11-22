@@ -25,6 +25,7 @@
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
+    <link rel="stylesheet" href="/css/hope.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
@@ -46,7 +47,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
-
 
 
 </head>
@@ -74,153 +74,139 @@
             <div class="row">
 
 
-                <div class="col-sm-12">
+                <div class="col-sm-12 col-lg-12">
                     <div class="card">
-
-                        <div class="card-body px-">
-
-                            <fieldset>
-                                <div class="form-card text-start">
-
-                                    <div class="row">
-                                        <div class="col-sm-12 col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header d-flex justify-content-between">
-                                                    <div class="display-6 fs-4">
-                                                        Clients
-                                                    </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="text-dark mb-0">
+                                Clients
+                            </h3>
 
 
-                                                    <a id="addClientButton" class="icon-add-btn" data-toggle="modal"
-                                                       data-target="#addClientModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
+                            <a id="addClientButton" class="icon-add-btn" data-toggle="modal"
+                               data-target="#addClientModal">
+                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
+                            </a>
 
-                                                </div>
+                        </div>
 
-                                                <div class="card-body">
-                                                    <table class="table table-sm" style="width:100%;" id="client">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        </thead>
-                                                    </table>
+                        <div class="card-body">
+                            <table class="table table-sm" style="width:100%;" id="client">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                            </table>
 
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header d-flex justify-content-between">
-                                                    <div class="display-6 fs-4">
-                                                        Deliverables Methods
-                                                    </div>
-
-
-                                                    <a id="addDeliverablesButton" class="icon-add-btn"
-                                                       data-toggle="modal" data-target="#addDeliverablesModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <table class="table table-sm" style="width:100%;" id="deliverable">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Name</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        </thead>
-
-                                                    </table>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header d-flex justify-content-between">
-                                                    <div class="display-6 fs-4">
-                                                        Architecture Outlines
-                                                    </div>
-
-
-                                                    <a id="addArchitectureButton" class="icon-add-btn"
-                                                       data-toggle="modal" data-target="#addArchitectureModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
-                                                </div>
-
-                                                <div class="card-body">
-                                                    <table class="table table-sm" style="width:100%;" id="architecture">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Type</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        </thead>
-
-
-                                                    </table>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header d-flex justify-content-between">
-                                                    <div class="display-6 fs-4">
-                                                        System Outlines
-                                                    </div>
-
-                                                    <a id="addSystemOutlineButton" class="icon-add-btn"
-                                                       data-toggle="modal" data-target="#addSystemOutlineModal">
-                                                        <i class='bx bx-plus m-0 p-0'></i>
-                                                    </a>
-                                                </div>
-
-                                                <div class="card-body">
-
-                                                    <table class="table table-sm" style="width:100%;"
-                                                           id="systemOutline">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        </thead>
-                                                    </table>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-sm-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 text-dark">
+                                Deliverables Methods
+                            </h3>
+
+
+                            <a id="addDeliverablesButton" class="icon-add-btn"
+                               data-toggle="modal" data-target="#addDeliverablesModal">
+                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <table class="table table-sm" style="width:100%;" id="deliverable">
+                                <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 text-dark">
+                                Architecture Outlines
+                            </h3>
+
+
+                            <a id="addArchitectureButton" class="icon-add-btn"
+                               data-toggle="modal" data-target="#addArchitectureModal">
+                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+                            <table class="table table-sm" style="width:100%;" id="architecture">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 text-dark">
+                                System Outlines
+                            </h3>
+
+                            <a id="addSystemOutlineButton" class="icon-add-btn"
+                               data-toggle="modal" data-target="#addSystemOutlineModal">
+                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
+                            </a>
+                        </div>
+
+                        <div class="card-body">
+
+                            <table class="table table-sm" style="width:100%;"
+                                   id="systemOutline">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     <!-- End Main Content-->
-
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -264,7 +250,7 @@
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button id="saveNewDeliverable" class="btn btn-primary" data-dismiss="modal">
-                       Add Deliverables
+                        Add Deliverables
                     </button>
                 </form>
             </div>
@@ -324,13 +310,14 @@
                         <label for="clientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="clientName" name="name" required
                                placeholder="Enter client name">
-                        <span id="addClientNameError" class="text-danger d-none" >Client name must not be blank!!</span>
+                        <span id="addClientNameError" class="text-danger d-none">Client name must not be blank!!</span>
                     </div>
                     <div class="form-group">
                         <label for="clientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="clientEmail" name="email" required
                                placeholder="Enter email">
-                        <span id="addClientEmailError" class="text-danger d-none">Client email must not be blank!!</span>
+                        <span id="addClientEmailError"
+                              class="text-danger d-none">Client email must not be blank!!</span>
                     </div>
                     <div class="form-group">
                         <label for="clientPhoneNumber" class="form-label">Phone Number(Optional)</label>
@@ -338,8 +325,8 @@
                                placeholder="Enter phone number">
                         <span id="addClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
                     </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
 
                 </form>
             </div>
@@ -369,29 +356,28 @@
                         <label for="editClientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="editClientName" name="name" required
                                placeholder="Enter client name">
-                        <span id="editClientNameError" class="text-danger d-none" >Client name must not be blank!!</span>
+                        <span id="editClientNameError" class="text-danger d-none">Client name must not be blank!!</span>
 
                     </div>
                     <div class="form-group">
                         <label for="editClientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="editClientEmail" name="email" required
                                placeholder="Enter email">
-                        <span id="editClientEmailError" class="text-danger d-none" >Client email must not be blank!!</span>
+                        <span id="editClientEmailError"
+                              class="text-danger d-none">Client email must not be blank!!</span>
 
                     </div>
                     <div class="form-group">
                         <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required
                                placeholder="Enter phone number">
-                        <span id="editClientPhError" class="text-danger d-none" >Client phone must not be blank!!</span>
+                        <span id="editClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
 
                     </div>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button id="editClient" class="btn btn-primary">
                         Update Client
                     </button>
-
-
 
 
                 </form>
@@ -510,7 +496,8 @@
                 <form>
                     <div class="form-group">
                         <label for="OutlineName" class="form-label">System Outline Name</label>
-                        <input type="text" class="form-control" id="OutlineName" name="name" required placeholder="Enter outline name">
+                        <input type="text" class="form-control" id="OutlineName" name="name" required
+                               placeholder="Enter outline name">
                         <span id="addSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -662,8 +649,6 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button id="editArchitecture" class="btn btn-primary">Update Architecture
                 </button>
-
-
             </div>
         </div>
     </div>
@@ -680,6 +665,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>
