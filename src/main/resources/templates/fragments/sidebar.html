@@ -60,14 +60,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/issues}">
-                    <i class="bi bi-info-circle"></i>
+                    <i class="bi bi-exclamation-circle"></i>
                     <span>Issues</span>
                 </a>
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','DH','PM')">
                 <a class="nav-link"  th:href="@{/users}">
-                    <i class="bi bi-person-video3"></i>
+                    <i class="bi bi-person-gear"></i>
                     <span>User Management</span>
                 </a>
             </li>
@@ -75,7 +75,7 @@
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','SDQC','PM','DH')">
                 <a class="nav-link" th:href="@{/contractInfo}">
-                    <i class="bi bi-info-square-fill"></i>
+                    <i class="bi bi-info-square"></i>
                     <span>Contract Info</span>
                 </a>
             </li>
