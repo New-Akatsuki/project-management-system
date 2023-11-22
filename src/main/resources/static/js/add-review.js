@@ -121,7 +121,7 @@ function addOrUpdateReview() {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            $("#exampleModal").modal('hide');
+            $("#staticBackdrop").modal('hide');
             console.log(data);
         },
         error: function (xhr, status, error) {

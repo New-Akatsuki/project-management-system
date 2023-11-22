@@ -1425,3 +1425,10 @@ h6 {
   top: 100px;
   right: 10px;
 }
+
+input:focus {
+  color: #0a245b!important; /* Replace with your desired color value */
+}
+textarea:focus {
+  color: #0a245b!important; /* Replace with your desired color value */
+}

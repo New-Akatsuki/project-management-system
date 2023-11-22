@@ -206,7 +206,7 @@
         </div>
     </div>
     <!-- End Main Content-->
-
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -649,8 +649,6 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button id="editArchitecture" class="btn btn-primary">Update Architecture
                 </button>
-
-
             </div>
         </div>
     </div>
@@ -667,6 +665,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

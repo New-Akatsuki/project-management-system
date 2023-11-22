@@ -333,6 +333,7 @@
     <div class="spinner-border text-primary" role="status" id="loadingSpinner">
     </div>
     <div id="dim-overlay"></div>
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -706,5 +707,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

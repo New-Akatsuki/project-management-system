@@ -28,8 +28,9 @@ public class ProjectController {
     private final ReviewCountService reviewCountService;
 
     @GetMapping("/projects")
-    public String showProjectLists() {
+    public String showProjectLists(@RequestParam(required = false)Long projectId,Model model) {
         var user = userService.getCurrentUser();
+        model.addAttribute("pId",projectId);
         if(user.getRole()== Role.MEMBER) {
             return "user-task-view";
         }

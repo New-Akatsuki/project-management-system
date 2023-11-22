@@ -66,7 +66,7 @@
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyAuthority('PMO','DH','PM')">
-                <a class="nav-link"  th:href="@{/users}">
+                <a class="nav-link" id="usermanagementLink" th:href="@{/users}">
                     <i class="bi bi-person-video3"></i>
                     <span>User Management</span>
                 </a>
@@ -81,7 +81,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/user/profile}">
+                <a class="nav-link" id="userprofileLink" th:href="@{/user/profile}">
                     <i class="bi bi-person"></i>
                     <span>User Profile</span>
                 </a>
@@ -94,7 +94,14 @@
             navLinks.forEach(link => {
                 if(activePage==="/"){
                     navLinks[0].classList.add("active");
-                }else if (link.href.includes(`${activePage.split("/")[1]}`)) {
+                }
+                else if(activePage==="/users"){
+                    document.getElementById('usermanagementLink').classList.add("active");
+                }
+                else if(activePage==="/user/profile"){
+                    document.getElementById('userprofileLink').classList.add("active");
+                }
+                else if (link.href.includes(`${activePage.split("/")[1]}`)) {
                     link.classList.add("active");
                     link.classList.add("active-color");
                 } else {

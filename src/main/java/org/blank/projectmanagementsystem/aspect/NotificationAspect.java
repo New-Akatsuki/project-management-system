@@ -108,7 +108,7 @@ public class NotificationAspect {
             Notification notification = Notification.builder()
                     .message("You have been assigned to [" + result.getName()+ "] task as a assignee")
                     .date(LocalDateTime.now())
-                    .link("/projects")
+                    .link("/projects?projectId="+result.getProjectId())
                     .type(NotificationType.TASK)
                     .projectId(result.getProjectId())
                     .taskId(result.getId())
@@ -133,9 +133,9 @@ public class NotificationAspect {
             User user = getCurrentUser();
             if (result.isStatus()){
                 Notification notification = Notification.builder()
-                        .message("Task " + result.getName()+ " has been completed by " + user.getName())
+                        .message("Task " + result.getName()+ " has been completed with "+result.getActualHours()+" hours by " + user.getName())
                         .date(LocalDateTime.now())
-                        .link("/projects/"+result.getProject().getId()+"/working-area")
+                        .link("/projects/"+result.getProject().getId()+"/workspace")
                         .type(NotificationType.TASK)
                         .recipient(result.getProject().getProjectManager())
                         .isRead(false)

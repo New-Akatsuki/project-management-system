@@ -173,7 +173,7 @@
             </div>
         </div>
 
-
+    <div id="toastPlace"></div>
     <!-- End Main Content-->
 </main>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
@@ -214,6 +214,11 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 
 </html>

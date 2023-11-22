@@ -157,8 +157,10 @@
     <input type="hidden" id="projectId" th:value="${projectId}"/>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-            <li class="breadcrumb-item active">Create Project</li>
+            <li class="breadcrumb-item"><a th:href="@{projects}">projects</a></li>
+            <li sec:authorize="hasAuthority('PM')" class="breadcrumb-item"><a th:href="@{workspace}">workspace</a></li>
+            <li class="breadcrumb-item"><a th:href="@{details}">details</a></li>
+            <li class="breadcrumb-item active">edit</li>
         </ol>
     </nav>
     <!-- End Page Title -->
@@ -210,14 +212,14 @@
                     </div>
                     <div class="d-flex gap-3">
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="member" class="form-label text-black">Add Member</label>
+                            <label for="member" class="form-label text-black">Contract Member</label>
                             <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                             <span class="text-danger"
                                   id="contractMemberError">Contract member must be selected.</span>
                         </div>
                         <div class="d-flex flex-column w-100 p-0">
-                            <label for="foc" class="form-label text-black">Add FOC Member</label>
+                            <label for="foc" class="form-label text-black">FOC Member (Optional)</label>
                             <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
                             <div class="replace" style="height: 100%;"></div>
                         </div>
@@ -483,6 +485,7 @@
             </div>
         </div>
     </div>
+    <div id="toastPlace"></div>
     <!-- End Card -->
 </main>
 <!-- End #main -->
@@ -1198,5 +1201,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

@@ -167,6 +167,7 @@
     </div>
     <div id="pagination-container"></div>
     <!-- End Main Content-->
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -302,6 +303,13 @@
                 projectList.forEach(function (project) {
                     projectListContainer.append(renderProjectCard(project));
                 });
+                if(userRole!=='PM'&&projectList.length===0){
+                    const html = `<div style="height: 60vh;" class="d-flex flex-column justify-content-center align-items-center">
+                                     <i class="bi bi-journal-x display-2 mb-3"></i>
+                                     <h3>No Projects Found!</h3>
+                                  </div>`;
+                    projectListContainer.append(html)
+                }
             }
 
             function initializePagination(dataSource) {
@@ -328,6 +336,11 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>
 
