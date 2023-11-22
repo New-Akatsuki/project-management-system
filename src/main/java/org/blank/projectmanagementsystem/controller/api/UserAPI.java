@@ -50,7 +50,7 @@ public class UserAPI {
         User user = userService.getUserById(id); // Change this to retrieve a specific user by id
         if (user != null) {
             user.setActive(newStatus);
-            User updatedUser = userService.save(user); // Change Client to User since it seems like a typo
+            User updatedUser = userService.save(user);
             if(!updatedUser.isActive()){
                 logoutUser(updatedUser.getUsername());
             }

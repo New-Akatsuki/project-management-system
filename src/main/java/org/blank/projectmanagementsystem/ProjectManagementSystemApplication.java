@@ -36,106 +36,102 @@ public class ProjectManagementSystemApplication {
     }
 
 
-//    @Bean
-    CommandLineRunner runner(
-            UserService userService, PasswordEncoder passwordEncoder,
-            ProjectService projectService,
-            ClientRepository clientRepository,
-            SystemOutlineRepository systemOutlineRepository,
-            ArchitectureRepository architectureRepository,
-            DeliverableRepository deliverableRepository,
-            NotificationService notificationService
-    ) {
-        return args -> {
-
-            Department department = new Department(null, "IT", true);
-            Department department2 = new Department(null, "HR", true);
-            userService.saveDepartment(department);
-            userService.saveDepartment(department2);
-
-
-
-            // save demo data after start
-            var pmo = userService.save(
-                    User.builder()
-                            .name("Project Manager Officer")
-                            .username("pmo")
-                            .email("pmo@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.PMO)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var dh = userService.save(
-                    User.builder()
-                            .name("Department Head")
-                            .username("dh")
-                            .email("dh@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.DH)
-                            .department(department)
-                            .active(true)
-                            .build()
-            );
-            var pm = userService.save(
-                    User.builder()
-                            .name("Project Manager")
-                            .username("pm")
-                            .email("pm@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.PM)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-
-            var sdqc = userService.save(
-                    User.builder()
-                            .name("Software Developer Quality Control")
-                            .username("sdqc")
-                            .email("sdqc@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.SDQC)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-            var member = userService.save(
-                    User.builder()
-                            .name("Member")
-                            .username("member")
-                            .email("member@gmail.com")
-                            .password(passwordEncoder.encode("Khun1234"))
-                            .role(Role.MEMBER)
-                            .department(department2)
-                            .active(true)
-                            .build()
-            );
-
-            var client = clientRepository.save(
-                    Client.builder()
-                            .name("DAT")
-                            .email("dat@dat.com")
-                            .phoneNumber("123456789")
-                            .build()
-            );
-
-
-
-
-            var systemOutlines = systemOutlineRepository.save(
-                    SystemOutline.builder().id(null).name("BasicDesign").build()
-            );
-            var architectureOutline = architectureRepository.save(
-                    Architecture.builder().id(null).name("Java").type(ArchitectureType.PROGRAMMING_LANGUAGE).build()
-            );
-            var deliverable = deliverableRepository.save(
-                    Deliverable.builder().id(null).name("Deliverable 1").build()
-            );
-
-        };
-    }
+//   @Bean
+//    CommandLineRunner runner(
+//            UserService userService, PasswordEncoder passwordEncoder,
+//            ProjectService projectService,
+//            ClientRepository clientRepository,
+//            SystemOutlineRepository systemOutlineRepository,
+//            ArchitectureRepository architectureRepository,
+//            DeliverableRepository deliverableRepository,
+//            NotificationService notificationService
+//    ) {
+//        return args -> {
+//
+//            Department department = new Department(null, "IT", true);
+//            Department department2 = new Department(null, "HR", true);
+//            userService.saveDepartment(department);
+//            userService.saveDepartment(department2);
+//
+//
+//
+//            // save demo data after start
+//            var pmo = userService.save(
+//                    User.builder()
+//                            .name("Project Manager Officer")
+//                            .username("pmo")
+//                            .email("pmo@gmail.com")
+//                            .password(passwordEncoder.encode("Khun1234"))
+//                            .role(Role.PMO)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//            var dh = userService.save(
+//                    User.builder()
+//                            .name("Department Head")
+//                            .username("dh")
+//                            .email("dh@gmail.com")
+//                            .password(passwordEncoder.encode("Khun1234"))
+//                            .role(Role.DH)
+//                            .department(department)
+//                            .active(true)
+//                            .build()
+//            );
+//            var pm = userService.save(
+//                    User.builder()
+//                            .name("Project Manager")
+//                            .username("pm")
+//                            .email("pm@gmail.com")
+//                            .password(passwordEncoder.encode("Khun1234"))
+//                            .role(Role.PM)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//            var sdqc = userService.save(
+//                    User.builder()
+//                            .name("Software Developer Quality Control")
+//                            .username("sdqc")
+//                            .email("sdqc@gmail.com")
+//                            .password(passwordEncoder.encode("Khun1234"))
+//                            .role(Role.SDQC)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//            var member = userService.save(
+//                    User.builder()
+//                            .name("Member")
+//                            .username("member")
+//                            .email("member@gmail.com")
+//                            .password(passwordEncoder.encode("Khun1234"))
+//                            .role(Role.MEMBER)
+//                            .department(department2)
+//                            .active(true)
+//                            .build()
+//            );
+//
+//            var client = clientRepository.save(
+//                    Client.builder()
+//                            .name("DAT")
+//                            .email("dat@dat.com")
+//                            .phoneNumber("123456789")
+//                            .build()
+//            );
+//            var systemOutlines = systemOutlineRepository.save(
+//                    SystemOutline.builder().id(null).name("BasicDesign").build()
+//            );
+//            var architectureOutline = architectureRepository.save(
+//                    Architecture.builder().id(null).name("Java").type(ArchitectureType.PROGRAMMING_LANGUAGE).build()
+//            );
+//            var deliverable = deliverableRepository.save(
+//                    Deliverable.builder().id(null).name("Deliverable 1").build()
+//            );
+//
+//        };
+//    }
 }
 
 

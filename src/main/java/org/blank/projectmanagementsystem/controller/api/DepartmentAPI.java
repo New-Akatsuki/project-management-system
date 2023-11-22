@@ -44,5 +44,16 @@ public class DepartmentAPI {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/department-toggle/{departmentId}")
+    public ResponseEntity<String> toggleDepartmentStatus(@PathVariable("departmentId") Long departmentId) {
+        Department department = departmentService.getDepartmentById(Math.toIntExact(departmentId));
+        if (department != null) {
+            department.setActive(!department.isActive());
+            departmentService.save(department);
+            return ResponseEntity.ok("Department status changed successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
