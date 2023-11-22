@@ -173,10 +173,9 @@
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/jquery-3.6.4.min.js"></script>
 <!-- DataTables JS -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.js"></script>
 
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -188,7 +187,7 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <!-- Include Fuse.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
+<script src="/js/fuse.min.js"></script>
 <script>
     $(document).ready(function () {
         let projectList = [];
@@ -236,7 +235,7 @@
                 const {name, department, endDate, client, status, id} = project;
                 const userRole = $('#userRole').val();
                 const titleClass = name.length > 20 ? 'small-font-size' : '';
-                const nextLink = userRole==='PM' ? `/projects/${id}/working-area`:`/projects/${id}/details`;
+                const nextLink = userRole==='PM' ? `/projects/${id}/${name}/workspace`:`/projects/${id}/${name}/details`;
                 const badgeColorClass = status === 'COMPLETED'
                     ? 'badge-green'
                     : status === 'PENDING'

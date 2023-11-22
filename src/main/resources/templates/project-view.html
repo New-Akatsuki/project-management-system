@@ -138,6 +138,7 @@
             border-radius: 5px !important;
         }
 
+
         .gantt_task_drag{
             display: none!important;
         }
@@ -159,16 +160,13 @@
     <!-- End Page Title -->
     <div class="card m-0">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="d-flex align-items-center"><i class='bx bx-package me-1'></i>Foodpanda</h3>
-            <div class="d-flex gap-1">
-                <button type="button" class="border-0 bg-white fw-bold icon-btn-hover " data-bs-toggle="modal"
-                        data-bs-target="#taskModal">
-                    KPI
-                </button>
-                <button type="button" class="border-0 bg-white icon-btn-hover px-1" id="projectDetails">
-                    <i class="bx bx-detail "></i></button>
+            <h3 class="text-dark d-flex align-items-center mb-0"><i class='bx bx-package me-1'></i><span th:text="${projectName}"></span></h3>
+            <div class="d-flex gap-1 align-items-center">
+                <a type="button" th:href="@{details}"  class="border-0 bg-white  icon-btn-hover px-1 align-middle" id="projectDetails"
+                   data-bs-toggle="tooltip" data-bs-title="Project Details">
+                    <i class="bx bx-detail fs-5"></i></a>
                 <button type="button" id="fullscreen_button" class="border-0 bg-white hover-nav px-1 icon-btn-hover">
-                    <i class="bx bx-expand "></i></button>
+                    <i class="bx bx-expand"></i></button>
 
 
             </div>
@@ -202,87 +200,9 @@
         </div>
     </div>
     <input type="hidden" id="projectId" th:value="${projectId}">
+
     <div id="phaseModalPlace"></div>
     <div id="toastPlace"></div>
-
-    <!-- Modal Form -->
-    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center" id="taskModalLabel"><i class="bi bi-bar-chart-line"></i> KPI
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!-- Number Input Boxes in the Same Line -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="int-review">Internal Review:</label>
-                                    <input type="number" class="form-control" id="int-review" name="numberInput1">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="ext-review">External Review:</label>
-                                    <input type="number" class="form-control" id="ext-review" name="numberInput2">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Number Input Boxes in the Same Line -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="bsc-design">Basic Design:</label>
-                                    <input type="number" class="form-control" id="bsc-design" name="numberInput1">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="dtl-design">Detail Design:</label>
-                                    <input type="number" class="form-control" id="dtl-design" name="numberInput2">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Number Input Boxes in the Same Line -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cod-line">Code Line:</label>
-                                    <input type="number" class="form-control" id="cod-line" name="numberInput1">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="unt-testing">Unit Testing:</label>
-                                    <input type="number" class="form-control" id="unt-testing" name="numberInput2">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Number Input Boxes in the Same Line -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="int-testing">Integrated Testing:</label>
-                                    <input type="number" class="form-control" id="int-testing" name="numberInput1">
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </main>
 <!-- End #main -->
@@ -422,12 +342,12 @@
         }
     }
 
-    $(document).ready(function () {
-        var projectId = window.location.pathname.split('/').reverse()[1];
-        $("#projectDetails").click(function () {
-            window.location.href = "/projects/" +projectId+"/details";
-        });
-    });
+    // $(document).ready(function () {
+    //     var projectId = window.location.pathname.split('/').reverse()[1];
+    //     $("#projectDetails").click(function () {
+    //         window.location.href = "/projects/" +projectId+"/details";
+    //     });
+    // });
 
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>

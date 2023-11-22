@@ -43,23 +43,23 @@ public class ProjectController {
     }
 
     @PreAuthorize("hasAuthority('PM')")
-    @GetMapping("/projects/{id}/working-area")
-    public String workingAreaByProjectId(@PathVariable Long id, Model model, @RequestParam(required = false) String name) {
+    @GetMapping("/projects/{id}/{name}/workspace")
+    public String workingAreaByProjectId(@PathVariable Long id, Model model, @PathVariable String name) {
         model.addAttribute("projectId", id);
         model.addAttribute("projectName", name);
         return "project-view";
     }
 
     @PreAuthorize("hasAnyAuthority('PMO','Dh','PM')")
-    @GetMapping("/projects/{id}/details")
-    public ModelAndView showProjectDetails(@PathVariable Long id){
+    @GetMapping("/projects/{id}/{name}/details")
+    public ModelAndView showProjectDetails(@PathVariable Long id, @PathVariable String name){
         ProjectViewObject project = projectService.getProjectById(id);
         return new ModelAndView("project-details-info","currentProject",project);
     }
 
     @PreAuthorize("hasAnyAuthority('PM')")
-    @GetMapping("/projects/{id}/edit")
-    public String projectEditView(@PathVariable Long id, Model model){
+    @GetMapping("/projects/{id}/{name}/edit")
+    public String projectEditView(@PathVariable Long id, @PathVariable String name, Model model){
         model.addAttribute("projectId", id);
         return "project-edit";
     }
