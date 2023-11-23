@@ -16,7 +16,7 @@ $(document).ready(function () {
 });
 
 function renderMemberListTable(items) {
-    //check if deliverable table is already initialized, if so, refresh the table with new data
+    // Check if user list table is already initialized; if so, refresh the table with new data
     if ($.fn.DataTable.isDataTable('#user-list-table')) {
         $('#user-list-table').DataTable().destroy();
     }
@@ -37,12 +37,19 @@ function renderMemberListTable(items) {
                 data: 'active',
                 render: function (data, type, row) {
                     return `
-                    <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
-                    <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}">${data ? 'Disabled' : 'Active'}</button>
-                     `;
+                      <span class="badge rounded-pill text-bg-${data ? 'success' : 'danger'}">${data ? 'Active' : 'Disabled'}</span>
+                    `;
                 }
             },
-
+            {
+                data: 'active',
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
+                        <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Disabled' : 'Enable'}</button>
+                        `;
+                }
+            },
         ]
     });
 }
@@ -106,8 +113,16 @@ function resetEditInput() {
 
 <!--Build Toggle Member Btn-->
 function toggleMemberStatus(id, newStatus) {
+
+    //Find the member in memberList
+    const member = userList.find(user => user.id === id);
+    if(!member){
+    console.log('Member not found for ID:', id);
+    return;
+    }
+
     // Show Bootstrap modal for confirmation
-    const actionText = newStatus ? 'disable' : 'enable';
+    const actionText = member.active ? 'disable' : 'enable';
     $('#confirmationMemberAction').text(actionText);
 
     $('#confirmationMemberModal').modal('show');
@@ -120,6 +135,8 @@ function toggleMemberStatus(id, newStatus) {
 
         // Close the modal
         $('#confirmationMemberModal').modal('hide');
+        //Determine the new active status (toggle it)
+         const newActiveStatus = !member.active;
 
         // Make the AJAX request
         $.ajax({
@@ -128,7 +145,10 @@ function toggleMemberStatus(id, newStatus) {
             success: function (memberInfo) {
                 // Handle success response, update UI if necessary
                 console.log('Member status updated successfully:', memberInfo);
-                userList.filter(user => user.id === memberInfo.id)[0].active = memberInfo.active;
+                member.active = !member.active;
+                const buttonText = member.active ? 'Disabled' : 'Active';
+                $(`#user-list-table button[data-id=${id}]`).text(buttonText);
+                // userList.filter(user => user.id === memberInfo.id)[0].active = memberInfo.active;
                 renderMemberListTable(userList)
             },
             error: function (error) {
