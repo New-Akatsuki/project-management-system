@@ -1,31 +1,51 @@
 $(document).ready(function () {
-    $('#clientName').on('blur', function () {
+    $('#clientName').on('input', function () {
+        $('#addClientSameNameError').addClass('d-none');
         let name = $('#clientName').val();
         let clientNameError = $('#addClientNameError');
         if (name === '') {
             clientNameError.removeClass('d-none');
+        }else{
+            clientNameError.addClass('d-none');
         }
     });
 
-    $('#clientEmail').on('blur', function () {
+    $('#clientEmail').on('input', function () {
+        $('#addClientSameNameError').addClass('d-none');
         let email = $('#clientEmail').val();
         let clientEmailError = $('#addClientEmailError');
+        let clientEmailFormatError = $('#addClientEmailFormatError');
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!email.match(emailPattern)) {
+            $('#clientEmail').addClass("is-invalid");
+            clientEmailFormatError.removeClass('d-none');
+            console.log("Invalid email");
+        }else{
+            $('#clientEmail').removeClass("is-invalid");
+            $('#clientEmail').addClass("is-valid");
+            clientEmailFormatError.addClass('d-none');
+        }
         if (email === '') {
+            clientEmailFormatError.addClass('d-none');
             clientEmailError.removeClass('d-none');
+        }else{
+            clientEmailError.addClass('d-none');
         }
     });
 
-    $('#clientPhoneNumber').on('blur', function () {
+    $('#clientPhoneNumber').on('input', function () {
+        $('#addClientSameNameError').addClass('d-none');
         let phoneNumber = $('#clientPhoneNumber').val();
         let clientPhoneError = $('#addClientPhError');
         if (phoneNumber === '') {
             clientPhoneError.removeClass('d-none');
+        }else{
+            clientPhoneError.addClass('d-none');
         }
     });
 
     $('#saveNewClient').click(function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
-
         let name = $('#clientName').val();
         let email = $('#clientEmail').val();
         let phoneNumber = $('#clientPhoneNumber').val();
@@ -38,7 +58,7 @@ $(document).ready(function () {
         let clientNameError = $('#addClientNameError');
         let clientEmailError = $('#addClientEmailError');
         let clientPhError = $('#addClientPhError');
-
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (name === '') {
             clientNameError.removeClass('d-none');
         }
@@ -48,41 +68,65 @@ $(document).ready(function () {
         if (phoneNumber === '') {
             clientPhError.removeClass('d-none');
         }
-        if(name === '' || email === '' || phoneNumber === '')
+        if (!email.match(emailPattern)) {
+            $('#clientEmail').addClass("is-invalid");
+            console.log("Invalid email");
+        }
+        if(name === '' || email === '' || phoneNumber === '' ||!email.match(emailPattern))
         {
             console.log("error");
             return false;
         }
         else {
-            $('#addClientModal').modal('hide');
-           $.fn.addClient();
+            $.fn.addClient();
         }
     });
 });
 //Edit Client for validation
 
 $(document).ready(function () {
-    $('#editClientName').on('blur', function () {
+    $('#editClientName').on('input', function () {
+        $('#editClientSameNameError').addClass('d-none');
         let name = $('#editClientName').val();
         let editClientNameError = $('#editClientNameError');
         if (name.trim() === '') {
             editClientNameError.removeClass('d-none');
+        }else{
+            editClientNameError.addClass('d-none');
         }
     });
 
-    $('#editClientEmail').on('blur', function () {
+    $('#editClientEmail').on('input', function () {
+        $('#editClientSameNameError').addClass('d-none');
         let email = $('#editClientEmail').val();
-        let editClientEmailError = $('#editClientEmailError');
+        let clientEmailError = $('#editClientEmailError');
+        let clientEmailFormatError = $('#editClientEmailFormatError');
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!email.match(emailPattern)) {
+            $('#editClientEmail').addClass("is-invalid");
+            clientEmailFormatError.removeClass('d-none');
+            console.log("Invalid email");
+        }else{
+            $('#editClientEmail').removeClass("is-invalid");
+            $('#editClientEmail').addClass("is-valid");
+            clientEmailFormatError.addClass('d-none');
+        }
         if (email === '') {
-            editClientEmailError.removeClass('d-none');
+            clientEmailFormatError.addClass('d-none');
+            clientEmailError.removeClass('d-none');
+        }else{
+            clientEmailError.addClass('d-none');
         }
     });
 
-    $('#editClientPhoneNumber').on('blur', function () {
+    $('#editClientPhoneNumber').on('input', function () {
+        $('#editClientSameNameError').addClass('d-none');
         let phoneNumber = $('#editClientPhoneNumber').val();
         let editClientPhError = $('#editClientPhError');
         if (phoneNumber === '') {
             editClientPhError.removeClass('d-none');
+        }else{
+            editClientPhError.addClass('d-none');
         }
     });
 
@@ -101,23 +145,25 @@ $(document).ready(function () {
         let editClientNameError = $('#editClientNameError');
         let editClientEmailError = $('#editClientEmailError');
         let editClientPhError = $('#editClientPhError');
-
+        let emailPattern= /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (name === '') {
             editClientNameError.removeClass('d-none');
         }
         if (email === '') {
             editClientEmailError.removeClass('d-none');
         }
+        if (!email.match(emailPattern)) {
+            $('#clientEmail').addClass("is-invalid");
+            console.log("Invalid email");
+        }
         if (phoneNumber === '') {
             editClientPhError.removeClass('d-none');
         }
 
-
-        if (name === '' || email === '' || phoneNumber === '') {
+        if (name === '' || email === '' || phoneNumber === '' || !email.match(emailPattern)) {
             console.log("error");
             return false;
         } else {
-            $('#editClientModal').modal('hide');
             $.fn.updateClient();
         }
     });
@@ -126,11 +172,14 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('#deliverablesName').on('blur', function () {
+    $('#deliverablesName').on('input', function () {
+        $('#addDeliverableSameNameError').addClass('d-none');
         let name = $('#deliverablesName').val();
         let deliverablesNameError = $('#addDeliverablesNameError');
         if (name === '') {
             deliverablesNameError.removeClass('d-none');
+        }else{
+            deliverablesNameError.addClass('d-none');
         }
     });
 
@@ -156,7 +205,6 @@ $(document).ready(function () {
             return false;
         }
         else {
-            $('#addDeliverablesModal').modal('hide');
             $.fn.addDeliverable();
         }
     });
@@ -164,27 +212,24 @@ $(document).ready(function () {
 
 //edit deliverable for validation
 $(document).ready(function () {
-    $('#editDeliverableName').on('blur', function () {
+    $('#editDeliverableName').on('input', function () {
+        $('#editDeliverableSameNameError').addClass('d-none');
         let name = $('#editDeliverableName').val();
         let editDeliverableNameError = $('#editDeliverableNameError');
         if (name === '') {
             editDeliverableNameError.removeClass('d-none');
+        }else{
+            editDeliverableNameError.addClass('d-none');
         }
     });
 
     $('#editDeliverable').click(function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
-
         let name = $('#editDeliverableName').val();
-
         let deliverable = {
             name: name,
-
         };
-
         let editDeliverableNameError = $('#editDeliverableNameError');
-
-
         if (name === '') {
             editDeliverableNameError.removeClass('d-none');
         }
@@ -194,7 +239,6 @@ $(document).ready(function () {
             return false;
         }
         else {
-            $('#editDeliverableModal').modal('hide');
             $.fn.updateDeliverable();
         }
     });
@@ -202,16 +246,21 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('#architectureName').on('blur', function () {
+    $('#architectureName').on('input', function () {
+        $('#addArchitectureSameNameError').addClass('d-none');
         let name = $('#architectureName').val();
         let type= $('#architectureType').val();
         let architectureNameError = $('#addArchitectureNameError');
         let architectureTypeError = $('#addArchitectureTypeError');
         if (name === '') {
             architectureNameError.removeClass('d-none');
+        }else{
+            architectureNameError.addClass('d-none');
         }
         if (type === '') {
             architectureTypeError.removeClass('d-none');
+        }else{
+            architectureTypeError.addClass('d-none');
         }
     });
 
@@ -242,7 +291,6 @@ $(document).ready(function () {
             return false;
         }
         else {
-            $('#addArchitectureModal').modal('hide');
             $.fn.addArchitecture();
         }
     });
@@ -251,16 +299,21 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('#editArchitectureName').on('blur', function () {
+    $('#editArchitectureName').on('input', function () {
+        $('#editArchitectureSameNameError').addClass('d-none');
         let name = $('#editArchitectureName').val();
         let type= $('#edtiArchitectureType').val();
-        let edtiArchitectureNameError = $('#editArchitectureNameError');
+        let editArchitectureNameError = $('#editArchitectureNameError');
         let editArchitectureTypeError = $('#editArchitectureTypeError');
         if (name === '') {
             editArchitectureNameError.removeClass('d-none');
+        }else{
+            editArchitectureNameError.addClass('d-none');
         }
         if (type === '') {
             editArchitectureTypeError.removeClass('d-none');
+        }else{
+            editArchitectureTypeError.addClass('d-none');
         }
     });
 
@@ -291,7 +344,6 @@ $(document).ready(function () {
             return false;
         }
         else {
-            $('#editArchitectureModal').modal('hide');
             $.fn.updateArchitecture();
         }
     });
@@ -301,27 +353,24 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('#OutlineName').on('blur', function () {
+    $('#OutlineName').on('input', function () {
+        $('#addSystemOutlineSameNameError').addClass('d-none');
         let name = $('#OutlineName').val();
         let systemOutlineNameError = $('#addSystemOutlineNameError');
         if (name === '') {
             systemOutlineNameError.removeClass('d-none');
+        }else{
+            systemOutlineNameError.addClass('d-none');
         }
     });
 
     $('#saveNewSystemOutline').click(function (event) {
         event.preventDefault(); // Prevent the default form submission behavior
-
         let name = $('#OutlineName').val();
-
         let systemOutline = {
             name: name,
-
         };
-
         let systemOutlineNameError = $('#addSystemOutlineNameError');
-
-
         if (name === '') {
             systemOutlineNameError.removeClass('d-none');
         }
@@ -331,7 +380,6 @@ $(document).ready(function () {
             return false;
         }
         else {
-            $('#addSystemOutlineModal').modal('hide');
             $.fn.addSystemOutline();
         }
     });
@@ -339,11 +387,14 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('#editOutlineName').on('blur', function () {
+    $('#editOutlineName').on('input', function () {
+        $('#editSystemOutlineSameNameError').addClass('d-none');
         let name = $('#editOutlineName').val();
         let editSystemOutlineNameError = $('#editSystemOutlineNameError');
         if (name === '') {
             editSystemOutlineNameError.removeClass('d-none');
+        }else{
+            editSystemOutlineNameError.addClass('d-none');
         }
     });
 
@@ -358,8 +409,6 @@ $(document).ready(function () {
             console.log("error",name);
         } else {
             console.log("no error", name)
-            // Your logic for when the name is not empty
-            $('#editSystemOutlineModal').modal('hide');
             $.fn.updateSystemOutline(); // Call the updateSystemOutline() function
         }
     });

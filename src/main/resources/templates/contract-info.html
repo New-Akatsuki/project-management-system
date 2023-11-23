@@ -72,8 +72,6 @@
     <div class="container-fluid content-inner mt-4 py-0">
         <div>
             <div class="row">
-
-
                 <div class="col-sm-12 col-lg-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -81,9 +79,7 @@
                                 Clients
                             </h3>
 
-
-                            <a id="addClientButton" class="icon-add-btn" data-toggle="modal"
-                               data-target="#addClientModal">
+                            <a id="addClientButton" class="icon-add-btn">
                                 <i class='bx bx-plus fs-5 m-0 p-0'></i>
                             </a>
 
@@ -113,10 +109,7 @@
                             <h3 class="mb-0 text-dark">
                                 Deliverables Methods
                             </h3>
-
-
-                            <a id="addDeliverablesButton" class="icon-add-btn"
-                               data-toggle="modal" data-target="#addDeliverablesModal">
+                            <a id="addDeliverablesButton" class="icon-add-btn">
                                 <i class='bx bx-plus fs-5 m-0 p-0'></i>
                             </a>
                         </div>
@@ -146,8 +139,7 @@
                             </h3>
 
 
-                            <a id="addArchitectureButton" class="icon-add-btn"
-                               data-toggle="modal" data-target="#addArchitectureModal">
+                            <a id="addArchitectureButton" class="icon-add-btn">
                                 <i class='bx bx-plus fs-5 m-0 p-0'></i>
                             </a>
                         </div>
@@ -178,8 +170,7 @@
                                 System Outlines
                             </h3>
 
-                            <a id="addSystemOutlineButton" class="icon-add-btn"
-                               data-toggle="modal" data-target="#addSystemOutlineModal">
+                            <a id="addSystemOutlineButton" class="icon-add-btn">
                                 <i class='bx bx-plus fs-5 m-0 p-0'></i>
                             </a>
                         </div>
@@ -227,334 +218,338 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-<div class="modal fade" id="addDeliverablesModal" tabindex="-1" role="dialog"
-     aria-labelledby="addDeliverablesModalLabel" aria-hidden="true">
-
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addDeliverablesModalLabel">Add New Deliverables</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!--<span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Deliverable</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
                     <div class="form-group">
-                        <label for="deliverablesName" class="form-label">Deliverable Method</label>
                         <input type="text" class="form-control" id="deliverablesName" name="name" required
                                placeholder="Enter new deliverables method">
                         <span id="addDeliverablesNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
-
+                        <span id="addDeliverableSameNameError" class="text-danger d-none">Deliverable name already exists!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="saveNewDeliverable" class="btn btn-primary" data-dismiss="modal">
-                        Add Deliverables
-                    </button>
                 </form>
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                                data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewDeliverable"
+                                style="padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!--Add Deliverables-->
-<div class="modal fade" id="editDeliverableModal" tabindex="-1" role="dialog"
-     aria-labelledby="editDeliverablesModalLabel" aria-hidden="true">
-
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editDeliverablesModalLabel">Update Deliverables</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <!-- <span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Update Deliverable</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
                     <div class="form-group">
                         <input type="hidden" id="editDeliverableId" name="id">
-                        <label for="editDeliverableName" class="form-label">Deliverable Method</label>
                         <input type="text" class="form-control" id="editDeliverableName" name="name" required
-                               placeholder="Enter new deliverable method">
+                               placeholder="Enter new deliverables method">
                         <span id="editDeliverableNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
-
+                        <span id="editDeliverableSameNameError" class="text-danger d-none">Deliverable name already exists!!</span>
                     </div>
-
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="editDeliverable" class="btn btn-primary">Update Deliverables
-                    </button>
                 </form>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="editDeliverable"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- Add Client Modal -->
-<div class="modal fade" id="addClientModal" tabindex="-1" role="dialog" aria-labelledby="addClientModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!-- <span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Client</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                <!-- Form for adding a new client -->
+            <div class="container" style="padding: 10px 15px 0 15px;">
+                <span id="addClientSameNameError" class="text-danger d-none">Some client data are already exist! Check again.</span>
                 <form id="addClientForm">
                     <div class="form-group">
                         <label for="clientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="clientName" name="name" required
-                               placeholder="Enter client name">
+                               placeholder="Enter client name" autocomplete="off">
+                        <span id="clientName_error" class="invalid-feedback"></span>
                         <span id="addClientNameError" class="text-danger d-none">Client name must not be blank!!</span>
                     </div>
                     <div class="form-group">
                         <label for="clientEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="clientEmail" name="email" required
+                        <input type="email" class="form-control" id="clientEmail" required autocomplete="off"
                                placeholder="Enter email">
                         <span id="addClientEmailError"
-                              class="text-danger d-none">Client email must not be blank!!</span>
+                              class="text-danger d-none">Email must not be blank!! </span>
+                        <span id="addClientEmailFormatError"
+                              class="text-danger d-none">Email must be in email format. For example, abc.example.com</span>
                     </div>
                     <div class="form-group">
                         <label for="clientPhoneNumber" class="form-label">Phone Number(Optional)</label>
                         <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
-                               placeholder="Enter phone number">
+                               placeholder="Enter phone number" autocomplete="off">
                         <span id="addClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="saveNewClient" class="btn btn-primary" data-dismiss="modal">Add Client</button>
-
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                                data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewClient"
+                                style="padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-
     </div>
 </div>
 
-
-<!--Edit Client-->
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel"
      aria-hidden="true">
-
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editClientModalLabel">Edit Client</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <!--          <span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Client</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                <!-- Form for editing an existing client -->
+            <div class="container" style="padding: 10px 15px 0 15px;">
+                <span id="editClientSameNameError" class="text-danger d-none">Some client data are already exist! Check again.</span>
                 <form id="editClientForm">
                     <div class="form-group">
                         <input type="hidden" id="editClientId" name="id">
                         <label for="editClientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="editClientName" name="name" required
-                               placeholder="Enter client name">
-                        <span id="editClientNameError" class="text-danger d-none">Client name must not be blank!!</span>
-
+                               placeholder="Enter client name" autocomplete="off">
+                        <span id="editClientNameError" class="text-danger d-none">Name must not be blank!!</span>
                     </div>
                     <div class="form-group">
                         <label for="editClientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="editClientEmail" name="email" required
-                               placeholder="Enter email">
+                               placeholder="Enter email" autocomplete="off">
                         <span id="editClientEmailError"
-                              class="text-danger d-none">Client email must not be blank!!</span>
-
+                              class="text-danger d-none">Email must not be blank!!</span>
+                        <span id="editClientEmailFormatError"
+                              class="text-danger d-none">Email must be in email format. For example, abc.example.com</span>
                     </div>
                     <div class="form-group">
                         <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
                         <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required
-                               placeholder="Enter phone number">
-                        <span id="editClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
-
+                               placeholder="Enter phone number" autocomplete="off">
+                        <span id="editClientPhError" class="text-danger d-none">Phone must not be blank!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="editClient" class="btn btn-primary">
-                        Update Client
-                    </button>
-
-
                 </form>
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                                data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </button>
+                        <button type="submit" class="btn btn-sm btn-primary rounded" id="editClient"
+                                style="padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Update
+                        </button>
+                    </div>
             </div>
         </div>
-
     </div>
 </div>
 
-
-<!--<button type="button" class="btn btn-primary" onclick="toggleClientStatus(1, 'active', true)">Enable</button>-->
-<!--<button type="button" class="btn btn-danger" onclick="toggleClientStatus(1, 'disabled', false)">Disable</button>-->
-
-<div class="modal fade" id="confirmationClientModal" tabindex="-1" role="dialog"
-     aria-labelledby="confirmationModalClientLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmationClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalClientLabel">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!--<span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <div style="align-items: center; padding: 15px">
                 Are you sure you want to <span id="confirmationClientAction"></span> this client?
                 <div id="confirmationClientMessage"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmClientButton">Confirm</button>
+            <div class="d-flex justify-content-end mb-2">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmClientButton" style="margin-right: 15px; padding: 10px 15px">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" role="dialog"
-     aria-labelledby="confirmationModalDeliverableLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalDeliverableLabel">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!--<span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
-                <div id="confirmationDeliverableMessage"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmDeliverableButton">Confirm</button>
-            </div>
+                <div style="align-items: center; padding: 15px">
+                        Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
+                        <div id="confirmationDeliverableMessage"></div>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmDeliverableButton" style="margin-right: 15px; padding: 10px 15px">
+                        Confirm
+                    </button>
+                </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" role="dialog"
-     aria-labelledby="confirmationModalArchitectureLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalArchitectureLabel">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!--<span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                Are you sure you want to <span id="confirmationArchitectureAction"></span> this deliverable?
+            <div style="align-items: center; padding: 15px">
+                Are you sure you want to <span id="confirmationArchitectureAction"></span> this architecture outline?
                 <div id="confirmationArchitectureMessage"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmArchitectureButton">Confirm</button>
+            <div class="d-flex justify-content-end mb-2">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmArchitectureButton" style="margin-right: 15px; padding: 10px 15px">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" role="dialog"
-     aria-labelledby="confirmationModalSystemOutlineLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalSystemOutlineLabel">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!--<span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                Are you sure you want to <span id="confirmationSystemOutlineAction"></span> this deliverable?
+            <div style="align-items: center; padding: 15px">
+                Are you sure you want to <span id="confirmationSystemOutlineAction"></span> this system outline?
                 <div id="confirmationSystemOutlineMessage"></div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmSystemOutlineButton">Confirm</button>
+            <div class="d-flex justify-content-end mb-2">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmSystemOutlineButton" style="margin-right: 15px; padding: 10px 15px">
+                    Confirm
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<!--Add System Outline-->
-<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" role="dialog" aria-labelledby="addSystemOutlineModal"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addSystemOutlineModalLabel">Add System Outline</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <!--          <span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add System Outline</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                <!-- Add your form for adding a new system outline here -->
-                <!-- Example form fields: -->
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
                     <div class="form-group">
-                        <label for="OutlineName" class="form-label">System Outline Name</label>
                         <input type="text" class="form-control" id="OutlineName" name="name" required
                                placeholder="Enter outline name">
                         <span id="addSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
+                        <span id="addSystemOutlineSameNameError" class="text-danger d-none">This system outline name already exists!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="saveNewSystemOutline" class="btn btn-primary" data-dismiss="modal">Add Outline</button>
-
                 </form>
-                <!-- Add Bootstrap classes to the form elements for better styling -->
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewSystemOutline"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
-<!--Edit System Outline-->
 
-<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" role="dialog"
-     aria-labelledby="editSystemOutlineModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editSystemOutlineModalLabel">Edit System Outline</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <!--          <span aria-hidden="true">&times;</span>-->
-                </button>
-
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit System Outline</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                <!-- Form for editing an existing system outline -->
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
                     <div class="form-group">
                         <input type="hidden" id="editOutlineId" name="id">
-                        <label for="editOutlineName" class="form-label">System Outline Name</label>
                         <input type="text" class="form-control" id="editOutlineName" name="name" required
-                               placeholder="Enter Outline Name">
+                               placeholder="Enter outline name">
                         <span id="editSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
+                        <span id="editSystemOutlineSameNameError" class="text-danger d-none">This system outline name already exists!!</span>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="editOutline" class="btn btn-primary">Update Outline
-                    </button>
                 </form>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="editOutline"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Update
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!--Add Architecture Outline-->
-<div class="modal fade" id="addArchitectureModal" tabindex="-1" role="dialog"
-     aria-labelledby="addArchitectureModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Architecture Outline</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
+                    <span id="addArchitectureSameNameError" class="text-danger d-none">This architecture already exist.</span>
                     <div class="form-group">
                         <label for="architectureName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="architectureName" name="name"
@@ -586,85 +581,120 @@
                         <span id="addArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                <button id="saveNewArchitecture" class="btn btn-primary" data-dismiss="modal">Add
-                    Architecture
-                </button>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewArchitecture"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!--Edit Architecture Outline-->
-<div class="modal fade" id="editArchitectureModal" tabindex="-1" role="dialog"
-     aria-labelledby="editArchitectureModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="editArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editArchitectureModalLabel">Edit Architecture Outline</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <!-- <span aria-hidden="true">&times;</span>-->
-                </button>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Architecture Outline</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
+                    <span id="editArchitectureSameNameError" class="text-danger d-none">This architecture already exist.</span>
+                    <input type="hidden" id="editArchitectureId" name="id">
                     <div class="form-group">
-                        <input type="hidden" id="editArchitectureId" name="id">
-                        <div>
-                            <label for="editArchitectureName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="editArchitectureName" name="name"
-                                   placeholder="Enter architecture outline name" required>
-                            <span id="editArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
-                        </div>
-                        <div>
-                            <label for="editArchitectureType" class="form-label">Type</label>
-                            <select class="form-control" id="editArchitectureType" required>
-                                <option value="IDE">IDE</option>
-                                <option value="FRAMEWORK">Framework</option>
-                                <option value="LIBRARY">Library</option>
-                                <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
-                                <option value="SCRIPT_LANGUAGE">Script Language</option>
-                                <option value="MARKUP_LANGUAGE">Markup Language</option>
-                                <option value="DATABASE">Database</option>
-                                <option value="VCS">Version Control System</option>
-                                <option value="API">API</option>
-                                <option value="TESTING">Testing</option>
-                                <option value="ALGORITHM">Algorithm</option>
-                                <option value="DESIGN_PATTERN">Design Pattern</option>
-                                <option value="CLOUD_COMPUTING">Cloud Computing</option>
-                                <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
-                                <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
-                                <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
-                                <option value="OTHER">Other</option>
-                            </select>
-                            <span id="editArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>
-                        </div>
+                        <label for="architectureName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editArchitectureName" name="name"
+                               placeholder="Enter architecture outline name" required>
+                        <span id="editArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="editArchitectureType">Type</label>
+                        <select class="form-control" id="editArchitectureType" required>
+                            <option value="IDE">IDE</option>
+                            <option value="FRAMEWORK">Framework</option>
+                            <option value="LIBRARY">Library</option>
+                            <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                            <option value="SCRIPT_LANGUAGE">Script Language</option>
+                            <option value="MARKUP_LANGUAGE">Markup Language</option>
+                            <option value="DATABASE">Database</option>
+                            <option value="VCS">Version Control System</option>
+                            <option value="API">API</option>
+                            <option value="TESTING">Testing</option>
+                            <option value="ALGORITHM">Algorithm</option>
+                            <option value="DESIGN_PATTERN">Design Pattern</option>
+                            <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                            <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                            <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                            <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <span id="editArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="editArchitecture" class="btn btn-primary">Update Architecture
-                </button>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="editArchitecture"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-
+<script src="/js/validation.js"></script>
 <script src="/js/contract-info-script.js"></script>
 
 <script src="/js/contract-info.js"></script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    $('#addClientButton').click(function () {
+        $('#addClientSameNameError').addClass('d-none');
+        $('#addClientForm').trigger('reset');
+        $('#addClientNameError').addClass('d-none');
+        $('#addClientEmailError').addClass('d-none');
+        $('#addClientEmailFormatError').addClass('d-none');
+        $('#addClientPhError').addClass('d-none');
+        $('#clientEmail').removeClass('is-invalid');
+        $('#clientEmail').removeClass('is-valid');
+        $('#addClientModal').modal('show');
+    });
+    $('#addDeliverablesButton').click(function (){
+        $('#deliverablesName').val('');
+        $('#addDeliverablesNameError').addClass('d-none');
+        $('#addDeliverableSameNameError').addClass('d-none');
+        $('#addDeliverablesModal').modal('show');
+    });
+    $('#addSystemOutlineButton').click(function (){
+        $('#OutlineName').val('');
+        $('#addSystemOutlineNameError').addClass('d-none');
+        $('#addSystemOutlineSameNameError').addClass('d-none');
+        $('#addSystemOutlineModal').modal('show');
+    });
+    $('#addArchitectureButton').click(function (){
+        $('#architectureName').val('');
+        $('#addArchitectureNameError').addClass('d-none');
+        $('#addArchitectureTypeError').addClass('d-none');
+        $('#addArchitectureSameNameError').addClass('d-none');
+        $('#addArchitectureModal').modal('show');
+    });
+</script>
 <script>
     function notify(notification) {
         showToast(notification);
