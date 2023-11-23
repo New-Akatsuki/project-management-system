@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title>Dir-Ace Technology</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
 
@@ -22,7 +22,7 @@
           rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
-    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
     <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
@@ -333,6 +333,7 @@
     <div class="spinner-border text-primary" role="status" id="loadingSpinner">
     </div>
     <div id="dim-overlay"></div>
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -722,5 +723,10 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

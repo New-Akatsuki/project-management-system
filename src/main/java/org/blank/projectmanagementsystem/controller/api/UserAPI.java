@@ -124,5 +124,10 @@ public class UserAPI {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/check-user-by-username")
+    public ResponseEntity<Boolean> checkUserByUsernameOrEmail(@RequestParam String data) {
+        return ResponseEntity.ok(userService.checkUserExistOrNotWithUsername(data));
+    }
 }
 

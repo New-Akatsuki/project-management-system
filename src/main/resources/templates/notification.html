@@ -91,6 +91,7 @@
         <!-- Notifications will be dynamically added here -->
     </ul>
     <!-- End Main Content-->
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 <!-- Vendor JS Files -->
@@ -270,6 +271,10 @@
         checkboxes.prop("checked", checkAllCheckbox.prop("checked"));
     }
 </script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

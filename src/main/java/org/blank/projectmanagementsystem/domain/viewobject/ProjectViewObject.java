@@ -25,8 +25,8 @@ public class ProjectViewObject {
     private List<String> systemOutlines;
     private List<Architecture> architectureOutlines;
     private List<String> deliverables;
-    private List<ReviewCount> reviewCounts;
-    private List<Amount> amounts;
+    private List<ReviewViewObject> reviewCounts;
+    private List<AmountViewObject> amounts;
 
     public ProjectViewObject(Project project){
         id = project.getId();
@@ -44,7 +44,7 @@ public class ProjectViewObject {
         systemOutlines = project.getSystemOutlines().stream().map(SystemOutline::getName).toList();
         architectureOutlines = project.getArchitectures().stream().toList();
         deliverables = project.getDeliverables().stream().map(Deliverable::getName).toList();
-        reviewCounts = project.getReviewCounts().stream().toList();
-        amounts = project.getAmounts().stream().toList();
+        reviewCounts = project.getReviewCounts().stream().map(ReviewViewObject::new).toList();
+        amounts = project.getAmounts().stream().map(AmountViewObject::new).toList();
     }
 }

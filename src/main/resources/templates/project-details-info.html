@@ -181,7 +181,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-12 col-md-6 px-3">
+
+                <th:block th:with="cols =${currentProject.amounts!=null and currentProject.amounts.size()>0?'col-md-4':'col-md-6'}">
+                <div th:class="'col-12 '+ ${cols} +' px-3'">
                     <h3 class="ps-2 py-2 bg-gray-color">System Outlines</h3>
                     <table class="table table-sm table-striped-columns table-bordered">
                         <tbody>
@@ -191,7 +193,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-12 col-md-6 px-3">
+                    <div th:class="'col-12 '+ ${cols} +' px-3'">
                     <h3 class="ps-2 py-2 bg-gray-color">Deliverables</h3>
                     <table class="table table-sm table-striped-columns table-bordered">
                         <tbody>
@@ -201,26 +203,50 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div th:if="${currentProject.amounts!=null and currentProject.amounts.size()>0}" class="col-12 col-md-6 px-3">
+                </th:block>
+                <div th:if="${currentProject.amounts!=null and currentProject.amounts.size()>0}" class="col-12 col-md-4 px-3">
                     <h3 class="ps-2 py-2 bg-gray-color">Amount</h3>
                     <table class="table table-sm table-striped-columns table-bordered">
                         <tbody>
                         <tr th:each="amount : ${currentProject.amounts}">
-                            <td th:text="${'- '+amount}"></td>
+                            <td th:text="${amount.name}"></td>
+                            <td class="text-end" th:text="${amount.amount}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div th:if="${currentProject.reviewCounts!=null and currentProject.reviewCounts.size()>0}" class="col-12 col-md-6 px-3">
+                <div th:if="${currentProject.reviewCounts!=null and currentProject.reviewCounts.size()>0}" class="col-12 px-3">
                     <h3 class="ps-2 py-2 bg-gray-color">Review</h3>
-                    <table class="table table-sm table-striped-columns table-bordered">
-                        <tbody>
-                        <tr th:each="review : ${currentProject.reviewCounts}">
-                            <td th:text="${'- '+review}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>Internal Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'INTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>External Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'EXTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -333,7 +359,7 @@
             </div>
         </div>
     </div>
-
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -346,8 +372,8 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 
+<script src="/js/jquery-3.6.4.min.js"></script>
 <!-- Bootstrap JS and Popper.js for Modal Box -->
-<!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -357,7 +383,11 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 
 </body>
 </html>

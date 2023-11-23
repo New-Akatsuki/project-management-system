@@ -48,12 +48,6 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
 
-    <style>
-        input:focus {
-            color: #0a245b !important; /* Replace with your desired color value */
-        }
-    </style>
-
 </head>
 
 <body>
@@ -106,6 +100,7 @@
             </div>
         </div>
     </div>
+    <div id="toastPlace"></div>
     <!-- End Main Content-->
 </main>
 <!-- Vendor JS Files -->
@@ -288,6 +283,10 @@
 
     });
 </script>
-
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
 </body>
 </html>

@@ -126,7 +126,7 @@ function addOrUpdateAmount() {
         dataType: 'json',
         success: function (data) {
             // Close the modal on success
-            $("#exampleModal").modal('hide');
+            $("#staticBackdrop").modal('hide');
             console.log(data);
         },
         error: function (xhr, status, error) {

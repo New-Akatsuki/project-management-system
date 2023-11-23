@@ -32,6 +32,17 @@ $.ajax({
     }
 });
 
+function showToast(notification){
+    if (notification) {
+        buildToast({
+            title: notification.type === 'TASK' ? 'Task notification' : notification.type === 'PROJECT' ? 'Project notification' : 'Issue notification',
+            body: notification.message,
+            icon: 'bx bx-bell',
+            color: 'text-success',
+        });
+        $('#liveToast').toast('show');
+    }
+}
 
 // Play a muted sound on page load to enable automatic playback late
 

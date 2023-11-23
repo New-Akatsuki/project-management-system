@@ -39,12 +39,10 @@ public class ProjectManagementSystemApplication {
     @Bean
     CommandLineRunner runner(
             UserService userService, PasswordEncoder passwordEncoder,
-            ProjectService projectService,
             ClientRepository clientRepository,
             SystemOutlineRepository systemOutlineRepository,
             ArchitectureRepository architectureRepository,
-            DeliverableRepository deliverableRepository,
-            NotificationService notificationService
+            DeliverableRepository deliverableRepository
     ) {
         return args -> {
 

@@ -197,7 +197,7 @@
         </div>
     </div>
     <!-- End Main Content-->
-
+    <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
 
@@ -506,37 +506,6 @@
     </div>
 </div>
 
-<!--Edit System Outline-->
-
-<!--<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" role="dialog"-->
-<!--     aria-labelledby="editSystemOutlineModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="editSystemOutlineModalLabel">Edit System Outline</h5>-->
-<!--                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">-->
-<!--                    &lt;!&ndash;          <span aria-hidden="true">&times;</span>&ndash;&gt;-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                &lt;!&ndash; Form for editing an existing system outline &ndash;&gt;-->
-<!--                <form>-->
-<!--                    <div class="form-group">-->
-<!--                        <input type="hidden" id="editOutlineId" name="id">-->
-<!--                        <label for="editOutlineName" class="form-label">System Outline Name</label>-->
-<!--                        <input type="text" class="form-control" id="editOutlineName" name="name" required-->
-<!--                               placeholder="Enter Outline Name">-->
-<!--                        <span id="editSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>-->
-<!--                    </div>-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                    <button id="editOutline" class="btn btn-primary">Update Outline-->
-<!--                    </button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
 <div class="modal fade" id="editSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
@@ -569,62 +538,6 @@
         </div>
     </div>
 </div>
-
-<!--Add Architecture Outline-->
-<!--<div class="modal fade" id="addArchitectureModal" tabindex="-1" role="dialog"-->
-<!--     aria-labelledby="addArchitectureModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="addArchitectureModalLabel">Add New Architecture Outline</h5>-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <form>-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="architectureName" class="form-label">Name</label>-->
-<!--                        <input type="text" class="form-control" id="architectureName" name="name"-->
-<!--                               placeholder="Enter architecture outline name" required>-->
-<!--                        <span id="addArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>-->
-<!--                    </div>-->
-
-<!--                    <div class="form-group">-->
-<!--                        <label class="form-label" for="architectureType">Type</label>-->
-<!--                        <select class="form-control" id="architectureType" required>-->
-<!--                            <option value="IDE">IDE</option>-->
-<!--                            <option value="FRAMEWORK">Framework</option>-->
-<!--                            <option value="LIBRARY">Library</option>-->
-<!--                            <option value="PROGRAMMING_LANGUAGE">Programming Language</option>-->
-<!--                            <option value="SCRIPT_LANGUAGE">Script Language</option>-->
-<!--                            <option value="MARKUP_LANGUAGE">Markup Language</option>-->
-<!--                            <option value="DATABASE">Database</option>-->
-<!--                            <option value="VCS">Version Control System</option>-->
-<!--                            <option value="API">API</option>-->
-<!--                            <option value="TESTING">Testing</option>-->
-<!--                            <option value="ALGORITHM">Algorithm</option>-->
-<!--                            <option value="DESIGN_PATTERN">Design Pattern</option>-->
-<!--                            <option value="CLOUD_COMPUTING">Cloud Computing</option>-->
-<!--                            <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>-->
-<!--                            <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>-->
-<!--                            <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>-->
-<!--                            <option value="OTHER">Other</option>-->
-<!--                        </select>-->
-<!--                        <span id="addArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-
-<!--                <button id="saveNewArchitecture" class="btn btn-primary" data-dismiss="modal">Add-->
-<!--                    Architecture-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 <div class="modal fade" id="addArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
@@ -701,7 +614,6 @@
                                placeholder="Enter architecture outline name" required>
                         <span id="editArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
                     </div>
-
                     <div class="form-group">
                         <label class="form-label" for="editArchitectureType">Type</label>
                         <select class="form-control" id="editArchitectureType" required>
@@ -751,7 +663,6 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
-
 <script>
     $('#addClientButton').click(function () {
         $('#addClientSameNameError').addClass('d-none');
@@ -783,6 +694,11 @@
         $('#addArchitectureSameNameError').addClass('d-none');
         $('#addArchitectureModal').modal('show');
     });
+</script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
 </script>
 </body>
 </html>

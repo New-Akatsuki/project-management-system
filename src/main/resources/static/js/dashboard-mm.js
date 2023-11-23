@@ -11,7 +11,7 @@ function updateYearSelector(projects) {
     projectList = projects || projectList;
     $("#yearSelector").empty();
     const selectedProjectId = $('#projectSelector').val();
-    const selectedDepartmentId = $("#departmentSelector").val();
+    const selectedDepartmentId = $("#tor").val();
     //set Year
     const currentYear = new Date().getFullYear();
     let html = "";
@@ -73,6 +73,7 @@ function updateMonthSelector(projects) {
 
 function updateDepartmentSelector(data) {
     $("#departmentSelector").empty();
+
     let html = "";
     let isSet = false;
     if (currentUserRole === "DH" || currentUserRole === "PM") {
@@ -80,7 +81,15 @@ function updateDepartmentSelector(data) {
         html += `<option value="${department.id}" selected>${department.name}</option>`;
         isSet = true;
     } else if(currentUserRole === "PMO") {
-        html += `<option value="" selected>All</option>`;
+        html += `<option value="" id="allDepartmentOption" selected>All</option>`;
+        const isAllSelected = $("#departmentSelector option:selected").attr("id") === "allDepartmentOption";
+        if (isAllSelected) {
+            // Hide the kpiRatioHeadingContainer when "All" is selected
+            $('#kpiRatioHeadingContainer').hide();
+        } else {
+            // Show the kpiRatioHeadingContainer for other department selections
+            $('#kpiRatioHeadingContainer').show();
+        }
         data.forEach((department) => {
             html += `<option value="${department.id}">${department.name}</option>`;
         });
@@ -162,6 +171,9 @@ function getProjectByDepartment() {
             updateCharts();
             if(projects.length > 0){
                 calculateAllKPIs(projects[0].id);
+            }else{
+                $('#kpiRatioHeadingContainer').hide();
+
             }
         });
     }else{
@@ -173,7 +185,14 @@ function getProjectByDepartment() {
 }
 
 $("#departmentSelector").on("change", function () {
+    const isAllSelected = $("#departmentSelector option:selected").attr("id") === "allDepartmentOption";
+    if (isAllSelected) {
+        $('#kpiRatioHeadingContainer').hide();
+    } else {
+        $('#kpiRatioHeadingContainer').show();
+    }
     getProjectByDepartment()
+
 });
 
 function updateProjectSelector(projects) {
