@@ -238,8 +238,6 @@ function updateCharts() {
     const selectedProjectId = $("#projectSelector").val();
     const selectedDepartmentId = $("#departmentSelector").val();
     const selectedMonth = $("#monthSelector").val();
-
-
     if (selectedProjectId) {
         console.log('in selected project')
         $.get(`/api/get-tasks?projectId=${selectedProjectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
@@ -262,7 +260,6 @@ function updateCharts() {
                 updateManMonthChart(projectLabels, planManMonths, actualManMonths);
                 updateManMonthProductivity(projectLabels, []);
             }
-
             let projectsProcessed = 0;
 
             function processProject(project) {

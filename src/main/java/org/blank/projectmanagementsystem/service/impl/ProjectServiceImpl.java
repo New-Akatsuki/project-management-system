@@ -35,6 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final SystemOutlineRepository systemOutlineRepository;
     private final ArchitectureRepository architectureRepository;
     private final DeliverableRepository deliverableRepository;
+    private final TaskRepository taskRepository;
 
     private final ProjectMapper projectMapper = new ProjectMapper();
 
@@ -110,17 +111,27 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectListViewObject> getAllProjects() {
         var user = getCurrentUser();
         return switch (user.getRole()) {
-            case PMO, SDQC -> projectRepository.findAll().stream().map(ProjectListViewObject::new).toList();
+            case PMO, SDQC -> projectRepository.findAll().stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case DH ->
-                    projectRepository.findAllByDepartment(user.getDepartment()).stream().map(ProjectListViewObject::new).toList();
+                    projectRepository.findAllByDepartment(user.getDepartment()).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case PM ->
-                    projectRepository.findAllByProjectManager(user).stream().map(ProjectListViewObject::new).toList();
+                    projectRepository.findAllByProjectManager(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case MEMBER ->
-                    projectRepository.findAllProjectsByUserInMembers(user).stream().map(ProjectListViewObject::new).toList();
+                    projectRepository.findAllProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             default -> throw new IllegalStateException("Invalid user");
         };
     }
 
+    //count project progress
+    private int countProgress(Long id) {
+        int total = 0;
+        int done = 0;
+        var tasks = taskRepository.findAllByProjectId(id);
+        total = tasks.size();
+        if (total == 0) return 0;
+        done = tasks.stream().filter(Task::isStatus).toList().size();
+        return (done/total)*100;
+    }
 
     @Override
     public ProjectViewObject getProjectById(Long id) {
