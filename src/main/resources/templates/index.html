@@ -33,23 +33,38 @@
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
 
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
 
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
 
 
     <style>
         .count-box {
-            background-color: #f0f0f0;
-            padding: 20px;
+            background: white;
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
         }
 
         .count-icon {
-            font-size: 48px;
+            font-size: 40px;
             color: #007bff; /* Change the color as needed */
         }
+
         #kpiRatioHeadingContainer {
             display: none;
         }
@@ -80,23 +95,24 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-4">
-                <div class="count-box">
-                    <i class='bx bxs-user count-icon'></i>
-                    <p>Number of Users: <span th:text="${userCount}"></span></p>
+                <div class="count-box d-flex">
+                    <i class='bx bxs-user count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Users : <span th:text="${userCount}" class="fw-bold"></span></p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="count-box">
-                    <i class='bx bxs-user count-icon'></i>
-                    <p>Number of Clients: <span th:text="${clientCount}"></span></p>
+                <div class="count-box d-flex">
+                    <i class='bx bxs-user count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Clients : <span th:text="${clientCount}" class="fw-bold"></span></p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="count-box">
-                    <i class='bx bxs-user count-icon'></i>
-                    <p>Number of Departments: <span th:text="${departmentCount}"></span></p>
+                <div class="count-box d-flex">
+                    <i class='bx bxs-briefcase count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Departments : <span th:text="${departmentCount}" class="fw-bold"></span>
+                    </p>
                 </div>
             </div>
 
@@ -118,14 +134,15 @@
 
 
     <!-- DashBoard MM Body Start -->
-    <div class="container mt-5">
+    <div class="card mt-3" style="padding: 15px; margin: 0 10px; background: white; border-radius:10px 10px 0 0">
+    <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <label class="form-label" for="yearSelector">Year</label>
+                <label class="form-label" for="yearSelector">Year:</label>
                 <select class="form-select year-select" id="yearSelector"></select>
             </div>
             <div class="col-md-3">
-                <label class="form-label" for="monthSelector">Month</label>
+                <label class="form-label" for="monthSelector">Month:</label>
                 <select class="form-select month-select" id="monthSelector">
 
                 </select>
@@ -141,18 +158,18 @@
             </div>
         </div>
     </div>
+    </div>
 
-    <div class="container mt-4">
-
-
-        <div class="row">
-            <div class="col-md-6 col-lg-6 col-sm-12">
+    <div class="card mt-2" style="padding: 10px; margin: 0 10px; background: white; border-radius: 0 0 10px 10px">
+    <div class="container mt-1">
+        <div class="d-flex justify-content-between">
+            <div style="width: 49%;padding: 5px; border-radius: 10px">
                 <h4>Man Month</h4>
                 <div class="chartBox">
                     <canvas id="manMonthChart"></canvas>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-6 col-sm-12">
+            <div style="width: 49%;padding: 5px; border-radius: 10px">
                 <h4>Man Month Productivity Ratio</h4>
                 <div class="chartBox">
                     <canvas id="manMonthProductivityChart"></canvas>
@@ -162,17 +179,17 @@
     </div>
 
 
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12" id="kpiRatioHeadingContainer">
-                    <h4>KPI RATIO</h4>
-                    <div class="kpiChart">
-                        <canvas id="kpiChart"></canvas>
-                    </div>
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12" id="kpiRatioHeadingContainer">
+                <h4>KPI RATIO</h4>
+                <div class="kpiChart">
+                    <canvas id="kpiChart"></canvas>
                 </div>
             </div>
         </div>
-
+    </div>
+    </div>
     <div id="toastPlace"></div>
     <!-- End Main Content-->
 </main>
@@ -215,6 +232,8 @@
     function notify(notification) {
         showToast(notification);
     }
+
+
 </script>
 </body>
 

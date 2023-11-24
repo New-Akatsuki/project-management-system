@@ -29,9 +29,21 @@ function renderMemberListTable(items) {
                     return meta.row + 1;
                 }
             },
-            {data: 'name'},
-            {data: 'email'},
-            {data: 'department'},
+            {
+                data: 'name',
+                render: function (data, type, row) {
+                    return  data.length > 15 ? data.substring(0, 15) + '...' : data;
+                }
+            },
+            {data: 'email',
+                render: function (data, type, row) {
+                    return  data.length > 15 ? data.substring(0, 15) + '...' : data;
+                }
+            },
+            {data: 'department',
+                render: function (data, type, row) {
+                    return  data.length > 7 ? data.substring(0, 7) + '...' : data;
+                }},
             {data: 'role'},
             {
                 data: 'active',
