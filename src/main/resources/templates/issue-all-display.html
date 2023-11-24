@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -150,7 +152,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton">
+                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','DH','MEMBER')">
                     <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
                 </a>
                 <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">

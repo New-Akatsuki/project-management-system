@@ -145,9 +145,29 @@
         </form>
     </div>
 </div>
+
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="confirmationDepartmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationDepartmentModalLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="confirmationDepartmentAction"></span> this member?
+                <div id="confirmationDepartmentMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmDepartmentButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -160,151 +180,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-
-<script>
-<!--   For Department Table-->
-    let departmentList =[];
-    $(document).ready(function () {
-
-
-        //Make an AJAX request to fetch data from the Rest API point
-        $.ajax({
-            url: '/departments',
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                console.log('All department list: ', data);
-                departmentList = data;
-                //Render the data into the DataTable
-                renderDepartmentListTable(data);
-            },
-            error: function (xhr, status, error) {
-                console.log('Error: ', error);
-            }
-        });
-
-        checkInputValidation('name','Department name',null,null);
-        checkInputValidation('editDepartmentName','Department name',null,null);
-        formValidate('addDepartmentForm',addDepartment);
-        formValidate('editDepartmentForm',editDepartment);
-    });
-
-function renderDepartmentListTable(items) {
-    if ($.fn.DataTable.isDataTable('#department-table')) {
-        $('#department-table').DataTable().destroy();
-    }
-    return $('#department-table').DataTable({
-        data: items,
-        columns: [
-            {data: 'id'},
-            {data: 'name'},
-            {
-                data: 'active',
-                render: function (data, type, row) {
-                    return `
-                       <span class="badge rounded-pill text-bg-${data?'success':'danger'}">${data?'opened':'closed'}</span>
-                    `;
-                }
-            },
-            {
-                data: 'active',
-                render: function (data, type, row) {
-                    return `
-                        <button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button class="btn btn-sm btn-${data?'danger':'success'} mx-2" onclick="toggleDepartment(${row.id})">${data?'Close':'Open'}</button>
-                    `;
-                }
-            }
-        ]
-    });
-}
-
-function toggleDepartment(){
-    console.log("toggleDepartment");
-}
-
-
-
-
-
-
-// For add Department
-    function addDepartment() {
-        let addDepartment= {
-           id:$("#id").val(),
-            name:$("#name").val(),};
-        console.log(addDepartment);
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/department-create",
-            data: JSON.stringify(addDepartment),
-            dataType: 'json',
-            success: function (data) {
-                // departmentList.push(data)
-                console.log(departmentList);
-                location.reload();
-                // renderDepartmentListTable(departmentList);
-            },
-            error: function (error) {
-                console.log('Error adding new department:', error);
-            }
-        });
-    }
-
-    //For Display Edit Department Modal
-    function displayEditDepartmentModal(id) {
-    const department = departmentList.find(department => department.id === id);
-    console.log("Department Edit ", department);
-    // Check if department is found
-    if (department) {
-        //populate modal fields with department data
-        $('#editId').val(department.id);
-        $('#editDepartmentName').val(department.name);
-        //show the modal
-        $("#departmentEditModal").modal('show');
-    } else {
-        console.log("Department not found for ID:", id);
-    }
-}
-
-
-function editDepartment() {
-    let id = $('#editId').val();
-    let name = $('#editDepartmentName').val();
-    let updatedDepartment = {
-        id: id,
-        name: name,
-    };
-    console.log("updatedDepartment", updatedDepartment);
-    // Make a PUT request to update the department data
-    $.ajax({
-        url: `/department-edit/${id}`,
-        method: 'PUT',
-        data: JSON.stringify(updatedDepartment),
-        dataType: 'json',
-        contentType: 'application/json', // Corrected contentType value
-        success: function (data) {
-            console.log('Data received:', data);
-            location.reload();
-        },
-        error: function (xhr, error) {
-            console.log(xhr.responseText)
-            console.log('Error fetching data:', error);
-        }
-    });
-}
-
-
-</script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script src="/js/department-list-view.js"></script>
 <script>
     function notify(notification) {
         showToast(notification);

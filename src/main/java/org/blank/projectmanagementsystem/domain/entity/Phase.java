@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
+import org.blank.projectmanagementsystem.dto.PhaseDto;
 
 @Entity
 @Data

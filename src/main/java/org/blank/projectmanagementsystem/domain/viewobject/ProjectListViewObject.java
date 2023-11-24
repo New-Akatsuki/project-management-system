@@ -17,8 +17,9 @@ public class ProjectListViewObject {
     private String department;
     private LocalDate endDate;
     private String status;
+    private int progress;
 
-    public ProjectListViewObject(Project project){
+    public ProjectListViewObject(Project project, int progress){
         id = project.getId();
         name = project.getName();
         client = project.getClient().getName();
@@ -26,5 +27,6 @@ public class ProjectListViewObject {
         department = project.getDepartment().getName();
         endDate = project.getEndDate();
         status = project.getStatus().name();
+        this.progress = progress;
     }
 }

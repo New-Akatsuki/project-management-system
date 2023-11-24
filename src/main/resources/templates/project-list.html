@@ -62,7 +62,7 @@
 
         .project-card {
             flex: 1;
-            background: #fff;
+            background: white;
             margin-bottom: 20px;
             border: 1px solid rgba(152, 165, 178, 0.85);
             border-radius: 10px;
@@ -88,12 +88,12 @@
 
         .badge {
             padding: 8px 12px;
-            border-radius: 0 5px 0 5px;
+            border-radius: 5px 0 5px 0;
             font-size: 14px;
             font-weight: bold;
             position: absolute;
             top: 0px;
-            right: 0px;
+            left: 0px;
         }
 
         .badge-green {
@@ -101,9 +101,9 @@
             color: #fff;
         }
 
-        .badge-yellow {
-            background-color: #ffc107;
-            color: #000;
+        .badge-gray {
+            background-color: #676767;
+            color: #fff;
         }
 
         .badge-red {
@@ -134,11 +134,32 @@
 
         .card-text {
             font-size: 14px;
+            padding: 1px;
+            margin: 1px;
             color: black;
         }
     </style>
     <!-- ... (previous HTML code) ... -->
+<style>
+    .circle-progress {
+        width: 80px;
+        height: 80px;
+    }
+</style>
+    <style>
+        .circle-progress {
+            position: relative;
+        }
 
+        .progress-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px; /* Adjust the font size as needed */
+            color: #333; /* Adjust the color as needed */
+        }
+    </style>
 </head>
 
 <body>
@@ -181,7 +202,7 @@
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
 <!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/js/pagination.js"></script>
@@ -191,6 +212,15 @@
 <script src="/js/fuse.min.js"></script>
 <script>
     $(document).ready(function () {
+
+        // const projectList = [
+        //     { name: 'Project 1 dfjskfjasklfjsdklfjsklfsdsdfksfsdklkffsd dfasfsdkfasjkfjsd jhghjkjhkjhgghhfhfgfghfth', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'ONGOING', progress: 90 },
+        //     { name: 'Project 2', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'PENDING', progress: 0 },
+        //     { name: 'Project 3', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'COMPLETED', progress: 100 },
+        //     // ... other projects
+        // ];
+        // getSuccess();
+
         let projectList = [];
         // Make an AJAX request to fetch data from the REST API endpoint
         $.ajax({
@@ -235,44 +265,52 @@
             function renderProjectCard(project) {
                 const {name, department, endDate, client, status, id} = project;
                 const userRole = $('#userRole').val();
-                const titleClass = name.length > 20 ? 'small-font-size' : '';
-                const nextLink = userRole==='PM' ? `/projects/${id}/${name}/workspace`:`/projects/${id}/${name}/details`;
+                const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
+                const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
                 const badgeColorClass = status === 'COMPLETED'
-                    ? 'badge-green'
+                    ? 'badge-gray'
                     : status === 'PENDING'
-                        ? 'badge-yellow'
-                        : 'badge-red';
+                        ? 'badge-red'
+                        : 'badge-green';
 
-                const borderTopColor = badgeColorClass === 'badge-green'
-                    ? '#28a745'
-                    : badgeColorClass === 'badge-yellow'
-                        ? '#ffc107'
-                        : '#dc3545';
-
+                const borderTopColor = badgeColorClass === 'badge-gray'
+                    ? '#676767'
+                    : badgeColorClass === 'badge-red'
+                        ? '#dc3545'
+                        : '#28a745';
                 return `
         <div class="col-md-4">
           <a href="${nextLink}" class="card-link">
-            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 230px">
+            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 200px">
               <div class="card-body">
-                <div class="card-title ${titleClass} mt-2 mb-2">${name}</div>
-                <div class="container mb-3">
-                  <p class="card-text"><span><i class="bi bi-laptop"></i>&nbsp${department}</span></p>
-                  <p class="card-text"><span><i class="bi bi-calendar2-x"></i>&nbsp${endDate}</span></p>
-                  <p class="card-text"><span><i class="bi bi-person"></i>&nbsp${client}</span></p>
+                <div class="d-flex justify-content-between container mt-4">
+                  <div class="mt-2">
+                    <p class="card-text"><span><i class="bi bi-briefcase"></i>&nbsp&nbsp${department}</span></p>
+                    <p class="card-text"><span><i class="bi bi-hourglass-bottom"></i>&nbsp&nbsp${endDate}</span></p>
+                    <p class="card-text"><span><i class="bi bi-person"></i>&nbsp&nbsp${client}</span></p>
+                  </div>
+                  <div>
+                  <div class="circle-progress" data-progress="${project.progress / 100}">
+                    <div class="progress-number">${project.progress}%</div>
+                  </div>
+                  </div>
+                </div>
+                <div class="border-top" style="border-top: 1px solid black">
+                <div class="mt-2 text-black fw-bold">${truncatedTitle}</div>
                 </div>
               </div>
               <span class="badge ${badgeColorClass}">${status}</span>
             </div>
           </a>
         </div>
+
       `;
             }
-
             function renderProjectList(projectList) {
                 const userRole = $('#userRole').val();
                 projectList.sort((a, b) => {
                     // Compare by status first (ONGOING, PENDING, COMPLETED)
-                    const statusOrder = { ONGOING: 1, PENDING: 2, COMPLETED: 3 };
+                    const statusOrder = {ONGOING: 1, PENDING: 2, COMPLETED: 3};
                     const statusComparison = statusOrder[a.status] - statusOrder[b.status];
 
                     // If status is different, return the status comparison
@@ -284,11 +322,11 @@
                     return new Date(a.endDate) - new Date(b.endDate);
                 });
                 projectListContainer.empty();
-                if(userRole==='PM'){
+                if (userRole === 'PM') {
                     const linkCard = `
                     <div class="col-md-4">
                       <a href="/projects/new" class="card-link">
-                        <div class="card project-card" style="height: 230px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
+                        <div class="card project-card" style="height: 200px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
                           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                             <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
                             <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
@@ -303,7 +341,17 @@
                 projectList.forEach(function (project) {
                     projectListContainer.append(renderProjectCard(project));
                 });
-                if(userRole!=='PM'&&projectList.length===0){
+                // Initialize Circle Progress
+                $('.circle-progress').each(function () {
+                    var progress = $(this).data('progress');
+                    $(this).circleProgress({
+                        startAngle: -Math.PI / 4 * 2,
+                        value: progress,  // Update to use the 'progress' attribute directly
+                        size: 80,
+                        fill: { gradient: ['#3498db', '#7b89fa'] }
+                    });
+                });
+                if (userRole !== 'PM' && projectList.length === 0) {
                     const html = `<div style="height: 60vh;" class="d-flex flex-column justify-content-center align-items-center">
                                      <i class="bi bi-journal-x display-2 mb-3"></i>
                                      <h3>No Projects Found!</h3>

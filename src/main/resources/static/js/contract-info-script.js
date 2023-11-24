@@ -217,7 +217,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 $("#addDeliverablesModal").modal('hide');
-
                 // Update the deliverable in the contractInfo object
                 contractInfo.deliverables.push(data);
                 //reload Table
@@ -226,7 +225,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
-                alert('Error! Please try again.', error);
+                $("#addDeliverableSameNameError").removeClass("d-none");
             }
         });
     }
@@ -256,8 +255,7 @@ $(document).ready(function () {
                 renderClientTable(contractInfo.clients);
             },
             error: function (xhr, status, error) {
-                console.log("ERROR: ", xhr.responseText);
-                alert('Error! Please try again.', error);
+                $("#addClientSameNameError").removeClass("d-none");
             }
         });
     }
@@ -288,8 +286,7 @@ $(document).ready(function () {
 
             },
             error: function (xhr, status, error) {
-                console.log("ERROR: ", xhr.responseText);
-                alert('Error! Please try again.', error);
+                $("#addArchitectureSameNameError").removeClass("d-none");
             }
         });
     }
@@ -323,7 +320,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
-                alert('Error! Please try again.', error);
+                $('#addSystemOutlineSameNameError').removeClass('d-none');
             }
         });
     }
@@ -356,7 +353,6 @@ $(document).ready(function () {
             success: function (data) {
                 // Handle success response if needed
                 console.log("SUCCESS: ", data);
-
                 console.log("contractINfo", contractInfo);
                 // Update the deliverable in the contractInfo object
                 contractInfo.deliverables = contractInfo.deliverables.map(deliverable => {
@@ -368,7 +364,6 @@ $(document).ready(function () {
 
                 //reload Table
                 renderDeliverableTable(contractInfo.deliverables);
-
                 // Close the modal after updating
                 $('#editDeliverableModal').modal('hide');
 
@@ -376,7 +371,7 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
                 // Optionally, close the modal on error if desired
-                $('#editDeliverableModal').modal('hide');
+                $('#editDeliverableSameNameError').removeClass("d-none");
             }
         });
     }
@@ -432,9 +427,7 @@ $(document).ready(function () {
 
             },
             error: function (xhr, status, error) {
-                console.log("ERROR: ", xhr.responseText);
-                // Optionally, close the modal on error if desired
-                $('#editClientModal').modal('hide');
+                $('#editClientSameNameError').removeClass('d-none');
             }
         });
     }
@@ -452,8 +445,6 @@ $(document).ready(function () {
         if (name === '' || type === '') {
             return;
         }
-
-
         // Prepare updated deliverable object
         let updatedArchitecture = {
             id: id,
@@ -491,12 +482,10 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
-                // Optionally, close the modal on error if desired
-                $('#editArchitectureModal').modal('hide');
+                $('#editArchitectureSameNameError').removeClass('d-none');
             }
         });
     }
-
     /*===================================================
           update systemOutline to database
    ===================================================*/
@@ -511,7 +500,6 @@ $(document).ready(function () {
                 name: name,
 
             };
-
             console.log("Updated SystemOutline: ", updatedSystemOutline)
             // Make a PUT request to update the deliverable data
             $.ajax({
@@ -523,7 +511,6 @@ $(document).ready(function () {
                 success: function (data) {
                     // Handle success response if needed
                     console.log("SUCCESS: ", data);
-
                     console.log("contractINfo", contractInfo);
                     // Update the systemOutline in the contractInfo object
                     contractInfo.systems = contractInfo.systems.map(systemOutline => {
@@ -532,18 +519,13 @@ $(document).ready(function () {
                         }
                         return systemOutline;
                     })
-
                     //reload Table
                     renderSystemOutlineTable(contractInfo.systems);
-
                     // Close the modal after updating
                     $('#editSystemOutlineModal').modal('hide');
-
                 },
                 error: function (xhr, status, error) {
-                    console.log("ERROR: ", xhr.responseText);
-                    // Optionally, close the modal on error if desired
-                    $('#editSystemOutlineModal').modal('hide');
+                    $('#editSystemOutlineSameNameError').removeClass('d-none');
                 }
             });
         }
@@ -564,7 +546,7 @@ $(document).ready(function () {
             open edit deliverable modal
     ===================================================*/
     function openEditDeliverableModal(deliverableId) {
-
+        $('#editDeliverableSameNameError').addClass('d-none');
         const deliverable = contractInfo.deliverables.filter(deliverable => deliverable.id === deliverableId)[0];
 
         // Populate modal fields with deliverable data
@@ -578,7 +560,6 @@ $(document).ready(function () {
             open edit Client modal
     ===================================================*/
     function openEditClientModal(clientId) {
-
         const client = contractInfo.clients.filter(client => client.id === clientId)[0];
 
         // Populate modal fields with deliverable data
@@ -596,7 +577,7 @@ $(document).ready(function () {
            open edit Architecture modal
    ===================================================*/
     function openEditArchitectureModal(architectureId) {
-
+        $('#editArchitectureSameNameError').addClass('d-none');
         const architecture = contractInfo.architectures.filter(architecture => architecture.id === architectureId)[0];
 
         // Populate modal fields with deliverable data
@@ -611,6 +592,7 @@ $(document).ready(function () {
            open edit systemOutline modal
    ===================================================*/
     function openEditSystemOutlineModal(systemOutlineId) {
+        $('#editSystemOutlineSameNameError').addClass('d-none');
         console.log("systemOutlineId", systemOutlineId);
         const systemOutline = contractInfo.systems.filter(systemOutline => systemOutline.id === systemOutlineId)[0];
         // Populate modal fields with deliverable data
