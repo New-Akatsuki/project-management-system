@@ -2,7 +2,7 @@ package org.blank.projectmanagementsystem.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
+import org.blank.projectmanagementsystem.dto.PhaseDto;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.mapper.TaskMapper;

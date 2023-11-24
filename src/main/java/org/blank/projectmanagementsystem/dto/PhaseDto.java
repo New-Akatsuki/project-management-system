@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.domain.formInput;
+package org.blank.projectmanagementsystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

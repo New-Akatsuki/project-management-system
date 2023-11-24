@@ -1,7 +1,6 @@
 package org.blank.projectmanagementsystem.service;
 
-import org.blank.projectmanagementsystem.domain.entity.Phase;
-import org.blank.projectmanagementsystem.domain.formInput.PhaseDto;
+import org.blank.projectmanagementsystem.dto.PhaseDto;
 
 import java.util.List;
 
