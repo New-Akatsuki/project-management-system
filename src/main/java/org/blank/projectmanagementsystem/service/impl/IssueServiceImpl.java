@@ -36,27 +36,27 @@ public class IssueServiceImpl implements IssueService {
         return userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
-    @Override
-    public Issue createIssue(IssueFormInput issueFormInput) {
-        Issue issue = null;
-        if(issueFormInput.getId()!=null){
-            issue = issueRepository.findById(issueFormInput.getId()).orElseThrow();
-            issue.setModifyAt(LocalDateTime.now());
-        }else{
-            issue = new Issue();
+        @Override
+        public Issue createIssue(IssueFormInput issueFormInput) {
+            Issue issue = null;
+            if(issueFormInput.getId()!=null){
+                issue = issueRepository.findById(issueFormInput.getId()).orElseThrow();
+                issue.setModifyAt(LocalDateTime.now());
+            }else{
+                issue = new Issue();
+            }
+            //map issueFormInput to issue
+            issue.setTitle(issueFormInput.getTitle());
+            issue.setContent(checkAndResizeImage(issueFormInput.getContent()));
+            issue.setDirectCause(checkAndResizeImage(issueFormInput.getDirectCause()));
+            issue.setRootCause(checkAndResizeImage(issueFormInput.getRootCause()));
+            issue.setIssueCategory(issueCategoryRepository.findById(issueFormInput.getIssueCategory()).orElseThrow());
+            issue.setIssuePlace(issuePlaceRepository.findById(issueFormInput.getIssuePlace()).orElseThrow());
+            issue.setCreatedBy(getCurrentUser());
+            issue.setPic(userRepository.findById(issueFormInput.getPic()).orElseThrow());
+            issue.setResponsibleParty(responsiblePartyRepository.findById(issueFormInput.getResponsibleParty()).orElseThrow());
+            return issueRepository.save(issue);
         }
-        //map issueFormInput to issue
-        issue.setTitle(issueFormInput.getTitle());
-        issue.setContent(checkAndResizeImage(issueFormInput.getContent()));
-        issue.setDirectCause(checkAndResizeImage(issueFormInput.getDirectCause()));
-        issue.setRootCause(checkAndResizeImage(issueFormInput.getRootCause()));
-        issue.setIssueCategory(issueCategoryRepository.findById(issueFormInput.getIssueCategory()).orElseThrow());
-        issue.setIssuePlace(issuePlaceRepository.findById(issueFormInput.getIssuePlace()).orElseThrow());
-        issue.setCreatedBy(getCurrentUser());
-        issue.setPic(userRepository.findById(issueFormInput.getPic()).orElseThrow());
-        issue.setResponsibleParty(responsiblePartyRepository.findById(issueFormInput.getResponsibleParty()).orElseThrow());
-        return issueRepository.save(issue);
-    }
 
     private String checkAndResizeImage(String content) {
         return content.replace("<img", "<img style=\"width: 100%; height: auto;\"");

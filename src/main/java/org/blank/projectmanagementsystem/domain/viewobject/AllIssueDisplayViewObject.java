@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.Issue;
@@ -8,7 +9,9 @@ import org.blank.projectmanagementsystem.domain.entity.Issue;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
+
 public class AllIssueDisplayViewObject {
     private Long id;
     private String title;
