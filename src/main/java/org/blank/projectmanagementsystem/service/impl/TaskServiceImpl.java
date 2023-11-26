@@ -186,5 +186,24 @@ public class TaskServiceImpl implements TaskService {
             clearAssignees(val);
         });
     }
+
+    public List<Task> findAllByParentTask(Task parentTask) {
+        return taskRepository.findAllByParentTask(parentTask);
+    }
+
+
+    public List<Task> findAllByProjectId(Long projectId) {
+        return taskRepository.findAllByProjectId(projectId);
+    }
+
+    public List<Task> findAllByProjectIdAndAssigneesContaining(Long projectId, User assignee) {
+        return taskRepository.findAllByProjectIdAndAssigneesContaining(projectId, assignee);
+    }
+
+    public List<Task> findAllByAssigneesId(Long assigneeId) {
+        return taskRepository.findAllByAssigneesId(assigneeId);
+    }
+
+
 }
 

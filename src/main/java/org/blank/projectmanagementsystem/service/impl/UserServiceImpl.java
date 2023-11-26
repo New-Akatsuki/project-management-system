@@ -212,4 +212,27 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> findByUsernameOrEmail(String username, String email) {
+        return userRepository.findByUsernameOrEmail(username, email);
+    }
+
+    public Long countByDepartment(Department department) {
+        return userRepository.countByDepartment(department);
+    }
+
+    public List<User> findAllByDepartment(Department department) {
+        return userRepository.findAllByDepartment(department);
+    }
+
+    public List<User> findAllByDepartmentAndRole(Department department, Role role) {
+        return userRepository.findAllByDepartmentAndRole(department, role);
+    }
 }

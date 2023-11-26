@@ -60,6 +60,8 @@ public class User implements Serializable,UserDetails {
 
     private boolean defaultPassword = true;
 
+
+
     public String getPhotoDataAsString() {
         return (photoData != null) ? ImageEncoder.encodeToBase64(photoData) : null;
     }

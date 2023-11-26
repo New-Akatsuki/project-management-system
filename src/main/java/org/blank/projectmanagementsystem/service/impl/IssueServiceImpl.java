@@ -33,7 +33,8 @@ public class IssueServiceImpl implements IssueService {
 
     private User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(username, username).orElse(null);
+        return userRepository.findByUsernameOrEmail(username, username).orElseThrow();
+
     }
 
     @Override
@@ -149,4 +150,34 @@ public class IssueServiceImpl implements IssueService {
         return issueRepository.findByCreatedByID(id);
     }
 
+    public Issue addSolutionToIssue(IssueSolveFormInput formInput) {
+        Issue issue = issueRepository.findById(formInput.getId()).orElseThrow();
+        issue.setSolved(true);
+        issue.setCorrectiveAction(formInput.getCoAction());
+        issue.setPreventiveAction(formInput.getPreAction());
+        issue.setImpact(formInput.getImpact());
+        issue.setSolutionCreatedAt(LocalDateTime.now());
+        return issueRepository.save(issue);
+    }
+
+    public List<Issue> getAllIssues() {
+        return issueRepository.findAll();
+    }
+
+
+    public List<IssuePlace> getAllIssuePlaces() {
+        return issuePlaceRepository.findAll();
+    }
+
+    public IssuePlace getIssuePlaceById(Long placeId) {
+        return issuePlaceRepository.findById(placeId).orElseThrow();
+    }
+
+    public List<IssueDetailsViewObject> getIssueDetailsViewObjectByIssueId(Long issueId) {
+        return issueRepository.getIssueDetailsViewObjectByIssueId(issueId);
+    }
+
+    public List<IssueSolutionViewObject> getIssueSolutionViewObjectByIssueId(Long issueId) {
+        return issueRepository.getIssueSolutionViewObjectByIssueId(issueId);
+    }
 }

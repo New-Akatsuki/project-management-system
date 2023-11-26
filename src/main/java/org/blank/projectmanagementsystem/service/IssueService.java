@@ -24,6 +24,5 @@ public interface IssueService {
     IssueSolutionViewObject getIssueSolutionById(Long id);
     List<AllIssueDisplayViewObject> getAllIssueByPic(Long id);
     Issue addSolutiontoIssue(IssueSolveFormInput issueSolveFormInput);
-
     List<AllIssueDisplayViewObject> getAllIssueByCreatedById(Long id);
 }

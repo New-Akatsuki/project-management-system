@@ -31,4 +31,5 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
     //find all by department id
     List<Project> findByDepartmentId(Integer department_id);
 
+
 }

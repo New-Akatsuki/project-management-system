@@ -29,4 +29,9 @@ public class ReviewCount implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Project project;
+
+    public void setProjectId(Long projectId) {
+        this.project = new Project();
+        this.project.setId(projectId);
+    }
 }

@@ -175,6 +175,31 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.getReferenceById(projectId);
     }
 
+    @Override
+    public List<Project> findAllByProjectManager(User projectManager) {
+        return projectRepository.findAllByProjectManager(projectManager);
+    }
+
+    @Override
+    public List<Project> findAllByDepartment(Department department) {
+        return projectRepository.findAllByDepartment(department);
+    }
+
+    @Override
+    public List<Project> findAllProjectsByUserInMembers(User user) {
+        return projectRepository.findAllProjectsByUserInMembers(user);
+    }
+
+    @Override
+    public Optional<List<Project>> findAllProjectsByUserInMembersAndStatus(User user, ProjectStatus status) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Project> findByDepartmentId(Integer departmentId) {
+        return projectRepository.findByDepartmentId(departmentId);
+    }
+
     private User getCurrentUser(){
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByUsernameOrEmail(username,username).orElseThrow();

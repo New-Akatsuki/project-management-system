@@ -25,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department updateDepartment(Department department) {
         //check if department exists
         Department existingDepartment = departmentRepository.findById(department.getId()).orElse(null);
+
         if (existingDepartment == null) {
             log.error("Department with id {} not found", department.getId());
             return null;
@@ -37,7 +38,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department getDepartmentById(Integer id) {
-        return departmentRepository.findById(id).orElse(null);
+
+        //return departmentRepository.findById(id).orElse(null);
+        return departmentRepository.getReferenceById(id);
     }
 
 
@@ -51,6 +54,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getDepartmentByName(String departmentName) {
         return departmentRepository.findDepartmentByName(departmentName);
     }
+
+    @Override
+    public Department findDepartmentByName(String departmentName) {
+        Department departmentByName = departmentRepository.findDepartmentByName(departmentName);
+        return departmentByName;
+    }
+
 
     @Override
     public List<Department> getAllDepartments() {

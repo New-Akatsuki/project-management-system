@@ -30,4 +30,5 @@ public class AmountServiceImp implements AmountService {
     public Amount findByProjectIdAndDevelopmentPhase(Long projectId, DevelopmentPhase developmentPhase) {
         return amountRepository.findByProjectIdAndDevelopmentPhase(projectId, developmentPhase);
     }
+
 }

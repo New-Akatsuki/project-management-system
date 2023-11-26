@@ -11,5 +11,5 @@ import java.io.Serializable;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 public enum Role {
-    PMO,SDQC,DH,PM,MEMBER
+    PMO,SDQC,DH,PM, ADMIN, MEMBER
 }

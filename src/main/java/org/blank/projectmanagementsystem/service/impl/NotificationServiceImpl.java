@@ -93,4 +93,8 @@ public class NotificationServiceImpl implements NotificationService {
         log.info("hhh {}",notification);
         notificationRepo.save(notification);
     }
+
+    public List<Notification> findAllByRecipientEmailOrRecipientUsername(String testEmail, String testUsername) {
+        return notificationRepo.findAllByRecipientEmailOrRecipientUsername(testEmail, testUsername);
+    }
 }

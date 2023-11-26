@@ -34,4 +34,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByDepartment(Department department);
 
     List<User> findAllByDepartmentAndRole(Department department, Role role);
+
+    void saveDepartment(Department department);
+
+    void changeDefaultPassword(String newPassword);
+
+    void updatePassword(String newPassword);
 }

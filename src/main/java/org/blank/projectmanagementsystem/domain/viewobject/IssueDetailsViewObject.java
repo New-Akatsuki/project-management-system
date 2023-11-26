@@ -62,4 +62,6 @@ public class IssueDetailsViewObject {
         this.pic = pic;
         this.picId = picId;
     }
+
+
 }

@@ -75,4 +75,13 @@ public class PhaseServiceImpl implements PhaseService {
             clearAssignees(val);
         });
     }
+
+    public List<Phase> findByProjectId(Long projectId) {
+        return phaseRepository.findByProjectId(projectId);
+    }
+
+
+    public Phase save(Phase phase) {
+        return phaseRepository.save(phase);
+    }
 }
