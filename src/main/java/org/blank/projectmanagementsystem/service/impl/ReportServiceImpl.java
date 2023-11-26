@@ -26,21 +26,20 @@ import java.util.Map;
 public class ReportServiceImpl implements ReportService {
 
     @Override
-    public void generatePdf(HttpServletResponse response, List<?> data, String jrxmlFileName, String exportFileName) {
-        // Load the Jasper report template
+    public void generatePdf(HttpServletResponse response, Map<String, Object> dataBeans, String jrxmlFileName, String exportFileName) {
         try (InputStream reportTemplate = getClass().getResourceAsStream(String.format("/%s.jrxml", jrxmlFileName))) {
 
             // Compile the Jasper report from .jrxml to .jasper
             JasperReport jasperReport = JasperCompileManager.compileReport(reportTemplate);
 
-            // Get your data source
-            JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(data);
-
             // Add parameters
             Map<String, Object> parameters = new HashMap<>();
 
+            // Add all beans to the parameters map
+            parameters.putAll(dataBeans);
+
             // Fill the report
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrBeanCollectionDataSource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 
             // Set response content type and headers for PDF download
             response.setContentType("application/pdf");

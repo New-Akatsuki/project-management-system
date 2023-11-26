@@ -70,6 +70,9 @@
                 <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
                 </h1>
                 <div class="d-flex gap-2">
+                    <a class="btn btn-info icon-add-btn" href="/export-project-pdf">
+                        Export
+                    </a>
                     <button sec:authorize="hasAuthority('PM')" class="btn btn-info icon-add-btn" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         KPI
                     </button>
