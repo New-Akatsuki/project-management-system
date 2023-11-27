@@ -99,6 +99,27 @@ public class NotificationAspect {
     }
 
     @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.IssueServiceImpl.addSolutiontoIssue(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterIssueAlreadySolved(Issue result) throws JsonProcessingException {
+        if (result!=null){
+            User user = getCurrentUser();
+            Notification notification = Notification.builder()
+                    .message("Issue " + result.getTitle()+ " has been filled with solutions by " + user.getName())
+                    .date(LocalDateTime.now())
+                    .link("/issues/"+result.getId()+"/details")
+                    .type(NotificationType.TASK)
+                    .recipient(result.getCreatedBy())
+                    .isRead(false)
+                    .build();
+            notificationService.saveNotification(notification);
+            notificationService.sendNotification(notification, result.getCreatedBy().getId());
+        }
+    }
+
+    @AfterReturning(
             pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.TaskServiceImpl.createTask(..))",
             argNames = "result",
             returning = "result"
@@ -145,5 +166,7 @@ public class NotificationAspect {
             }
         }
     }
+
+
 
 }

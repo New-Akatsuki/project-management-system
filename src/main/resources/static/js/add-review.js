@@ -17,7 +17,7 @@ function prepareModal2(action){
 
 function fetchExistingReview(){
     let projectId = $('#projectId').val();
-    let reviewerType = $('#reviewerType').val();
+    let reviewerType = $('#reviewerType').val()||"INTERNAL";
 
     // Check if a project is selected
     if (!projectId || projectId === '#') {

@@ -67,7 +67,7 @@ public class ProjectAPI {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "project-report.pdf");
+            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+"-report.pdf").toLowerCase());
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class ProjectAPI {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); // Set content type to APPLICATION_OCTET_STREAM for binary data
-            headers.setContentDispositionFormData("attachment", "project-report.xlsx");
+            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+"-report.pdf").toLowerCase());
 
             return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
         } catch (Exception e) {

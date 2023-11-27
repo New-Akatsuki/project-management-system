@@ -505,7 +505,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="phaseName">Phase Name:</label>
                             <input type="text" id="${phaseData.title.toLowerCase()}PhaseName" class="form-control" placeholder="Enter Phase Name">
                         </div>
                         <div id="deleteBtnPlaceInEditPhaseModal" class="modal-footer d-flex flex-row-reverse justify-content-between">
@@ -958,7 +957,7 @@
         function buildAddTaskModal(minDate = null, maxDate = null) {
             $('#exampleModal').remove();
             const addTaskModal = `
-              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <form id="addTaskForm" autocomplete="off">
                         <div class="modal-content">

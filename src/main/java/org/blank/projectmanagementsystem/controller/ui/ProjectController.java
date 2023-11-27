@@ -1,5 +1,7 @@
 package org.blank.projectmanagementsystem.controller.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
@@ -53,7 +55,7 @@ public class ProjectController {
 
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','Dh','PM')")
     @GetMapping("/projects/{id}/{name}/details")
-    public ModelAndView showProjectDetails(@PathVariable Long id, @PathVariable String name){
+    public ModelAndView showProjectDetails(@PathVariable Long id, @PathVariable String name, Model model){
         ProjectViewObject project = projectService.getProjectById(id);
         return new ModelAndView("project-details-info","currentProject",project);
     }

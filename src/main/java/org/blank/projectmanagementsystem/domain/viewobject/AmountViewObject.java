@@ -12,4 +12,5 @@ public class AmountViewObject {
         this.name = amount.getDevelopmentPhase().name();
         this.amount = amount.getAmount();
     }
+
 }

@@ -407,16 +407,18 @@
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
 <script>
+
     function notify(notification) {
         showToast(notification);
     }
     $(document).ready(function () {
+        fetchExistingData();
+        fetchExistingReview();
+
         // Add a submit event listener to the export form
         $("#exportPdfForm").on("submit", function () {
             // Show the spinner
             $("#spinner").removeClass("d-none").addClass("d-flex")
-
-            // Use a callback function to hide the spinner after the form is submitted
             $(this).ajaxSubmit({
                 success: function () {
                     // Hide the spinner when the export is successful
@@ -425,6 +427,7 @@
                 }
             });
         });
+
         $("#exportExcelForm").on("submit", function () {
             // Show the spinner
             $("#spinnerExcel").removeClass("d-none").addClass("d-flex")
