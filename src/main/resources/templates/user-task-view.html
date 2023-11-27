@@ -252,6 +252,10 @@
 
 <script>
     let currentTab;
+    if($('#projectId').val()){
+        $('#projectSelect').val($('#projectId').val()).trigger('change');
+    }
+
     // Add fade animation to the modal
     $('#taskModal').on('show.bs.modal', function () {
         $(this).find('.modal-dialog').addClass('fade');
