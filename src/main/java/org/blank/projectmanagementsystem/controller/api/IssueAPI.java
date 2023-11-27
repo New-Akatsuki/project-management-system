@@ -9,13 +9,20 @@ import org.blank.projectmanagementsystem.domain.formInput.ResPartyFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.IssueDetailsViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.IssueSolutionViewObject;
+import org.blank.projectmanagementsystem.dto.IssueReportDto;
+import org.blank.projectmanagementsystem.dto.ProjectReportDto;
 import org.blank.projectmanagementsystem.repository.ResponsiblePartyRepository;
 import org.blank.projectmanagementsystem.service.IssueService;
 import org.blank.projectmanagementsystem.service.ProjectService;
+import org.blank.projectmanagementsystem.service.ReportService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +32,8 @@ import java.util.Map;
 public class IssueAPI {
     private final IssueService issueService;
     private final ProjectService projectService;
+    private final ReportService reportService;
+
     @GetMapping("/get-category")
     public ResponseEntity<List<IssueCategory>> getIssueCategory() {
         List<IssueCategory> issueCategories = issueService.getAllCategory();
@@ -106,5 +115,61 @@ public class IssueAPI {
         List<AllIssueDisplayViewObject> allIssuesViewObject = issueService.getAllIssueByCreatedById(id);
         log.info("get issue by pic {} \n\n", allIssuesViewObject);
         return ResponseEntity.ok(allIssuesViewObject);
+    }
+
+    @GetMapping("/export-issue-pdf")
+    public ResponseEntity<byte[]> export(@RequestParam Long issueId) {
+        try {
+            IssueReportDto issueReportDto = new IssueReportDto(issueService.getIssueById(issueId));
+            Map<String, Object> issueParam = new HashMap<>();
+            issueParam.put("issue", issueReportDto);
+
+            byte[] pdfBytes = reportService.generatePdf(issueParam, "IssueReport");
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "issue-report.pdf");
+
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/convert-to-pdf")
+    public ResponseEntity<byte[]> convertToPdf(@RequestBody HtmlRequest htmlRequest) {
+        try {
+            // Get the HTML content from the request
+            String html = htmlRequest.getHtml();
+
+            // Call your PDF conversion service (similar to the previous example)
+            byte[] pdfBytes = reportService.convertHtmlToPdf(html);// Call your PDF conversion logic here
+
+            // Respond with the PDF
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .header("Content-Disposition", "attachment; filename=converted_page.pdf")
+                    .body(pdfBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(500)
+                    .body(null);
+        }
+    }
+
+    // Define a simple DTO for receiving HTML content in the request
+    public static class HtmlRequest {
+        private String html;
+
+        public String getHtml() {
+            return html;
+        }
+
+        public void setHtml(String html) {
+            this.html = html;
+        }
     }
 }

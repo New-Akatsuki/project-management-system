@@ -121,7 +121,7 @@
     <!-- End Page Title -->
     <div class="card" style="border-radius: 18px; margin: 20px 28px">
         <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
-            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Issue</h2>
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Edit Issue</h2>
             <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
                   id="create-issue">
                 <div class="container d-flex flex-column gap-2">
@@ -220,7 +220,7 @@
                             <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
                         </a>
                         <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
-                            <i class="bi bi-save"></i>&nbsp;Create
+                            <i class="bi bi-save"></i>&nbsp;Update
                         </button>
                     </div>
                 </div>
@@ -341,6 +341,7 @@
 <script th:src="@{/js/text-editor.js}"></script>
 
 <script>
+
     function toggleLoadingSpinner(show) {
         const dimOverlay = $('#dim-overlay');
         const spinner = $('#loadingSpinner');
@@ -399,6 +400,10 @@
 <script>
     $(document).ready(function () {
         $('.js-example-basic-single').select2();
+        // Use the css method to set the transform property
+        $("#notiArea").css({
+            "transform": "translate(-32px, 40.8px) !important",
+        });
     });
 </script>
 

@@ -16,7 +16,7 @@ public class SystemOutlineAPI {
 
     @GetMapping("/system-outlines")
     public ResponseEntity<List<SystemOutline>> getSystemOutlines() {
-        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
+        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlineByStatusTrue();
         return ResponseEntity.ok(systemOutlines);
     }
     @PostMapping("/add-system-outline") // Changed endpoint

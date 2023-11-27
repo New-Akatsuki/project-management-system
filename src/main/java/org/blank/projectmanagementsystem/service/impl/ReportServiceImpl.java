@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.service.impl;
 
+import com.itextpdf.text.DocumentException;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -9,11 +10,9 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.blank.projectmanagementsystem.service.ReportService;
 import org.springframework.stereotype.Service;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +23,43 @@ import java.util.Map;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+
+    @Override
+    public byte[] convertHtmlToPdf(String html) throws IOException, DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(html);
+        renderer.layout();
+        renderer.createPDF(outputStream);
+
+        return outputStream.toByteArray();
+    }
+
+    @Override
+    public byte[] generatePdf(Map<String, Object> dataBeans, String jrxmlFileName) {
+        try (InputStream reportTemplate = getClass().getResourceAsStream(String.format("/%s.jrxml", jrxmlFileName))) {
+            // Compile the Jasper report from .jrxml to .jasper
+            JasperReport jasperReport = JasperCompileManager.compileReport(reportTemplate);
+
+            // Add parameters
+            Map<String, Object> parameters = new HashMap<>();
+
+            // Add all beans to the parameters map
+            parameters.putAll(dataBeans);
+
+            // Fill the report
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+
+            // Export the report to a byte array
+            return JasperExportManager.exportReportToPdf(jasperPrint);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Return an empty array or handle the exception as needed
+            return new byte[0];
+        }
+    }
+
 
     @Override
     public void generatePdf(HttpServletResponse response, Map<String, Object> dataBeans, String jrxmlFileName, String exportFileName) {
@@ -51,50 +87,37 @@ public class ReportServiceImpl implements ReportService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle any exceptions here
         }
     }
 
     @Override
-    public void generateExcel(HttpServletResponse response, List<?> data, String jrxmlFileName, String exportFileName) {
-        // Load the Jasper report template
+    public byte[] generateExcel(Map<String, Object> dataBeans, String jrxmlFileName) {
         try (InputStream reportTemplate = getClass().getResourceAsStream(String.format("/%s.jrxml", jrxmlFileName))) {
-
-            // Compile the Jasper report from .jrxml to .jasper (if needed)
+            // Compile the Jasper report from .jrxml to .jasper
             JasperReport jasperReport = JasperCompileManager.compileReport(reportTemplate);
 
-            // Create a JRBeanCollectionDataSource with your data
-            JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(data);
-
-            // Add parameters if needed
+            // Add parameters
             Map<String, Object> parameters = new HashMap<>();
+            // Add all beans to the parameters map
+            parameters.putAll(dataBeans);
 
             // Fill the report
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrBeanCollectionDataSource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
 
-            // Create the XLSX exporter
+            // Export the report to XLSX format
+            ByteArrayOutputStream xlsStream = new ByteArrayOutputStream();
             JRXlsxExporter exporter = new JRXlsxExporter();
 
-            // Set the XLSX export configuration
-            SimpleXlsxReportConfiguration reportConfigXLS = new SimpleXlsxReportConfiguration();
-            reportConfigXLS.setSheetNames(new String[]{"Sheet1"}); // Set sheet name(s) as needed
-            exporter.setConfiguration(reportConfigXLS);
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(xlsStream));
 
-            // Set response content type and headers for XLSX download
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-Disposition", String.format("attachment; filename=%s.xlsx", exportFileName));
+            exporter.exportReport();
 
-            try (OutputStream outputStream = response.getOutputStream()) {
-                // Set the exporter input and output
-                exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-                exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
-
-                // Export the report to XLSX
-                exporter.exportReport();
-            }
+            return xlsStream.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
-            // Handle any exceptions here
+            // Return an empty array or handle the exception as needed
+            return new byte[0];
         }
     }
 

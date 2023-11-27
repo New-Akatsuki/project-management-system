@@ -17,6 +17,9 @@ import org.blank.projectmanagementsystem.dto.ProjectReportDto;
 import org.blank.projectmanagementsystem.service.PhaseService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.ReportService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,15 +57,44 @@ public class ProjectAPI {
     }
 
     @GetMapping("/export-project-pdf")
-    public void export(HttpServletResponse response) {
-        ProjectReportDto projectReportDto = new ProjectReportDto(projectService.getProject(1L));
+    public ResponseEntity<byte[]> export(@RequestParam Long projectId) {
+        try {
+            ProjectReportDto projectReportDto = new ProjectReportDto(projectService.getProject(projectId));
+            Map<String, Object> dataBeans = new HashMap<>();
+            dataBeans.put("project", projectReportDto);
 
-        Map<String, Object> dataBeans = new HashMap<>();
-        dataBeans.put("project", projectReportDto);
-//        dataBeans.put("contractMember", projectReportDto.getContractMembers());
+            byte[] pdfBytes = reportService.generatePdf(dataBeans, "ProjectReport");
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "project-report.pdf");
 
-        reportService.generatePdf(response, dataBeans, "ProjectReport", "project-report");
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @GetMapping("/export-project-xlsx")
+    public ResponseEntity<byte[]> exportXlsx(@RequestParam Long projectId) {
+        try {
+            ProjectReportDto projectReportDto = new ProjectReportDto(projectService.getProject(projectId));
+            Map<String, Object> dataBeans = new HashMap<>();
+            dataBeans.put("project", projectReportDto);
+
+            byte[] excelBytes = reportService.generateExcel(dataBeans, "ProjectReport"); // Use generateExcel instead of generatePdf
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); // Set content type to APPLICATION_OCTET_STREAM for binary data
+            headers.setContentDispositionFormData("attachment", "project-report.xlsx");
+
+            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
