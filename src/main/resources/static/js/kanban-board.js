@@ -188,7 +188,6 @@
             build_subtask();
             enableDragAndDrop();
         }
-
         /* ===========================================================
         *  Build Sections UI Function
         * ============================================================*/
@@ -911,7 +910,7 @@
                             <div class="row" style="padding:10px">
                               <div class="col-6">
                                 <label for="planHour">Plan Hour :</label>
-                                <input type="number" id="planHour" class="inputmodalbox"
+                                <input type="number" id="planHour" class="inputmodalbox" min="1" autocomplete="off" step="0.5"
                                 placeholder="Enter plan hour" value="${item.plan_hours}" disabled>
                               </div>
                               <div class="col-6">
@@ -990,7 +989,7 @@
                                         </div>
                                         <div class="form-group mb-0 flex-3 d-flex flex-column">
                                             <label for="task-plan-hours" class="form-label">Plan Hours:</label>
-                                            <input type="number" step="0.1" min="0" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
+                                            <input type="number" step="0.5" min="1" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-2">
