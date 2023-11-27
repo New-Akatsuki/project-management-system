@@ -115,14 +115,8 @@ public class UserAPI {
     }
 
     @PostMapping("/users/check-current-password")
-    public ResponseEntity<String> checkCurrentPassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
-        boolean chpwd = userService.checkCurrentPassword(changePasswordFormInput.getCurrentPassword());
-        if (chpwd) {
-            String cp = changePasswordFormInput.getCurrentPassword();
-            return ResponseEntity.ok(cp);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Boolean checkCurrentPassword(@RequestBody ChangePasswordFormInput changePasswordFormInput) {
+        return userService.checkCurrentPassword(changePasswordFormInput.getCurrentPassword());
     }
 
     @PostMapping("/check-user-by-username")

@@ -23,7 +23,7 @@
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
     <link rel="stylesheet" href="/css/hope.css">
-
+    <link rel="stylesheet" href="/css/modal.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
@@ -95,54 +95,138 @@
 
 <!--Modal box-->
 <!--Add department-->
-<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form id="addDepartmentForm">
+<!--<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel"-->
+<!--     aria-hidden="true">-->
+<!--    <div class="modal-dialog" role="document">-->
+<!--        <form id="addDepartmentForm">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="name">Department Name:</label>-->
+<!--                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name" required>-->
+<!--                        <span class="invalid-feedback" id="name_error"></span>-->
+<!--                    </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                <button type="submit" class="btn btn-primary">Save</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Create New Department</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Department Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name" required>
-                        <span class="invalid-feedback" id="name_error"></span>
+            <form id="addDepartmentForm">
+                <div style="align-items: center; padding: 10px">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name" required>
+                            <span class="invalid-feedback" id="name_error"></span>
+                        </div>
+                    <div class="d-flex justify-content-end mb-1">
+                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                           data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded"
+                                style="padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Add
+                        </button>
                     </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
+                </div>
+
+            </form>
         </div>
-        </form>
     </div>
 </div>
 
-
 <!-- Edit Department Modal-->
+<!--<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="departmentEditModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog d-flex align-items-center">-->
+<!--        <form id="editDepartmentForm">-->
+<!--        <div class="modal-content" style="width: 500px!important;">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title fs-5">Edit Department</h5>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                    <div class="form-group">-->
+<!--                        <input type="hidden" class="form-control" id="editId">-->
+<!--                        <label for="editDepartmentName">Department name:</label>-->
+<!--                        <input type="text" class="form-control" id="editDepartmentName" required>-->
+<!--                        <span class="invalid-feedback" id="editDepartmentName_error"></span>-->
+<!--                    </div>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--                <button type="submit" class="btn btn-primary">Update</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="departmentEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
-        <form id="editDepartmentForm">
-        <div class="modal-content" style="width: 500px!important;">
-            <div class="modal-header">
-                <h5 class="modal-title fs-5">Edit Department</h5>
+        <div class="modal-content">
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Department</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-body">
+            <form id="editDepartmentForm">
+                <div style="align-items: center; padding: 15px">
                     <div class="form-group">
                         <input type="hidden" class="form-control" id="editId">
-                        <label for="editDepartmentName">Department name:</label>
                         <input type="text" class="form-control" id="editDepartmentName" required>
                         <span class="invalid-feedback" id="editDepartmentName_error"></span>
                     </div>
+                    <div class="d-flex justify-content-end mb-1">
+                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                           data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle"></i>&nbsp;Close
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary rounded"
+                                style="padding: 10px 15px">
+                            <i class="bi bi-plus-circle"></i>&nbsp;Update
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationDepartmentModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-content">
+            <div class="d-flex">
+                <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Update</button>
+            <div style="align-items: center; padding: 15px">
+                <div class="mb-2">
+                    Are you sure you want to <span id="confirmationDepartmentAction"></span> this Department?
+                    <div id="confirmationDepartmentMessage"></div>
+                </div>
+                <div class="d-flex justify-content-end mb-1">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5px;">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmDepartmentButton">Confirm
+                    </button>
+                </div>
             </div>
         </div>
-        </form>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -154,24 +238,17 @@
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
 <script src="/js/validation.js"></script>
-
-
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-
 <script>
 <!--   For Department Table-->
     let departmentList =[];
     $(document).ready(function () {
-
-
         //Make an AJAX request to fetch data from the Rest API point
         $.ajax({
             url: '/departments',
@@ -187,11 +264,36 @@
                 console.log('Error: ', error);
             }
         });
-
         checkInputValidation('name','Department name',null,null);
         checkInputValidation('editDepartmentName','Department name',null,null);
-        formValidate('addDepartmentForm',addDepartment);
-        formValidate('editDepartmentForm',editDepartment);
+        $('#addDepartmentForm').submit(function (event) {
+            event.preventDefault();
+            addDepartment();
+        });
+        $('#editDepartmentForm').submit(function (event) {
+            event.preventDefault();
+            editDepartment();
+        });
+
+        $("#name").on('input', function () {
+            if ($(this).val() === '') {
+                $(this).removeClass("is-valid").addClass("is-invalid");
+                $('#name_error').text('Department name is required');
+            } else {
+                $(this).removeClass("is-valid").removeClass("is-invalid");
+                $('#name_error').text('');
+            }
+        });
+
+        $("#editDepartmentName").on('input', function () {
+            if ($(this).val() === '') {
+                $(this).removeClass("is-valid").addClass("is-invalid");
+                $('#editDepartmentName_error').text('Department name is required');
+            } else {
+                $(this).removeClass("is-valid").removeClass("is-invalid");
+                $('#editDepartmentName_error').text('');
+            }
+        });
     });
 
 function renderDepartmentListTable(items) {
@@ -201,13 +303,18 @@ function renderDepartmentListTable(items) {
     return $('#department-table').DataTable({
         data: items,
         columns: [
-            {data: 'id'},
+            {
+                data: 'id',
+                render: function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
             {data: 'name'},
             {
                 data: 'active',
                 render: function (data, type, row) {
                     return `
-                       <span class="badge rounded-pill text-bg-${data?'success':'danger'}">${data?'opened':'closed'}</span>
+                       <span class="badge rounded-pill text-bg-${data?'success':'danger'}" style="width: 60px">${data?'opened':'closed'}</span>
                     `;
                 }
             },
@@ -216,28 +323,60 @@ function renderDepartmentListTable(items) {
                 render: function (data, type, row) {
                     return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button class="btn btn-sm btn-${data?'danger':'success'} mx-2" onclick="toggleDepartment(${row.id})">${data?'Close':'Open'}</button>
-                    `;
+                        <button type="button" onclick="toggleDepartment(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Close' : 'Open'}</button>
+                        `;
                 }
-            }
+            },
         ]
     });
 }
 
-function toggleDepartment(){
-    console.log("toggleDepartment");
+function toggleDepartment(id, newStatus) {
+    //Find the member in memberList
+    const department = departmentList.find(department => department.id === id);
+    if(!department){
+        console.log('Member not found for ID:', id);
+        return;
+    }
+    // Show Bootstrap modal for confirmation
+    const actionText = department.active ? 'disable' : 'enable';
+    $('#confirmationDepartmentAction').text(actionText);
+
+    $('#confirmationDepartmentModal').modal('show');
+
+    // Set event listener for modal confirm button
+    $('#confirmDepartmentButton').on('click', function (event) {
+
+        // Prevent form submission and page refresh
+        event.preventDefault();
+        // Close the modal
+        $('#confirmationDepartmentModal').modal('hide');
+        //Determine the new active status (toggle it)
+        const newActiveStatus = !department.active;
+
+        // Make the AJAX request
+        $.ajax({
+            url: `/department/status/${id}?newStatus=${newStatus}`,
+            type: 'PUT',
+            success: function (data) {
+                // Handle success response, update UI if necessary
+                console.log('Member status updated successfully:', data);
+                location.reload();
+            },
+            error: function (error) {
+                // Handle error response
+                console.error('Error updating member status:', error);
+            }
+        });
+        $('#confirmDepartmentButton').off('click');
+    });
 }
-
-
-
-
-
 
 // For add Department
     function addDepartment() {
         let addDepartment= {
-           id:$("#id").val(),
-            name:$("#name").val(),};
+           id:$('#id').val(),
+            name:$('#name').val()};
         console.log(addDepartment);
         $.ajax({
             type: "POST",
@@ -253,6 +392,8 @@ function toggleDepartment(){
             },
             error: function (error) {
                 console.log('Error adding new department:', error);
+                $('#name').removeClass("is-valid").addClass("is-invalid");
+                $('#name_error').text('This department name is already exist');
             }
         });
     }
@@ -270,6 +411,8 @@ function toggleDepartment(){
         $("#departmentEditModal").modal('show');
     } else {
         console.log("Department not found for ID:", id);
+        $('#editDepartmentName').removeClass("is-valid").addClass("is-invalid");
+        $('#editDepartmentName_error').text('This department name is already exist');
     }
 }
 
@@ -296,6 +439,8 @@ function editDepartment() {
         error: function (xhr, error) {
             console.log(xhr.responseText)
             console.log('Error fetching data:', error);
+            $('#editDepartmentName').removeClass("is-valid").addClass("is-invalid");
+            $('#editDepartmentName_error').text('This department name is already exist');
         }
     });
 }

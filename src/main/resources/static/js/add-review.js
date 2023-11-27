@@ -123,6 +123,7 @@ function addOrUpdateReview() {
         success: function (data) {
             $("#staticBackdrop").modal('hide');
             console.log(data);
+            location.reload();
         },
         error: function (xhr, status, error) {
             console.log(status);

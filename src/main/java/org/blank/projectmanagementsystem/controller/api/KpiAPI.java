@@ -23,7 +23,6 @@ import java.util.Map;
 public class KpiAPI {
     private final ReviewCountService reviewCountService;
     private final AmountService amountService;
-
     @GetMapping("/calculateAllKPIs/{projectId}")
     public Map<String, Map<String, Double>> calculateAllKPIs(@PathVariable Long projectId) {
         Map<String, Map<String, Double>> results = new HashMap<>();
@@ -51,6 +50,4 @@ public class KpiAPI {
 
         return results;
     }
-
-
 }

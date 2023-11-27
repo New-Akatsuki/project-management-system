@@ -21,6 +21,7 @@ public class SystemOutlineAPI {
     }
     @PostMapping("/add-system-outline") // Changed endpoint
     public ResponseEntity<SystemOutline> addSystemOutline(@RequestBody SystemOutline systemOutline) {
+        systemOutline.setStatus(true);
         SystemOutline newSystemOutline = systemOutlineService.save(systemOutline);
         return ResponseEntity.ok(newSystemOutline);
     }

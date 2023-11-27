@@ -422,15 +422,15 @@ function updateManMonthChart(labels, planManMonths, actualManMonths) {
             {
                 label: 'Plan Man Months',
                 data: planManMonths,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 1)', // Turquoise background color
+                borderColor: 'rgba(75, 192, 192, 1)', // Turquoise border color
                 borderWidth: 1
             },
             {
                 label: 'Actual Man Months',
                 data: actualManMonths,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 1)', // Red background color
+                borderColor: 'rgba(255, 99, 132, 1)', // Red border color
                 borderWidth: 1
             }
         ]
@@ -460,8 +460,8 @@ function updateManMonthProductivity(labels, actualProductivityRatio) {
             {
                 label: 'Actual Productivity Ratio',
                 data: actualProductivityRatio,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgb(74,197,0)', // Blue background color
+                borderColor: 'rgb(74,197,0)', // Blue border color
                 borderWidth: 1,
             },
         ],
