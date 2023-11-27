@@ -50,5 +50,10 @@ public class DeliverableServiceImpl implements DeliverableService {
         return deliverableRepository.findAll();
     }
 
+    @Override
+    public List<Deliverable> getDeliverablesByStatusTrue() {
+        return deliverableRepository.findByStatusIsTrue();
+    }
+
 
 }

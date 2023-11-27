@@ -15,7 +15,7 @@ public class ClientAPI {
 
     @GetMapping("/clients")
     public ResponseEntity<List<Client>> getClients() {
-        List<Client> clients = clientService.getAllClients();
+        List<Client> clients = clientService.getClientsByStatusTrue();
         return ResponseEntity.ok(clients);
     }
 

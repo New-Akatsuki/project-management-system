@@ -17,7 +17,7 @@ public class DeliverableAPI {
 
     @GetMapping("/deliverables") // Changed endpoint
     public ResponseEntity<List<Deliverable>> getDeliverables() {
-        List<Deliverable> deliverables = deliverableService.getAllDeliverables();
+        List<Deliverable> deliverables = deliverableService.getDeliverablesByStatusTrue();
         return ResponseEntity.ok(deliverables);
     }
 

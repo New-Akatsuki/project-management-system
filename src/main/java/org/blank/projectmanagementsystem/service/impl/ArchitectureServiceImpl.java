@@ -20,20 +20,16 @@ import java.util.List;
 public class ArchitectureServiceImpl implements ArchitectureService {
     private final ArchitectureRepository architectureRepository;
 
-
-
-
-
-
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public List<Architecture> getAllArchitectures() {
         return architectureRepository.findAll();
     }
 
-
-
-
+    @Override
+    public List<Architecture> getArchitecturesByStatusTrue() {
+        return architectureRepository.findByStatusIsTrue();
+    }
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")

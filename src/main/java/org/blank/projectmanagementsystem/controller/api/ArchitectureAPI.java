@@ -17,7 +17,7 @@ public class ArchitectureAPI {
 
     @GetMapping("/architectures")
     public ResponseEntity<List<Architecture>> getArchitectures() {
-        List<Architecture> architectures = architectureService.getAllArchitectures();
+        List<Architecture> architectures = architectureService.getArchitecturesByStatusTrue();
         return ResponseEntity.ok(architectures);
     }
 
