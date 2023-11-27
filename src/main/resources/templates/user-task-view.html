@@ -252,9 +252,12 @@
 
 <script>
     let currentTab;
-    if($('#projectId').val()){
-        $('#projectSelect').val($('#projectId').val()).trigger('change');
-    }
+
+    $(document).ready(function () {
+        if ($('#projectId').val()) {
+            $('#projectSelect').val($('#projectId').val()).trigger('change');
+        }
+    });
 
     // Add fade animation to the modal
     $('#taskModal').on('show.bs.modal', function () {
@@ -299,13 +302,13 @@
                     }));
                 }
                 if (notification && notification.projectId) {
-                    console.log(selectedProject,notification.projectId)
-                    if (parseInt(selectedProject,10) === notification.projectId) {
+                    console.log(selectedProject, notification.projectId)
+                    if (parseInt(selectedProject, 10) === notification.projectId) {
                         $('#projectSelect').val(notification.projectId).trigger('change');
                     }
                 }
 
-                if(paramProjectId){
+                if (paramProjectId) {
                     $('#projectSelect').val(paramProjectId).trigger('change');
                 }
 
