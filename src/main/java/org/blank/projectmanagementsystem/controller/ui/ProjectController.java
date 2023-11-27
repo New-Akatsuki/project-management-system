@@ -51,7 +51,7 @@ public class ProjectController {
         return "project-view";
     }
 
-    @PreAuthorize("hasAnyAuthority('PMO','Dh','PM')")
+    @PreAuthorize("hasAnyAuthority('PMO','SDQC','Dh','PM')")
     @GetMapping("/projects/{id}/{name}/details")
     public ModelAndView showProjectDetails(@PathVariable Long id, @PathVariable String name){
         ProjectViewObject project = projectService.getProjectById(id);

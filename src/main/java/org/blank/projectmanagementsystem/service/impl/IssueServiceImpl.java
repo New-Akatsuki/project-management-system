@@ -62,17 +62,6 @@ public class IssueServiceImpl implements IssueService {
         return content.replace("<img", "<img style=\"width: 100%; height: auto;\"");
     }
 
-    @Override
-    public List<User> getAllUser() {
-        return null;
-    }
-
-    @Override
-    public List<Issue> getAllIssue() {
-        return issueRepository.findAll();
-    }
-
-
 
     @Override
     public IssueDetailsViewObject getIssueDetailsById(Long id) {
@@ -147,6 +136,11 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<AllIssueDisplayViewObject> getAllIssueByCreatedById(Long id) {
         return issueRepository.findByCreatedByID(id);
+    }
+
+    @Override
+    public Issue getIssueById(Long id) {
+        return issueRepository.getReferenceById(id);
     }
 
 }

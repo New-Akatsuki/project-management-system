@@ -30,6 +30,11 @@ public class SystemOutlineServiceImpl implements SystemOutlineService {
         return systemOutlineRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public List<SystemOutline> getAllSystemOutlineByStatusTrue() {
+        return systemOutlineRepository.findByStatusIsTrue();
+    }
+
 
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")

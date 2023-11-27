@@ -3,6 +3,7 @@ package org.blank.projectmanagementsystem.controller.api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Department;
+import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.service.DepartmentService;
 import org.blank.projectmanagementsystem.service.ProjectService;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,18 @@ public class DepartmentAPI {
             department.setActive(!department.isActive());
             departmentService.save(department);
             return ResponseEntity.ok("Department status changed successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/department/status/{id}")
+    public ResponseEntity<Department> updateMemberStatus(@PathVariable Integer id, @RequestParam boolean newStatus) {
+        Department department = departmentService.getDepartmentById(id); // Change this to retrieve a specific user by id
+        if (department != null) {
+            department.setActive(newStatus);
+            Department departmentUpdateStatus = departmentService.save(department); // Change Client to User since it seems like a typo
+            return ResponseEntity.ok(department);
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -17,12 +17,13 @@ public class DeliverableAPI {
 
     @GetMapping("/deliverables") // Changed endpoint
     public ResponseEntity<List<Deliverable>> getDeliverables() {
-        List<Deliverable> deliverables = deliverableService.getAllDeliverables();
+        List<Deliverable> deliverables = deliverableService.getDeliverablesByStatusTrue();
         return ResponseEntity.ok(deliverables);
     }
 
     @PostMapping("/add-deliverable") // Changed endpoint
     public ResponseEntity<Deliverable> addDeliverable(@RequestBody Deliverable deliverable) {
+        deliverable.setStatus(true);
         Deliverable newDeliverable = deliverableService.save(deliverable);
         return ResponseEntity.ok(newDeliverable);
     }
@@ -42,7 +43,6 @@ public class DeliverableAPI {
 
         if (existingDeliverable != null) {
             existingDeliverable.setName(deliverable.getName());
-
             Deliverable updatedDeliverable = deliverableService.save(existingDeliverable);
             return ResponseEntity.ok(updatedDeliverable); // Return the updated deliverable
         } else {

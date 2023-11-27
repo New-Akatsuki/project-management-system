@@ -55,6 +55,7 @@
     <style>
         .count-box {
             background: white;
+            margin: 0;
             padding: 15px;
             border-radius: 10px;
             text-align: center;
@@ -69,6 +70,18 @@
             display: none;
         }
 
+        .number {
+            font-size: 28px;
+            font-weight: bolder;
+            color: rgba(21, 21, 21, 0.42); /* Change the color as needed */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .mb-2 {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 
@@ -94,32 +107,34 @@
     <!-- DashBoard MM Header Start -->
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-4">
-                <div class="count-box d-flex">
-                    <i class='bx bxs-user count-icon'></i>&nbsp;
-                    <p class="mt-3">Number of Users : <span th:text="${userCount}" class="fw-bold"></span></p>
+            <div class="col-md-3">
+                <div class="count-box" style="background-color: #3498db; color: #fff;">
+                    <span th:text="${userCount}" class="number mt-2"></span>
+                    <span class="mb-2">Number of Users</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="count-box" style="background-color: #2ecc71; color: #fff;">
+                    <span th:text="${clientCount}" class="number mt-2"></span>
+                    <span class="mb-2">Number of Clients </span>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="count-box d-flex">
-                    <i class='bx bxs-user count-icon'></i>&nbsp;
-                    <p class="mt-3">Number of Clients : <span th:text="${clientCount}" class="fw-bold"></span></p>
+            <div class="col-md-3">
+                <div class="count-box" style="background-color: #e74c3c; color: #fff;">
+                    <span th:text="${projectCount}" class="number mt-2"></span>
+                    <span class="mb-2">Number of Projects</span>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="count-box d-flex">
-                    <i class='bx bxs-briefcase count-icon'></i>&nbsp;
-                    <p class="mt-3">Number of Departments : <span th:text="${departmentCount}" class="fw-bold"></span>
-                    </p>
+            <div class="col-md-3">
+                <div class="count-box" style="background-color: #f39c12; color: #fff;">
+                    <span th:text="${departmentCount}" class="number mt-2"></span>
+                    <span class="mb-2">Number of Departments</span>
                 </div>
             </div>
-
         </div>
     </div>
-
-
     <!-- DashBoard MM Header End -->
 
     <th:block th:with="dep=${#authentication.principal.department.id}">
@@ -132,63 +147,53 @@
         <input type="hidden" id="currentUserRole" th:value="${role}">
     </th:block>
 
-
-    <!-- DashBoard MM Body Start -->
-    <div class="card mt-3" style="padding: 15px; margin: 0 10px; background: white; border-radius:10px 10px 0 0">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <label class="form-label" for="yearSelector">Year:</label>
-                <select class="form-select year-select" id="yearSelector"></select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" for="monthSelector">Month:</label>
-                <select class="form-select month-select" id="monthSelector">
-
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" for="departmentSelector">Select a department:</label>
-                <select class="form-select department-select" id="departmentSelector">
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" for="projectSelector">Select a project:</label>
-                <select class="form-select project-select" id="projectSelector"></select>
-            </div>
-        </div>
-    </div>
-    </div>
-
-    <div class="card mt-2" style="padding: 10px; margin: 0 10px; background: white; border-radius: 0 0 10px 10px">
-    <div class="container mt-1">
-        <div class="d-flex justify-content-between">
-            <div style="width: 49%;padding: 5px; border-radius: 10px">
-                <h4>Man Month</h4>
-                <div class="chartBox">
-                    <canvas id="manMonthChart"></canvas>
+    <div class="card mt-3" style="padding: 15px; margin: 0 8px; background: white; border-radius:10px">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <label class="form-label" for="yearSelector">Year:</label>
+                    <select class="form-select year-select" id="yearSelector"></select>
                 </div>
-            </div>
-            <div style="width: 49%;padding: 5px; border-radius: 10px">
-                <h4>Man Month Productivity Ratio</h4>
-                <div class="chartBox">
-                    <canvas id="manMonthProductivityChart"></canvas>
+                <div class="col-md-3">
+                    <label class="form-label" for="monthSelector">Month:</label>
+                    <select class="form-select month-select" id="monthSelector">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="departmentSelector">Select a department:</label>
+                    <select class="form-select department-select" id="departmentSelector">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="projectSelector">Select a project:</label>
+                    <select class="form-select project-select" id="projectSelector"></select>
                 </div>
             </div>
         </div>
-    </div>
-
-
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-md-12 col-lg-12 col-sm-12" id="kpiRatioHeadingContainer">
-                <h4>KPI RATIO</h4>
-                <div class="kpiChart">
-                    <canvas id="kpiChart"></canvas>
+        <div class="container mt-3">
+            <div class="d-flex justify-content-between">
+                <div class="mt-2" style="width: 49%;padding: 8px 12px; border-radius: 5px; border: 1px solid #d5d5d5; ">
+                    <h4 class="text-center mb-2">Man Month</h4>
+                    <div class="chartBox">
+                        <canvas id="manMonthChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-2" style="width: 49%;padding: 8px 12px; border-radius: 5px; border: 1px solid #d5d5d5; ">
+                    <h4 class="text-center mb-2">Man Month Productivity Ratio</h4>
+                    <div class="chartBox">
+                        <canvas id="manMonthProductivityChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="container mt-2">
+                <div class="" id="kpiRatioHeadingContainer" style="padding: 20px; border-radius: 5px; border: 1px solid #d5d5d5; ">
+                    <h4 class="text-center mb-2">KPI RATIO</h4>
+                    <div class="kpiChart">
+                        <canvas id="kpiChart"></canvas>
+                    </div>
+                </div>
+        </div>
     </div>
     <div id="toastPlace"></div>
     <!-- End Main Content-->

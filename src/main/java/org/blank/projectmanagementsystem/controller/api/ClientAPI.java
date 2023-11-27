@@ -15,13 +15,14 @@ public class ClientAPI {
 
     @GetMapping("/clients")
     public ResponseEntity<List<Client>> getClients() {
-        List<Client> clients = clientService.getAllClients();
+        List<Client> clients = clientService.getClientsByStatusTrue();
         return ResponseEntity.ok(clients);
     }
 
 
     @PostMapping("/add-client")
     public ResponseEntity<Client> addClient(@RequestBody Client client) {
+        client.setStatus(true);
         Client newClient = clientService.save(client);
         return ResponseEntity.ok(newClient);
     }
@@ -53,15 +54,12 @@ public class ClientAPI {
     }
 
     @PutMapping("/client/status/{id}")
-    public ResponseEntity<Client> updateClientStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
+    public ResponseEntity<Client> updateClientStatus(@PathVariable Long id) {
         Client client = clientService.getClientById(id);
-        if (client != null) {
-            client.setStatus(newStatus);
-            Client updatedClient = clientService.save(client);
-            return ResponseEntity.ok(updatedClient);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        boolean status = client.isStatus();
+        client.setStatus(!status);
+        Client updatedClient = clientService.save(client);
+        return ResponseEntity.ok(updatedClient);
     }
 
 }

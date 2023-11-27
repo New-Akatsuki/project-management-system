@@ -28,20 +28,6 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.save(client);
     }
 
-
-    /*@Override
-    @Transactional
-    public Client updateClientStatus(Long id, boolean status) {
-        Client client = clientRepository.findById(id).orElse(null);
-        if (client != null) {
-            client.setStatus(status);
-            clientRepository.save(client);
-        }
-        return client;
-    }*/
-
-
-
     @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public List<Client> getAllClients() {
@@ -49,11 +35,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public List<Client> getClientsByStatusTrue() {
+        return clientRepository.findByStatusIsTrue();
+    }
+
+    @Override
     @PreAuthorize("hasAnyAuthority('PMO','SDQC','DH','PM','MEMBER')")
     public Client getClientById(Long id) {
-
         return clientRepository.findById(id).orElse(null);
-
     }
 
 

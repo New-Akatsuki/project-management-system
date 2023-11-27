@@ -217,7 +217,7 @@
     </subDataset>
     <parameter name="project" class="org.blank.projectmanagementsystem.dto.ProjectReportDto"/>
     <title>
-        <band height="35" splitType="Stretch">
+        <band height="30" splitType="Stretch">
             <textField>
                 <reportElement x="0" y="0" width="545" height="30" uuid="788927f6-116d-480d-aad4-9442acc031fd"/>
                 <textElement>
@@ -228,43 +228,29 @@
         </band>
     </title>
     <detail>
-        <band height="571" splitType="Stretch">
-            <rectangle>
-                <reportElement x="0" y="137" width="555" height="26" backcolor="#E8F7FF" uuid="8e25bd6c-ab14-4a0e-9cac-d34024f2a99d">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
+        <band height="454" splitType="Stretch">
             <textField textAdjust="StretchHeight">
-                <reportElement positionType="Float" x="0" y="167" width="555" height="20" uuid="da753837-1fe2-4951-ad66-ba9a20cd4c2f"/>
+                <reportElement positionType="Float" x="0" y="151" width="555" height="20" uuid="da753837-1fe2-4951-ad66-ba9a20cd4c2f"/>
                 <textElement textAlignment="Justified"/>
                 <textFieldExpression><![CDATA[$P{project}.getBackground()]]></textFieldExpression>
             </textField>
             <staticText>
-                <reportElement positionType="Float" x="6" y="139" width="180" height="20" backcolor="#E6F6FF" uuid="aab90396-59a1-4324-8f37-404f2d99cde5"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="0" y="128" width="555" height="20" backcolor="#E6F6FF" uuid="aab90396-59a1-4324-8f37-404f2d99cde5"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Background]]></text>
             </staticText>
             <textField textAdjust="StretchHeight">
-                <reportElement positionType="Float" x="0" y="227" width="555" height="20" uuid="2b34ee1f-8e4d-4d16-99f4-4c109f7da559"/>
+                <reportElement positionType="Float" x="0" y="205" width="555" height="20" uuid="2b34ee1f-8e4d-4d16-99f4-4c109f7da559"/>
                 <textElement textAlignment="Justified"/>
                 <textFieldExpression><![CDATA[$P{project}.getObjective()]]></textFieldExpression>
             </textField>
-            <rectangle>
-                <reportElement positionType="Float" x="0" y="197" width="555" height="26" backcolor="#E8F7FF" uuid="66acc17a-7c4a-4f68-88b9-aa56e9b4c9bb">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
             <staticText>
-                <reportElement positionType="Float" x="6" y="199" width="180" height="20" backcolor="#E6F6FF" uuid="c42d4c4e-7720-47d9-8ac9-e3b13e2025b0"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="0" y="182" width="555" height="20" backcolor="#E6F6FF" uuid="c42d4c4e-7720-47d9-8ac9-e3b13e2025b0"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Objective]]></text>
@@ -413,23 +399,16 @@
                 <textElement verticalAlignment="Middle"/>
                 <textFieldExpression><![CDATA[$P{project}.getProjectManagerName()]]></textFieldExpression>
             </textField>
-            <rectangle>
-                <reportElement positionType="Float" x="0" y="258" width="555" height="26" backcolor="#E8F7FF" uuid="1ab15797-c355-42be-9eba-f9ad02bb4a0f">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
             <staticText>
-                <reportElement positionType="Float" x="6" y="260" width="180" height="20" backcolor="#E6F6FF" uuid="56f8e8fe-954b-4a14-b029-f76ac3dc73c2"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="0" y="237" width="555" height="20" backcolor="#E6F6FF" uuid="56f8e8fe-954b-4a14-b029-f76ac3dc73c2"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Architecture Outlines]]></text>
             </staticText>
             <componentElement>
-                <reportElement positionType="Float" x="0" y="284" width="555" height="40" uuid="39b2312f-d0ad-4545-9489-808316a9b845">
+                <reportElement positionType="Float" x="0" y="257" width="555" height="40" uuid="39b2312f-d0ad-4545-9489-808316a9b845">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -454,7 +433,7 @@
                                 <reportElement positionType="Float" x="0" y="0" width="40" height="20" uuid="82f6ce95-1260-43d6-b89c-c49db81515b6"/>
                                 <box leftPadding="8"/>
                                 <textElement verticalAlignment="Middle"/>
-                                <textFieldExpression><![CDATA[$V{PAGE_COUNT}]]></textFieldExpression>
+                                <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
                             </textField>
                         </jr:detailCell>
                     </jr:column>
@@ -578,53 +557,32 @@
                     </jr:column>
                 </jr:table>
             </componentElement>
-            <rectangle>
-                <reportElement positionType="Float" x="0" y="331" width="170" height="26" backcolor="#E8F7FF" uuid="a533cc84-bbcb-4266-8bc7-bfeb31acea5f">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
             <staticText>
-                <reportElement positionType="Float" x="6" y="333" width="154" height="20" backcolor="#E6F6FF" uuid="a7c5057c-1f4e-4881-8436-8bdd128dc647"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="0" y="308" width="170" height="20" backcolor="#E6F6FF" uuid="a7c5057c-1f4e-4881-8436-8bdd128dc647"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[System Outlines]]></text>
             </staticText>
-            <rectangle>
-                <reportElement positionType="Float" x="177" y="331" width="170" height="26" backcolor="#E8F7FF" uuid="cb1e82a5-bd4f-44c3-a309-dad384676885">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
             <staticText>
-                <reportElement positionType="Float" x="183" y="333" width="154" height="20" backcolor="#E6F6FF" uuid="27b0533b-facf-45d2-8288-6a29eff55a2e"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="177" y="308" width="170" height="20" backcolor="#E6F6FF" uuid="27b0533b-facf-45d2-8288-6a29eff55a2e"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Deliberables]]></text>
             </staticText>
-            <rectangle>
-                <reportElement positionType="Float" x="354" y="331" width="201" height="26" backcolor="#E8F7FF" uuid="abe17ecf-44c1-4306-849c-a72e442a28f9">
-                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
-                </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
             <staticText>
-                <reportElement positionType="Float" x="360" y="333" width="154" height="20" backcolor="#E6F6FF" uuid="74bad2c8-b18e-454f-ac11-d3c862096928"/>
-                <textElement verticalAlignment="Middle">
+                <reportElement positionType="Float" mode="Opaque" x="354" y="308" width="201" height="20" backcolor="#E6F6FF" uuid="74bad2c8-b18e-454f-ac11-d3c862096928"/>
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Amounts]]></text>
             </staticText>
             <componentElement>
-                <reportElement positionType="Float" x="0" y="357" width="170" height="20" uuid="47484a97-a212-43a8-9828-ca9bf7c25bc6">
+                <reportElement positionType="Float" x="0" y="328" width="170" height="20" uuid="47484a97-a212-43a8-9828-ca9bf7c25bc6">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
@@ -648,7 +606,7 @@
                 </jr:table>
             </componentElement>
             <componentElement>
-                <reportElement positionType="Float" x="177" y="357" width="170" height="20" uuid="25014191-3839-4013-bd1c-3adef1c3d22b">
+                <reportElement positionType="Float" x="177" y="328" width="170" height="20" uuid="25014191-3839-4013-bd1c-3adef1c3d22b">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table 4_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table 4_CH"/>
@@ -672,7 +630,7 @@
                 </jr:table>
             </componentElement>
             <componentElement>
-                <reportElement positionType="Float" x="354" y="357" width="201" height="20" uuid="a95192f0-71c6-4fb1-b93f-8b735b803124">
+                <reportElement positionType="Float" x="354" y="328" width="201" height="20" uuid="a95192f0-71c6-4fb1-b93f-8b735b803124">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table 5_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table 5_CH"/>
@@ -706,23 +664,18 @@
                     </jr:column>
                 </jr:table>
             </componentElement>
-            <rectangle>
-                <reportElement positionType="Float" x="0" y="384" width="555" height="26" backcolor="#E8F7FF" uuid="6fb2d5c9-7d29-441d-943b-6daf46dd8145">
+            <staticText>
+                <reportElement positionType="Float" mode="Opaque" x="0" y="361" width="555" height="20" backcolor="#E6F6FF" uuid="7c9e5196-0546-4d74-9dcc-bc67220a10ac">
                     <property name="com.jaspersoft.studio.unit.height" value="px"/>
                 </reportElement>
-                <graphicElement>
-                    <pen lineWidth="0.0" lineColor="#FFFFFF"/>
-                </graphicElement>
-            </rectangle>
-            <staticText>
-                <reportElement positionType="Float" x="6" y="386" width="538" height="20" backcolor="#E6F6FF" uuid="7c9e5196-0546-4d74-9dcc-bc67220a10ac"/>
-                <textElement verticalAlignment="Middle">
+                <box leftPadding="8"/>
+                <textElement verticalAlignment="Top">
                     <font size="14"/>
                 </textElement>
                 <text><![CDATA[Reviews]]></text>
             </staticText>
             <componentElement>
-                <reportElement positionType="Float" x="0" y="410" width="555" height="39" uuid="deeacc32-ff5c-4902-97e1-2859853c114a">
+                <reportElement positionType="Float" x="0" y="381" width="555" height="39" uuid="deeacc32-ff5c-4902-97e1-2859853c114a">
                     <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
                     <property name="com.jaspersoft.studio.table.style.table_header" value="Table 6_TH"/>
                     <property name="com.jaspersoft.studio.table.style.column_header" value="Table 6_CH"/>
@@ -812,4 +765,23 @@
             </componentElement>
         </band>
     </detail>
+    <pageFooter>
+        <band height="20">
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="0" y="0" width="175" height="20" uuid="d2dd18c7-31c7-4f9a-a5d9-5acf1f31dd6d"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="525" y="0" width="30" height="20" uuid="7f198827-ec41-4475-b318-7e9e8d1eb8c1"/>
+                <textElement textAlignment="Right" verticalAlignment="Bottom"/>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="470" y="0" width="55" height="20" uuid="33fdbdb2-9332-4ee8-af72-08b4344bdb27"/>
+                <textElement textAlignment="Right" verticalAlignment="Bottom"/>
+                <text><![CDATA[Page]]></text>
+            </staticText>
+        </band>
+    </pageFooter>
 </jasperReport>

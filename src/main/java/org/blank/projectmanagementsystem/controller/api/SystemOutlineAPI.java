@@ -16,11 +16,12 @@ public class SystemOutlineAPI {
 
     @GetMapping("/system-outlines")
     public ResponseEntity<List<SystemOutline>> getSystemOutlines() {
-        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlines();
+        List<SystemOutline> systemOutlines = systemOutlineService.getAllSystemOutlineByStatusTrue();
         return ResponseEntity.ok(systemOutlines);
     }
     @PostMapping("/add-system-outline") // Changed endpoint
     public ResponseEntity<SystemOutline> addSystemOutline(@RequestBody SystemOutline systemOutline) {
+        systemOutline.setStatus(true);
         SystemOutline newSystemOutline = systemOutlineService.save(systemOutline);
         return ResponseEntity.ok(newSystemOutline);
     }

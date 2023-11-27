@@ -65,18 +65,40 @@
     <input type="hidden" id="projectId" th:value="${currentProject.id}">
     <!-- Main Content -->
     <section>
+        <div class="d-none justify-content-center align-items-center gap-2 mb-2 py-2" id="spinner" style=" background: #e1edff; border-radius: 5px;" >
+            <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span style="color: #0a245b">Please wait! Exporting PDF file ...</span>
+        </div>
+        <div class="d-none justify-content-center align-items-center gap-2 mb-2 py-2" id="spinnerExcel" style=" background: #e1edff; border-radius: 5px;" >
+            <div class="spinner-grow text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span style="color: #0a245b">Please wait! Exporting xlsx files ...</span>
+        </div>
+
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
                 </h1>
                 <div class="d-flex gap-2">
-                    <a class="btn btn-info icon-add-btn" href="/export-project-pdf">
-                        Export
-                    </a>
-                    <button sec:authorize="hasAuthority('PM')" class="btn btn-info icon-add-btn" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <form id="exportPdfForm" th:action="@{/export-project-pdf}" method="GET">
+                        <input type="hidden" name="projectId" th:value="${currentProject.getId()}">
+                        <button type="submit" class="btn btn-danger" id="exportPdfBtnId">
+                            <i class="ri-file-pdf-2-fill"></i>
+                        </button>
+                    </form>
+                    <form id="exportExcelForm" th:action="@{/export-project-xlsx(projectId=${currentProject.getId()})}" method="GET">
+                        <input type="hidden" name="projectId" th:value="${currentProject.getId()}">
+                        <button type="submit" class="btn btn-success" id="exportExcelBtnId">
+                            <i class="ri-file-excel-2-fill"></i>
+                        </button>
+                    </form>
+                    <button sec:authorize="hasAuthority('PM')" class="btn btn-primary" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         KPI
                     </button>
-                    <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
+                    <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="btn btn-primary" id="editButton">
                         <i class='bx bx-edit m-0 p-0'></i>
                     </a>
                 </div>
@@ -278,7 +300,6 @@
                                         <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">Basic design:</label>
                                         <input class="form-control" id="basicDesignScreenCount" type="number">
                                     </div>
-
                                     <div class="col-md-6">
                                         <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">Details design:</label>
                                         <input class="form-control" id="detailedDesignScreenCount" type="number">
@@ -306,10 +327,8 @@
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
                                 </div>
-
                             </div>
                         </div>
-
                         <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
                         <label for="tab2" class="tabs__label d-flex align-items-center justify-content-center">
                             Review</label>
@@ -379,6 +398,7 @@
 <!-- Bootstrap JS and Popper.js for Modal Box -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/jquery.form.min.js"></script>
 
 <script src="/js/add-amount.js"></script>
 <script src="/js/add-review.js"></script>
@@ -390,6 +410,37 @@
     function notify(notification) {
         showToast(notification);
     }
+    $(document).ready(function () {
+        // Add a submit event listener to the export form
+        $("#exportPdfForm").on("submit", function () {
+            // Show the spinner
+            $("#spinner").removeClass("d-none").addClass("d-flex")
+
+            // Use a callback function to hide the spinner after the form is submitted
+            $(this).ajaxSubmit({
+                success: function () {
+                    // Hide the spinner when the export is successful
+                    $("#spinner").addClass("d-none").removeClass("d-flex")
+                    $("#exportPdfBtnId").blur();
+                }
+            });
+        });
+        $("#exportExcelForm").on("submit", function () {
+            // Show the spinner
+            $("#spinnerExcel").removeClass("d-none").addClass("d-flex")
+
+            // Use a callback function to hide the spinner after the form is submitted
+            $(this).ajaxSubmit({
+                success: function () {
+                    // Hide the spinner when the export is successful
+                    $("#spinnerExcel").addClass("d-none").removeClass("d-flex")
+                    $('#exportExcelBtnId').blur();
+                }
+            });
+
+        });
+    });
+
 </script>
 
 </body>

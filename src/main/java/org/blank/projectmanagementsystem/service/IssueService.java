@@ -15,8 +15,6 @@ public interface IssueService {
     List<IssueCategory> getAllCategory();
     IssuePlace createIssuePlace(IssuePlace issuePlace);
     List<IssuePlace> getAllPlace();
-    List<User> getAllUser();
-    List<Issue> getAllIssue();
     List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject();
     ResponsibleParty createResponsibleParty(ResponsibleParty responsibleParty);
     List<ResponsibleParty> getAllResponsibleParty();
@@ -24,6 +22,6 @@ public interface IssueService {
     IssueSolutionViewObject getIssueSolutionById(Long id);
     List<AllIssueDisplayViewObject> getAllIssueByPic(Long id);
     Issue addSolutiontoIssue(IssueSolveFormInput issueSolveFormInput);
-
     List<AllIssueDisplayViewObject> getAllIssueByCreatedById(Long id);
+    Issue getIssueById(Long id);
 }
