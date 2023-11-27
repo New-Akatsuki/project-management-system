@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dir-Ace Technology</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="/css/pagination.css" rel="stylesheet"/>
+    <!--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <style>
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            font-family: sans-serif;
+        }
+
+        .tabs__label {
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+        .tabs__radio {
+            display: none;
+        }
+
+        .tabs__content {
+            order: 1;
+            width: 100%;
+            line-height: 1.5;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .tabs__radio:checked + .tabs__label {
+            font-weight: bold;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        .tabs__radio:checked + .tabs__label + .tabs__content {
+            display: initial;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    </style>
+    <style>
+        .issue-card {
+            background: white;
+            margin-bottom: 20px;
+            border: 1px solid rgba(152, 165, 178, 0.85);
+            border-left: 5px solid #007bff; /* Specify your desired color here */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .issue-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .issue-card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #6a0572, #00b4d8);
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card {
+            border-radius: 20px;
+        }
+
+        .uploaded-info {
+            font-size: 1em;
+            color: #666;
+            text-align: right;
+            float: right; /* Add this line to float the element to the right */
+            margin-top: -20px; /* Adjust the margin if necessary */
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+    </style>
+    <style>
+        #issueNotFound {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
+                <li class="breadcrumb-item active">Issue Creator View</li>
+            </ol>
+        </nav>
+    </div>
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
+    <div class="tabs" style="padding:0 10px">
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2" checked>
+        <label for="tab2" class="tabs__label">Unsolved</label>
+
+        <div class="tabs__content" style="padding: 10px; position: relative;">
+            <!-- Search input for Unsolved tab -->
+            <div class="input-group" style="position: relative">
+            <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+                <i class="bi bi-search"></i>&nbsp;
+            </span>
+                <input type="text" id="unsolvedSearch" class="form-control z-0" placeholder="Search issues..."
+                       style="padding-left: 40px ">
+            </div>
+
+            <a class="btn btn-sm btn-secondary rounded" style="position: absolute; top: -35px; right: 10px;" th:href="@{/issues}">
+                <i class="bi bi-backspace"></i>&nbspBack
+            </a>
+            <!-- Content for Unsolved tab -->
+            <div id="unsolvedTabContent"></div>
+            <div class="pagination-container" id="paginationContainerUnsolved">
+                <ul class="pagination" id="paginationUnsolved"></ul>
+            </div>
+        </div>
+
+
+        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1">
+        <label for="tab1" class="tabs__label">Solved</label>
+
+        <div class="tabs__content" style="padding: 10px; position: relative;">
+            <!-- Search input for Solved tab -->
+            <div class="input-group" style="position: relative">
+            <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+                <i class="bi bi-search"></i>&nbsp;
+            </span>
+                <input type="text" id="solvedSearch" class="form-control z-0" placeholder="Search issues..."
+                       style="padding-left: 40px ">
+            </div>
+
+            <a class="btn btn-sm btn-secondary rounded" style="position: absolute; top: -35px; right: 10px;" th:href="@{/issues}">
+                <i class="bi bi-backspace"></i>&nbspBack
+            </a>
+            <!-- Content for Solved tab -->
+            <div id="solvedTabContent"></div>
+            <div class="pagination-container" id="paginationContainerSolved">
+                <ul class="pagination" id="paginationSolved"></ul>
+            </div>
+        </div>
+
+    </div>
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+
+<!-- Vendor JS Files -->
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!-- ajax -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/pagination.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
+<script>
+    let solvedIssues = [];
+    let unsolvedIssues = [];
+    let paginationContainerSolved = $('#paginationContainerSolved');
+    let paginationContainerUnsolved = $('#paginationContainerUnsolved');
+
+    $(document).ready(function () {
+        let issues = [];
+        let userId = $('#userId').val();
+
+        $.ajax({
+            url: '/get-issue-by-createdBy/' + userId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+
+                issues = data;
+                solvedIssues = issues.filter(issue => issue.solved);
+                unsolvedIssues = issues.filter(issue => !issue.solved);
+
+                console.log("Solved issues:", solvedIssues);
+                console.log("Unsolved issues:", unsolvedIssues);
+
+                updateTabContent(unsolvedIssues, 'unsolvedTabContent', paginationContainerUnsolved);
+                updateTabContent(solvedIssues, 'solvedTabContent', paginationContainerSolved);
+            }
+        });
+    });
+
+    // Function to generate HTML for an issue card
+    function generateIssueCard(issue) {
+        const statusText = issue.solved ? 'Solved' : 'Unsolved';
+        let date;
+        let dateText;
+        if (issue.modifiedAt == null) {
+            date = issue.createdAt;
+            dateText = "Uploaded at: ";
+        } else {
+            date = issue.modifiedAt;
+            dateText = "Edited at: ";
+        }
+
+        return `
+        <div class="col-md-12">
+    <a href="/issues/${issue.id}/details" class="card-link">
+        <div class="card issue-card" style="border-radius: 10px; position: relative;">
+            <div class="card-body" style="padding: 20px">
+                <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
+                    <h5>${issue.title}</h5>
+
+                    <div class="status-icon">
+                        <span class="rounded-5 bg-${issue.solved ? 'success' : 'danger'} px-1 text-white d-flex align-items-center justify-content-center" style="padding-block: 0; width: 78px;">
+                            ${issue.solved ? '<i class="bi bi-check text-white"></i><span class="me-1" style="font-size: 12px;">Solved</span>' : '<i class="bi bi-x text-white"></i><span class="me-1" style="font-size: 12px;">Unsolved</span>'}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+    <span class="badge rounded-5 bg-primary me-2 px-2 mb-1" style="font-size: 13px;">
+        <i class="bi bi-tag"></i>&nbsp;${issue.category}
+    </span>
+    <span class="badge rounded-5 bg-gray me-2 px-2 mb-1" style="font-size: 13px;">
+        <i class="bi bi-geo-alt"></i>&nbsp;${issue.place}
+    </span>
+    <span class="badge rounded-5 bg-gray me-2 px-2 mb-1" style="font-size: 13px;">
+        <i class="bi bi-people"></i>&nbsp;${issue.responsibleParty}
+    </span>
+</div>
+                    <!-- ... rest of your code ... -->
+                    <div>
+                        <span style="font-size: 14px;"><small><strong>${dateText}</strong>${formatDate(date)}</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+    `;
+    }
+
+
+    // Function to update the tab content based on the issues array
+    function updateTabContent(issuesArray, tabContentId, paginationContainer) {
+        const tabContent = document.getElementById(tabContentId);
+        tabContent.innerHTML = '';
+        if (issuesArray.length === 0) {
+            tabContent.innerHTML='<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>';
+        }else{
+            // Sort the issues by the latest upload or modification date
+            const sortedIssues = issuesArray.sort((a, b) => {
+                const dateA = a.modifiedAt || a.createdAt; // Use modifiedAt if not null, otherwise use createdAt
+                const dateB = b.modifiedAt || b.createdAt;
+                return new Date(dateB) - new Date(dateA);
+            });
+            // Iterate through the sorted issues array and append cards to the tab content
+            sortedIssues.forEach(issue => {
+                var issueCard = generateIssueCard(issue);
+                tabContent.innerHTML += issueCard;
+            });
+        }
+        initializePagination(issuesArray, paginationContainer);
+    }
+
+    // Event listener for tab changes
+    document.querySelectorAll('.tabs__radio').forEach(tabRadio => {
+        tabRadio.addEventListener('change', function () {
+            if (this.id === 'tab1') {
+                updateTabContent(unsolvedIssues, 'unsolvedTabContent', paginationContainerUnsolved);
+            } else if (this.id === 'tab2') {
+                updateTabContent(solvedIssues, 'solvedTabContent', paginationContainerSolved);
+            }
+        });
+    });
+</script>
+<script>
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
+
+    function initializePagination(dataSource, paginationContainer) {
+        paginationContainer.pagination({
+            dataSource: dataSource,
+            pageSize: 5,
+            showSizeChanger: true,
+        });
+    }
+    function filterIssues(issues, searchTerm) {
+        // Use Fuse.js for fuzzy search
+        const fuseOptions = {
+            keys: ['title', 'category', 'place', 'responsibleParty', 'createdAt', 'modifiedAt'],
+            threshold: 0.4,
+        };
+        const fuse = new Fuse(issues, fuseOptions);
+        const searchResults = fuse.search(searchTerm);
+        return searchResults;
+    }
+
+    // Add an event listener for the search input
+    $('#solvedSearch').on('input', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        if (searchTerm === "") {
+            updateTabContent(solvedIssues, 'solvedTabContent', paginationContainerSolved);
+        } else {
+            // Perform fuzzy search using Fuse.js
+            var searchResults = filterIssues(solvedIssues, searchTerm);
+            updateTabContent(searchResults, 'solvedTabContent', paginationContainerSolved);
+        }
+    });
+
+    $('#unsolvedSearch').on('input', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        if (searchTerm === "") {
+            updateTabContent(unsolvedIssues, 'unsolvedTabContent', paginationContainerUnsolved);
+        } else {
+            // Perform fuzzy search using Fuse.js
+            var searchResults = filterIssues(unsolvedIssues, searchTerm);
+            updateTabContent(searchResults, 'unsolvedTabContent', paginationContainerUnsolved);
+        }
+    });
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>

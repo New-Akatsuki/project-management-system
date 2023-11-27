@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/projects}">projects</a></li>
+                <li sec:authorize="hasAuthority('PM')" class="breadcrumb-item"><a th:href="@{workspace}">workspace</a></li>
+                <li class="breadcrumb-item active">details</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <input type="hidden" id="projectId" th:value="${currentProject.id}">
+    <!-- Main Content -->
+    <section>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h1 class="ms-2 mb-0" th:text="${currentProject.name}">
+                </h1>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-info icon-add-btn" href="/export-project-pdf">
+                        Export
+                    </a>
+                    <button sec:authorize="hasAuthority('PM')" class="btn btn-info icon-add-btn" id="kpiInput" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        KPI
+                    </button>
+                    <a sec:authorize="hasAuthority('PM')" th:href="@{edit}" class="icon-add-btn" id="editButton">
+                        <i class='bx bx-edit m-0 p-0'></i>
+                    </a>
+                </div>
+            </div>
+            <!--            Outer card body -->
+            <div class="card-body row mx-1 px-3">
+                <!--                client info -->
+                <div class="col-12 col-md-7 px-3">
+                    <div class="row px-3">
+                        <table class="table table-sm table-striped-columns table-bordered">
+                            <tbody>
+                            <tr>
+                                <th class="col-4 ps-3">Client name</th>
+                                <td id="clientName" th:text="${currentProject.client}"></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Project Manager</th>
+                                <td id="pmName" th:text="${currentProject.projectManager}"></td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Department</th>
+                                <td id="depName" th:text="${currentProject.department}">Unknown person</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-striped-columns table-bordered">
+                            <tbody>
+                            <tr>
+                                <th class="col-4 ps-3">Start date</th>
+                                <td id="startDate" class="col-8" th:text="${currentProject.startDate}">Unknown date</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">End date</th>
+                                <td id="endDate" th:text="${currentProject.endDate}">Unknown date</td>
+                            </tr>
+                            <tr>
+                                <th class="ps-3">Duration</th>
+                                <td id="Duration" th:text="${currentProject.duration}">Unknown date</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12 d-flex col-md-5 px-3">
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="ps-2 col-6">Contract Members</th>
+                            </tr>
+                        </thead>
+                        <tbody th:each="conMember : ${currentProject.contractMembers}">
+                            <tr>
+                                <td class="ps-2" th:text="${'- '+conMember}"></td>
+                            </tr>
+                        </tbody>
+                        <tbody th:if="${currentProject.contractMembers.size() == 0}">
+                        <tr>
+                            <td class="ps-2 col-6 text-center">No contract members</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="ps-2 col-6">FOC Members</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="focMember : ${currentProject.focMembers}">
+                        <tr>
+                            <td class="ps-2" th:text="${'- '+focMember}"></td>
+                        </tr>
+                        </tbody>
+                        <tbody th:if="${currentProject.focMembers.size() == 0}">
+                        <tr>
+                            <td class="ps-2 col-6 text-center" style="color: #8A92A6">No contract members</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="col-12 px-3 mt-2">
+                    <h3 class="ps-2 py-2 bg-gray-color">Background</h3>
+                    <p class="text-justify p-2" th:text="${currentProject.background}"></p>
+                </div>
+                <div class="col-12 px-3">
+                    <h3 class="ps-2 py-2 bg-gray-color">Objective</h3>
+                    <p class="text-justify p-2" th:text="${currentProject.objective}"></p>
+                </div>
+
+
+
+                <div class="col-12 px-3 mt-2">
+                    <h3 class="ps-2 py-2 bg-gray-color">Architecture Outlines</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="arch,index : ${currentProject.architectureOutlines}">
+                            <td th:text="${index.count}"></td>
+                            <td th:text="${arch.name}"></td>
+                            <td th:text="${arch.type}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <th:block th:with="cols =${currentProject.amounts!=null and currentProject.amounts.size()>0?'col-md-4':'col-md-6'}">
+                <div th:class="'col-12 '+ ${cols} +' px-3'">
+                    <h3 class="ps-2 py-2 bg-gray-color">System Outlines</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="sys : ${currentProject.systemOutlines}">
+                            <td th:text="${'- '+sys}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    <div th:class="'col-12 '+ ${cols} +' px-3'">
+                    <h3 class="ps-2 py-2 bg-gray-color">Deliverables</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="deli : ${currentProject.deliverables}">
+                            <td th:text="${'- '+deli}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </th:block>
+                <div th:if="${currentProject.amounts!=null and currentProject.amounts.size()>0}" class="col-12 col-md-4 px-3">
+                    <h3 class="ps-2 py-2 bg-gray-color">Amount</h3>
+                    <table class="table table-sm table-striped-columns table-bordered">
+                        <tbody>
+                        <tr th:each="amount : ${currentProject.amounts}">
+                            <td th:text="${amount.name}"></td>
+                            <td class="text-end" th:text="${amount.amount}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${currentProject.reviewCounts!=null and currentProject.reviewCounts.size()>0}" class="col-12 px-3">
+                    <h3 class="ps-2 py-2 bg-gray-color">Review</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>Internal Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'INTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <table class="table table-sm table-striped-columns table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th>External Review</th>
+                                    <th>Review Count</th>
+                                </tr>
+                                <tr th:each="review : ${currentProject.reviewCounts}" th:if="${review.type == 'EXTERNAL'}">
+                                    <td th:text="${review.name}"></td>
+                                    <td class="text-end" th:text="${review.count}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+    <!-- End Main Content-->
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add data for KPI</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tabs">
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+                        <label for="tab1" class="tabs__label d-flex align-items-center justify-content-center">
+                            Amount</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="basicDesignScreenCount" class="form-label" id="basicDesignLabel">Basic design:</label>
+                                        <input class="form-control" id="basicDesignScreenCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="detailedDesignScreenCount" class="form-label" id="detailDesignLabel">Details design:</label>
+                                        <input class="form-control" id="detailedDesignScreenCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12">
+                                        <label for="codeLineCount" class="form-label" id="codeLineLabel">Coding:</label>
+                                        <input class="form-control" id="codeLineCount" type="number">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label for="unitTestCount" class="form-label" id="unitTestLabel">Unit testing:</label>
+                                        <input class="form-control" id="unitTestCount" type="number">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="integrationTestCount" class="form-label" id="integrationTestLabel">Integration testing:</label>
+                                        <input class="form-control" id="integrationTestCount" type="number">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex mt-2 justify-content-end gap-2">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="addOrUpdateAmount()">Save changes</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+                        <label for="tab2" class="tabs__label d-flex align-items-center justify-content-center">
+                            Review</label>
+                        <div class="tabs__content py-0">
+                            <div style="height: 10px"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="reviewerType" class="form-label">Select the Reviewer:</label>
+                                    <select id="reviewerType" class="form-select reviewer-type-selector" onchange="fetchExistingReview()">
+                                        <option value="INTERNAL">INTERNAL</option>
+                                        <option value="EXTERNAL">EXTERNAL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="basicDesignReviewCount" class="form-label" >Basic design review :</label>
+                                    <input class="form-control" id="basicDesignReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="detailedDesignReviewCount" class="form-label" >Details design review :</label>
+                                    <input class="form-control" id="detailedDesignReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <label for="codeLineReviewCount" class="form-label" >Coding review :</label>
+                                    <input class="form-control" id="codeLineReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6">
+                                    <label for="unitTestReviewCount" class="form-label" >Unit testing Review :</label>
+                                    <input class="form-control" id="unitTestReviewCount" type="number">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="integrationTestReviewCount" class="form-label" >Integration testing:</label>
+                                    <input class="form-control" id="integrationTestReviewCount" type="number">
+                                </div>
+                            </div>
+                            <div class="d-flex mt-2 justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="addOrUpdateReview()">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+
+
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="/js/add-amount.js"></script>
+<script src="/js/add-review.js"></script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+
+</body>
+</html>

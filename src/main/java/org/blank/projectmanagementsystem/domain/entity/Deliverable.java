@@ -1,13 +1,17 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+
+
+import java.io.Serializable;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -16,11 +20,15 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Deliverable {
+public class Deliverable implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
+
 
     @Column(unique = true,nullable = false, length =45)
     private String name;
+
+    private boolean status;
+
 }

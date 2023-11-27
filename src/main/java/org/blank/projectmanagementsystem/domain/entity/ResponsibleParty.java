@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -13,20 +16,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponsibleParty {
+public class ResponsibleParty implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private User Provider;
-
-    @ManyToOne
-    @JoinColumn(nullable = true)
-    private Client client;
-
-
-
+    @Column(unique = true,nullable = false, length = 50)
+    private String name;
 }

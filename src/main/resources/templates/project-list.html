@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <!-- Hope Ui Design System Css -->
+    <link href="/css/pagination.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .project-list-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .project-card {
+            flex: 1;
+            background: white;
+            margin-bottom: 20px;
+            border: 1px solid rgba(152, 165, 178, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        .card-body {
+            padding: 20px;
+            height: 100%; /* Set the height to 100% */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 5px 0 5px 0;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        .badge-green {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge-gray {
+            background-color: #676767;
+            color: #fff;
+        }
+
+        .badge-red {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .card-title {
+            color: #333; /* Dark gray font color */
+            margin-bottom: 8px; /* Adjust as needed for spacing */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Additional style for small font size */
+        .small-font-size {
+            font-size: 15px !important;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            padding-inline: 15px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            padding: 1px;
+            margin: 1px;
+            color: black;
+        }
+    </style>
+    <!-- ... (previous HTML code) ... -->
+<style>
+    .circle-progress {
+        width: 80px;
+        height: 80px;
+    }
+</style>
+    <style>
+        .circle-progress {
+            position: relative;
+        }
+
+        .progress-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px; /* Adjust the font size as needed */
+            color: #333; /* Adjust the color as needed */
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+
+    <input type="hidden" th:value="${#authentication.principal.role}" id="userRole">
+
+    <h4><i class="bi bi-journals"></i>&nbspProject List View</h4>
+
+    <div class="search-box mb-3">
+        <label for="issueSearch"></label>
+        <div class="input-group" style="position: relative">
+                <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+        <i class="bi bi-search"></i>&nbsp;
+    </span>
+            <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search"
+                   style="padding-left: 40px ">
+        </div>
+    </div>
+    <!-- End Page Title -->
+    <div class="project-list-container row">
+    </div>
+    <div id="pagination-container"></div>
+    <!-- End Main Content-->
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+
+<!-- jQuery -->
+<script src="/js/jquery-3.6.4.min.js"></script>
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.js"></script>
+
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/pagination.js"></script>
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<!-- Include Fuse.js -->
+<script src="/js/fuse.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // const projectList = [
+        //     { name: 'Project 1 dfjskfjasklfjsdklfjsklfsdsdfksfsdklkffsd dfasfsdkfasjkfjsd jhghjkjhkjhgghhfhfgfghfth', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'ONGOING', progress: 90 },
+        //     { name: 'Project 2', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'PENDING', progress: 0 },
+        //     { name: 'Project 3', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'COMPLETED', progress: 100 },
+        //     // ... other projects
+        // ];
+        // getSuccess();
+
+        let projectList = [];
+        // Make an AJAX request to fetch data from the REST API endpoint
+        $.ajax({
+            url: '/get-projects', // Replace with your actual API endpoint
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log('All project list:', data);
+                projectList = data;
+                getSuccess();
+            },
+            error: function (error) {
+                console.log('Error fetching data:', error);
+            }
+        });
+
+        function getSuccess() {
+            const fuseOptions = {
+                keys: ['name', 'department', 'client', 'status'],
+                threshold: 0.3,
+            };
+
+            const fuse = new Fuse(projectList, fuseOptions);
+
+            const itemsPerPage = 5;
+            const paginationContainer = $('#pagination-container');
+            const projectListContainer = $('.project-list-container');
+            const issueSearchInput = $('#issueSearch');
+
+            function performFuzzySearch(searchTerm) {
+                if (searchTerm.trim() === '') {
+                    // If search term is empty, render the entire project list
+                    renderProjectList(projectList);
+                    initializePagination(projectList);
+                } else {
+                    const results = fuse.search(searchTerm.toLowerCase());
+                    renderProjectList(results);
+                    initializePagination(results);
+                }
+            }
+
+            function renderProjectCard(project) {
+                const {name, department, endDate, client, status, id} = project;
+                const userRole = $('#userRole').val();
+                const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
+                const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
+                const badgeColorClass = status === 'COMPLETED'
+                    ? 'badge-gray'
+                    : status === 'PENDING'
+                        ? 'badge-red'
+                        : 'badge-green';
+
+                const borderTopColor = badgeColorClass === 'badge-gray'
+                    ? '#676767'
+                    : badgeColorClass === 'badge-red'
+                        ? '#dc3545'
+                        : '#28a745';
+                return `
+        <div class="col-md-4">
+          <a href="${nextLink}" class="card-link">
+            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 200px">
+              <div class="card-body">
+                <div class="d-flex justify-content-between container mt-4">
+                  <div class="mt-2">
+                    <p class="card-text"><span><i class="bi bi-briefcase"></i>&nbsp&nbsp${department}</span></p>
+                    <p class="card-text"><span><i class="bi bi-hourglass-bottom"></i>&nbsp&nbsp${endDate}</span></p>
+                    <p class="card-text"><span><i class="bi bi-person"></i>&nbsp&nbsp${client}</span></p>
+                  </div>
+                  <div>
+                  <div class="circle-progress" data-progress="${project.progress / 100}">
+                    <div class="progress-number">${project.progress}%</div>
+                  </div>
+                  </div>
+                </div>
+                <div class="border-top" style="border-top: 1px solid black">
+                <div class="mt-2 text-black fw-bold">${truncatedTitle}</div>
+                </div>
+              </div>
+              <span class="badge ${badgeColorClass}">${status}</span>
+            </div>
+          </a>
+        </div>
+
+      `;
+            }
+            function renderProjectList(projectList) {
+                const userRole = $('#userRole').val();
+                projectList.sort((a, b) => {
+                    // Compare by status first (ONGOING, PENDING, COMPLETED)
+                    const statusOrder = {ONGOING: 1, PENDING: 2, COMPLETED: 3};
+                    const statusComparison = statusOrder[a.status] - statusOrder[b.status];
+
+                    // If status is different, return the status comparison
+                    if (statusComparison !== 0) {
+                        return statusComparison;
+                    }
+
+                    // If status is the same, compare by due date
+                    return new Date(a.endDate) - new Date(b.endDate);
+                });
+                projectListContainer.empty();
+                if (userRole === 'PM') {
+                    const linkCard = `
+                    <div class="col-md-4">
+                      <a href="/projects/new" class="card-link">
+                        <div class="card project-card" style="height: 200px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
+                          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
+                            <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  `;
+                    projectListContainer.append(linkCard);
+                }
+
+                projectList.forEach(function (project) {
+                    projectListContainer.append(renderProjectCard(project));
+                });
+                // Initialize Circle Progress
+                $('.circle-progress').each(function () {
+                    var progress = $(this).data('progress');
+                    $(this).circleProgress({
+                        startAngle: -Math.PI / 4 * 2,
+                        value: progress,  // Update to use the 'progress' attribute directly
+                        size: 80,
+                        fill: { gradient: ['#3498db', '#7b89fa'] }
+                    });
+                });
+                if (userRole !== 'PM' && projectList.length === 0) {
+                    const html = `<div style="height: 60vh;" class="d-flex flex-column justify-content-center align-items-center">
+                                     <i class="bi bi-journal-x display-2 mb-3"></i>
+                                     <h3>No Projects Found!</h3>
+                                  </div>`;
+                    projectListContainer.append(html)
+                }
+            }
+
+            function initializePagination(dataSource) {
+                paginationContainer.pagination({
+                    dataSource: dataSource,
+                    pageSize: itemsPerPage,
+                    showSizeChanger: true,
+                    callback: function (dataSource, pagination) {
+                        renderProjectList(dataSource);
+                    }
+                });
+            }
+
+            issueSearchInput.on('input', function () {
+                const searchTerm = $(this).val();
+                performFuzzySearch(searchTerm);
+            });
+
+            // Initialization
+            initializePagination(projectList);
+        }
+    });
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Notification</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"/>
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/hope.css"/>
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <style>
+        .count-box {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .count-icon {
+            font-size: 48px;
+            color: #007bff; /* Change the color as needed */
+        }
+
+        .notification {
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .notification:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification:hover {
+            transform: scale(1.02);
+        }
+
+        .unread-dot {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            background-color: #ff5252; /* Red color */
+            border-radius: 50%;
+        }
+    </style>
+    <style>
+        .bin-icon-link {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        .bin-icon-link:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">Notifications</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+    <ul class="list-group" id="notificationList">
+        <!-- Notifications will be dynamically added here -->
+    </ul>
+    <!-- End Main Content-->
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+<!-- Vendor JS Files -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    let jsonData = [];
+
+    $(document).ready(function () {
+        // Fetch notifications on document ready
+        fetchNotifications();
+
+        // Add event listener for the trash icon click using event delegation
+        $(document).on("click", ".bin-icon-link", function () {
+            // Get the IDs of selected notifications
+            var selectedIds = getSelectedIds();
+
+            // Perform the deletion (replace this with your actual deletion logic)
+            if (selectedIds.length > 0) {
+                deleteNotifications(selectedIds);
+            } else {
+                console.log("No notifications selected for deletion.");
+            }
+        });
+
+        // Add event listener for the notification click to mark as read
+        $(document).on("click", ".notification", function (e) {
+            // Check if the click occurred on the checkbox
+            if (!$(e.target).is("input[type='checkbox']")) {
+                console.log("Clicked");
+                var notificationId = $(this).find("input[type='checkbox']").val();
+                console.log(notificationId);
+                markNotificationAsRead(notificationId);
+            }
+        });
+
+
+    });
+
+    // function markNotificationAsRead(id) {
+    //     // Make an AJAX request to mark the notification as read
+    //     $.ajax({
+    //         url: "/mark-as-read/" + id, // Include the id in the URL
+    //         type: "POST",
+    //         contentType: "application/json",
+    //         success: function (response) {
+    //             console.log(response);
+    //             // Optionally, you can update the UI or perform additional actions after marking as read
+    //         },
+    //         error: function (error) {
+    //             console.error("Error marking notification as read:", error);
+    //             // Handle the error or display a message to the user
+    //         }
+    //     });
+    // }
+
+
+    function fetchNotifications() {
+        $.ajax({
+            url: "/notifications",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log("NOTIFICATION DATA : ", data);
+                jsonData = data;
+                renderNotifications();
+            },
+            error: function (e) {
+                console.error("Error fetching notifications:", e);
+            }
+        });
+    }
+
+
+
+    function createNotification(date, id, isRead, link, message, type) {
+        let dotClass = isRead ? "read" : "unread";
+        let since = timeSince(date)
+        let notificationElement = `
+                <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass} p-3" style="margin-bottom: 10px; border-radius:5px;">
+                    <div class="d-flex w-100 gap-3">
+                        <div class="w-100 d-flex gap-2">
+                            <label><input class="form-check-input me-1" type="checkbox" value="${id}"></label>
+                            <div class="w-100 d-flex flex-column gap-3">
+                                <p class="mb-1 fw-bold">${message}</p>
+                                <div class="d-flex justify-content-between align-items-end">
+                                     <span class="mb-1 bg-primary rounded-5 text-white fw-bolder py-1 px-2" style="font-size: 10px">${type}</span>
+                                     <small class="text-end text-body-secondary fw-bold" style="font-size: 12px;">${since}</small>
+                                </div>
+                            </div>
+                        </div>
+                        ${!isRead ? '<div class="unread-dot"></div>' : ''}
+                    </div>
+                </a>
+            `;
+        return notificationElement;
+    }
+
+    function renderNotifications() {
+        var notificationList = $("#notificationList");
+
+        // Sort jsonData based on the 'read' property and 'timestamp' (newest first)
+        jsonData.sort(function (a, b) {
+            if (a.isRead !== b.isRead) {
+                return a.isRead - b.isRead;
+            } else {
+                // Sort by timestamp in descending order
+                return new Date(b.date) - new Date(a.date);
+            }
+        });
+
+        // Clear existing notifications
+        notificationList.empty();
+
+        // Add a checkbox at the top to check all checkboxes
+        notificationList.append(`
+                <div class="d-flex w-100 gap-3 m-3">
+                    <div class="w-100 d-flex gap-2 align-items-center">
+                        <label><input id="checkAll" style="font-size: 14px;" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
+                        <div class="w-100">
+                            <h5 class="mb-1">Select all</h5>
+                        </div>
+                        <div class="bin-icon" style="padding-right: 20px">
+                            <!-- Add your bin icon here -->
+                            <a href="#" class="bin-icon-link">
+                                <h4><i class="bi bi-trash"></i></h4>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `);
+
+        // Iterate through jsonData and append notifications
+        jsonData.forEach(function (notification) {
+            var notificationElement = createNotification(notification.date, notification.id, notification.isRead, notification.link, notification.message, notification.type);
+            notificationList.append(notificationElement);
+        });
+    }
+
+    function getSelectedIds() {
+        var selectedIds = [];
+        $(".notification input[type='checkbox']:checked").each(function () {
+            selectedIds.push($(this).val());
+        });
+        return selectedIds;
+    }
+
+    function deleteNotifications(ids) {
+        console.log("Deleting notifications with IDs:", ids);
+
+        // Make an AJAX request to delete notifications
+        $.ajax({
+            url: "/delete-notifications", // Replace with the actual endpoint in your RestController
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(ids),
+            success: function (response) {
+                console.log(response);
+                location.reload();
+                // Optionally, you can update the UI or perform additional actions after deletion
+            },
+            error: function (error) {
+                console.error("Error deleting notifications:", error);
+                // Handle the error or display a message to the user
+            }
+        });
+    }
+
+    function checkAll() {
+        var checkboxes = $(".notification input[type='checkbox']");
+        var checkAllCheckbox = $("#checkAll");
+        checkboxes.prop("checked", checkAllCheckbox.prop("checked"));
+    }
+</script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>

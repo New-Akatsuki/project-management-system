@@ -1,0 +1,541 @@
+/*
+    ---------------------------
+    BOARD STYLES
+    ---------------------------
+*/
+
+.cd_kanban_board{
+    width: 100%;
+    height:auto;
+    display: block;
+    clear: both;
+    overflow-x: auto;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 75vh;
+    margin-bottom: 12px;
+}
+.cd_kanban_board > .cd_kanban_board_blocks:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.cd_kanban_board > .cd_kanban_board_blocks .kb-section{
+    margin:0 10px 0 0;
+    flex: 1;
+    background: rgb(232, 237, 246);
+    max-width: 360px;
+    min-width: 360px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.px-board{
+    padding-inline: 1rem;
+}
+.border-highlight-left{
+    border-left: 5px solid #3577ff;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block:last-child{
+    margin: 10px 0 0;
+}
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item{
+    width: 100%;
+    height: auto;
+    margin: 0 0 10px;
+    padding: 0.75rem;
+    display: block;
+    clear: both;
+    background: #FFF;
+    border: 1px solid #c0c2cd;
+    -webkit-transition: -webkit-transform 300ms ease-in-out;
+    -moz-transition: -moz-transform 300ms ease-in-out;
+    -ms-transition: -ms-transform 300ms ease-in-out;
+    -o-transition: -o-transform 300ms ease-in-out;
+    transition: transform 300ms ease-in-out;
+    transform: rotate(0deg);
+}
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item a{
+    font-style: italic;
+    text-decoration: underline;
+    margin: 5px 0 0;
+    display: block;
+}
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_title{
+    margin: 0 0 0.25rem;
+    padding: 0 0 0 20px;
+    background: url("/static/images/dragger.png") 0px 0px no-repeat;
+    font-size: 1rem !important;
+    line-height: 1rem;
+    font-weight: bold;
+}
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item.ui-sortable-helper{ transform: rotate(-2deg); }
+.cd_kanban_board_block_item_placeholder{
+    width: 100%;
+    height: 60px;
+    border: 10px dot-dash #0d6efd;
+    border-radius: 5px;
+    background: #cae0fc;
+    margin: 0 0 10px;
+    display: block;
+    clear: both;
+}
+
+.cd_kanban_board > .cd_kanban_board_blocks .cd_kanban_board_block .cd_kanban_board_block_item .cd_kanban_board_block_item_footer{
+    margin: 0.75rem -0.75rem -0.75rem;
+    padding: 0.75rem;
+    display: block;
+    clear: both;
+    border-top: 1px solid #c0c2cd;
+}
+
+/*
+    ---------------------------
+    kanban board
+    ---------------------------
+*/
+
+.kb-section-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1rem;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #c0c2cd;
+    border-radius: 5px 5px 0 0;
+}
+
+
+.kb-section-header-btn {
+    border: none;
+    color: #3577ff;
+}
+.kb-section-header-btn:hover{
+    cursor: pointer;
+    background: #dfe9ff;
+    border-radius: 5px;
+}
+
+.kb-section-body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-block: 0.5rem;
+    margin-top: 10px;
+    min-height: 50px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.kb-task {
+    min-height: 145px;
+    height: 145px;
+    padding: 10px 20px;
+    background-color: #fff;
+    transition: height 0.3s ease-out;
+    border-radius: 5px;
+}
+
+.subtask-date-font-size{
+    font-size: 12px;
+}
+
+/* Styles for the task body layout */
+.kb-task-body-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    cursor:pointer;
+}
+
+/* Styles for the task body layout 2 (containing due date and subtask) */
+.kb-task-body-layout2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.subtask-block{
+    cursor: pointer;
+}
+/* Styles for the task name */
+.kb-task-name-layout {
+    flex: 1;
+}
+
+
+/* Styles for the due date and subtask layout */
+.kb-task-due-date-layout,
+.kb-task-subtask-layout {
+    display: flex;
+    align-items: center;
+}
+
+.add-subtask-btn {
+    background: transparent;
+    text-align: center;
+    border-radius: 5px;
+    border-block: 1px solid #e7edfd;
+    border-inline: 3px solid #3577ff;
+    cursor: pointer;
+    width: 100%;
+    padding: 7px 0;
+}
+.add-subtask-btn:hover{
+    background: #e7edfd;
+}
+/* Styles for the due date text */
+.kb-task-due-date {
+    margin-right: 10px;
+}
+
+.kb-subtask-body {
+    width: 100%;
+    height: 46px;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    align-items: center;
+    padding-block: 10px;
+    padding-inline: 5px;
+    border-block: 1px solid #e5e5e5;
+    cursor: pointer;
+}
+.justify-self-end{
+    justify-self: end;
+}
+.flex-3{
+    flex: 3;
+}
+.flex-6{
+    flex: 6;
+}
+.kb-subtask-name {
+    font-weight: bold;
+}
+
+.kb-subtask-name-layout {
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-right: 80px;
+}
+
+/* Styles for the subtask due date */
+.kb-subtask-due-date-layout {
+    display: inline; /* Make it an inline element */
+    margin: 0; /* Remove any margin */
+    border: none; /* Remove the border */
+    padding-left: 10px; /* Add some padding to separate it from the name */
+}
+
+.kb-subtask-body-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+/* Modal Styles */
+
+.datepicker-style{
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.modal-content {
+    border-radius: 10px; /* Rounded corners for the modal */
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal-header {
+    background-color: #343a40; /* Change the header background color */
+    color: white; /* Text color in the header */
+    border: none; /* Remove the header border */
+}
+
+.modal.right .modal-dialog {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off the screen to the right */
+    bottom: 0;
+    margin: 0;
+    width: 800px; /* Adjust the width to your preference */
+    max-width: 100%;
+    transition: right 0.3s ease; /* Add a transition for sliding in */
+}
+
+.modal.right .modal-dialog .modal-body {
+    max-height: 97vh; /* Set a maximum height with respect to the viewport height */
+    overflow-y: auto; /* Add a vertical scrollbar if needed */
+}
+
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.modal.right.show .modal-dialog {
+    right: 0; /* Slide in from the right when modal is shown */
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/*modal design spec*/
+#exampleModalLabel{
+    padding: 0 15px;
+    margin: 0 10px;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.task-body-text-layout{
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+.task-body-project-expected-date,
+.task-body-project-actual-date,
+.task-body-footer,
+.task-body-assignees-layout{
+    display: flex;
+    padding: 0 15px;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 0 10px;
+}
+
+
+.task-body-project-expected-date label,
+.task-body-project-actual-date label,
+.task-body-footer label,
+.task-body-assignees-layout label{
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+/*SubTask modal*/
+
+/* Label Styles */
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Button Styles */
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+}
+.modal-footer .btn-primary {
+    background-color: #007bff; /
+}
+
+.close {
+    color: #fff;
+    font-size: 25px;
+}
+
+.modal-body {
+    overflow-y: auto;
+}
+
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100% - 60px);
+}
+.subtask-block{
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    animation: floatOutSubtask 0.3s ease-in-out;
+}
+.hide {
+    opacity: 0;
+    display: none;
+}
+.show {
+    display: block;
+}
+.toggle-subtask-icon-active {
+    transform: rotate(-90deg);
+}
+.toggle-subtask-icon {
+    border:none;
+    border-radius: 5px;
+    background: #dfe9ff;
+    transition: transform 0.3s ease; /* Add a smooth transition for the transform property */
+}
+.toggle-subtask-icon:hover {
+    cursor: pointer;
+    background: #dfe9ff;
+}
+.kb-task-status-layout{
+    color: #02ff70;
+    font-size: 2rem;
+}
+.kb-task-status-layout:hover{
+    cursor: pointer;
+    border-radius: 5px;
+    background: #dfe9ff;
+}
+/*.dropdown-toggle{*/
+/*    display: none!important;*/
+/*}*/
+.dropdown-item:hover{
+    background: #dfe9ff!important;
+}
+@keyframes floatOutSubtask {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.offcanvas, .offcanvas-lg, .offcanvas-md, .offcanvas-sm, .offcanvas-xl, .offcanvas-xxl {
+    --bs-offcanvas-width: 650px!important;
+}
+
+.make-complete-btn{
+    background: rgba(53, 119, 255, 0.04);
+    border: 1px solid #3577ff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3577ff;
+}
+.make-complete-btn:hover{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.btn-complete{
+    background: rgba(103, 253, 158, 0.5);
+    border: 1px solid rgb(14, 150, 64);
+    color: rgb(14, 150, 64);
+}
+.desc-view{
+    border-radius: 7px;
+    max-height: 100px;
+    overflow-y: scroll;
+    text-align: justify;
+}
+
+.text-block{
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: white;
+    vertical-align: middle;
+}
+.fs-sx{
+    font-size: 8px;
+}
+
+.min-w-50px{
+    width: 50px;
+}
+
+.priority-high{
+    background: #ff3535;
+    border: 1px solid #ff3535;
+}
+.priority-medium{
+    background: #ff9f35;
+    border: 1px solid #ff9f35;
+}
+.priority-low{
+    background: #3fc068;
+    border: 1px solid #3fc068;
+}
+
+.type-task{
+    background: #3577ff;
+    border: 1px solid #3577ff;
+}
+.type-milestone{
+    background: #ffdd35;
+    border: 1px solid #ffdd35;
+}
+
+.offcanvas-body .y-scroll{
+    max-height: 75vh!important;
+    overflow-y: scroll!important;
+}
+.accordion-body{
+    max-height: 150px!important;
+    overflow-y: scroll;
+    padding: 0!important;
+}
+
+.move-top{
+    position: absolute;
+    top: 85px;
+    left: 270px;
+    z-index: 1;
+    animation: floatOutSubtask;
+}
+
+.float-edit-btn{
+    position: absolute;
+    top: 85px;
+    right: 25px;
+    z-index: 1;
+}
+

@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>DIR-ACE TECHNOLOGY</title>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Bootstrap JS and Popper.js for Modal Box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS and Popper.js for Modal Box End -->
+
+    <link href="/css/single-select.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/favicon.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <script src="/js/jquery-3.6.4.min.js"></script>
+
+    <link rel="stylesheet" href="/css/hope.css">
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/select2.css">
+
+
+    <style>
+        .card .card-header {
+            background: linear-gradient(to right, #0074cc, #999);
+            color: #fff;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card .card-header h3 {
+            color: #fff;
+            margin: 10px;
+        }
+    </style>
+    <style>
+        .card-body {
+            background: white;
+        }
+    </style>
+    <style>
+        .select2-container--default .select2-search--inline .select2-search__field {
+            padding-left: 10px;
+            background: transparent;
+            border: none;
+            outline: 0;
+            box-shadow: none;
+            -webkit-appearance: textfield;
+        }
+    </style>
+
+    <style>
+        .modal {
+            --bs-modal-width: 450px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 140px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+        .error-msg{
+            color: red;
+        }
+    </style>
+    <style>
+        #dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            pointer-events: auto; /* Updated to block interactions with elements beneath */
+        }
+
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 1.8rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            z-index: 10001; /* Update z-index to be higher than #dim-overlay */
+            display: none;
+        }
+
+        .form-control{
+            border: 1px solid #bad1e5 !important;
+            border-radius: 5px!important;
+            height: 40px;
+            color: #273b5e;
+        }
+        .datepicker-style {
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+    </style>
+    <style>
+        .modal {
+            --bs-modal-width: 450px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 140px;
+        }
+
+        .btn-icon {
+            height: 40px;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<!-- Start #main -->
+<main id="main" class="main">
+    <input type="hidden" id="projectId" th:value="${projectId}"/>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{projects}">projects</a></li>
+            <li sec:authorize="hasAuthority('PM')" class="breadcrumb-item"><a th:href="@{workspace}">workspace</a></li>
+            <li class="breadcrumb-item"><a th:href="@{details}">details</a></li>
+            <li class="breadcrumb-item active">edit</li>
+        </ol>
+    </nav>
+    <!-- End Page Title -->
+    <div class="card" style="border-radius: 18px; margin: 20px 28px">
+        <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Project</h2>
+            <form id="create-project">
+                <div class="container d-flex flex-column gap-2">
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="title" class="form-label text-black">Name</label>
+                            <input class="form-control title" type="text" name="title" id="title"
+                                   placeholder="Enter Project Name"/>
+                            <span class="text-danger" id="titleError">Enter Project Name</span>
+                        </div>
+
+                        <!--                        <div class="d-flex flex-column w-100 p-0">-->
+                        <!--                            <label for="department" class="form-label text-black">Department</label>-->
+                        <!--                            <select class="js-example-basic-single select-box2 form-select"-->
+                        <!--                                    id="department" style="width: 100%; height: 100%;">-->
+                        <!--                                <option value="default" selected disabled>Choose Department</option>-->
+                        <!--                            </select>-->
+                        <!--                            <span class="text-danger" id="departmentError">Department must be selected.</span>-->
+                        <!--                        </div>-->
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="start-date" class="form-label d-block text-black">Start Date</label>
+                            <input class="datepicker-style form-control" type="text" id="start-date"
+                                   placeholder="Enter start date" autocomplete="off"/>
+                            <div class="invalid-feedback" id="start-date_error"></div>
+                            <!--                            <div class="replace" style="height: 100%;"></div>-->
+                            <span class="text-danger" id="startDateError">Start date must be chosen.</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="duration" class="form-label text-black">Duration (Month)</label>
+                            <input class="form-control" type="number" id="duration"
+                                   placeholder="Enter Duration" autocomplete="off" min="1"/>
+                        </div>
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="end-date" class="form-label d-block text-black">End Date</label>
+                            <input class="datepicker-style form-control" type="text" id="end-date"
+                                   placeholder="Enter end date" autocomplete="off" disabled/>
+                            <div class="invalid-feedback" id="end-date_error"></div>
+                            <!--                            <div class="replace" style="height: 100%;"></div>-->
+                            <span class="text-danger" id="endDateError">End date must be chosen.</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="member" class="form-label text-black">Contract Member</label>
+                            <select id="member" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger"
+                                  id="contractMemberError">Contract member must be selected.</span>
+                        </div>
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="foc" class="form-label text-black">FOC Member (Optional)</label>
+                            <select id="foc" multiple="multiple" style="width: 100%; height: 100%;"></select>
+                            <div class="replace" style="height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="ao" class="form-label text-black">Architecture Outlines</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="arc-select-box" id="ao" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <button type="button" class="btn btn-primary btn-icon" id="addArchitectureButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger"
+                                  id="arcOutlinesError">Architecture outline must be selected.</span>
+                        </div>
+
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="so" class="form-label text-black">System Outlines</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="sysOutline-select-box" id="so" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <button type="button" class="btn btn-primary btn-icon" id="addSystemOutlineButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="sysOutlinesError">System outline must be selected.</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-2">
+                        <!-- Left Set -->
+                        <div class="d-flex flex-column w-100 p-0 gap-2 w-100">
+                            <label for="client" class="mb-0 text-black">Client</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <!-- First Select Box with Default Value -->
+                                <select class="js-example-basic-single select-box form-select"
+                                        id="client" style="width: 100%; height: 100%;">
+                                    <option value="default" selected disabled>Select Client</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                                <button type="button" class="btn btn-primary btn-icon" id="addClientButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            </div>
+                            <span class="text-danger" id="clientError">You must choose a Client.</span>
+                        </div>
+
+                        <div class="d-flex flex-column w-100 p-0">
+                            <label for="deli" class="form-label text-black">Deliverables</label>
+                            <div class="d-flex gap-2 w-100 p-0">
+                                <select class="deliverable-select-box" id="deli" multiple="multiple"
+                                        style="width: 100%; height: 100%;"></select>
+                                <button type="button" class="btn btn-primary btn-icon" id="addDeliverablesButton"><i
+                                        class="bx bx-plus fw-bold fs-5 text-center align-middle"></i></button>
+                            </div>
+                            <div class="replace" style="height: 100%;"></div>
+                            <span class="text-danger" id="deliverablesError">Deliverable must be selected.</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="objective" class="form-label text-black">Objective</label>
+                        <!--                        <div id="objective"></div>-->
+                        <textarea rows="5" id="objective" style="min-height: 50px; width: 100%" class="form-control"
+                                  placeholder="Enter Objective"></textarea>
+                        <span class="text-danger" id="objectiveError">Objective must not be empty!</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="background" class="form-label text-black">Background</label>
+                        <textarea rows="5" id="background" style="min-height: 50px; width: 100%" class="form-control"
+                                  placeholder="Enter Background"></textarea>
+                        <span class="text-danger" id="backgroundError">Background must not be empty!</span>
+                    </div>
+                    <div class="align-self-end">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px"
+                           onclick="goBack();">
+                            <i class="bi bi-backspace"></i>&nbsp;Back
+                        </a>
+<!--                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px"-->
+<!--                           onclick="clean()">-->
+<!--                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset-->
+<!--                        </a>-->
+                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
+                                id="submitButton">
+                            <i class="bi bi-save"></i>&nbsp;Create
+                        </button>
+                    </div>
+                </div>
+                <!--  Hidden Items    -->
+                <input type="hidden" name="member" id="memberInput">
+                <input type="hidden" name="objective" id="objectiveInput">
+                <input type="hidden" name="background" id="backgroundInput">
+                <input type="hidden" name="foc" id="focInput">
+                <!-- Hidden Items End -->
+            </form>
+        </div>
+    </div>
+    <!-- Add Client Modal -->
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Client</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <span class="d-none error-msg" id="clientSameNameError">This client already exist!</span>
+                    <div class="form-group">
+                        <label for="clientName" class="form-label">Client Name</label>
+                        <input type="text" class="form-control" id="clientName" name="name" required
+                               placeholder="Enter client name">
+                        <span class="d-none error-msg" id="clientNameError">Client name must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="clientEmail" name="email" required
+                               placeholder="Enter email">
+                        <span class="d-none error-msg" id="clientEmailError">Client email must not be empty!</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                               placeholder="Enter phone number">
+                        <span class="d-none error-msg"
+                              id="clientPhoneNumberError">Client phone number must not be empty!</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addClient()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    Add Architecture Outline-->
+    <div class="modal fade" id="architectureAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Architecture Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="architectureName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="architectureName" name="name" placeholder="Enter architecture outline name" required>
+                        <span class="d-none error-msg" id="architectureNameError">Architecture outline name must not be empty!</span>
+                        <span class="d-none error-msg" id="architectureSameNameError">This name already exist.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="architectureType">Type</label>
+                        <select class="form-control" id="architectureType" required>
+                            <option value="IDE">IDE</option>
+                            <option value="FRAMEWORK">Framework</option>
+                            <option value="LIBRARY">Library</option>
+                            <option value="PROGRAMMING_LANGUAGE">Programming Language</option>
+                            <option value="SCRIPT_LANGUAGE">Script Language</option>
+                            <option value="MARKUP_LANGUAGE">Markup Language</option>
+                            <option value="DATABASE">Database</option>
+                            <option value="VCS">Version Control System</option>
+                            <option value="API">API</option>
+                            <option value="TESTING">Testing</option>
+                            <option value="ALGORITHM">Algorithm</option>
+                            <option value="DESIGN_PATTERN">Design Pattern</option>
+                            <option value="CLOUD_COMPUTING">Cloud Computing</option>
+                            <option value="CONTINUOUS_INTEGRATION">Continuous Integration</option>
+                            <option value="CONTINUOUS_DEPLOYMENT">Continuous Deployment</option>
+                            <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <span class="d-none error-msg" id="architectureTypeError">Architecture outline type must not be empty!</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addArchitecture()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Add System Outline-->
+    <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New System Outline</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="OutlineName" class="form-label">System Outline Name</label>
+                        <input type="text" class="form-control" id="OutlineName" name="name" required>
+                    </div>
+                    <span class="d-none error-msg" id="systemOutlineNameError">System outline name must not be empty!</span>
+                    <span class="d-none error-msg" id="systemOutlineSameNameError">This name already exist!</span>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addSystemOutline()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Add Deliverables-->
+    <div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <div class="d-flex">
+                    <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Deliverable</h1>
+                    <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                </div>
+                <div class="container" style="padding: 10px 15px 0 15px;">
+                    <div class="form-group">
+                        <label for="deliverablesName" class="form-label">Deliverable Method</label>
+                        <input type="text" class="form-control" id="deliverablesName" name="name" required
+                               placeholder="Enter new deliverables method">
+                    </div>
+                    <span class="d-none error-msg" id="deliverablesNameError">Deliverables method must not be empty!</span>
+                    <span class="d-none error-msg" id="deliverablesSameNameError">This name already exist!</span>
+                </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" onclick="addDeliverable()" style="margin-right: 15px; padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+    </div>
+    <div id="dim-overlay"></div>
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog d-flex align-items-center">
+            <div class="modal-content">
+                <!-- Removed the modal-header and moved the close button to the modal-body -->
+                <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.5rem; position: absolute; top: 0; right: 0;"></button>
+                    <div class="text-center">
+                        <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
+                        <h2 style="font-size: 2rem;">Success!</h2>
+                        <p>Project update was successful.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toastPlace"></div>
+    <!-- End Card -->
+</main>
+<!-- End #main -->
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script th:src="@{/js/text-editor.js}"></script>
+
+<script th:src="@{/js/form-wizard.js}"></script>
+<script th:src="@{/js/validation.js}"></script>
+<script src="/js/jquery-ui.js"></script>
+
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--    <script src="/js/select2.js"></script>-->
+<script src="/js/select2.js"></script>
+
+
+<script>
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Function to populate options from JSON data
+        // Initialize Select2 for both select boxes
+        $('.js-example-basic-single').select2();
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '/clients',
+                type: 'GET',
+                success: function (data) {
+                    populateSelect('.js-example-basic-single.select-box', data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+    function populateSelect(selector, options) {
+        let select = $(selector);
+        $.each(options, function (index, value) {
+            select.append('<option value="' + value.id + '">' + value.name + '</option>');
+        })
+    }
+
+    function updateSelect(selector, option) {
+        let select = $(selector);
+        select.append('<option value="' + option.id + '">' + option.name + '</option>');
+    }
+</script>
+<script>
+    $.ajax({
+        url: '/get-users',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#member,#foc').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+
+            $('#member').select2({
+                placeholder: 'Choose Member',
+                closeOnSelect: true,
+                width: '100%'
+            });
+
+            $('#foc').select2({
+                placeholder: 'Choose FOC Member',
+                closeOnSelect: true,
+                width: '100%'
+            });
+
+            // When an option is selected in #member, disable it in #foc
+            $('#member').on('select2:select', function (e) {
+                var selectedOption = e.params.data.id;
+                $('#foc option[value="' + selectedOption + '"]').prop('disabled', true);
+                $('#foc').trigger('change');
+            });
+
+            // When an option is unselected in #member, enable it in #foc
+            $('#member').on('select2:unselect', function (e) {
+                var unselectedOption = e.params.data.id;
+                $('#foc option[value="' + unselectedOption + '"]').prop('disabled', false);
+                $('#foc').trigger('change');
+            });
+
+            // When an option is selected in #foc, disable it in #member
+            $('#foc').on('select2:select', function (e) {
+                var selectedOption = e.params.data.id;
+                $('#member option[value="' + selectedOption + '"]').prop('disabled', true);
+                $('#member').trigger('change');
+            });
+
+            // When an option is unselected in #foc, enable it in #member
+            $('#foc').on('select2:unselect', function (e) {
+                var unselectedOption = e.params.data.id;
+                $('#member option[value="' + unselectedOption + '"]').prop('disabled', false);
+                $('#member').trigger('change');
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/deliverables',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#deli').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/architectures',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#ao').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+    $.ajax({
+        url: '/system-outlines',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log('data', data)
+            $.each(data, function (index, value) {
+                $('#so').append($('<option>', {
+                    value: value.id,
+                    text: value.name
+                }));
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+
+</script>
+<script>
+
+
+    $('#deli').select2({
+        placeholder: 'Choose Deliverables ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+    $('#ao').select2({
+        placeholder: 'Choose Outlines ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+    $('#so').select2({
+        placeholder: 'Choose Outlines ',
+        closeOnSelect: true,
+        width: '100%'
+    });
+
+</script>
+
+<script>
+    $('.text-danger').hide();
+    const projectId = $('#projectId').val();
+    $('#create-project').submit(function (e) {
+        console.log("Submit button clicked")
+        e.preventDefault();
+        // Reset errors
+        // $('.text-danger').hide();
+        let name = $('#title').val();
+        let department = parseInt($('#department').val(), 10);
+        let startDate = new Date($('#start-date').val());
+        let endDate = new Date($('#end-date').val());
+        let so = $('#so').val().map(val => parseInt(val, 10));
+        let ao = $('#ao').val().map(val => parseInt(val, 10));
+        let deli = $('#deli').val().map(val => parseInt(val, 10));
+        let member = $('#member').val().map(val => parseInt(val, 10));
+        let foc = $('#foc').val().map(val => parseInt(val, 10));
+        let client = parseInt($('#client').val(), 10);
+        let objective = $('#objective').val();
+        let background = $('#background').val();
+        console.log("Start Date : "+startDate);
+        console.log("End Date : "+endDate);
+        let errors = [];
+
+
+        if (name === '') {
+            errors.push('#titleError');
+        }
+        if (isNaN(startDate) ||startDate === '' || startDate === null || startDate === 'Invalid Date') {
+            errors.push('#startDateError');
+        }
+        if (isNaN(endDate) || endDate === '' || endDate === null || endDate === 'Invalid Date') {
+            errors.push('#endDateError');
+            $('#duration').focus();
+        }
+        if (isNaN(client) || client === 'default' || client === null) {
+            errors.push('#clientError');
+        }
+        if (!so || so.length === 0) {
+            errors.push('#sysOutlinesError');
+        }
+        if (!ao || ao.length === 0) {
+            errors.push('#arcOutlinesError');
+        }
+        if (!deli || deli.length === 0) {
+            errors.push('#deliverablesError');
+        }
+        if (!member || member.length === 0) {
+            errors.push('#contractMemberError');
+        }
+        if (objective === '') {
+            errors.push('#objectiveError');
+        }
+        if (background === '') {
+            errors.push('#backgroundError');
+        }
+
+        // Display all errors at once
+        for (let error of errors) {
+            $(error).show();
+        }
+
+        // If there are errors, stop further processing
+        if (errors.length > 0) {
+            return false;
+        }
+
+        // If no errors, proceed with the AJAX request
+        const projObj = {
+            id: projectId,
+            name: name,
+            department: department,
+            startDate: startDate,
+            endDate: endDate,
+            background: background,
+            objective: objective,
+            systemOutlines: so,
+            architectureOutlines: ao,
+            deliverables: deli,
+            contractMembers: member,
+            focMembers: foc,
+            client: client,
+        };
+        // Convert to JSON string
+        const jsonString = JSON.stringify(projObj);
+        // console.log(projObj);
+        toggleLoadingSpinner(true);
+        $.ajax({
+            url: '/add-project',
+            type: 'POST',
+            contentType: "application/json",
+            data: jsonString,
+            success: function (response) {
+                toggleLoadingSpinner(false);
+                displaySuccessModal();
+            },
+            error: function (response) {
+                alert("Project creation failed");
+                toggleLoadingSpinner(false);
+            }
+        });
+    });
+
+    function buildToast(data={
+        title: 'Error!',
+        body: 'something went wrong :(',
+        icon:'bx bx-error-circle',
+        color:'text-danger'
+    }) {
+
+        $('#toastModal').remove();
+        const toast = `<div id="toastModal" class="toast-container position-fixed toast-place">
+                                  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header">
+                                       <i class="${data.icon} ${data.color} fs-5 me-2"></i>
+                                       <strong class="me-auto ${data.color}">${data.title}</strong>
+                                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                      ${data.body}
+                                    </div>
+                                  </div>
+                                </div>`;
+        $('body').append(toast);
+    }
+</script>
+<script>
+    $('.text-danger').hide();
+
+    // Function to hide the relevant error message when user interacts with input/select
+    function hideErrorOnInteraction(input, error) {
+        input.on('input', function () {
+            error.hide();
+        });
+
+        input.on('change', function () {
+            error.hide();
+        });
+    }
+
+    // Event listeners for input fields
+    hideErrorOnInteraction($('#title'), $('#titleError'));
+    hideErrorOnInteraction($('#member'), $('#contractMemberError'));
+    hideErrorOnInteraction($('#client'), $('#clientError'));
+    hideErrorOnInteraction($('#start-date'), $('#startDateError'));
+    hideErrorOnInteraction($('#duration'), $('#endDateError'));
+    hideErrorOnInteraction($('#so'), $('#sysOutlinesError'));
+    hideErrorOnInteraction($('#ao'), $('#arcOutlinesError'));
+    hideErrorOnInteraction($('#deli'), $('#deliverablesError'));
+    hideErrorOnInteraction($('#objective'), $('#objectiveError'));
+    hideErrorOnInteraction($('#background'), $('#backgroundError'));
+</script>
+<script>
+    $(document).ready(function () {
+        $("#start-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $('#start-date').val(dateText).trigger('change'),
+        });
+
+        $("#end-date").datepicker({
+            dateFormat: "yy-mm-dd",
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, inst) => $('#end-date').val(dateText).trigger('change'),
+        });
+        //check name input
+        checkDatesValidation("start-date", "end-date");
+        //form validate
+        formValidate("form-wizard1")
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '/get-department',
+            type: 'GET',
+            success: function (data) {
+                console.log("Department data : ", data);
+                populateSelect('.js-example-basic-single.select-box2', data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+</script>
+<script>
+    $('#addDeliverablesButton').click(function () {
+        let modalID = $('#addDeliverablesModal');
+        $('#deliverablesName').val('');
+        $('#deliverablesNameError').addClass('d-none');
+        $('#deliverablesSameNameError').addClass('d-none');
+        modalID.off('shown.bs.modal');
+        modalID.modal('show');
+    });
+    function addDeliverable() {
+        let name = $('#deliverablesName').val();
+        if(name === '') {
+            $('#deliverablesNameError').removeClass('d-none');
+            $('#deliverablesName').focus();
+        }else{
+            let newDeliverable = {
+                id: null,
+                name: name
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-deliverable", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newDeliverable),
+                dataType: 'json',
+                success: function (data) {
+                    updateSelect('.deliverable-select-box', data);
+                    $("#addDeliverablesModal").modal('hide').data('bs.modal', null);
+                    $('#deliverablesSameNameError').addClass('d-none');
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#deliverablesSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+
+    $('#addSystemOutlineButton').click(function(){
+        let modalID = $('#addSystemOutlineModal');
+        $('#OutlineName').val('');
+        $('#systemOutlineNameError').addClass('d-none');
+        $('#systemOutlineSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addSystemOutline() {
+        let name = $('#OutlineName').val();
+        if (name === '') {
+            $('#systemOutlineNameError').removeClass('d-none');
+            $('#OutlineName').focus();
+
+        }else{
+            let newSystemOutline = {
+                id: null,
+                name: name,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-system-outline", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newSystemOutline),
+                dataType: 'json',
+                success: function (data) {
+                    updateSelect('.sysOutline-select-box', data);
+                    $("#addSystemOutlineModal").modal('hide').data('bs.modal', null);
+                    $('#systemOutlineSameNameError').addClass('d-none');
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#systemOutlineSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+
+    $('#addArchitectureButton').click(function () {
+        let modalID = $('#architectureAddModal');
+        $('#architectureName').val('');
+        $('#architectureTypeError').hide();
+        $('#architectureNameError').addClass('d-none');
+        $('#architectureSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addArchitecture() {
+        let name = $('#architectureName').val();
+        let type = $('#architectureType').val();
+        if (name === '' || name == '' || name == null) {
+            $('#architectureNameError').removeClass('d-none');
+            $('#architectureName').focus();
+        } else {
+            let newArchitecture = {
+                id: null,
+                name: name,
+                type: type
+            };
+            $.ajax({
+                type: "POST",
+                url: "/add-architecture", // Replace with your server endpoint for adding deliverables
+                contentType: "application/json",
+                data: JSON.stringify(newArchitecture),
+                dataType: 'json',
+                success: function (data) {
+                    $('#architectureAddModal').modal('toggle');
+                    updateSelect('.arc-select-box', data);
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#architectureSameNameError').removeClass('d-none');
+                }
+            });
+        }
+
+    }
+
+    $('#addClientButton').click(function () {
+        let modalID = $('#addClientModal');
+        $('#clientName').val('');
+        $('#clientEmail').val('');
+        $('#clientPhoneNumber').val('');
+        $('#clientNameError').addClass('d-none');
+        $('#clientEmailError').addClass('d-none');
+        $('#clientPhoneNumberError').addClass('d-none');
+        $('#clientSameNameError').addClass('d-none');
+        modalID.modal('show');
+        // Unbind previous event handlers
+        modalID.off('shown.bs.modal');
+        // Use the 'shown.bs.modal' event to focus on the input
+    });
+    function addClient() {
+        let addname = $('#clientName').val();
+        let addemail = $('#clientEmail').val();
+        let addphoneNumber = $('#clientPhoneNumber').val();
+
+        if (addname === '') {
+            $('#clientNameError').removeClass('d-none');
+        }
+
+        if (addemail === '') {
+            $('#clientEmailError').removeClass('d-none');
+        }
+
+        if (addphoneNumber === '') {
+            $('#clientPhoneNumberError').removeClass('d-none');
+        }else{
+            let newClient = {
+                name: addname,
+                email: addemail,
+                phoneNumber: addphoneNumber,
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/add-client",
+                contentType: "application/json",
+                data: JSON.stringify(newClient),
+                dataType: 'json',
+                success: function (data) {
+                    $("#addClientModal").modal('toggle');
+                    updateSelect('.js-example-basic-single.select-box', data);
+                    $('#clientSameNameError').addClass('d-none');
+                },
+                error: function (xhr, status, error) {
+                    console.log("ERROR: ", xhr.responseText);
+                    $('#clientSameNameError').removeClass('d-none');
+                }
+            });
+        }
+    }
+</script>
+<script>
+    hideErrorOnInteraction($('#deliverablesName'),$('#deliverablesNameError'));
+    hideErrorOnInteraction($('#clientName'),$('#clientNameError'));
+    hideErrorOnInteraction($('#clientEmail'),$('#clientEmailError'));
+    hideErrorOnInteraction($('#clientPhoneNumber'),$('#clientPhoneNumberError'));
+    hideErrorOnInteraction($('#architectureName'),$('#architectureNameError'));
+    hideErrorOnInteraction($('#OutlineName'), $('#systemOutlineNameError'));
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/get-projectDetails-byId/" + projectId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log("Project Data : ",data);
+                var contractMemberIds = data.contractMembers.map(function(member) {
+                    return member.id;
+                });
+                var focMemberIds = data.focMembers.map(function(member) {
+                    return member.id;
+                });
+                var deliverableIds = data.deliverables.map(function(deliverable) {
+                    return deliverable.id;
+                });
+                var arcOutlineIds = data.architectures.map(function(arc) {
+                    return arc.id;
+                });
+                var sysOutlineIds = data.systemOutlines.map(function(sys) {
+                    return sys.id;
+                });
+                $('#title').val(data.name);
+                $('#client').val(data.client.id).trigger('change');
+                $('#member').val(contractMemberIds).trigger('change');
+                $('#foc').val(focMemberIds).trigger('change');
+                $('#department').val(data.department.id).trigger('change');
+                $('#start-date').val(data.startDate);
+                $('#end-date').val(data.endDate);
+                $('#deli').val(deliverableIds).trigger('change');
+                $('#ao').val(arcOutlineIds).trigger('change');
+                $('#so').val(sysOutlineIds).trigger('change');
+                $('#objective').val(data.objective);
+                $('#background').val(data.background);
+
+                notifyMultiSelect('#foc', contractMemberIds);
+                notifyMultiSelect('#member', focMemberIds);
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+    function notifyMultiSelect(target='', options=[]) {
+        options.forEach(option=>{
+            console.log(target, option)
+            $(target+' option[value="' + option + '"]').prop('disabled', true);
+            $(target).trigger('change');
+        });
+
+    }
+    function displaySuccessModal() {
+        let modalBox = $('#successModal')
+        // Show the modal
+        modalBox.modal('show');
+
+        // Hide the modal after 3 seconds
+        setTimeout(function () {
+            modalBox.modal('hide');
+            window.location.href = "/projects";
+        }, 2000);
+
+        // Handle close event of the modal
+        modalBox.on('hidden.bs.modal', function () {
+            window.location.href = "/projects";
+        });
+    }
+
+    function clean() {
+        $('#title').val("");
+        $('#duration').val("")
+        $('#client').val("default").trigger('change');
+        $('#member').val(null).trigger('change');
+        $('#foc').val(null).trigger('change');
+        $('#department').val("default").trigger('change');
+        $('#start-date').val("");
+        $('#end-date').val("");
+        $('#deli').val(null).trigger('change');
+        $('#ao').val(null).trigger('change');
+        $('#so').val(null).trigger('change');
+        $('#objective').val("");
+        $('#background').val("");
+        $('.text-danger').hide();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        // Initialize datepicker with a specific format
+        var dateFormat = 'mm/dd/yyyy';
+
+        $('#start-date').datepicker({
+            format: dateFormat,
+            autoclose: true
+        });
+
+        $('#end-date').datepicker({
+            format: dateFormat,
+            autoclose: true
+        });
+
+        // Update end date on change of start date or duration
+        $('#start-date, #duration').on('change input', function () {
+            updateEndDate();
+        });
+
+        function updateEndDate() {
+            var startDate = $('#start-date').datepicker('getDate');
+            var duration = parseInt($('#duration').val());
+
+            if (!isNaN(startDate) && !isNaN(duration)) {
+                var endDate = new Date(startDate);
+                endDate.setMonth(endDate.getMonth() + duration);
+
+                // Update the end date input
+                $('#end-date').datepicker('setDate', endDate);
+            }
+        }
+    });
+</script>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>

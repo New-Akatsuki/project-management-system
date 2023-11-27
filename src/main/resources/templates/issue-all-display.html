@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dir-Ace Technology</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+    <!-- Bootstrap CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <!-- Bootstrap Icons -->
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <!-- Boxicons CSS -->
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <!-- Remixicon CSS -->
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="/css/pagination.css" rel="stylesheet"/>
+    <!-- Hope Ui Design System Css -->
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/select2.css">
+    <style>
+        .issue-card {
+            background: white;
+            margin-bottom: 20px;
+            border: 1px solid rgba(152, 165, 178, 0.85);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border-inline-start: 6px solid #007bff;
+        }
+
+        .issue-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .issue-card:hover {
+            transform: scale(1.02);
+        }
+
+        .btn {
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card {
+            border-radius: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            padding-inline: 15px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+    <style>
+        #issueNotFound {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+    <style>
+        .js-example-basic-single {
+            width: 100%;
+            height: 32px;
+            line-height: 32px;
+        }
+
+        .custom-select {
+            width: 100%;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 5px;
+            padding-inline: 10px;
+        }
+
+        .select2-container--default .select2-selection--single {
+            box-sizing: border-box;
+            cursor: pointer;
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #444;
+            line-height: 30px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 30px;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+<!-- Start #main -->
+<main id="main" class="main">
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active">Issue</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+    <div class="container" style="padding: 15px;">
+        <div class="row">
+            <div class="col-md-6">
+                <h3><i class="bi bi-exclamation-square"></i>&nbspIssue Page</h3>
+            </div>
+            <div class="col-md-6 text-end">
+                <!-- Move the "Create Issue" button to the right -->
+                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','DH','MEMBER')">
+                    <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
+                </a>
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">
+                    <i class="bi bi-person"></i>&nbsp;Creator View
+                </a>
+                <a class="btn btn-sm btn-secondary rounded" th:href="@{/issues/pic}">
+                    <i class="bi bi-person"></i>&nbsp;PIC View
+                </a>
+            </div>
+        </div>
+        <!-- Search Box -->
+        <div class="search-box mb-3">
+            <label for="issueSearch"></label>
+            <div class="input-group" style="position: relative">
+                <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+                    <i class="bi bi-search"></i>&nbsp;
+                </span>
+                <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search issues..."
+                       style="padding-left: 40px ">
+            </div>
+        </div>
+        <!-- Select Box for Filter -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <!-- Adjusted style for the first select box -->
+                <select id="filterSelect" class="custom-select">
+                    <option value="">Filter By Status (All)</option>
+                    <option value="true">Solved</option>
+                    <option value="false">Unsolved</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <!-- Adjusted style for the second select box -->
+                <select id="category" class="js-example-basic-single s1 custom-select" name="category"
+                        style="width: 100%;">
+                    <option value="">Filter By Category (All)</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="col-md-4">
+                <!-- Adjusted style for the third select box -->
+                <select id="place" class="js-example-basic-single s2 custom-select" name="place" style="width: 100%;">
+                    <option value="">Filter By Place (All)</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
+        <!-- Issue Cards -->
+        <div class="row" id="issueContainer" style="margin-top: 15px">
+            <!-- Cards will be dynamically added here -->
+        </div>
+        <!-- Pagination Container -->
+        <div id="pagination-container"></div>
+    </div>
+
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+<!--&lt;!&ndash; jQuery &ndash;&gt;-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Bootstrap and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/pagination.js"></script>
+<!-- Your existing main.js script -->
+<script src="/js/main.js"></script>
+<!-- Include Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
+<script>
+    let itemsPerPage = 5; // Set the number of items per page
+    let issueContainer = $('#issueContainer');
+    let paginationContainer = $('#pagination-container');
+    let allIssues = []; // Store all issues for searching
+    let filteredIssues = []; // Store filtered issues
+    let issueCategory = [];
+    $(document).ready(function () {
+        // Initialize Select2
+        $('.js-example-basic-single').select2();
+        $('#header .toggle-sidebar-btn').on('click', () => {
+            if ($('body').hasClass('toggle-sidebar')) {
+                $('body').removeClass('toggle-sidebar');
+            } else {
+                $('body').addClass('toggle-sidebar');
+            }
+        });
+        // Fetch the data after success
+        $.ajax({
+            url: '/get-all-issue',
+            type: 'GET',
+            success: function (data) {
+                // Sort data by the latest created date
+                data.sort(function (a, b) {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                });
+                // Store all issues for searching
+                allIssues = data;
+                initializePagination(data);
+                console.log("Issue List : ", data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+
+        // Add an event listener for the select box
+        $('#filterSelect').on('change', function () {
+            var searchTerm = $(this).val();
+            if (searchTerm === "") {
+                initializePagination(allIssues);
+                return;
+            }
+            filteredIssues = filterIssuesByStatus(allIssues, searchTerm);
+            initializePagination(filteredIssues);
+        });
+
+        function filterIssuesByStatus(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.solved.toString()
+                    === selectedVal;
+            });
+        }
+
+        function callSelectBox(getUrl, selector) {
+            $(document).ready(function () {
+                $.ajax({
+                    url: getUrl,
+                    type: 'GET',
+                    success: function (data) {
+                        issueCategory = data;
+                        populateSelect(selector, data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        }
+
+        // Function to filter issues by category
+        function filterIssuesByCategory(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.category === selectedVal;
+            });
+        }
+
+        // Add an event listener for the select box
+        $('#category').on('change', function () {
+            let selectedVal = $(this).val();
+            if (selectedVal === "") {
+                initializePagination(allIssues)
+                return;
+            }
+            // Filter issues based on the selected category
+            let filteredByCategory = filterIssuesByCategory(allIssues, selectedVal);
+            // Update pagination with filtered data
+            initializePagination(filteredByCategory);
+        });
+
+        // Function to filter issues by category
+        function filterIssuesByPlace(issues, selectedVal) {
+            console.log("=======", issues);
+            return issues.filter(function (issue) {
+                return issue.place === selectedVal;
+            });
+        }
+
+        // Add an event listener for the select box
+        $('#place').on('change', function () {
+            let selectedVal = $(this).val();
+            if (selectedVal === "") {
+                initializePagination(allIssues);
+                return;
+            }
+            // Filter issues based on the selected category
+            let filteredByPlace = filterIssuesByPlace(allIssues, selectedVal);
+            console.log(filteredByPlace)
+            // Update pagination with filtered data
+            initializePagination(filteredByPlace);
+        });
+
+        // Function to display issues for a specific page
+
+
+        callSelectBox('get-category', '.js-example-basic-single.s1');
+        callSelectBox('get-place', '.js-example-basic-single.s2');
+
+        function populateSelect(selector, options) {
+            let select = $(selector);
+            $.each(options, function (index, value) {
+                select.append('<option value="' + value.name + '">' + value.name + '</option>');
+            });
+        }
+    });
+
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
+
+    function initializePagination(dataSource) {
+        paginationContainer.pagination({
+            dataSource: dataSource,
+            pageSize: itemsPerPage,
+            showSizeChanger: true,
+            callback: function (dataSource, pagination) {
+                displayPage(dataSource);
+            }
+        });
+    }
+
+    function displayPage(issues) {
+        issueContainer.empty();
+        // Display the items for the current page
+        if (issues.length === 0) {
+            issueContainer.append('<div id="issueNotFound" class="mb-5" style=" color: #8A92A6"><div style=" height: 130px"><i class="bi bi-file-earmark" style="font-size: 100px; display: inline-block"></i></div><span style="font-size: 20px">No Issue Found.</span></div>');
+            $('#createIssueButton').removeClass('d-none');
+        } else {
+            displayIssues(issues);
+            $('#createIssueButton').addClass('d-none');
+        }
+    }
+
+    function displayIssues(issues) {
+        var issueContainer = $('#issueContainer');
+        issueContainer.empty();
+        issues.forEach(function (issue) {
+            let date;
+            let dateText;
+            console.log("Get Date : " + issue.createdAt);
+            if (issue.modifiedAt == null) {
+                date = issue.createdAt;
+                dateText = "Uploaded at: ";
+            } else {
+                date = issue.modifiedAt;
+                dateText = "Edited at: ";
+            }
+            var card = `
+<div class="col-md-12">
+    <a href="/issues/${issue.id}/details" class="card-link">
+        <div class="card issue-card" style="border-radius: 10px; position: relative;">
+            <div class="card-body" style="padding: 20px">
+                <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
+                    <h5>${issue.title}</h5>
+                    <div class="status-icon">
+                        <span class="rounded-5 bg-${issue.solved ? 'success' : 'danger'} px-1 text-white d-flex align-items-center justify-content-center" style="padding-block: 0; width: 78px;">
+                            ${issue.solved ? '<i class="bi bi-check text-white"></i><span class="me-1" style="font-size: 12px;">Solved</span>' : '<i class="bi bi-x text-white"></i><span class="me-1" style="font-size: 12px;">Unsolved</span>'}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <span class="badge rounded-5 bg-primary me-2 px-2 mb-1" style="font-size: 13px;">
+                            <i class="bi bi-tag"></i>&nbsp;${issue.category}
+                        </span>
+                    <span class="badge rounded-5 bg-gray me-2 px-2 mb-1" style="font-size: 13px;">
+                        <i class="bi bi-geo-alt"></i>&nbsp;${issue.place}
+                    </span>
+                    <span class="badge rounded-5 bg-gray me-2 px-2 mb-1" style="font-size: 13px;">
+                        <i class="bi bi-people"></i>&nbsp;${issue.responsibleParty}
+                    </span>
+                </div>
+                    <!-- ... rest of your code ... -->
+                    <div>
+                        <span style="font-size: 14px;"><small><strong>${dateText}</strong>${formatDate(date)}</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+           `;
+            issueContainer.append(card);
+        });
+    }
+
+    function filterIssues(issues, searchTerm) {
+        // Use Fuse.js for fuzzy search
+        const fuseOptions = {
+            keys: ['title', 'category', 'place', 'responsibleParty', 'createdAt', 'modifiedAt'],
+            threshold: 0.4,
+        };
+        const fuse = new Fuse(issues, fuseOptions);
+        const searchResults = fuse.search(searchTerm);
+        return searchResults;
+    }
+
+    // Add an event listener for the search input
+    $('#issueSearch').on('input', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        if (searchTerm === "") {
+            // If the search term is empty, display all issues
+            initializePagination(allIssues);
+        } else {
+            // Perform fuzzy search using Fuse.js
+            var searchResults = filterIssues(allIssues, searchTerm);
+            // Display the search results
+            initializePagination(searchResults);
+        }
+    });
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>

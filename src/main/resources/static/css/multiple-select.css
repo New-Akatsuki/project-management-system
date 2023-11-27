@@ -1,0 +1,194 @@
+.mult-select-tag {
+    display: flex;
+    width: 98%;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-color: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    --border-color: rgb(218, 221, 224);
+    font-family: Verdana, sans-serif;
+}
+
+.mult-select-tag .wrapper {
+    width: 100%;
+}
+
+.mult-select-tag .body {
+    display: flex;
+    border: 1px solid var(--border-color);
+    background: white;
+    max-height: inherit;
+    width:100%;
+    min-width: 14rem;
+
+}
+
+.mult-select-tag .input-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+    padding: 0.1rem;
+}
+
+.mult-select-tag .input-body {
+    display: flex;
+    width: auto;
+    height: 40px;
+    margin-top: 10px;
+    margin-inline: 10px;
+    position: relative;
+}
+
+.mult-select-tag .input {
+    flex:1;
+    width: fit-content;
+    background: transparent;
+    border-radius: 0.25rem;
+    color: #2d3748;
+    outline: 0;
+    padding: 20px 20px 20px 30px;
+    border: 1px solid var(--border-color);
+}
+
+
+.mult-select-tag .btn-container {
+    color: #e2eBf0;
+    padding: 0.5rem;
+    display: flex;
+    border-left: 1px solid var(--border-color);
+}
+
+.mult-select-tag button {
+    cursor: pointer;
+    width: 100%;
+    color: #718096;
+    outline: 0;
+    height: 100%;
+    border: none;
+    padding: 0;
+    background: transparent;
+    background-image: none;
+    --webkit-appearance: none;
+    text-transform: none;
+    margin: 0;
+}
+
+.mult-select-tag button:first-child {
+    width: 1rem;
+    height: 90%;
+}
+
+.mult-select-tag .drawer {
+    position: absolute;
+    background: white;
+    max-height: 15rem;
+    z-index: 40;
+    top: 98%;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    animation: fade-down 0.3s ease-in-out;
+}
+
+.mult-select-tag ul {
+    list-style-type: none;
+    padding: 0.5rem;
+}
+
+.mult-select-tag ul li {
+    padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    animation: fade-in 0.3s ease-in-out;
+}
+
+.mult-select-tag ul li:hover {
+    background: rgb(243 244 246);
+}
+
+.mult-select-tag .item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #2c7a7b;
+    padding: 0.2rem 0.4rem;
+    margin: 0.2rem;
+    font-weight: 500;
+    border: 1px solid #81e6d9;
+    background: #e6fffa;
+    border-radius: 9999px;
+}
+
+.mult-select-tag .item-label {
+    max-width: 100%;
+    line-height: 1;
+    font-size: 0.75rem;
+    font-weight: 400;
+    flex: 0 1 auto;
+    color: #2c7a7b;
+}
+
+.mult-select-tag .item-close-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row-reverse;
+}
+
+.mult-select-tag .item-close-svg {
+    width: 1rem;
+    margin-left: 0.5rem;
+    height: 1rem;
+    cursor: pointer;
+    border-radius: 9999px;
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.mult-select-tag.shadow {
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+    --tw-shadow: 0 0 #0000;
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
+
+.mult-select-tag .rounded {
+    border-radius: 5px!important;
+}
+
+.input-body i {
+    top: 50%;
+    left: 8px; /* Adjusted left position */
+    color: #999;
+    pointer-events: none;
+    transform: translateY(-50%);
+    position: absolute;
+}
+
+.option-container{
+    height: 100px;
+    overflow-y: auto;
+    margin-top: 5px;
+
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fade-down {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

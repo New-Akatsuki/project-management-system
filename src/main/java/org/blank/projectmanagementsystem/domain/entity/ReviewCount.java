@@ -1,17 +1,27 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.Enum.ReviewerType;
+
+import java.io.Serializable;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-public class ReviewCount {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReviewCount implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int id;
+    private Long id;
 
     private int count;
 
@@ -19,11 +29,12 @@ public class ReviewCount {
     @Column(nullable = false)
     private ReviewerType reviewerType;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private ReviewCategory reviewCategory;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DevelopmentPhase developmentPhase;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(nullable = false)
     private Project project;
 }

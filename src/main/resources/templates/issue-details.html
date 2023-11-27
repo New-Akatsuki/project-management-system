@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>DIR-ACE TECHNOLOGY</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet"/>
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+          rel="stylesheet"/>
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/hope.css"> <!-- Bootstrap CSS for modal box -->
+
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Quill text -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/quilltext.css">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <style>
+        .rounded-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+    <style>
+        .noSolution {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20vh; /* Optional: This ensures that the message is centered vertically on the entire viewport height */
+            font-size: 1.2em; /* Optional: Adjust the font size as needed */
+            color: #555; /* Optional: Set the text color */
+        }
+    </style>
+    <style>
+        #dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            pointer-events: auto; /* Updated to block interactions with elements beneath */
+        }
+
+        .spinner-border {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            font-size: 1.8rem;
+            width: 2.8rem;
+            height: 2.8rem;
+            z-index: 10001; /* Update z-index to be higher than #dim-overlay */
+            display: none;
+        }
+        .ql-container {
+            width: 100%;
+            margin: 0;
+            border-radius: 0;
+            overflow: hidden;
+        }
+    </style>
+<!--    <style>-->
+<!--        .custom-border {-->
+<!--            border: 1px solid #b4afaf; /* Change 'red' to your desired color */-->
+<!--            border-collapse: collapse; /* Optional: to collapse the border spacing */-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+
+<!-- ======= Header ======= -->
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar :: #sidebar"></div>
+
+<main id="main" class="main">
+    <input type="hidden" id="userId" th:value="${#authentication.principal.id}"/>
+    <!-- Breadcrumb part-->
+    <div class="page-title">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/issues}">Issue</a></li>
+                <li class="breadcrumb-item active">Display Issue</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+    <div class="card rounded-card" style="margin: 20px 28px;">
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px 40px 0 40px; margin-top: 10px">
+
+                <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
+                    <h3 style="color: black;"><span id="title"></span></h3>
+                    <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
+                        <i class='bx bx-edit'></i>
+                    </a>
+                </div>
+
+            <div class="d-flex justify-content-between">
+                <table class="table table-sm table-striped-columns table-bordered custom-border"
+                       style="margin-right: 20px;">
+                    <tbody>
+                    <tr>
+                        <th class="col-4 ps-3 pe-3 text-black" style="font-weight: 20">PIC</th>
+                        <td class="ps-3 pe-3 text-black" id="pic"></td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 pe-3 text-black">Responsible Party</th>
+                        <td class="ps-3 pe-3 text-black" id="resParty"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-sm table-striped-columns table-bordered custom-border">
+                    <tbody>
+                    <tr>
+                        <th class="col-4 ps-3 pe-3 text-black">Category</th>
+                        <td class="ps-3 pe-3 text-black" id="category"></td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 pe-3 text-black">Place</th>
+                        <td class="ps-3 pe-3 text-black" id="place"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Content</h5>
+                <div id="content" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Direct Cause</h5>
+                <div id="dirCause" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Root Cause</h5>
+                <div id="rootCause" class="text-black"></div>
+            </div>
+            <div id="details-upload-date" style="padding-right: 0">
+            </div>
+        </div>
+    </div>
+    <div class="card rounded-card solution" style="margin: 20px 28px;">
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px 40px 0 40px; margin-top: 10px">
+            <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
+                <h3 style="color: black;"><i class="bi bi-lightbulb-fill"></i> Issue Solution</h3>
+                <a class="icon-add-btn d-none" id="editSolution">
+                    <i class='bx bx-edit'></i>
+                </a>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Corrective Action</h5>
+                <div id="coAction" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Preventive Action</h5>
+                <div id="preAction" class="text-black"></div>
+            </div>
+            <div class="mb-3">
+                <h5 class="bg-gray-color p-2 ps-3">Impact</h5>
+                <div id="impact" class="text-black"></div>
+            </div>
+            <div id="solution-upload-date" style="padding-right: 0">
+            </div>
+        </div>
+    </div>
+
+    <span class="noSolution d-none">There is no solution for this issue yet.</span>
+
+    <div class="card rounded-card solveForm" style="margin: 20px 28px;">
+        <!--Outer card body -->
+        <div class="card-body" style="padding: 15px 40px 15px 40px; margin: 10px">
+            <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 20px">
+                <h3 style="color: black;"><i class="bi  bi-lightbulb"></i> Solve Issue</h3>
+            </div>
+            <form>
+                <div>
+                    <label>Corrective Action</label>
+                </div>
+                <div id="co-actionSolve"></div>
+                <span class="text-danger error-message" id="coActionError">Corrective Action must not be empty!</span>
+                <br>
+                <div>
+                    <label>Preventive Action</label>
+                </div>
+                <div id="pre-actionSolve"></div>
+                <span class="text-danger error-message" id="preActionError">Preventive Action must not be empty!</span>
+                <br>
+                <div>
+                    <label for="impact">Impact</label>
+                </div>
+                <div>
+                    <div id="impactSolve"></div>
+                    <span class="text-danger error-message" id="impactError">Impact must not be empty!</span>
+                </div>
+                <br>
+
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-sm btn-gray rounded d-none" style="margin-right: 5px;padding: 10px 15px"
+                            id="solveBackBtn" onclick="backToSolutionCard();">
+                        <i class="bi bi-backspace"></i>&nbsp;Back
+                    </button>
+                    <button class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px"
+                            type="reset" id="solveReset">
+                        <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
+                            id="submitButton">
+                        <i class="bi bi-save"></i>&nbsp;Update
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <div class="spinner-border text-primary" role="status" id="loadingSpinner">
+    </div>
+    <div id="dim-overlay"></div>
+    <div id="toastPlace"></div>
+</main>
+<!-- End #main -->
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+<!-- Bootstrap JS and Popper.js for Modal Box -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/text-editor.js"></script>
+
+<script>
+    let coActionContent = new Quill("#co-actionSolve", aa)
+    let preActionContent = new Quill("#pre-actionSolve", aa)
+    let impactContent = new Quill("#impactSolve", aa)
+    //document element ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const containers = document.querySelectorAll('.ql-container');
+        containers.forEach(item => {
+            item.classList.add('round-full-border');
+        });
+        toggleToolbar(0, 'co-actionSolve');
+        toggleToolbar(1, 'pre-actionSolve');
+        toggleToolbar(2, 'impactSolve');
+    })
+</script>
+<script>
+    var issueId = window.location.pathname.split('/').reverse()[1];
+    console.log(issueId);
+    let userId = $('#userId').val();
+    console.log("User Id : " + userId);
+
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
+</script>
+<script>
+    // Function to format date with month name and time in AM/PM format without seconds
+    function formatDate(date) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        };
+        return new Date(date).toLocaleDateString('en-US', options);
+    }
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/get-issue-details/" + issueId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let jsonData = data;
+                console.log("Data :", jsonData);
+                const detailsUploadDate = document.getElementById('details-upload-date');
+                if (jsonData.modifiedAt === null) {
+                    detailsUploadDate.innerHTML = `<p class="text-end"><strong>Uploaded At: </strong><span>${formatDate(jsonData.createdAt)}</span><p>`;
+                } else {
+                    detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(jsonData.modifiedAt)}</span></p>`;
+                }
+                if (jsonData.createdByUserId == userId) {
+                    $("#linkIssueEditPage").removeClass("d-none");
+                }
+                // Update each section with corresponding data
+                updateContent("title", jsonData.title);
+                updateContent("pic", jsonData.pic);
+                updateContent("category", jsonData.category);
+                updateContent("place", jsonData.place);
+                updateContent("resParty", jsonData.responsibleParty);
+                updateContentForQuill('content', jsonData.content);
+                updateContentForQuill('dirCause', jsonData.directCause);
+                updateContentForQuill('rootCause', jsonData.rootCause);
+            }
+        });
+    });
+
+    // Function to update the content of the spans and generate a table
+    function updateContentForQuill(sectionId, data) {
+        const container = document.querySelector(`#${sectionId}`);
+        if (container) {
+            const quill = new Quill(container, {
+                modules: {
+                    toolbar: false
+                },
+                theme: 'snow'
+            });
+            quill.enable(false);
+            // Intercept paste event
+            quill.clipboard.dangerouslyPasteHTML(0, data);
+            quill.root.innerHTML = quill.root.innerHTML.replace(/<p><br><\/p>/g, '');
+        }
+    }
+
+    function updateContent(sectionId, data) {
+        const container = document.querySelector(`#${sectionId}`);
+        if (container) {
+            container.innerHTML = data; // Clear previous content
+        }
+    }
+</script>
+<script>
+    let solutionData = [];
+    $(document).ready(function () {
+        $(".card.rounded-card.solveForm").addClass("d-none");
+        $.ajax({
+            url: "/get-issue-solution/" + issueId,
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                let solutionJson = data;
+                // Check if any of the values are null
+                if (solutionJson.coAction === null || solutionJson.preAction === null || solutionJson.impact === null) {
+                    $(".card.rounded-card.solution").hide();
+                    if (solutionJson.picId == userId) {
+                        $(".card.rounded-card.solveForm").removeClass("d-none");
+                    } else {
+                        $(".noSolution").removeClass("d-none");
+                    }
+                } else {
+                    if (solutionJson.picId == userId) {
+                        $("#editSolution").removeClass("d-none");
+                    }
+                    const detailsUploadDate = document.getElementById('solution-upload-date');
+                    if (solutionJson.solutionModifiedAt === null) {
+                        detailsUploadDate.innerHTML = `<p class="text-end"><strong>Uploaded At: </strong><span>${formatDate(solutionJson.solutionCreatedAt)}</span><p>`;
+                    } else {
+                        detailsUploadDate.innerHTML = `<p class="text-end"><strong>Edited At: </strong><span>${formatDate(solutionJson.solutionModifiedAt)}</span></p>`;
+                    }
+                    // Update each section with corresponding data
+                    updateContentForQuill("coAction", solutionJson.coAction);
+                    updateContentForQuill("preAction", solutionJson.preAction);
+                    updateContentForQuill("impact", solutionJson.impact);
+                    solutionData.push(solutionJson);
+                }
+            },
+            error: function (e) {
+                console.log("ERROR: ", e);
+            }
+        });
+    });
+</script>
+<script>
+    $(".solveForm").submit(function (e) {
+        e.preventDefault();
+        let coAction = coActionContent.root.innerHTML;
+        let preAction = preActionContent.root.innerHTML;
+        let impact = impactContent.root.innerHTML;
+        let errors = [];
+
+        if (coAction === '' || coAction === '<p><br></p>') {
+            errors.push('#coActionError');
+        }
+        if (preAction === '' || preAction === '<p><br></p>') {
+            errors.push('#preActionError');
+        }
+        if (impact === '' || impact === '<p><br></p>') {
+            errors.push('#impactError');
+        }
+        // Display all errors at once
+        for (let error of errors) {
+            $(error).show();
+        }
+
+        // If there are errors, stop further processing
+        if (errors.length > 0) {
+            return false;
+        }
+
+        toggleLoadingSpinner(true);
+        let solution = {
+            "id": issueId,
+            "coAction": coAction,
+            "preAction": preAction,
+            "impact": impact,
+        }
+        $.ajax({
+            url: "/add-solution",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(solution),
+            dataType: "json",
+            success: function (data) {
+                toggleLoadingSpinner(false);
+                console.log("Data: ", data);
+                window.location.reload();
+            },
+            error: function (e) {
+                toggleLoadingSpinner(false);
+                console.log("ERROR: ", e);
+                alert("Error occurred while solving the issue!");
+            }
+        });
+    });
+
+    // Event listeners for Quill text editors
+    coActionContent.on('text-change', function () {
+        $('#coActionError').hide();
+    });
+
+    preActionContent.on('text-change', function () {
+        $('#preActionError').hide();
+    });
+
+    impactContent.on('text-change', function () {
+        $('#impactError').hide();
+    });
+</script>
+<script>
+    function updateQuillForSolveForm(quillInstance, data) {
+        // Intercept paste event
+        quillInstance.clipboard.dangerouslyPasteHTML(0, data);
+        quillInstance.root.innerHTML = quillInstance.root.innerHTML.replace(/<p><br><\/p>/g, '');
+    }
+
+    $("#editSolution").click(function () {
+        $(".card.rounded-card.solution").hide();
+        $("#solveBackBtn").removeClass("d-none");
+        $("#solveReset").addClass("d-none");
+        $(".card.rounded-card.solveForm").removeClass("d-none");
+
+        // Assuming solutionData is an array with one element
+        if (solutionData.length > 0) {
+            updateQuillForSolveForm(coActionContent, solutionData[0].coAction);
+            updateQuillForSolveForm(preActionContent, solutionData[0].preAction);
+            updateQuillForSolveForm(impactContent, solutionData[0].impact);
+        }
+    });
+</script>
+<script>
+    $(".solveForm button[type='reset']").click(function () {
+        // Clear the Quill instances when the reset button is clicked
+        coActionContent.root.innerHTML = "";
+        preActionContent.root.innerHTML = "";
+        impactContent.root.innerHTML = "";
+    });
+
+    function backToSolutionCard() {
+        $(".card.rounded-card.solution").show();
+        $(".card.rounded-card.solveForm").addClass("d-none");
+    }
+
+    function linkIssueEditPage() {
+        window.location.href = "/issues/" + issueId + "/edit";
+    }
+</script>
+<script>
+    function hideAllErrorMessages() {
+        $('.error-message').hide();
+    }
+
+    // Hide all error messages when the document is ready
+    $(document).ready(function () {
+        hideAllErrorMessages();
+    });
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+</script>
+</body>
+</html>

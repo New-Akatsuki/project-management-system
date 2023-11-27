@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Dir-Ace Technology</title>
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"
+    />
+
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/DAT.png}" rel="apple-touch-icon">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="/js/notification.js"></script>
+
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+
+    <link rel="stylesheet" href="/css/hope.css">
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+
+    <!--    icon-->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
+
+
+    <style>
+        .count-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .count-icon {
+            font-size: 40px;
+            color: #007bff; /* Change the color as needed */
+        }
+
+        #kpiRatioHeadingContainer {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: #sidebar}"></div>
+
+<main id="main" class="main">
+    <!-- Breadcrumb part-->
+    <div class="pagetitle">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">user-management</a></li>
+                <li class="breadcrumb-item active">save</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Main Content -->
+
+    <!-- DashBoard MM Header Start -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="count-box d-flex">
+                    <i class='bx bxs-user count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Users : <span th:text="${userCount}" class="fw-bold"></span></p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="count-box d-flex">
+                    <i class='bx bxs-user count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Clients : <span th:text="${clientCount}" class="fw-bold"></span></p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="count-box d-flex">
+                    <i class='bx bxs-briefcase count-icon'></i>&nbsp;
+                    <p class="mt-3">Number of Departments : <span th:text="${departmentCount}" class="fw-bold"></span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- DashBoard MM Header End -->
+
+    <th:block th:with="dep=${#authentication.principal.department.id}">
+        <input type="hidden" id="currentUserDepartmentId" th:value="${dep}">
+    </th:block>
+    <th:block th:with="dep=${#authentication.principal.department.name}">
+        <input type="hidden" id="currentUserDepartmentName" th:value="${dep}">
+    </th:block>
+    <th:block th:with="role=${#authentication.principal.role}">
+        <input type="hidden" id="currentUserRole" th:value="${role}">
+    </th:block>
+
+
+    <!-- DashBoard MM Body Start -->
+    <div class="card mt-3" style="padding: 15px; margin: 0 10px; background: white; border-radius:10px 10px 0 0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label" for="yearSelector">Year:</label>
+                <select class="form-select year-select" id="yearSelector"></select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="monthSelector">Month:</label>
+                <select class="form-select month-select" id="monthSelector">
+
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="departmentSelector">Select a department:</label>
+                <select class="form-select department-select" id="departmentSelector">
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="projectSelector">Select a project:</label>
+                <select class="form-select project-select" id="projectSelector"></select>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="card mt-2" style="padding: 10px; margin: 0 10px; background: white; border-radius: 0 0 10px 10px">
+    <div class="container mt-1">
+        <div class="d-flex justify-content-between">
+            <div style="width: 49%;padding: 5px; border-radius: 10px">
+                <h4>Man Month</h4>
+                <div class="chartBox">
+                    <canvas id="manMonthChart"></canvas>
+                </div>
+            </div>
+            <div style="width: 49%;padding: 5px; border-radius: 10px">
+                <h4>Man Month Productivity Ratio</h4>
+                <div class="chartBox">
+                    <canvas id="manMonthProductivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12" id="kpiRatioHeadingContainer">
+                <h4>KPI RATIO</h4>
+                <div class="kpiChart">
+                    <canvas id="kpiChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="toastPlace"></div>
+    <!-- End Main Content-->
+</main>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+<!--jquery cdn-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script src="/js/select2.min.js"></script>
+
+<!-- End #main -->
+<!-- Vendor JS Files -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="/js/main.js"></script>
+
+<script src="/js/dashboard-mm.js"></script>
+<script src="/js/dashboard-kpi.js"></script>
+
+<script>
+    const currentDepartmentId = document.getElementById('currentUserDepartmentId').value;
+    const currentDepartmentName = document.getElementById('currentUserDepartmentName').value;
+    const currentUserRole = document.getElementById('currentUserRole').value;
+</script>
+<script>
+    $(document).ready(function () {
+        getDepartmentAndRender();
+        $('.year-select').select2();
+        $('.month-select').select2();
+        $('.department-select').select2();
+        $('.project-select').select2();
+        getProjectByDepartment();
+    });
+
+</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
+<script>
+    function notify(notification) {
+        showToast(notification);
+    }
+
+
+</script>
+</body>
+
+</html>
