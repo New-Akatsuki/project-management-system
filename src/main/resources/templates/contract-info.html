@@ -5,19 +5,15 @@
     <title>DIR-ACE TECHNOLOGY</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-
-
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
     <link
             th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
             rel="stylesheet"
@@ -30,31 +26,31 @@
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
-
-
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
-
     <!-- Modal Css -->
     <link rel="stylesheet" href="/css/modal.css">
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
-
     <!-- Bootstrap CSS for modal box -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
-
-
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+    <style>
+        .iti--separate-dial-code {
+            width: 100% !important;
+        }
+    </style>
 </head>
 <body>
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
-
 <main id="main" class="main">
     <!-- Breadcrumb part-->
     <div class="pagetitle">
@@ -66,9 +62,7 @@
         </nav>
     </div>
     <!-- End Page Title -->
-
     <!-- Main Content -->
-
     <div class="container-fluid content-inner mt-4 py-0">
         <div>
             <div class="row">
@@ -200,24 +194,14 @@
     <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
-
-!-- Vendor JS Files -->
-
-<!-- Bootstrap CSS -->
-
-
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-
 <!-- Bootstrap JS and Popper.js for Modal Box -->
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
@@ -231,25 +215,23 @@
                     <div class="form-group">
                         <input type="text" class="form-control" id="deliverablesName" name="name" required
                                placeholder="Enter new deliverables method">
-                        <span id="addDeliverablesNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
-                        <span id="addDeliverableSameNameError" class="text-danger d-none">Deliverable name already exists!!</span>
+                        <span id="addDeliverablesNameError" class="text-danger"></span>
                     </div>
                 </form>
-                    <div class="d-flex justify-content-end mb-2">
-                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
-                                data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle"></i>&nbsp;Close
-                        </button>
-                        <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewDeliverable"
-                                style="padding: 10px 15px">
-                            <i class="bi bi-plus-circle"></i>&nbsp;Add
-                        </button>
-                    </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewDeliverable"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="editDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
@@ -264,8 +246,7 @@
                         <input type="hidden" id="editDeliverableId" name="id">
                         <input type="text" class="form-control" id="editDeliverableName" name="name" required
                                placeholder="Enter new deliverables method">
-                        <span id="editDeliverableNameError" class="text-danger d-none">Deliverable name must not be blank!!</span>
-                        <span id="editDeliverableSameNameError" class="text-danger d-none">Deliverable name already exists!!</span>
+                        <span id="editDeliverableNameError" class="text-danger "></span>
                     </div>
                 </form>
                 <div class="d-flex justify-content-end mb-2">
@@ -282,7 +263,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
@@ -292,46 +272,41 @@
                         style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div class="container" style="padding: 10px 15px 0 15px;">
-                <span id="addClientSameNameError" class="text-danger d-none">Some client data are already exist! Check again.</span>
+                <span id="addClientError" class="text-danger "></span>
                 <form id="addClientForm">
                     <div class="form-group">
                         <label for="clientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="clientName" name="name" required
                                placeholder="Enter client name" autocomplete="off">
-                        <span id="clientName_error" class="invalid-feedback"></span>
-                        <span id="addClientNameError" class="text-danger d-none">Client name must not be blank!!</span>
+                        <span id="addClientNameError" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="clientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="clientEmail" required autocomplete="off"
                                placeholder="Enter email">
-                        <span id="addClientEmailError"
-                              class="text-danger d-none">Email must not be blank!! </span>
-                        <span id="addClientEmailFormatError"
-                              class="text-danger d-none">Email must be in email format. For example, abc.example.com</span>
+                        <span id="addClientEmailError" class="text-danger "></span>
                     </div>
                     <div class="form-group">
                         <label for="clientPhoneNumber" class="form-label">Phone Number(Optional)</label>
-                        <input type="tel" class="form-control" id="clientPhoneNumber" name="phoneNumber" required
+                        <input type="tel" class="form-control iti" id="clientPhoneNumber" name="phoneNumber" required
                                placeholder="Enter phone number" autocomplete="off">
-                        <span id="addClientPhError" class="text-danger d-none">Client phone must not be blank!!</span>
-                    </div>
-                    <div class="d-flex justify-content-end mb-2">
-                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
-                                data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle"></i>&nbsp;Close
-                        </button>
-                        <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewClient"
-                                style="padding: 10px 15px">
-                            <i class="bi bi-plus-circle"></i>&nbsp;Add
-                        </button>
+                        <span id="addClientPhError" class="text-danger "></span>
                     </div>
                 </form>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="saveNewClient"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Add
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel"
      aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
@@ -342,62 +317,64 @@
                         style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div class="container" style="padding: 10px 15px 0 15px;">
-                <span id="editClientSameNameError" class="text-danger d-none">Some client data are already exist! Check again.</span>
+                <span id="editClientSameNameError" class="text-danger "></span>
                 <form id="editClientForm">
                     <div class="form-group">
                         <input type="hidden" id="editClientId" name="id">
                         <label for="editClientName" class="form-label">Client Name</label>
                         <input type="text" class="form-control" id="editClientName" name="name" required
                                placeholder="Enter client name" autocomplete="off">
-                        <span id="editClientNameError" class="text-danger d-none">Name must not be blank!!</span>
+                        <span id="editClientNameError" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label for="editClientEmail" class="form-label">Email</label>
                         <input type="email" class="form-control" id="editClientEmail" name="email" required
                                placeholder="Enter email" autocomplete="off">
                         <span id="editClientEmailError"
-                              class="text-danger d-none">Email must not be blank!!</span>
-                        <span id="editClientEmailFormatError"
-                              class="text-danger d-none">Email must be in email format. For example, abc.example.com</span>
+                              class="text-danger "></span>
                     </div>
                     <div class="form-group">
                         <label for="editClientPhoneNumber" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="editClientPhoneNumber" name="phoneNumber" required
+                        <input type="tel" class="form-control iti" id="editClientPhoneNumber" name="phoneNumber"
+                               required
                                placeholder="Enter phone number" autocomplete="off">
-                        <span id="editClientPhError" class="text-danger d-none">Phone must not be blank!!</span>
+                        <span id="editClientPhError" class="text-danger"></span>
                     </div>
                 </form>
-                    <div class="d-flex justify-content-end mb-2">
-                        <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
-                                data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle"></i>&nbsp;Close
-                        </button>
-                        <button type="submit" class="btn btn-sm btn-primary rounded" id="editClient"
-                                style="padding: 10px 15px">
-                            <i class="bi bi-plus-circle"></i>&nbsp;Update
-                        </button>
-                    </div>
+                <div class="d-flex justify-content-end mb-2">
+                    <button class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                            data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </button>
+                    <button type="submit" class="btn btn-sm btn-primary rounded" id="editClient"
+                            style="padding: 10px 15px">
+                        <i class="bi bi-plus-circle"></i>&nbsp;Update
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="confirmationClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationClientModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
-                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div style="align-items: center; padding: 15px">
                 Are you sure you want to <span id="confirmationClientAction"></span> this client?
                 <div id="confirmationClientMessage"></div>
             </div>
             <div class="d-flex justify-content-end mb-2">
-                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                   data-bs-dismiss="modal">
                     Cancel
                 </a>
-                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmClientButton" style="margin-right: 15px; padding: 10px 15px">
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmClientButton"
+                        style="margin-right: 15px; padding: 10px 15px">
                     Confirm
                 </button>
             </div>
@@ -405,45 +382,53 @@
     </div>
 </div>
 
-<div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
-                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
-                <div style="align-items: center; padding: 15px">
-                        Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
-                        <div id="confirmationDeliverableMessage"></div>
-                </div>
-                <div class="d-flex justify-content-end mb-2">
-                    <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
-                        Cancel
-                    </a>
-                    <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmDeliverableButton" style="margin-right: 15px; padding: 10px 15px">
-                        Confirm
-                    </button>
-                </div>
+            <div style="align-items: center; padding: 15px">
+                Are you sure you want to <span id="confirmationDeliverableAction"></span> this deliverable?
+                <div id="confirmationDeliverableMessage"></div>
+            </div>
+            <div class="d-flex justify-content-end mb-2">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                   data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmDeliverableButton"
+                        style="margin-right: 15px; padding: 10px 15px">
+                    Confirm
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
-                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div style="align-items: center; padding: 15px">
                 Are you sure you want to <span id="confirmationArchitectureAction"></span> this architecture outline?
                 <div id="confirmationArchitectureMessage"></div>
             </div>
             <div class="d-flex justify-content-end mb-2">
-                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                   data-bs-dismiss="modal">
                     Cancel
                 </a>
-                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmArchitectureButton" style="margin-right: 15px; padding: 10px 15px">
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmArchitectureButton"
+                        style="margin-right: 15px; padding: 10px 15px">
                     Confirm
                 </button>
             </div>
@@ -451,22 +436,26 @@
     </div>
 </div>
 
-<div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
-                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
+                <button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div style="align-items: center; padding: 15px">
                 Are you sure you want to <span id="confirmationSystemOutlineAction"></span> this system outline?
                 <div id="confirmationSystemOutlineMessage"></div>
             </div>
             <div class="d-flex justify-content-end mb-2">
-                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                   data-bs-dismiss="modal">
                     Cancel
                 </a>
-                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmSystemOutlineButton" style="margin-right: 15px; padding: 10px 15px">
+                <button type="submit" class="btn btn-sm btn-primary rounded" id="confirmSystemOutlineButton"
+                        style="margin-right: 15px; padding: 10px 15px">
                     Confirm
                 </button>
             </div>
@@ -487,8 +476,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" id="OutlineName" name="name" required
                                placeholder="Enter outline name">
-                        <span id="addSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
-                        <span id="addSystemOutlineSameNameError" class="text-danger d-none">This system outline name already exists!!</span>
+                        <span id="addSystemOutlineNameError" class="text-danger "></span>
                     </div>
                 </form>
                 <div class="d-flex justify-content-end mb-2">
@@ -506,7 +494,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
@@ -520,8 +509,8 @@
                         <input type="hidden" id="editOutlineId" name="id">
                         <input type="text" class="form-control" id="editOutlineName" name="name" required
                                placeholder="Enter outline name">
-                        <span id="editSystemOutlineNameError" class="text-danger d-none">System outline name must not be blank!!</span>
-                        <span id="editSystemOutlineSameNameError" class="text-danger d-none">This system outline name already exists!!</span>
+                        <span id="editSystemOutlineNameError" class="text-danger "></span>
+
                     </div>
                 </form>
                 <div class="d-flex justify-content-end mb-2">
@@ -549,12 +538,12 @@
             </div>
             <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
-                    <span id="addArchitectureSameNameError" class="text-danger d-none">This architecture already exist.</span>
+                    <span id="addArchitectureSameNameError" class="text-danger "></span>
                     <div class="form-group">
                         <label for="architectureName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="architectureName" name="name"
                                placeholder="Enter architecture outline name" required>
-                        <span id="addArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
+                        <span id="addArchitectureNameError" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
@@ -578,7 +567,7 @@
                             <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
                             <option value="OTHER">Other</option>
                         </select>
-                        <span id="addArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>
+                        <span id="addArchitectureTypeError" class="text-danger "></span>
                     </div>
                 </form>
                 <div class="d-flex justify-content-end mb-2">
@@ -595,7 +584,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="editArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog d-flex align-items-center">
         <div class="modal-content">
@@ -606,13 +594,15 @@
             </div>
             <div class="container" style="padding: 10px 15px 0 15px;">
                 <form>
-                    <span id="editArchitectureSameNameError" class="text-danger d-none">This architecture already exist.</span>
+                    <span id="editArchitectureSameNameError"
+                          class="text-danger "></span>
                     <input type="hidden" id="editArchitectureId" name="id">
                     <div class="form-group">
                         <label for="architectureName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="editArchitectureName" name="name"
                                placeholder="Enter architecture outline name" required>
-                        <span id="editArchitectureNameError" class="text-danger d-none">Architecture name must not be blank!!</span>
+                        <span id="editArchitectureNameError"
+                              class="text-danger "></span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="editArchitectureType">Type</label>
@@ -635,7 +625,8 @@
                             <option value="CONTINUOUS_DELIVERY">Continuous Delivery</option>
                             <option value="OTHER">Other</option>
                         </select>
-                        <span id="editArchitectureTypeError" class="text-danger d-none">Architecture type must not be blank!!</span>
+                        <span id="editArchitectureTypeError"
+                              class="text-danger "></span>
                     </div>
                 </form>
                 <div class="d-flex justify-content-end mb-2">
@@ -656,49 +647,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-<script src="/js/validation.js"></script>
+<!--<script src="/js/validation.js"></script>-->
 <script src="/js/contract-info-script.js"></script>
 
-<script src="/js/contract-info.js"></script>
+<script src="/js/contract-info-validation.js"></script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
-    $('#addClientButton').click(function () {
-        $('#addClientSameNameError').addClass('d-none');
-        $('#addClientForm').trigger('reset');
-        $('#addClientNameError').addClass('d-none');
-        $('#addClientEmailError').addClass('d-none');
-        $('#addClientEmailFormatError').addClass('d-none');
-        $('#addClientPhError').addClass('d-none');
-        $('#clientEmail').removeClass('is-invalid');
-        $('#clientEmail').removeClass('is-valid');
-        $('#addClientModal').modal('show');
+    const phoneInputField1 = document.querySelector("#clientPhoneNumber");
+    const phoneInput1 = window.intlTelInput(phoneInputField1, {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        separateDialCode: true,
+        preferredCountries: ["us", "gb", "fr", "de", "es"],
+        autoHideDialCode: false,
+        initialCountry: "MM",  // Set Myanmar as the initial country
+        geoIpLookup: function (callback) {
+        },
     });
-    $('#addDeliverablesButton').click(function (){
-        $('#deliverablesName').val('');
-        $('#addDeliverablesNameError').addClass('d-none');
-        $('#addDeliverableSameNameError').addClass('d-none');
-        $('#addDeliverablesModal').modal('show');
-    });
-    $('#addSystemOutlineButton').click(function (){
-        $('#OutlineName').val('');
-        $('#addSystemOutlineNameError').addClass('d-none');
-        $('#addSystemOutlineSameNameError').addClass('d-none');
-        $('#addSystemOutlineModal').modal('show');
-    });
-    $('#addArchitectureButton').click(function (){
-        $('#architectureName').val('');
-        $('#addArchitectureNameError').addClass('d-none');
-        $('#addArchitectureTypeError').addClass('d-none');
-        $('#addArchitectureSameNameError').addClass('d-none');
-        $('#addArchitectureModal').modal('show');
-    });
-</script>
-<script>
-    function notify(notification) {
-        showToast(notification);
-    }
 </script>
 </body>
 </html>

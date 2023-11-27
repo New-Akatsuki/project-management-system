@@ -23,6 +23,7 @@ public class ArchitectureAPI {
 
     @PostMapping("/add-architecture")
     public ResponseEntity<Architecture> addArchitecture(@RequestBody Architecture architecture) {
+        architecture.setStatus(true);
         Architecture newArchitecture = architectureService.save(architecture);
         return ResponseEntity.ok(newArchitecture);
     }
@@ -55,12 +56,11 @@ public class ArchitectureAPI {
         }
     }
     @PutMapping("/architecture/status/{id}")
-    public ResponseEntity<Architecture> updateArchitectureStatus(@PathVariable Long id, @RequestParam boolean newStatus) {
+    public ResponseEntity<Architecture> updateArchitectureStatus(@PathVariable Long id) {
         Architecture architecture = architectureService.getArchitectureById(id);
         if (architecture != null) {
-            architecture.setStatus(newStatus);
+            architecture.setStatus(!architecture.isStatus());
             Architecture updatedArchitecture = architectureService.save(architecture);
-
             return ResponseEntity.ok(updatedArchitecture);
         } else {
             return ResponseEntity.notFound().build();

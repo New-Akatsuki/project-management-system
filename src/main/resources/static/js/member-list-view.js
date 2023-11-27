@@ -49,7 +49,7 @@ function renderMemberListTable(items) {
                 data: 'active',
                 render: function (data, type, row) {
                     return `
-                      <span class="badge rounded-pill text-bg-${data ? 'success' : 'danger'}">${data ? 'Active' : 'Disabled'}</span>
+                      <span class="badge rounded-pill text-bg-${data ? 'success' : 'danger'}" style="width: 60px">${data ? 'Active' : 'Disabled'}</span>
                     `;
                 }
             },
@@ -58,7 +58,7 @@ function renderMemberListTable(items) {
                 render: function (data, type, row) {
                     return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="displayEditUserModal(${row.id})">Edit</button>
-                        <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Disabled' : 'Enable'}</button>
+                        <button type="button" onclick="toggleMemberStatus(${row.id}, ${!data})" class="btn btn-sm btn-secondary" style="width:90px;margin-right: 5px">${data ? 'Disabled' : 'Enable'}</button>
                         `;
                 }
             },
@@ -125,7 +125,6 @@ function resetEditInput() {
 
 <!--Build Toggle Member Btn-->
 function toggleMemberStatus(id, newStatus) {
-
     //Find the member in memberList
     const member = userList.find(user => user.id === id);
     if(!member){

@@ -53,15 +53,15 @@ function updateChart(results) {
                 {
                     label: 'Internal Kpi',
                     data: internalData,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)', // Adjust color as needed
-                    borderColor: 'rgba(255, 99, 132, 1)', // Adjust color as needed
+                    backgroundColor: 'rgba(54, 162, 235, 1)', // Blue background color
+                    borderColor: 'rgba(54, 162, 235, 1)', // Blue border color
                     borderWidth: 1,
                 },
                 {
                     label: 'External Kpi',
                     data: externalData,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(255, 205, 86, 1)', // Yellow background color
+                    borderColor: 'rgba(255, 205, 86, 1)', // Yellow border color
                     borderWidth: 1,
                 },
             ],

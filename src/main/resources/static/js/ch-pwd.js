@@ -1,13 +1,30 @@
 $(document).ready(function () {
     // Add your event handlers or other initialization code here
-    $('#currentPassword').on('blur', function () {
-        checkCurrentPassword();
+    $('#currentPassword').on('input', function () {
+        if ($('#currentPassword').val() === '') {
+            $('#currentPasswordError').text("Current Password cannot be blank!");
+        } else {
+            checkCurrentPassword();
+            $('#currentPasswordError').text('');
+        }
+    });
+    $('#confirmPassword').prop('disabled', true);
+    $('#newPassword').prop('disabled', true);
+    $('#changePasswordBtn').prop('disabled', true);
+});
+$(document).ready(function () {
+    $('#successModal').on('show.bs.modal', function () {
+        $('#modalOverlay').show();
+    });
+    $('#successModal').on('hidden.bs.modal', function () {
+        $('#modalOverlay').hide();
     });
 });
 
+
+let currentConfirmPassword;
 function checkCurrentPassword() {
     let currentPassword = $('#currentPassword').val();
-
     // Make an AJAX request to check if the current password is correct
     $.ajax({
         type: 'POST',
@@ -15,126 +32,101 @@ function checkCurrentPassword() {
         contentType: 'application/json',
         data: JSON.stringify({currentPassword: currentPassword}),
         success: function (data) {
-            console.log('Current password is correct:', data);
-            checkCurrentPassword = currentPassword;
             $('#errorMessage').text('');
+            if (data === false) {
+                $('#currentPassword').removeClass('is-valid').addClass('is-invalid');
+            } else {
+                $('#currentPassword').removeClass('is-invalid').addClass('is-valid').prop('disabled', true);
+                currentConfirmPassword = currentPassword;
+                $('#newPassword').prop('disabled', false).focus();
+                $('#confirmPassword').prop('disabled', false);
+            }
         },
         error: function (xhr, error) {
             console.error('Error checking current password:', error.responseText);
-            // Display an error message or handle it as needed
+            $('#errorMessage').text('Error checking current password. Please try again.');
         }
     });
 }
 
 
 $('#newPassword').on('input', function () {
-    checkValidateion()
+    let pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+    if ($('#newPassword').val() == currentConfirmPassword) {;
+        $('#newPasswordError').text("New Password cannot be the same as Current Password!");
+    } else if (!pattern.test($('#newPassword').val())) {
+
+        $('#newPasswordError').text("New Password must include at least one uppercase letter, one lowercase letter, and one digit, and be at least 8 characters long!");
+    }else if ($('#newPassword').val() === '') {
+        $('#newPasswordError').text("New Password cannot be blank!");
+    }
+    else {
+        $('#newPasswordError').text('');
+    }
+    if ($('#confirmPassword').val() !== '') {
+        if ($('#newPassword').val() === $('#confirmPassword').val()) {
+            $('#changePasswordBtn').prop('disabled', false);
+            $('#newPassword').addClass('is-valid').removeClass('is-invalid');
+            $('#confirmPassword').addClass('is-valid').removeClass('is-invalid');
+        } else {
+            $('#changePasswordBtn').prop('disabled', true);
+            $('#newPassword').addClass('is-invalid').removeClass('is-valid');
+            $('#confirmPassword').addClass('is-invalid').removeClass('is-valid');
+        }
+    }
 });
 
 $('#confirmPassword').on('input', function () {
-    checkValidateion()
-});
-
-$('#currentPassword').on('input', function () {
-    checkValidateion()
-});
-
-function checkValidateion() {
-    $('#errorMessage').text('');
-    let newPassword = $('#newPassword').val();
-    let confirmPassword = $('#confirmPassword').val();
-    let currentPassword = $('#currentPassword').val();
-    let validationPasses = true;
-
-    let errorMessage = ''; // Initialize an empty error message
-
-    if (currentPassword.trim() === '') {
-        errorMessage += 'Please enter current password.\n';
-        validationPasses = false;
+    if ($('#confirmPassword').val() === '') {
+        $('#confirmPasswordError').text("Confirm Password cannot be blank!");
+    } else {
+        $('#confirmPasswordError').text('');
     }
-
-    if (newPassword.trim() === '') {
-        errorMessage += 'Please enter new password.\n';
-        validationPasses = false;
-    }
-
-    if (confirmPassword.trim() === '') {
-        errorMessage += 'Please enter confirm password.\n';
-        validationPasses = false;
-    }
-
-    if (currentPassword.trim() === '' || newPassword.trim() === '' || confirmPassword.trim() === '') {
-        errorMessage += 'Please fill all the fields.\n';
-        validationPasses = false;
-    }
-
-    if (currentPassword === newPassword) {
-        errorMessage += 'Old password and new password must not be the same.\n';
-        validationPasses = false;
-    }
-
-    if (newPassword !== confirmPassword) {
-        errorMessage += 'Passwords do not match.\n';
-        validationPasses = false;
-    }
-    if (checkCurrentPassword !== currentPassword) {
-        errorMessage += 'Current password is incorrect.\n';
-        validationPasses = false;
-    }
-
-    if (errorMessage !== '') {
-        $('#errorMessage').text(errorMessage); // Display accumulated error messages
-        $('#changePasswordBtn').prop('disabled', true);
-        return false;
-    }else{
+    if ($('#newPassword').val() === $('#confirmPassword').val() && $('#newPasswordError').text() === '' && $('#confirmPasswordError').text() === '') {
         $('#changePasswordBtn').prop('disabled', false);
+        $('#newPassword').addClass('is-valid').removeClass('is-invalid');
+        $('#confirmPassword').addClass('is-valid').removeClass('is-invalid');
+    } else {
+        $('#changePasswordBtn').prop('disabled', true);
+        $('#newPassword').addClass('is-invalid').removeClass('is-valid');
+        $('#confirmPassword').addClass('is-invalid').removeClass('is-valid');
     }
-    if (currentPassword === newPassword) {
-        validationPasses = false;
-    }
-    return validationPasses;
-    return true;
-}
+});
 
 //eg for change pwd
 
-
-
-
-function validatePassword() {
+function changePassword() {
     $('#errorMessage').empty();
     let newPassword = $('#newPassword').val();
     let confirmPassword = $('#confirmPassword').val();
     let currentPassword = $('#currentPassword').val();
-
     let changePassword = {
         currentPassword: currentPassword,
         newPassword: newPassword,
         confirmPassword: confirmPassword
     }
+    // Serialize form data
+    $.ajax({
+        type: 'POST',
+        url: '/users/change-password',
+        contentType: 'application/json',
+        data: JSON.stringify(changePassword),
+        success: function (data) {
+            // $('#profile-overview').tab('show');
+            $('#currentPassword').val('').prop('disabled', false)
+                .removeClass('is-valid').removeClass('is-invalid');
+            $('#newPassword').val('').prop('disabled', true)
+                .removeClass('is-valid').removeClass('is-invalid');
+            $('#confirmPassword').val('').prop('disabled', true)
+                .removeClass('is-valid').removeClass('is-invalid');
+            displaySuccessModal();
+        },
+        error: function (xhr, error) {
+            console.error('Error changing password:', error.responseText);
+            $('#errorMessage').text('Error changing password: ' + error.responseText);
+        }
+    });
 
-    if (checkValidateion()) {
-        // Serialize form data
-        $.ajax({
-            type: 'POST',
-            url: '/users/change-password',
-            contentType: 'application/json',
-            data: JSON.stringify(changePassword),
-            success: function (data) {
-                console.log('Password changed successfully:', data);
-                // $('#profile-overview').tab('show');
-                $('#currentPassword').val('');
-                $('#newPassword').val('');
-                $('#confirmPassword').val('');
-            },
-            error: function (xhr, error) {
-                console.log(xhr.responseText);
-                console.error('Error changing password:', error.responseText);
-
-                $('#errorMessage').text('Error changing password: ' + error.responseText);
-            }
-        });
-    }
     return false;
 }
 
@@ -184,6 +176,15 @@ $(document).ready(function () {
     });
 });
 
+function displaySuccessModal() {
+    let modalBox = $('#successModal')
+    // Show the modal
+    modalBox.modal('show');
+    // Hide the modal after 3 seconds
+    setTimeout(function () {
+        modalBox.modal('hide');
+    }, 2000);
+}
 
 
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.service.ClientService;
 import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.ProjectService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -29,6 +30,7 @@ public class AuthController {
     private final UserService userService;
     private final ClientService clientService;
     private final DepartmentService departmentService;
+    private final ProjectService projectService;
 
     @GetMapping("/login")
     public String login() {
@@ -48,9 +50,11 @@ public class AuthController {
         long userCount = userService.getAllUsers().size();
         long clientCount = clientService.getAllClients().size();
         long departmentCount = departmentService.getAllDepartments().size();
+        long projectCount=projectService.getAllProjects().size();
         model.addAttribute("userCount", userCount);
         model.addAttribute("clientCount", clientCount);
         model.addAttribute("departmentCount", departmentCount);
+        model.addAttribute("projectCount", projectCount);
 
         return "index";
     }

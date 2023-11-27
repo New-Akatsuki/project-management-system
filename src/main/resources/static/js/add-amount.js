@@ -128,6 +128,7 @@ function addOrUpdateAmount() {
             // Close the modal on success
             $("#staticBackdrop").modal('hide');
             console.log(data);
+            location.reload();
         },
         error: function (xhr, status, error) {
             console.log(status);

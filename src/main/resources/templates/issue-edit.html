@@ -315,17 +315,21 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog d-flex align-items-center">
             <div class="modal-content">
                 <!-- Removed the modal-header and moved the close button to the modal-body -->
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.5rem; position: absolute; top: 0; right: 0;"></button>
-                    <div class="text-center">
+                    <div>
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Issue Creation was successful.</p>
+                        <p>Issue update was successful.</p>
                     </div>
+                    <a class="btn btn-sm btn-gray rounded align-items-center" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    </a>
                 </div>
             </div>
         </div>
@@ -358,12 +362,6 @@
         let modalBox = $('#successModal')
         // Show the modal
         modalBox.modal('show');
-
-        // Hide the modal after 3 seconds
-        setTimeout(function () {
-            modalBox.modal('hide');
-            window.location.href = "/issues";
-        }, 2000);
 
         // Handle close event of the modal
         modalBox.on('hidden.bs.modal', function () {

@@ -84,7 +84,6 @@ function formValidate(form_id, action=()=>{}) {
             }else {
                 event.preventDefault();
                 event.stopPropagation();
-                console.log('in form validation');
                 action();
             }
             nameForm.classList.add("was-validated");
@@ -99,12 +98,10 @@ function checkDatesValidation(date_id1, date_id2){
     $("#"+date_id1).on('change', function() {
         startDate = $(this).val();
         _checkDate()
-        console.log('Value changed:', startDate);
     });
     $("#"+date_id2).on('change', function() {
         endDate = $(this).val();
         _checkDate()
-        console.log('Value changed:', endDate);
     });
 }
 function _checkDate() {
