@@ -2,6 +2,7 @@ package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
@@ -31,9 +32,9 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskMapper taskMapper = new TaskMapper();
 
-    private User getCurrentUser(){
+    private User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(username,username).orElse(null);
+        return userRepository.findByUsernameOrEmail(username, username).orElse(null);
     }
 
     @Override
@@ -46,12 +47,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskViewObject createTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
-        // Save the task to the database
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-        // Map and return the saved task as a TaskViewObject
+        savedTask.getProject().setStatus(ProjectStatus.ONGOING);
         return taskMapper.mapToTaskViewObject(savedTask);
     }
-
 
     @Override
     @Transactional
@@ -63,47 +62,55 @@ public class TaskServiceImpl implements TaskService {
         //reset subtask date
         resetSubTaskDate(modifyTask);
         var resultTask = taskRepository.save(modifyTask);
-        if(modifyTask.isStatus()){
+        if (modifyTask.isStatus()) {
             makeChildComplete(modifyTask);
             //check if siblings of the task are completed, then set the parent task to complete
-            if (modifyTask.getParentTask() != null) {
-                var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
-                if (siblings.stream().allMatch(Task::isStatus)) {
+            var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
+
+            if (siblings.stream().allMatch(Task::isStatus)) {
+                if (modifyTask.getParentTask() != null) {
                     modifyTask.getParentTask().setStatus(true);
                     modifyTask.getParentTask().setActualHours(siblings.stream().reduce(0f, (acc, val) -> acc + val.getActualHours(), Float::sum));
                     modifyTask.getParentTask().setActualDueDate(modifyTask.getActualDueDate());
+                } else {
+                    modifyTask.getProject().setStatus(ProjectStatus.FINISHED);
                 }
             }
-        }else {
+
+        } else {
             makeChildIncomplete(modifyTask);
             //check if this task have parent and siblings, then set the parent task to incomplete
-            if (modifyTask.getParentTask() != null) {
-                var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
-                if (siblings.stream().anyMatch(t->!t.isStatus())) {
+
+            var siblings = taskRepository.findAllByParentTask(modifyTask.getParentTask());
+            if (siblings.stream().anyMatch(t -> !t.isStatus())) {
+                if (modifyTask.getParentTask() != null) {
                     modifyTask.getParentTask().setStatus(false);
                     modifyTask.getParentTask().setActualHours(0f);
                     modifyTask.getParentTask().setActualDueDate(null);
+                }else {
+                    modifyTask.getProject().setStatus(ProjectStatus.ONGOING);
                 }
             }
         }
+
         return resultTask;
     }
 
-    private void makeChildComplete(Task task){
+    private void makeChildComplete(Task task) {
         AtomicReference<Float> parentTaskActualHours = new AtomicReference<>(task.getActualHours());
         var subTasks = taskRepository.findAllByParentTask(task);
         subTasks.stream().filter(Task::isStatus).forEach(val -> {
             parentTaskActualHours.updateAndGet(v -> v - val.getActualHours());
         });
-        subTasks.stream().filter(t->!t.isStatus()).forEach(val -> {
+        subTasks.stream().filter(t -> !t.isStatus()).forEach(val -> {
             val.setStatus(true);
-            val.setActualHours(parentTaskActualHours.get()/subTasks.size());
+            val.setActualHours(parentTaskActualHours.get() / subTasks.size());
             val.setActualDueDate(task.getActualDueDate());
             makeChildComplete(val);
         });
     }
 
-    private void makeChildIncomplete(Task task){
+    private void makeChildIncomplete(Task task) {
         var subTasks = taskRepository.findAllByParentTask(task);
         subTasks.forEach(val -> {
             val.setStatus(false);
@@ -134,9 +141,6 @@ public class TaskServiceImpl implements TaskService {
         return task;
     }
 
-    // recursive function that
-    // reset start date and end date of subtasks as parent task's start date and end date
-    // if subtask start date or end date is not in range of parent task
     private void resetSubTaskDate(Task task) {
         var subTasks = taskRepository.findAllByParentTask(task);
         subTasks.forEach(val -> {
@@ -159,9 +163,17 @@ public class TaskServiceImpl implements TaskService {
         currentTask.ifPresent(task -> {
             task.getAssignees().clear();
             clearAssignees(task);
-        });
 
-        taskRepository.deleteById(id);
+            taskRepository.deleteById(id);
+
+            var tasks = taskRepository.findAllByProjectId(task.getProject().getId());
+            if(tasks.size()==0){
+                task.getProject().setStatus(ProjectStatus.ONGOING);
+            }
+            if(tasks.stream().allMatch(Task::isStatus)){
+                task.getProject().setStatus(ProjectStatus.FINISHED);
+            }
+        });
     }
 
     @Override
@@ -174,6 +186,11 @@ public class TaskServiceImpl implements TaskService {
         var user = getCurrentUser();
         return taskRepository.findAllByProjectIdAndAssigneesContaining(projectId, user)
                 .stream().map(taskMapper::mapToTaskViewObject).toList();
+    }
+
+    @Override
+    public Task getTaskById(Long id) {
+        return taskRepository.getReferenceById(id);
     }
 
 

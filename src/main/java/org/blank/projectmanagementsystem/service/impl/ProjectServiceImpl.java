@@ -118,7 +118,6 @@ public class ProjectServiceImpl implements ProjectService {
                     projectRepository.findAllByProjectManager(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case MEMBER ->
                     projectRepository.findAllProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
-            default -> throw new IllegalStateException("Invalid user");
         };
     }
 

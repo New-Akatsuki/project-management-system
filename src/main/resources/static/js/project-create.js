@@ -45,7 +45,7 @@ function updateSelect(selector, option) {
 }
 
 $.ajax({
-    url: '/get-users',
+    url: '/get-active-user',
     method: 'GET',
     dataType: 'json',
     success: function (data) {

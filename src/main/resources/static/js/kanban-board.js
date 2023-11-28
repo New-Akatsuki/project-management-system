@@ -424,14 +424,16 @@
                     taskData.phase = parseInt(newSectionId.split('-')[0], 10);
                     taskData.parent = null;
                     taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
+                    let prevPhaseName = settings.phases.filter(val => val.id === parseInt(originalSectionId.split('-')[0], 10))[0].name;
+                    let newPhaseName = settings.phases.filter(val => val.id === parseInt(newSectionId.split('-')[0], 10))[0].name;
                     updateTask(taskData,false,{
                         title: 'Successfully Moved!',
                         body: '<span class="fw-bolder text-danger">'+taskData.name+'</span> is moved from <span class="fw-bolder text-danger">'+
-                            settings.phases.filter(val => val.id === parseInt(originalSectionId.split('-')[0], 10))[0].name+
-                            '</span> Phase to <span class="fw-bolder text-danger">'+settings.phases.filter(val => val.id === parseInt(newSectionId.split('-')[0], 10))[0].name+'</span> Phase.',
+                            prevPhaseName+
+                            '</span> Phase to <span class="fw-bolder text-danger">'+newPhaseName+'</span> Phase.',
                         icon:'bx bx-check-circle',
                         color:'text-success'
-                    })
+                    },prevPhaseName!==newPhaseName)
 
                 },
             }).disableSelection();
@@ -731,7 +733,7 @@
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task, refresh = true,toastData) {
+        function updateTask(task, refresh = true,toastData,showToast=true) {
 
             $.ajax({
                 url: '/update-task',
@@ -795,13 +797,16 @@
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
-                    buildToast(toastData||{
-                        title: 'Successfully Updated!',
-                        body: 'Task '+data.name+' is successfully updated.',
-                        icon:'bx bx-check-circle',
-                        color:'text-success'
-                    });
-                    $('#liveToast').toast('show');
+                    if(showToast){
+                        buildToast(toastData||{
+                            title: 'Successfully Updated!',
+                            body: 'Task '+data.name+' is successfully updated.',
+                            icon:'bx bx-check-circle',
+                            color:'text-success'
+                        });
+                        $('#liveToast').toast('show');
+                    }
+
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert

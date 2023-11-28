@@ -213,14 +213,6 @@
 <script>
     $(document).ready(function () {
 
-        // const projectList = [
-        //     { name: 'Project 1 dfjskfjasklfjsdklfjsklfsdsdfksfsdklkffsd dfasfsdkfasjkfjsd jhghjkjhkjhgghhfhfgfghfth', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'ONGOING', progress: 90 },
-        //     { name: 'Project 2', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'PENDING', progress: 0 },
-        //     { name: 'Project 3', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'COMPLETED', progress: 100 },
-        //     // ... other projects
-        // ];
-        // getSuccess();
-
         let projectList = [];
         // Make an AJAX request to fetch data from the REST API endpoint
         $.ajax({
@@ -267,7 +259,7 @@
                 const userRole = $('#userRole').val();
                 const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
                 const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
-                const badgeColorClass = status === 'COMPLETED'
+                const badgeColorClass = status === 'FINISHED'
                     ? 'badge-gray'
                     : status === 'PENDING'
                         ? 'badge-red'
@@ -309,8 +301,7 @@
             function renderProjectList(projectList) {
                 const userRole = $('#userRole').val();
                 projectList.sort((a, b) => {
-                    // Compare by status first (ONGOING, PENDING, COMPLETED)
-                    const statusOrder = {ONGOING: 1, PENDING: 2, COMPLETED: 3};
+                    const statusOrder = {ONGOING: 1, PENDING: 2, FINISHED: 3};
                     const statusComparison = statusOrder[a.status] - statusOrder[b.status];
 
                     // If status is different, return the status comparison

@@ -248,7 +248,7 @@ function taskBoard(options) {
                             <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to delete</label>
+                            <label for="phaseName" class="form-label">Enter <span class="text-danger fw-bold">CONFIRM</span> to make incomplete</label>
                             <input type="text" id="confirmInput" class="form-control" autocomplete="off">
                             
                             <div id="errorConfirmText" class="d-flex d-none text-danger align-items-center gap-1"><i class="bx bx-info-circle"></i>Please check your input</div>

@@ -142,6 +142,7 @@ public class UserServiceImpl implements UserService {
         if(currentRole== Role.DH){
             return userRepository.findAllByDepartment(getCurrentUser().getDepartment()).stream()
                     .filter(val-> !Objects.equals(val.getId(), currentUser.getId()))
+                    .filter(val-> !(val.getRole()==Role.PMO||val.getRole()==Role.SDQC))
                     .map(UserViewObject::new).toList();
         }
         if(currentRole== Role.PM){
