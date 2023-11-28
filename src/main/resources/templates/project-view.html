@@ -161,12 +161,24 @@
     <div class="card m-0">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="text-dark d-flex align-items-center mb-0"><i class='bx bx-package me-1'></i><span th:text="${projectName}"></span></h3>
-            <div class="d-flex gap-1 align-items-center">
-                <a type="button" th:href="@{details}"  class="border-0 bg-white  icon-btn-hover px-1 align-middle" id="projectDetails"
+            <div class="d-flex gap-1 align-items-center justify-content-center">
+                <a type="button" th:href="@{details}"  class="btn btn-action d-flex align-items-center px-0 mx-0" id="projectDetails"
                    data-bs-toggle="tooltip" data-bs-title="Project Details">
-                    <i class="bx bx-detail fs-5"></i></a>
-                <button type="button" id="fullscreen_button" class="border-0 bg-white hover-nav px-1 icon-btn-hover">
-                    <i class="bx bx-expand"></i></button>
+                    <i class="bx bx-detail fs-5"></i>
+                </a>
+                <button type="button" id="fullscreen_button" class="btn btn-action d-flex align-items-center px-0 mx-0">
+                    <i class="bx bx-expand"></i>
+                </button>
+                <div>
+                    <button class="btn btn-action d-flex align-items-center px-0 mx-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class='bx bx-dots-vertical-rounded fs-4'></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item d-flex align-items-center text-danger" id="pendingProjectBtn" type="button">
+                            <i class="bi bi-pause-circle"></i>Pending Project
+                        </button></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="container-fluid mx-sm-0">

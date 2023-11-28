@@ -197,7 +197,7 @@
                     <div id="${item.id}-phase" class="${classes.kb_section_class}">
                         <div class="kb-section-header px-board border-highlight-left">
                             <span class="kb-section-header-name display-6 fs-5 fw-bold">${item.name}</span>
-                            <div class="d-flex gap1">
+                            <div class="d-flex gap-1">
                                 <button class="kb-section-header-btn d-flex align-items-center pt-1" id="${item.id}-btn"><i class='bx bx-plus fs-4'></i></button>
                                 <div>
                                       <button class="kb-section-header-btn d-flex align-items-center pt-1 px-0 mx-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">

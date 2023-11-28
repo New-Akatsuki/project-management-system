@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
+import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.Task;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
@@ -14,6 +15,7 @@ import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,10 +47,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskViewObject createTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
         Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
-        savedTask.getProject().setStatus(ProjectStatus.ONGOING);
+        checkProjectStatus(savedTask.getProject());
         return taskMapper.mapToTaskViewObject(savedTask);
     }
 
@@ -72,8 +75,6 @@ public class TaskServiceImpl implements TaskService {
                     modifyTask.getParentTask().setStatus(true);
                     modifyTask.getParentTask().setActualHours(siblings.stream().reduce(0f, (acc, val) -> acc + val.getActualHours(), Float::sum));
                     modifyTask.getParentTask().setActualDueDate(modifyTask.getActualDueDate());
-                } else {
-                    modifyTask.getProject().setStatus(ProjectStatus.FINISHED);
                 }
             }
 
@@ -87,12 +88,10 @@ public class TaskServiceImpl implements TaskService {
                     modifyTask.getParentTask().setStatus(false);
                     modifyTask.getParentTask().setActualHours(0f);
                     modifyTask.getParentTask().setActualDueDate(null);
-                }else {
-                    modifyTask.getProject().setStatus(ProjectStatus.ONGOING);
                 }
             }
         }
-
+        checkProjectStatus(resultTask.getProject());
         return resultTask;
     }
 
@@ -163,16 +162,8 @@ public class TaskServiceImpl implements TaskService {
         currentTask.ifPresent(task -> {
             task.getAssignees().clear();
             clearAssignees(task);
-
             taskRepository.deleteById(id);
-
-            var tasks = taskRepository.findAllByProjectId(task.getProject().getId());
-            if(tasks.size()==0){
-                task.getProject().setStatus(ProjectStatus.ONGOING);
-            }
-            if(tasks.stream().allMatch(Task::isStatus)){
-                task.getProject().setStatus(ProjectStatus.FINISHED);
-            }
+            checkProjectStatus(task.getProject());
         });
     }
 
@@ -194,7 +185,6 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    //create recursive function to get all subtask and clear assignees
     private void clearAssignees(Task task) {
         task.getAssignees().clear();
         var subTasks = taskRepository.findAllByParentTask(task);
@@ -202,6 +192,19 @@ public class TaskServiceImpl implements TaskService {
             val.getAssignees().clear();
             clearAssignees(val);
         });
+    }
+
+    private void checkProjectStatus(Project project){
+        var tasks = taskRepository.findAllByProjectId(project.getId());
+        if(project.getStatus()!=ProjectStatus.PENDING){
+            if(tasks.size()==0){
+                project.setStatus(ProjectStatus.ONGOING);
+            }else if(tasks.stream().allMatch(Task::isStatus)){
+                project.setStatus(ProjectStatus.FINISHED);
+            }else {
+                project.setStatus(ProjectStatus.ONGOING);
+            }
+        }
     }
 }
 
