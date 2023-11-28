@@ -1,11 +1,13 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
+import lombok.Builder;
 import lombok.Data;
 import org.blank.projectmanagementsystem.domain.entity.Issue;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class IssueSolutionViewObject {
     private String coAction;
     private String preAction;

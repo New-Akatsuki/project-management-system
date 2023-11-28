@@ -1,12 +1,18 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 
 import java.io.Serializable;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserViewObject {
 
     private Long id;
@@ -26,6 +32,8 @@ public class UserViewObject {
         department = user.getDepartment().getName();
         active= user.isActive();
     }
+
+    
 }
 
 

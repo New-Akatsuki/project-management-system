@@ -1,6 +1,9 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.springframework.cglib.core.Local;
 
@@ -9,6 +12,9 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectViewObject {
     private Long id;
     private String name;

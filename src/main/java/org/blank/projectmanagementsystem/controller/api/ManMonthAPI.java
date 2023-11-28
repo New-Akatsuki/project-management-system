@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ManMonthAPI {
-        private final UserService userService;
         private final TaskService taskService;
         private final ProjectService projectService;
         private final DepartmentService departmentService;
