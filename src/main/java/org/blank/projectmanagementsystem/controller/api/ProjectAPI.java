@@ -10,6 +10,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectEditViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.dto.AmountReportDto;
@@ -45,15 +46,12 @@ public class ProjectAPI {
 
     @PostMapping("/add-project")
     public ResponseEntity<Project> createProject(@RequestBody ProjectFormInput projectFormInput) {
-        log.info("create project {} \n\n", projectFormInput);
         return ResponseEntity.ok(projectService.saveProject(projectFormInput));
     }
 
     @GetMapping("/get-projectDetails-byId/{id}")
-    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
-        log.info("get project by id {} \n\n", id);
-        Project project = projectService.getProjectByID(id);
-        return ResponseEntity.ok(project);
+    public ResponseEntity<ProjectEditViewObject> getProjectById(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectByID(id));
     }
 
     @GetMapping("/export-project-pdf")
@@ -67,7 +65,7 @@ public class ProjectAPI {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+"-report.pdf").toLowerCase());
+            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+" report.pdf").toLowerCase());
 
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (Exception e) {
@@ -87,7 +85,7 @@ public class ProjectAPI {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM); // Set content type to APPLICATION_OCTET_STREAM for binary data
-            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+"-report.pdf").toLowerCase());
+            headers.setContentDispositionFormData("attachment", (projectReportDto.getProjectName()+" report.xlsx").toLowerCase());
 
             return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
         } catch (Exception e) {

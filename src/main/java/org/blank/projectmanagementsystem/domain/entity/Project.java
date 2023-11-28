@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
@@ -78,9 +79,11 @@ public class Project implements Serializable {
     private Set<Deliverable> deliverables = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnore
     private List<Amount> amounts;
 
     @OneToMany(mappedBy = "project")
+    @JsonIgnore
     private List<ReviewCount> reviewCounts;
 
     @ManyToOne

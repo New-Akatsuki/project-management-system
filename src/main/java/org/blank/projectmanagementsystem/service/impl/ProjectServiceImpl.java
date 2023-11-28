@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectEditViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
@@ -190,13 +191,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectByID(Long id) {
-        return projectRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public Project updateProject(ProjectFormInput projectFormInput) {
-        return null;
+    public ProjectEditViewObject getProjectByID(Long id) {
+        return new ProjectEditViewObject(projectRepository.getReferenceById(id));
     }
 
     private User getCurrentUser() {

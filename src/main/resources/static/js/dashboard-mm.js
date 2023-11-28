@@ -16,7 +16,7 @@ function updateYearSelector(projects) {
     const currentYear = new Date().getFullYear();
     let html = "";
 
-    if ((currentUserRole === "PMO" && (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
+    if (((currentUserRole === "PMO"||currentUserRole === "SDQC") && (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
         //set year option from 2010 to current year
         for (let year = 2010; year <= currentYear; year++) {
             html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
@@ -48,7 +48,7 @@ function updateMonthSelector(projects) {
     const selectedProjectId = $('#projectSelector').val();
     const selectedDepartmentId = $("#departmentSelector").val();
     let html = '';
-    if ((currentUserRole === "PMO"&& (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
+    if (((currentUserRole === "PMO"||currentUserRole === "SDQC")&& (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
         //generate month option from Jan to Dec
         const monthRange = generateUniqueMonthArray(new Date('2021-01-01'), new Date('2021-12-31'))
         let prevMonth = new Date().getMonth();
@@ -80,7 +80,7 @@ function updateDepartmentSelector(data) {
         let department = data.filter(val => val.name === currentDepartmentName)[0];
         html += `<option value="${department.id}" selected>${department.name}</option>`;
         isSet = true;
-    } else if(currentUserRole === "PMO") {
+    } else if(currentUserRole === "PMO"||currentUserRole === "SDQC") {
         html += `<option value="" id="allDepartmentOption" selected>All</option>`;
         const isAllSelected = $("#departmentSelector option:selected").attr("id") === "allDepartmentOption";
         if (isAllSelected) {
@@ -152,7 +152,7 @@ function generateUniqueMonthArray(startDate, endDate) {
 function getProjectByDepartment() {
     let selectedDepartmentId = $("#departmentSelector").val();
     console.log('userrol',currentUserRole!=="PMO")
-    if(currentUserRole!=="PMO"){
+    if(currentUserRole!=="PMO"&&currentUserRole!=="SDQC"){
         console.log('in getproject', currentDepartmentName)
         $("#departmentSelector").val(currentDepartmentName)
         selectedDepartmentId = parseInt(currentDepartmentId,10);

@@ -173,7 +173,7 @@
     <!-- End Page Title -->
     <div class="card" style="border-radius: 18px; margin: 20px 28px">
         <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
-            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Project</h2>
+            <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square me-2"></i>Edit Project</h2>
             <form id="create-project">
                 <div class="container d-flex flex-column gap-2">
                     <div class="d-flex gap-3">
@@ -184,14 +184,6 @@
                             <span class="text-danger" id="titleError">Enter Project Name</span>
                         </div>
 
-                        <!--                        <div class="d-flex flex-column w-100 p-0">-->
-                        <!--                            <label for="department" class="form-label text-black">Department</label>-->
-                        <!--                            <select class="js-example-basic-single select-box2 form-select"-->
-                        <!--                                    id="department" style="width: 100%; height: 100%;">-->
-                        <!--                                <option value="default" selected disabled>Choose Department</option>-->
-                        <!--                            </select>-->
-                        <!--                            <span class="text-danger" id="departmentError">Department must be selected.</span>-->
-                        <!--                        </div>-->
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="start-date" class="form-label d-block text-black">Start Date</label>
                             <input class="datepicker-style form-control" type="text" id="start-date"
@@ -308,7 +300,7 @@
                         </a>
                         <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
                                 id="submitButton">
-                            <i class="bi bi-save"></i>&nbsp;Create
+                            <i class="bi bi-save"></i>&nbsp;Update
                         </button>
                     </div>
                 </div>
@@ -595,35 +587,21 @@
             dataType: "json",
             success: function (data) {
                 console.log("Project Data : ",data);
-                var contractMemberIds = data.contractMembers.map(function(member) {
-                    return member.id;
-                });
-                var focMemberIds = data.focMembers.map(function(member) {
-                    return member.id;
-                });
-                var deliverableIds = data.deliverables.map(function(deliverable) {
-                    return deliverable.id;
-                });
-                var arcOutlineIds = data.architectures.map(function(arc) {
-                    return arc.id;
-                });
-                var sysOutlineIds = data.systemOutlines.map(function(sys) {
-                    return sys.id;
-                });
+
                 $('#title').val(data.name);
-                $('#client').val(data.client.id).trigger('change');
-                $('#member').val(contractMemberIds).trigger('change');
-                $('#foc').val(focMemberIds).trigger('change');
-                $('#department').val(data.department.id).trigger('change');
+                $('#client').val(data.clientId).trigger('change');
+                $('#member').val(data.contractMemberIds).trigger('change');
+                $('#foc').val(data.focMemberIds).trigger('change');
+                $('#department').val(data.departmentId).trigger('change');
                 $('#start-date').val(data.startDate);
                 $('#end-date').val(data.endDate);
-                $('#deli').val(deliverableIds).trigger('change');
-                $('#ao').val(arcOutlineIds).trigger('change');
-                $('#so').val(sysOutlineIds).trigger('change');
+                $('#deli').val(data.deliverableIds).trigger('change');
+                $('#ao').val(data.arcOutlineIds).trigger('change');
+                $('#so').val(data.sysOutlineIds).trigger('change');
                 $('#objective').val(data.objective);
                 $('#background').val(data.background);
-                notifyMultiSelect('#foc', contractMemberIds);
-                notifyMultiSelect('#member', focMemberIds);
+                notifyMultiSelect('#foc', data.contractMemberIds);
+                notifyMultiSelect('#member', data.focMemberIds);
             },
             error: function (data) {
                 console.log(data);
