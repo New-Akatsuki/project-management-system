@@ -50,7 +50,13 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public TaskViewObject createTask(TaskFormInput taskFormInput) {
         Task task = taskMapper.mapToTask(taskFormInput);
-        Task savedTask = taskRepository.save(fillTaskData(taskFormInput, task));
+        Task resultTask = fillTaskData(taskFormInput, task);
+
+        if(!isAuthorized(resultTask.getProject())){
+            return null;
+        }
+
+        Task savedTask = taskRepository.save(resultTask);
         checkProjectStatus(savedTask.getProject());
         return taskMapper.mapToTaskViewObject(savedTask);
     }
@@ -62,6 +68,10 @@ public class TaskServiceImpl implements TaskService {
         //Set phase and project if it exists
         task.setId(taskFormInput.getId());
         var modifyTask = fillTaskData(taskFormInput, task);
+
+        if(!isAuthorized(modifyTask.getProject())){
+            return null;
+        }
         //reset subtask date
         resetSubTaskDate(modifyTask);
         var resultTask = taskRepository.save(modifyTask);
@@ -160,10 +170,12 @@ public class TaskServiceImpl implements TaskService {
         //check task exist or not
         var currentTask = taskRepository.findById(id);
         currentTask.ifPresent(task -> {
-            task.getAssignees().clear();
-            clearAssignees(task);
-            taskRepository.deleteById(id);
-            checkProjectStatus(task.getProject());
+            if(isAuthorized(task.getProject())) {
+                task.getAssignees().clear();
+                clearAssignees(task);
+                taskRepository.deleteById(id);
+                checkProjectStatus(task.getProject());
+            }
         });
     }
 
@@ -205,6 +217,10 @@ public class TaskServiceImpl implements TaskService {
                 project.setStatus(ProjectStatus.ONGOING);
             }
         }
+    }
+
+    private boolean isAuthorized(Project project){
+        return project.getStatus()!=ProjectStatus.PENDING;
     }
 }
 

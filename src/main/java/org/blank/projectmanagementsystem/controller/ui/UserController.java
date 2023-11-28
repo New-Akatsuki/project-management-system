@@ -66,7 +66,7 @@ public class UserController {
 
         var user = userService.getCurrentUser();
         user.setName(name);
-        user.setUsername(username);
+        user.setUsername(username.toLowerCase().replace(" ",""));
         user.setEmail(email);
         user.setPhone(phone);
         user.setUserRole(userRole);

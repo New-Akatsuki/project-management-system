@@ -15,10 +15,13 @@ public interface ProjectService {
     Project saveProject(ProjectFormInput projectFormInput);
     List<ProjectListViewObject> getAllProjects();
     ProjectViewObject getProjectById(Long id);
+    Project getReferenceById(Long id);
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
     List<ProjectViewObject> getProjectsByDepartment(Integer departmentId);
     Project getProject(long projectId);
     ProjectEditViewObject getProjectByID(Long id);
+
+    String toggleProjectStatus(Long id);
 }

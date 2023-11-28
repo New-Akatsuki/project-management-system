@@ -15,6 +15,7 @@
             rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="/css/toggleBtn.css">
 
     <!-- Hope Ui Design System Css -->
     <link rel="stylesheet" href="/css/hope.css">
@@ -35,6 +36,7 @@
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
 
+
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
@@ -47,7 +49,7 @@
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
 
     <!--  gantt chart cdn link -->
-<!--        <link th:href="@{/sources/dhtmlxgantt.css}" rel="stylesheet"/>-->
+    <!--        <link th:href="@{/sources/dhtmlxgantt.css}" rel="stylesheet"/>-->
     <link href="/sources/skins/dhtmlxgantt_material.css" rel="stylesheet"/>
     <script th:src="@{/sources/dhtmlxgantt.js}"></script>
 
@@ -67,6 +69,7 @@
     <link rel="stylesheet" href="/css/kanban.css">
 
     <link rel="stylesheet" href="/css/select2.css">
+
 
     <style>
         /* Custom styles for the model div */
@@ -138,11 +141,9 @@
             border-radius: 5px !important;
         }
 
-
-        .gantt_task_drag{
-            display: none!important;
+        .gantt_task_drag {
+            display: none !important;
         }
-
 
     </style>
 
@@ -160,25 +161,26 @@
     <!-- End Page Title -->
     <div class="card m-0">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="text-dark d-flex align-items-center mb-0"><i class='bx bx-package me-1'></i><span th:text="${projectName}"></span></h3>
+            <h3 class="text-dark d-flex align-items-center mb-0"><i class='bx bx-package me-1'></i><span
+                    th:text="${projectName}"></span></h3>
             <div class="d-flex gap-1 align-items-center justify-content-center">
-                <a type="button" th:href="@{details}"  class="btn btn-action d-flex align-items-center px-0 mx-0" id="projectDetails"
+                <div th:class="${projectStatus=='PENDING'?'is-on switch me-3':'switch me-3'}">
+                    <div class="switch__control">
+                        <span class="switch__toggle">ON</span>
+                    </div>
+                    <span class="switch__label">Pending Project</span>
+                </div>
+
+                <a type="button" th:href="@{details}"
+                   class="btn btn-action d-flex align-items-center px-1 mx-0 shadow-none" id="projectDetails"
                    data-bs-toggle="tooltip" data-bs-title="Project Details">
                     <i class="bx bx-detail fs-5"></i>
                 </a>
-                <button type="button" id="fullscreen_button" class="btn btn-action d-flex align-items-center px-0 mx-0">
+                <button type="button" id="fullscreen_button"
+                        class="btn btn-action d-flex align-items-center px-1 mx-0 shadow-none">
                     <i class="bx bx-expand"></i>
                 </button>
-                <div>
-                    <button class="btn btn-action d-flex align-items-center px-0 mx-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class='bx bx-dots-vertical-rounded fs-4'></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><button class="dropdown-item d-flex align-items-center text-danger" id="pendingProjectBtn" type="button">
-                            <i class="bi bi-pause-circle"></i>Pending Project
-                        </button></li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         <div class="container-fluid mx-sm-0">
@@ -213,6 +215,23 @@
 
     <div id="phaseModalPlace"></div>
     <div id="toastPlace"></div>
+
+    <div class="modal fade" id="pendingModal" tabindex="-1" aria-labelledby="pendingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5>Confirm with your password.</h5>
+                    <input type="password" id="confirmPassword" class="mt-3 form-control"
+                           aria-describedby="passwordHelpBlock">
+                    <span class="d-none text-danger" id="password-error">Wrong password</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="confirmPendingBtn" disabled class="btn btn-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 <!-- End #main -->
@@ -336,7 +355,7 @@
             } else if (elem.webkitRequestFullscreen) {
                 elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
             }
-            btn.innerHTML=`<i class="bx bx-collapse"></i>`;
+            btn.innerHTML = `<i class="bx bx-collapse"></i>`;
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
@@ -348,16 +367,10 @@
                 document.webkitExitFullscreen();
             }
             $('#fullscreen_button').empty();
-            btn.innerHTML=`<i class="bx bx-expand"></i>`;
+            btn.innerHTML = `<i class="bx bx-expand"></i>`;
         }
     }
 
-    // $(document).ready(function () {
-    //     var projectId = window.location.pathname.split('/').reverse()[1];
-    //     $("#projectDetails").click(function () {
-    //         window.location.href = "/projects/" +projectId+"/details";
-    //     });
-    // });
 
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -367,6 +380,59 @@
     function notify(notification) {
         showToast(notification);
     }
+
+    $(document).ready(function () {
+        let projectId = document.getElementById("projectId").value;
+
+        $(".switch").click(function () {
+            $("#confirmPassword").val('').removeClass('is-valid');
+            $("#pendingModal").modal('show');
+        });
+
+        $("#confirmPassword").on('input', () => {
+
+            $.ajax({
+                type: 'POST',
+                url: '/users/check-current-password', // Replace with the actual server endpoint
+                contentType: 'application/json',
+                data: JSON.stringify({currentPassword: $("#confirmPassword").val()}),
+                success: function (data) {
+                    if (data === false) {
+                        $('#password-error').removeClass('d-none');
+                        $("#confirmPassword").removeClass('is-valid')
+                        $('#confirmPendingBtn').prop('disabled', true);
+                    } else {
+                        $('#password-error').addClass('d-none');
+                        $("#confirmPassword").addClass('is-valid')
+                        $('#confirmPendingBtn').prop('disabled', false);
+                    }
+                },
+                error: function (xhr, error) {
+                    console.log('Error checking current password:', error.responseText);
+                }
+            });
+        });
+
+        $("#confirmPendingBtn").on('click', () => {
+            $.ajax({
+                url: '/toggle-project-status/' + projectId,
+                method: 'PUT',
+                success: (data) => {
+                    if (data === "PENDING") {
+                        $('.switch').addClass("is-on");
+                    } else {
+                        $('.switch').removeClass("is-on");
+                    }
+                    $("#pendingModal").modal('hide');
+                },
+                error: (data) => {
+                }
+            })
+        })
+
+    });
+
+
 </script>
 </body>
 </html>

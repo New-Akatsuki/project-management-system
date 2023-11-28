@@ -121,6 +121,46 @@ function taskBoard(options) {
                 settings.tasks.filter(val => val.id === data.id)[0] = data;
                 settings.tasks.filter(val => val.id === data.id)[0].assignees = data.assignees;
                 $('#taskViewModal').offcanvas('hide');
+
+                if (data.status) {
+                    settings.tasks.filter(val => val.parent === data.id).forEach((item, index, array) => {
+                        item.status = true;
+                        item.actual_hours = data.actual_hours / array.length;
+                        item.actual_due_date = data.actual_due_date;
+                        settings.tasks.filter(val => val.id === item.id)[0] = item;
+                    });
+                    if(data.parent){
+                        const siblings = settings.tasks.filter(val => val.parent === data.parent);
+                        //if siblings all status is true, make parent status true
+                        if(siblings.every(val => val.status)) {
+                            settings.tasks.filter(val => val.id === data.parent)[0].status = true;
+                            settings.tasks.filter(val => val.id === data.parent)[0].actual_hours = siblings.reduce((a, b) => a + b.actual_hours, 0);
+                            settings.tasks.filter(val => val.id === data.parent)[0].actual_due_date = data.actual_due_date;
+                        }
+                    }
+                }else{
+                    settings.tasks.filter(val => val.parent === data.id).forEach((item, index, array) => {
+                        item.status = false;
+                        item.actual_hours = null;
+                        item.actual_due_date = null;
+                        settings.tasks.filter(val => val.id === item.id)[0] = item;
+                    });
+
+                    //check if this task have parent and siblings, then set the parent task to incomplete
+                    if(data.parent){
+                        const siblings = settings.tasks.filter(val => val.parent === data.parent);
+                        //if siblings all status is true, make parent status true
+                        if(siblings.every(val => !val.status)) {
+                            settings.tasks.filter(val => val.id === data.parent)[0].status = false;
+                            settings.tasks.filter(val => val.id === data.parent)[0].actual_hours = null;
+                            settings.tasks.filter(val => val.id === data.parent)[0].actual_due_date = null;
+                        }
+                    }
+                }
+
+                resetSubtaskDate(data)
+
+
                 //update view
                 init();
             },
@@ -130,7 +170,18 @@ function taskBoard(options) {
             },
         });
     }
-
+    function resetSubtaskDate(parentTask) {
+        settings.tasks.filter(data => data.parent === parentTask.id).forEach((item, index, array) => {
+            if (item.start_date < parentTask.start_date) {
+                item.start_date = parentTask.start_date
+            }
+            if (item.end_date > parentTask.end_date) {
+                item.end_date = parentTask.end_date
+            }
+            settings.tasks.filter(data => data.id === item.id)[0] = item;
+            resetSubtaskDate(item)
+        });
+    }
     function build_tasks() {
         //clear all container
         $('#pendingContainer').empty();

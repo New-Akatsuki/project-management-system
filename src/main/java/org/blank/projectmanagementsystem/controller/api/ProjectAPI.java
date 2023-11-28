@@ -54,6 +54,11 @@ public class ProjectAPI {
         return ResponseEntity.ok(projectService.getProjectByID(id));
     }
 
+    @PutMapping("/toggle-project-status/{id}")
+    public ResponseEntity<String> toggleStatus(@PathVariable Long id){
+        return ResponseEntity.ok(projectService.toggleProjectStatus(id));
+    }
+
     @GetMapping("/export-project-pdf")
     public ResponseEntity<byte[]> export(@RequestParam Long projectId) {
         try {

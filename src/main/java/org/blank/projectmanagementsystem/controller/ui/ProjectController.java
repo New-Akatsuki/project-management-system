@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
+import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.service.AmountService;
@@ -50,6 +51,8 @@ public class ProjectController {
     public String workingAreaByProjectId(@PathVariable Long id, Model model, @PathVariable String name) {
         model.addAttribute("projectId", id);
         model.addAttribute("projectName", name);
+        Project project = projectService.getReferenceById(id);
+        model.addAttribute("projectStatus",project.getStatus().name());
         return "project-view";
     }
 

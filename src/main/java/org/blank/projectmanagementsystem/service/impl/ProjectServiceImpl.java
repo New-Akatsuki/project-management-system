@@ -109,7 +109,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectListViewObject> getAllProjects() {
+    public List<ProjectListViewObject>  getAllProjects() {
         var user = getCurrentUser();
         return switch (user.getRole()) {
             case PMO, SDQC -> projectRepository.findAll().stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
@@ -136,6 +136,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectViewObject getProjectById(Long id) {
         return new ProjectViewObject(projectRepository.getReferenceById(id));
+    }
+
+    @Override
+    public Project getReferenceById(Long id) {
+        return projectRepository.getReferenceById(id);
     }
 
     @Override
@@ -193,6 +198,22 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectEditViewObject getProjectByID(Long id) {
         return new ProjectEditViewObject(projectRepository.getReferenceById(id));
+    }
+
+    @Override
+    @Transactional
+    public String toggleProjectStatus(Long id) {
+        var project = projectRepository.getReferenceById(id);
+        if(project.getStatus()==ProjectStatus.PENDING){
+            if (countProgress(id) != 100) {
+                project.setStatus(ProjectStatus.ONGOING);
+            } else {
+                project.setStatus(ProjectStatus.FINISHED);
+            }
+        }else {
+            project.setStatus(ProjectStatus.PENDING);
+        }
+        return project.getStatus().name();
     }
 
     private User getCurrentUser() {
