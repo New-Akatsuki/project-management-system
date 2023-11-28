@@ -1,17 +1,21 @@
 package org.blank.projectmanagementsystem.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.Enum.DevelopmentPhase;
 import org.blank.projectmanagementsystem.domain.entity.Amount;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.formInput.AmountDto;
+import org.blank.projectmanagementsystem.repository.ArchitectureRepository;
+import org.blank.projectmanagementsystem.repository.ClientRepository;
+import org.blank.projectmanagementsystem.repository.DeliverableRepository;
+import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
 import org.blank.projectmanagementsystem.service.AmountService;
+import org.blank.projectmanagementsystem.service.ReportService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.client.DefaultRequestExpectation;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -27,12 +31,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.web.servlet.function.RequestPredicates.param;
 
 @WebMvcTest(controllers = AmountAPI.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -43,6 +45,20 @@ class AmountAPITest {
     private MockMvc mockMvc;
     @MockBean
     private AmountService amountService;
+    @MockBean
+    private ReportService reportService;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private ClientRepository clientRepository;
+    @MockBean
+    private SystemOutlineRepository systemOutlineRepository;
+    @MockBean
+    private ArchitectureRepository architectureRepository;
+    @MockBean
+    private DeliverableRepository deliverableRepository;
     @Autowired
     private ObjectMapper objectMapper;
 

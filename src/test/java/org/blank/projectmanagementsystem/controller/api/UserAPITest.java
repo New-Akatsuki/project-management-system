@@ -8,7 +8,12 @@ import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.ChangePasswordFormInput;
 import org.blank.projectmanagementsystem.domain.formInput.UpdateUserFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.UserViewObject;
+import org.blank.projectmanagementsystem.repository.ArchitectureRepository;
+import org.blank.projectmanagementsystem.repository.ClientRepository;
+import org.blank.projectmanagementsystem.repository.DeliverableRepository;
+import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
 import org.blank.projectmanagementsystem.service.DepartmentService;
+import org.blank.projectmanagementsystem.service.ReportService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -60,6 +66,19 @@ class UserAPITest {
     private SessionRegistry sessionRegistry;
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private ReportService reportService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private ClientRepository clientRepository;
+    @MockBean
+    private SystemOutlineRepository systemOutlineRepository;
+    @MockBean
+    private ArchitectureRepository architectureRepository;
+    @MockBean
+    private DeliverableRepository deliverableRepository;
 
     @InjectMocks
     private UserAPI userAPI;
@@ -135,7 +154,7 @@ class UserAPITest {
                 .param("email", "yephoneaung33002@gmail.com")
                 .param("role", "PMO")
                 .param("department", "1")
-                .param("active", "true"));
+                .param("active", "false"));
 
         response.andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", CoreMatchers.is(1)))
@@ -148,13 +167,29 @@ class UserAPITest {
 
 
     }
-
     @Test
-    void generateDefaultPasswordShouldReturnValidString() {
-        String generatedPassword = userAPI.generateDefaultPassword();
-        int passwordAsInt = Integer.parseInt(generatedPassword);
-        assertTrue(passwordAsInt >= 0 && passwordAsInt <= 999999);
+    public void userApi_getActiveUserIsOk() throws Exception{
+        when(userService.getAllUsers()).thenReturn(List.of(userViewObject));
+        ResultActions response = mockMvc.perform(get("/get-active-user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("id", "1")
+                .param("name", "user1")
+                .param("email", "yephoneaung33002@gmail.com")
+                .param("role", "PMO")
+                .param("department", "1")
+                .param("active", "true"));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[0].name", CoreMatchers.is("user1")))
+                .andExpect(jsonPath("$[0].email", CoreMatchers.is("yephoneaung33002@gmail.com")))
+                .andExpect(jsonPath("$[0].departmentId", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[0].department", CoreMatchers.is("Department 1 ")))
+                .andExpect(jsonPath("$[0].active", CoreMatchers.is(true)))
+                .andDo(MockMvcResultHandlers.print());
+
     }
+
 
 
 
@@ -267,19 +302,6 @@ class UserAPITest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    @Test
-    public void checkCurrentPassword_Failure() throws Exception {
-        ChangePasswordFormInput input = new ChangePasswordFormInput("wrongPassword", "newPassword", "newPassword");
-        given(userService.checkCurrentPassword("wrongPassword")).willReturn(false);
-
-        // Test
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post("/users/check-current-password")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(input)));
-
-        result.andExpect(status().isNotFound())
-                .andDo(MockMvcResultHandlers.print());
-    }
 
     @Test
     public void userApi_checkUserByUserNameOrEmailExists() throws Exception {

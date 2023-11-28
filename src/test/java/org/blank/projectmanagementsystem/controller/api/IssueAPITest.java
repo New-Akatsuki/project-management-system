@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.controller.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.*;
@@ -8,31 +9,42 @@ import org.blank.projectmanagementsystem.domain.formInput.IssueSolveFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.IssueDetailsViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.IssueSolutionViewObject;
+import org.blank.projectmanagementsystem.repository.ArchitectureRepository;
+import org.blank.projectmanagementsystem.repository.ClientRepository;
+import org.blank.projectmanagementsystem.repository.DeliverableRepository;
+import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
 import org.blank.projectmanagementsystem.service.IssueService;
 import org.blank.projectmanagementsystem.service.ProjectService;
+import org.blank.projectmanagementsystem.service.ReportService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = IssueAPI.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -45,6 +57,21 @@ class IssueAPITest {
     private IssueService issueService;
     @MockBean
     private ProjectService projectService;
+    @MockBean
+    private ReportService reportService;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private ClientRepository clientRepository;
+    @MockBean
+    private SystemOutlineRepository systemOutlineRepository;
+    @MockBean
+    private ArchitectureRepository architectureRepository;
+    @MockBean
+    private DeliverableRepository deliverableRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -70,7 +97,6 @@ class IssueAPITest {
 
     private IssueSolveFormInput issueSolveFormInput;
 
-
     @BeforeEach
     public void init() {
 
@@ -78,12 +104,17 @@ class IssueAPITest {
                 .id(1L)
                 .name("Project 1")
                 .build();
+
         user = User.builder()
                 .id(1L)
-                .name("yephoneaung33002@gmail.com")
+                .name("User 1")
                 .username("user1")
-                .role(Role.PM)
+                .password("password")
+                .email("yephoneaung33002@gmail.com")
+                .role(Role.PMO)
+                .active(true)
                 .build();
+
 
         issueCategory = IssueCategory.builder()
                 .id(1L)
@@ -121,6 +152,7 @@ class IssueAPITest {
                 .responsibleParty(responsibleParty)
                 .issuePlace(issuePlace)
                 .issueCategory(issueCategory)
+                .pic(user)
                 .build();
 
         allIssueDisplayViewObject = AllIssueDisplayViewObject.builder()
@@ -153,6 +185,7 @@ class IssueAPITest {
 
 
     }
+
     @Test
     public void issueApi_getIssueCategoryIsOk() throws Exception {
         when(issueService.getAllCategory()).thenReturn(List.of(issueCategory));
@@ -161,7 +194,7 @@ class IssueAPITest {
                 .param("id", "1")
                 .param("name", "Issue Category 1"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Issue Category 1"))
                 .andDo(MockMvcResultHandlers.print());
@@ -179,7 +212,7 @@ class IssueAPITest {
                 .param("id", "1")
                 .param("name", "Issue Place 1"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Issue Place 1"))
                 .andDo(MockMvcResultHandlers.print());
@@ -197,7 +230,7 @@ class IssueAPITest {
                 .param("id", "1")
                 .param("name", "Responsible Party 1"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Responsible Party 1"))
                 .andDo(MockMvcResultHandlers.print());
@@ -211,7 +244,7 @@ class IssueAPITest {
         ResultActions response = mockMvc.perform(get("/get-pic")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
 
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(result -> {
@@ -223,61 +256,61 @@ class IssueAPITest {
 
 
     @Test
-    public void issueApi_createIssueIsOk() throws Exception{
-      given(issueService.createIssue(any(IssueFormInput.class))).willReturn(issue);
+    public void issueApi_createIssueIsOk() throws Exception {
+        given(issueService.createIssue(any(IssueFormInput.class))).willReturn(issue);
         ResultActions response = mockMvc.perform(post("/create-issue")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(issueFormInput)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
 
     @Test
-    public void issueApi_createResPartyIsOk() throws Exception{
+    public void issueApi_createResPartyIsOk() throws Exception {
         given(issueService.createResponsibleParty(any(ResponsibleParty.class))).willReturn(responsibleParty);
         ResultActions response = mockMvc.perform(post("/create-resParty")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(responsibleParty)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
 
     @Test
-    public void issueApi_createIssuePlaceIsOk() throws Exception{
+    public void issueApi_createIssuePlaceIsOk() throws Exception {
         given(issueService.createIssuePlace(any(IssuePlace.class))).willReturn(issuePlace);
         ResultActions response = mockMvc.perform(post("/create-place")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(issuePlace)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
 
     @Test
-    public void issueApi_createIssueCategoryIsOk() throws Exception{
+    public void issueApi_createIssueCategoryIsOk() throws Exception {
         given(issueService.createIssueCategory(any(IssueCategory.class))).willReturn(issueCategory);
         ResultActions response = mockMvc.perform(post("/create-category")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(issueCategory)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
 
     @Test
-    public void issueApi_getAllIssueIsOk() throws Exception{
-      when(issueService.getAllIssueDisplayViewObject()).thenReturn(List.of(new AllIssueDisplayViewObject()));
+    public void issueApi_getAllIssueIsOk() throws Exception {
+        when(issueService.getAllIssueDisplayViewObject()).thenReturn(List.of(new AllIssueDisplayViewObject()));
         ResultActions response = mockMvc.perform(get("/get-all-issue")
                 .contentType(MediaType.APPLICATION_JSON));
 
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
@@ -288,7 +321,7 @@ class IssueAPITest {
         ResultActions response = mockMvc.perform(get("/get-issue-details/1")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Issue 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("Issue Category 1"))
@@ -309,16 +342,17 @@ class IssueAPITest {
         ResultActions response = mockMvc.perform(get("/get-issue-solution/1")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
     @Test
     public void issueApi_getIssueByPicIsOk() throws Exception {
         when(issueService.getAllIssueByPic(any(Long.class))).thenReturn(List.of(allIssueDisplayViewObject));
         ResultActions response = mockMvc.perform(get("/get-issue-by-pic/1")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Issue 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("Issue Category 1"))
@@ -329,12 +363,12 @@ class IssueAPITest {
     }
 
     @Test
-    public void issueApi_addSolutionToIssueIsOk() throws Exception{
+    public void issueApi_addSolutionToIssueIsOk() throws Exception {
         given(issueService.addSolutiontoIssue(any(IssueSolveFormInput.class))).willReturn(issue);
         ResultActions response = mockMvc.perform(post("/add-solution")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(issueSolveFormInput)));
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
     }
@@ -345,7 +379,7 @@ class IssueAPITest {
         ResultActions response = mockMvc.perform(get("/get-issue-by-createdBy/1")
                 .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
+        response.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Issue 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("Issue Category 1"))
@@ -354,4 +388,50 @@ class IssueAPITest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].solved").value(false))
                 .andDo(MockMvcResultHandlers.print());
     }
+
+    @Test
+    public void issueApi_exportIssuePdfIsOk() throws Exception {
+        // Create mock issue data
+       when(issueService.getIssueById(any(Long.class))).thenReturn(issue);
+
+        // Mock the reportService.generatePdf() method to return a valid byte array
+        byte[] mockPdfBytes = new byte[2048];
+        when(reportService.generatePdf(Mockito.anyMap(), Mockito.anyString())).thenReturn(mockPdfBytes);
+
+        // Perform the GET request to the /export-issue-pdf endpoint
+        ResultActions response = mockMvc.perform(get("/export-issue-pdf")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("issueId", "1"));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().bytes(mockPdfBytes))
+                .andDo(MockMvcResultHandlers.print());
+
+
+    }
+
+
+    @Test
+    public void issueApi_convertToPdfIsOk() throws Exception {
+        // Mock the behavior of the reportService.convertHtmlToPdf method
+        byte[] mockPdfBytes = new byte[2048];
+        when(reportService.convertHtmlToPdf(any(String.class))).thenReturn(mockPdfBytes);
+
+        // Perform the POST request to the /convert-to-pdf endpoint
+        ResultActions response = mockMvc.perform(post("/convert-to-pdf")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(buildHtmlRequestJson("<html><body><h1>Hello World!</h1></body></html>")));
+
+        // Verify the response
+        response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_PDF))
+                .andExpect(header().string("Content-Disposition", "attachment; filename=converted_page.pdf"))
+                .andExpect(content().bytes(mockPdfBytes));
+    }
+
+    private String buildHtmlRequestJson(String html) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(Map.of("html", html));
+    }
+
+
 }

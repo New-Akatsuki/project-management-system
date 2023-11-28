@@ -11,9 +11,11 @@ import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.dto.PhaseDto;
-import org.blank.projectmanagementsystem.service.PhaseService;
-import org.blank.projectmanagementsystem.service.ProjectService;
-import org.blank.projectmanagementsystem.service.TaskService;
+import org.blank.projectmanagementsystem.repository.ArchitectureRepository;
+import org.blank.projectmanagementsystem.repository.ClientRepository;
+import org.blank.projectmanagementsystem.repository.DeliverableRepository;
+import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
+import org.blank.projectmanagementsystem.service.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -55,6 +58,20 @@ class TaskAPITest {
     private ProjectService projectService;
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private ReportService reportService;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private ClientRepository clientRepository;
+    @MockBean
+    private SystemOutlineRepository systemOutlineRepository;
+    @MockBean
+    private ArchitectureRepository architectureRepository;
+    @MockBean
+    private DeliverableRepository deliverableRepository;
 
     private PhaseDto phaseDto;
     private TaskViewObject taskViewObject;

@@ -5,10 +5,11 @@ import org.blank.projectmanagementsystem.domain.entity.Architecture;
 import org.blank.projectmanagementsystem.domain.entity.Client;
 import org.blank.projectmanagementsystem.domain.entity.Deliverable;
 import org.blank.projectmanagementsystem.domain.entity.SystemOutline;
-import org.blank.projectmanagementsystem.service.ArchitectureService;
-import org.blank.projectmanagementsystem.service.ClientService;
-import org.blank.projectmanagementsystem.service.DeliverableService;
-import org.blank.projectmanagementsystem.service.SystemOutlineService;
+import org.blank.projectmanagementsystem.repository.ArchitectureRepository;
+import org.blank.projectmanagementsystem.repository.ClientRepository;
+import org.blank.projectmanagementsystem.repository.DeliverableRepository;
+import org.blank.projectmanagementsystem.repository.SystemOutlineRepository;
+import org.blank.projectmanagementsystem.service.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -46,6 +48,20 @@ class ContractInfoAPITest {
     private ArchitectureService architectureService;
     @MockBean
     private DeliverableService deliverableService;
+    @MockBean
+    private ReportService reportService;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private ClientRepository clientRepository;
+    @MockBean
+    private SystemOutlineRepository systemOutlineRepository;
+    @MockBean
+    private ArchitectureRepository architectureRepository;
+    @MockBean
+    private DeliverableRepository deliverableRepository;
 
     private SystemOutline systemOutline;
     private Client client;
