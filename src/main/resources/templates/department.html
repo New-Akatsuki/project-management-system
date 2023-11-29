@@ -135,7 +135,7 @@
                             <span class="invalid-feedback" id="name_error"></span>
                         </div>
                     <div class="d-flex justify-content-end mb-1">
-                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px"
                            data-bs-dismiss="modal">
                             <i class="bi bi-x-circle"></i>&nbsp;Close
                         </a>
@@ -192,7 +192,7 @@
                         <span class="invalid-feedback" id="editDepartmentName_error"></span>
                     </div>
                     <div class="d-flex justify-content-end mb-1">
-                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px"
                            data-bs-dismiss="modal">
                             <i class="bi bi-x-circle"></i>&nbsp;Close
                         </a>
@@ -221,7 +221,7 @@
                     <div id="confirmationDepartmentMessage"></div>
                 </div>
                 <div class="d-flex justify-content-end mb-1">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5px;">Cancel</button>
+                    <button type="button" class="btn btn-gray" data-bs-dismiss="modal" style="margin-right: 5px;">Cancel</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmDepartmentButton">Confirm
                     </button>
                 </div>
@@ -323,7 +323,7 @@ function renderDepartmentListTable(items) {
                 render: function (data, type, row) {
                     return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button type="button" onclick="toggleDepartment(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'secondary' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Close' : 'Open'}</button>
+                        <button type="button" onclick="toggleDepartment(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'gray' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Close' : 'Open'}</button>
                         `;
                 }
             },

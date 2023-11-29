@@ -79,7 +79,7 @@ public class ForgotPasswordController {
         userService.save(user);
         fwRepo.save(fwToken);
         model.addAttribute("msg", "Password Reset is successful!");
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping("/used-token")
