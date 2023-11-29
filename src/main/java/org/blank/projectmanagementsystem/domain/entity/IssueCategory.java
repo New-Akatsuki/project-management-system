@@ -15,7 +15,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class IssueCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
