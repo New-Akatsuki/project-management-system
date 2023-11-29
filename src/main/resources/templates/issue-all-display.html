@@ -152,7 +152,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','DH','MEMBER')">
+                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','MEMBER')">
                     <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
                 </a>
                 <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">

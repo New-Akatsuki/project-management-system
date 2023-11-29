@@ -60,6 +60,8 @@ public class User implements Serializable,UserDetails {
 
     private boolean defaultPassword = true;
 
+
+
     public String getPhotoDataAsString() {
         return (photoData != null) ? ImageEncoder.encodeToBase64(photoData) : null;
     }
@@ -95,6 +97,17 @@ public class User implements Serializable,UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    public User(long l, String testUser, String mail, String khun1234, Department testDepartment) {
+    }
+    public User(Long id, String name, String email, String password, Role role, Department department) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.department = department;
     }
 }
 

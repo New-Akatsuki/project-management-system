@@ -175,10 +175,10 @@
             <form id="addNewMemberForm">
                 <div style="align-items: center; padding: 15px">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Full Name</label>
                         <input type="text" class="form-control" id="name" required autocomplete="off"
-                               placeholder="Enter name">
-                        <span class="invalid-feedback" id="name_error">Enter Member Name. </span>
+                               placeholder="Enter full name">
+                        <span class="invalid-feedback" id="name_error">Enter Member Name.</span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -265,7 +265,6 @@
         checkInputValidation('email', 'Email', emailPattern, null);
         checkInputValidation('department', 'Department', null, null);
         checkInputValidation('newUserRole', 'Role', null, null);
-
         checkInputValidation('editName', 'Name', null, null);
         checkInputValidation('editEmail', 'Email', emailPattern, null);
         checkInputValidation('editDepartment', 'Department', null, null);
