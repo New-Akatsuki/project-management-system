@@ -15,7 +15,7 @@ public class ProjectEditViewObject {
     private Integer departmentId;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Long> deliverablesIds;
+    private List<Long> deliverableIds;
     private List<Long> arcOutlineIds;
     private List<Long> sysOutlineIds;
     private String objective;
@@ -29,7 +29,7 @@ public class ProjectEditViewObject {
         this.departmentId = project.getDepartment().getId();
         this.startDate = project.getStartDate();
         this.endDate = project.getEndDate();
-        this.deliverablesIds = project.getDeliverables().stream().map(Deliverable::getId).toList();
+        this.deliverableIds = project.getDeliverables().stream().map(Deliverable::getId).toList();
         this.arcOutlineIds = project.getArchitectures().stream().map(Architecture::getId).toList();
         this.sysOutlineIds = project.getSystemOutlines().stream().map(SystemOutline::getId).toList();
         this.objective = project.getObjective();
