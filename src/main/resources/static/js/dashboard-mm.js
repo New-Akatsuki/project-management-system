@@ -16,25 +16,30 @@ function updateYearSelector(projects) {
     const currentYear = new Date().getFullYear();
     let html = "";
 
-    if (((currentUserRole === "PMO"||currentUserRole === "SDQC") && (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
+    if (((currentUserRole === "PMO" || currentUserRole === "SDQC") && (selectedDepartmentId === null || selectedDepartmentId === "")) || projectList === null || projectList.length === 0) {
         //set year option from 2010 to current year
         for (let year = 2010; year <= currentYear; year++) {
             html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
         }
     } else {
-        //get selected project
-        let selectedProject = projectList.find(p => p.id === parseInt(selectedProjectId, 10));
-        if (selectedProject) {
-            //set year range
-            const sDate = new Date(selectedProject.startDate)
-            const eDate = new Date(selectedProject.endDate)
-            const yearRange = getYearRange(sDate, eDate)
-            console.log(sDate, eDate, yearRange)
-
-            yearRange.forEach(year => {
-                html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
-            });
+        let sDate,eDate;
+        if (selectedProjectId) {
+            let selectedProject = projectList.find(p => p.id === parseInt(selectedProjectId, 10));
+            sDate = new Date(selectedProject.startDate)
+            eDate = new Date(selectedProject.endDate)
+        }else {
+            const {earliestStartDate, latestEndDate} = findEarliestAndLatestDates(projectList);
+            sDate = new Date(earliestStartDate)
+            eDate = new Date(latestEndDate)
         }
+
+        const yearRange = getYearRange(sDate, eDate)
+        console.log(sDate, eDate, yearRange)
+
+        yearRange.forEach(year => {
+            html += `<option value="${year}" ${currentYear === year ? 'selected' : ''}>${year}</option>`;
+        });
+
     }
 
     $("#yearSelector").html(html);
@@ -48,7 +53,7 @@ function updateMonthSelector(projects) {
     const selectedProjectId = $('#projectSelector').val();
     const selectedDepartmentId = $("#departmentSelector").val();
     let html = '';
-    if (((currentUserRole === "PMO"||currentUserRole === "SDQC")&& (selectedDepartmentId === null || selectedDepartmentId === ""))||projectList===null||projectList.length===0) {
+    if (((currentUserRole === "PMO" || currentUserRole === "SDQC") && (selectedDepartmentId === null || selectedDepartmentId === "")) || projectList === null || projectList.length === 0) {
         //generate month option from Jan to Dec
         const monthRange = generateUniqueMonthArray(new Date('2021-01-01'), new Date('2021-12-31'))
         let prevMonth = new Date().getMonth();
@@ -56,10 +61,18 @@ function updateMonthSelector(projects) {
             html += `<option value="${month.id}" ${month.id === prevMonth ? 'selected' : ''}>${month.name}</option>`;
 
         });
-    }else{
-        let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
-        const startMonth = new Date(selectedProject.startDate)
-        const endMonth = new Date(selectedProject.endDate)
+    } else {
+        let startMonth, endMonth;
+        if (selectedProjectId) {
+            let selectedProject = projectList.filter(p => p.id === parseInt(selectedProjectId, 10))[0];
+            startMonth = new Date(selectedProject.startDate)
+            endMonth = new Date(selectedProject.endDate)
+        } else {
+            const {earliestStartDate, latestEndDate} = findEarliestAndLatestDates(projectList);
+            startMonth = new Date(earliestStartDate)
+            endMonth = new Date(latestEndDate)
+        }
+        console.log('daaate', startMonth, endMonth)
         const monthRange = generateUniqueMonthArray(startMonth, endMonth)
         let prevMonth = new Date().getMonth();
         monthRange.forEach(month => {
@@ -71,6 +84,25 @@ function updateMonthSelector(projects) {
     $("#monthSelector").html(html)
 }
 
+function findEarliestAndLatestDates(projects) {
+    let earliestStartDate = null;
+    let latestEndDate = null;
+
+    projects.forEach(project => {
+        // Check for the earliest start date
+        if (!earliestStartDate || project.startDate < earliestStartDate) {
+            earliestStartDate = project.startDate;
+        }
+
+        // Check for the latest end date
+        if (!latestEndDate || project.endDate > latestEndDate) {
+            latestEndDate = project.endDate;
+        }
+    });
+
+    return {earliestStartDate, latestEndDate};
+}
+
 function updateDepartmentSelector(data) {
     $("#departmentSelector").empty();
 
@@ -80,7 +112,7 @@ function updateDepartmentSelector(data) {
         let department = data.filter(val => val.name === currentDepartmentName)[0];
         html += `<option value="${department.id}" selected>${department.name}</option>`;
         isSet = true;
-    } else if(currentUserRole === "PMO"||currentUserRole === "SDQC") {
+    } else if (currentUserRole === "PMO" || currentUserRole === "SDQC") {
         html += `<option value="" id="allDepartmentOption" selected>All</option>`;
         const isAllSelected = $("#departmentSelector option:selected").attr("id") === "allDepartmentOption";
         if (isAllSelected) {
@@ -93,8 +125,7 @@ function updateDepartmentSelector(data) {
         data.forEach((department) => {
             html += `<option value="${department.id}">${department.name}</option>`;
         });
-    }
-    else {
+    } else {
         data.forEach((department, index) => {
             html += `<option value="${department.id}"  ${index === 0 ? 'selected' : ''}>${department.name}</option>`;
         })
@@ -102,12 +133,11 @@ function updateDepartmentSelector(data) {
     $("#departmentSelector").html(html);
 }
 
-function getDepartmentAndRender(){
+function getDepartmentAndRender() {
     $.get("/api/get-department-data", function (data) {
         updateDepartmentSelector(data);
     });
 }
-
 
 
 $("#yearSelector").on("change", function () {
@@ -151,32 +181,34 @@ function generateUniqueMonthArray(startDate, endDate) {
 
 function getProjectByDepartment() {
     let selectedDepartmentId = $("#departmentSelector").val();
-    console.log('userrol',currentUserRole!=="PMO")
-    if(currentUserRole!=="PMO"&&currentUserRole!=="SDQC"){
-        console.log('in getproject', currentDepartmentName)
+
+    if (currentUserRole !== "PMO" && currentUserRole !== "SDQC") {
         $("#departmentSelector").val(currentDepartmentName)
-        selectedDepartmentId = parseInt(currentDepartmentId,10);
+        selectedDepartmentId = parseInt(currentDepartmentId, 10);
     }
-    console.log('in getproject', selectedDepartmentId)
-    if (selectedDepartmentId) {
+
+    if (selectedDepartmentId && selectedDepartmentId!=='') {
         console.log('id', selectedDepartmentId)
         $.get(`/api/get-projects?departmentId=${selectedDepartmentId}`, function (projects) {
             console.log('Received projects:', projects);
-            if(projects.length === 0){
+            if (projects.length === 0) {
                 updateChartsWithNoProjects();
             }
             updateProjectSelector(projects);
             updateYearSelector(projects)
             updateMonthSelector(projects)
             updateCharts();
-            if(projects.length > 0){
-                calculateAllKPIs(projects[0].id);
-            }else{
-                $('#kpiRatioHeadingContainer').hide();
-
+            let projectId = $("#projectSelector").val();
+            if(projectId&&projectId!==''){
+                $('#kpiRatioHeadingContainer').removeClass('d-none')
+               calculateAllKPIs(projectId);
+            } else {
+                $('#kpiRatioHeadingContainer').addClass('d-none')
             }
         });
-    }else{
+    } else {
+        console.log('inll')
+        $('#kpiRatioHeadingContainer').addClass('d-none')
         $("#projectSelector").empty();
         updateYearSelector(null)
         updateMonthSelector(null)
@@ -197,8 +229,9 @@ $("#departmentSelector").on("change", function () {
 
 function updateProjectSelector(projects) {
     let html = "";
+    html += `<option value="">All</option>`;
     projects.forEach((project, index) => {
-        html += `<option value="${project.id}" ${index === 0 ? 'selected' : ''}>${project.name}</option>`;
+        html += `<option value="${project.id}">${project.name}</option>`;
     });
     $("#projectSelector").html(html);
 }
@@ -215,7 +248,12 @@ $("#projectSelector").on("change", function () {
         updateYearSelector(projects)
         updateMonthSelector(projects)
         updateCharts();
-        calculateAllKPIs(selectedProjectId);
+        if(selectedProjectId&&selectedProjectId!==''){
+            $('#kpiRatioHeadingContainer').removeClass('d-none')
+            calculateAllKPIs(selectedProjectId);
+        }else {
+            $('#kpiRatioHeadingContainer').addClass('d-none')
+        }
     });
 
 });
@@ -285,16 +323,14 @@ function updateCharts() {
 
                         updateManMonthProductivity(projectLabels, departmentProductivityRatios);
                     }
-                } .fail(function (error) {
+                }).fail(function (error) {
                     console.error("Error fetching tasks:", error);
-                })
-
-                );
+                });
             }
 
             projects.forEach(processProject);
         });
-    }else if (selectedMonth) {
+    } else if (selectedMonth) {
         console.log('in selected month')
         $.get(`/api/get-department-data`, function (departments) {
             const departmentLabels = [];
@@ -373,6 +409,7 @@ function updateCharts() {
         });
     }
 }
+
 let workingDayPerHour = 7.5;
 let workingDayPerMonth = 20;
 
@@ -406,14 +443,13 @@ function calculateManMonthProductivity(actualManMonths, planManMonths) {
     if (planManMonths === 0) {
         return 0;
     }
-    return (planManMonths / actualManMonths)*100;
+    return (planManMonths / actualManMonths) * 100;
 }
 
 function updateManMonthChart(labels, planManMonths, actualManMonths) {
     if (manMonthChart) {
         manMonthChart.destroy();
     }
-
 
 
     const chartData = {
