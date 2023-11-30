@@ -310,7 +310,6 @@ function validateAndAddMember() {
 }
 
 $('#addMemberModalButton').click(function () {
-
     $('.text-danger').hide();
     $("#name").val('')
     $("#email").val('')
@@ -321,12 +320,10 @@ $('#addMemberModalButton').click(function () {
 
 nameInput.on('input', () => {
     toggleError(nameError, nameInput)
-
 })
 
 emailInput.on('input', () => {
     toggleError(emailError, emailInput)
-
 })
 
 departmentInput.on('change', function () {
@@ -373,7 +370,6 @@ function validateAndEditMember() {
 
 $('#editMemberModalButton').click(function () {
     $('.edit-text-danger').hide();
-    $('#user-error').text('');
     $("#editName").val('');
     $("#editEmail").val('');
     $("#editUserRole").val('');

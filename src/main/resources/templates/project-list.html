@@ -329,13 +329,10 @@
                   `;
                     projectListContainer.append(linkCard);
                 }
-                console.log('hello')
-                if(projectList){
-                    projectList.forEach(function (project) {
-                        projectListContainer.append(renderProjectCard(project));
-                    });
-                }
 
+                projectList.forEach(function (project) {
+                    projectListContainer.append(renderProjectCard(project));
+                });
                 // Initialize Circle Progress
                 $('.circle-progress').each(function () {
                     var progress = $(this).data('progress');
