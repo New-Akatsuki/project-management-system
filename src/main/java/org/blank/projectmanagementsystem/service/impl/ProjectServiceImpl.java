@@ -118,7 +118,7 @@ public class ProjectServiceImpl implements ProjectService {
             case PM ->
                     projectRepository.findAllByProjectManager(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case MEMBER ->
-                    projectRepository.findAllProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
+                    projectRepository.findAllOngoingProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
         };
     }
 
