@@ -330,6 +330,7 @@
             });
         }
 
+        $.fn.refreshKanban = fetchKanbanData;
         $.fn.refreshGantt = fetchGanttData;
 
     });
@@ -378,7 +379,9 @@
 <script src="/js/init-notification.js"></script>
 <script>
     function notify(notification) {
-        showToast(notification);
+        showToast(notification)
+        $.fn.refreshGantt();
+        $.fn.refreshKanban()
     }
 
     $(document).ready(function () {
