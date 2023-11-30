@@ -213,7 +213,7 @@
 <script>
     $(document).ready(function () {
 
-        let projectList = [];
+
         // Make an AJAX request to fetch data from the REST API endpoint
         $.ajax({
             url: '/get-projects', // Replace with your actual API endpoint
@@ -221,15 +221,15 @@
             dataType: 'json',
             success: function (data) {
                 console.log('All project list:', data);
-                projectList = data;
-                getSuccess();
+                getSuccess(data);
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
             }
         });
 
-        function getSuccess() {
+        function getSuccess(data=[]) {
+            let projectList = data;
             const fuseOptions = {
                 keys: ['name', 'department', 'client', 'status'],
                 threshold: 0.3,
@@ -243,15 +243,22 @@
             const issueSearchInput = $('#issueSearch');
 
             function performFuzzySearch(searchTerm) {
-                if (searchTerm.trim() === '') {
+                if (searchTerm === '') {
                     renderProjectList(projectList);
                     initializePagination(projectList);
                 } else {
-                    const results = fuse.search(searchTerm.toLowerCase());
+                    const newFuse = new Fuse(projectList, {
+                        keys: ['name', 'department', 'client', 'status'],
+                        threshold: 0.3,
+                    });
+
+                    const results = newFuse.search(searchTerm.toLowerCase());
+                    projectListContainer.empty(); // Clear previous results
                     renderProjectList(results);
                     initializePagination(results);
                 }
             }
+
 
             function renderProjectCard(project) {
                 console.log('project', typeof project,project)
