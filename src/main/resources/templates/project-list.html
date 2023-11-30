@@ -244,7 +244,6 @@
 
             function performFuzzySearch(searchTerm) {
                 if (searchTerm.trim() === '') {
-                    // If search term is empty, render the entire project list
                     renderProjectList(projectList);
                     initializePagination(projectList);
                 } else {
@@ -255,7 +254,9 @@
             }
 
             function renderProjectCard(project) {
-                const {name, department, endDate, client, status, id} = project;
+                console.log('project', typeof project,project)
+                const {item} = project;
+                const {name, department, endDate, client, status, id,progress} = item||project;
                 const userRole = $('#userRole').val();
                 const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
                 const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
@@ -282,8 +283,8 @@
                     <p class="card-text"><span><i class="bi bi-person"></i>&nbsp&nbsp${client}</span></p>
                   </div>
                   <div>
-                  <div class="circle-progress" data-progress="${project.progress / 100}">
-                    <div class="progress-number">${project.progress}%</div>
+                  <div class="circle-progress" data-progress="${progress/100}">
+                    <div class="progress-number">${progress}%</div>
                   </div>
                   </div>
                 </div>
@@ -328,10 +329,13 @@
                   `;
                     projectListContainer.append(linkCard);
                 }
+                console.log('hello')
+                if(projectList){
+                    projectList.forEach(function (project) {
+                        projectListContainer.append(renderProjectCard(project));
+                    });
+                }
 
-                projectList.forEach(function (project) {
-                    projectListContainer.append(renderProjectCard(project));
-                });
                 // Initialize Circle Progress
                 $('.circle-progress').each(function () {
                     var progress = $(this).data('progress');

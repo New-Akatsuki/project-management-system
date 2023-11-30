@@ -216,9 +216,7 @@
                         <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="goBack()">
                             <i class="bi bi-backspace"></i>&nbsp;Back
                         </a>
-                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
-                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
-                        </a>
+
                         <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
                             <i class="bi bi-save"></i>&nbsp;Update
                         </button>
@@ -427,6 +425,10 @@
             let modalID = $('#' + modalId);
             input.val('');
             error.addClass('d-none');
+            $('#addResPartySameError').addClass("d-none")
+            $('#addArchitectureSameNameError').addClass("d-none")
+            $('#addPlaceSameError').addClass('d-none')
+            $('#addCategorySameError').addClass('d-none')
             modalID.modal('show');
             // Unbind previous event handlers
             modalID.off('shown.bs.modal');

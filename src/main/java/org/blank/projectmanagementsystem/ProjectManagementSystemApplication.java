@@ -115,7 +115,8 @@ public class ProjectManagementSystemApplication {
                     Client.builder()
                             .name("DAT")
                             .email("dat@dat.com")
-                            .phoneNumber("123456789")
+                            .phoneNumber("+959890891840")
+                            .status(true)
                             .build()
             );
 

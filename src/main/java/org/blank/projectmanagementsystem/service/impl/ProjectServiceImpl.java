@@ -109,7 +109,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectListViewObject>  getAllProjects() {
+    public List<ProjectListViewObject> getAllProjects() {
         var user = getCurrentUser();
         return switch (user.getRole()) {
             case PMO, SDQC -> projectRepository.findAll().stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
@@ -126,12 +126,13 @@ public class ProjectServiceImpl implements ProjectService {
     private int countProgress(Long id) {
         int total = 0;
         int done = 0;
-        var tasks = taskRepository.findAllByProjectId(id);
+        var tasks = taskRepository.findAllByProjectId(id).stream().filter(val->val.getParentTask()==null).toList();
         total = tasks.size();
         if (total == 0) return 0;
         done = tasks.stream().filter(Task::isStatus).toList().size();
-        return (done/total)*100;
+        return (int) (((float)done/total)*100);
     }
+
 
     @Override
     public ProjectViewObject getProjectById(Long id) {

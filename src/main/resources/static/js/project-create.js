@@ -327,10 +327,12 @@ $(document).ready(function () {
         dateFormat: "yy-mm-dd",
         showOtherMonths: true,
         selectOtherMonths: true,
+        minDate: new Date(new Date().setDate(new Date().getDate() - 14)),
         changeMonth: true,
         changeYear: true,
         onSelect: (dateText, inst) => $('#start-date').val(dateText).trigger('change'),
     });
+
 
     $("#end-date").datepicker({
         dateFormat: "yy-mm-dd",
@@ -391,6 +393,8 @@ function addDeliverable() {
                 updateSelect('.deliverable-select-box', data);
                 $("#addDeliverablesModal").modal('hide').data('bs.modal', null);
                 $('#deliverablesSameNameError').addClass('d-none');
+                let prevData = $('#deli').val();
+                $('#deli').val([...prevData,data.id])
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
@@ -432,7 +436,8 @@ function addSystemOutline() {
                 updateSelect('.sysOutline-select-box', data);
                 $("#addSystemOutlineModal").modal('hide').data('bs.modal', null);
                 $('#systemOutlineSameNameError').addClass('d-none');
-
+                let prevData = $('#so').val();
+                $('#so').val([...prevData,data.id])
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
@@ -475,6 +480,8 @@ function addArchitecture() {
             success: function (data) {
                 $('#architectureAddModal').modal('toggle');
                 updateSelect('.arc-select-box', data);
+                let prevData = $('#ao').val();
+                $('#ao').val([...prevData,data.id])
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);
@@ -523,6 +530,8 @@ function addClient() {
                 $("#addClientModal").modal('toggle');
                 updateSelect('.js-example-basic-single.select-box', data);
                 $('#clientSameNameError').addClass('d-none');
+                console.log(data)
+                $('#client').val(data.id)
             },
             error: function (xhr, status, error) {
                 console.log("ERROR: ", xhr.responseText);

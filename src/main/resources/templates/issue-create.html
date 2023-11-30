@@ -400,9 +400,22 @@
         });
     }
 
-    function updateSelect(selector, option) {
+    function updateSelect(selector, option,modalId="") {
         let select = $(selector);
         select.append('<option value="' + option.id + '">' + option.name + '</option>');
+        if(modalId==="categoryModal"){
+            $("#issue_category").val(option.id)
+            console.log("ca")
+        }if(modalId==="placeModal")
+        {
+            $("#issue_place").val(option.id)
+            console.log("pla")
+
+        }else{
+            $("#res-party").val(option.id)
+            console.log("res")
+
+        }
     }
 
     function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId, modalSameError) {
@@ -432,9 +445,12 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (responseData) {
-                    $('#' + modalId).modal('hide');
-                    updateSelect(selectBoxClass, responseData);
+                    updateSelect(selectBoxClass, responseData,modalId);
+                    console.log('respData',responseData)
+
                     console.log(responseData);
+
+                    $('#' + modalId).modal('hide');
                 },
                 error: function (data) {
                     console.log(data.responseText); // Log only the error message
