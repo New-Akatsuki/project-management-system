@@ -7,12 +7,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.blank.projectmanagementsystem.domain.Enum.NotificationType;
 import org.blank.projectmanagementsystem.domain.entity.*;
+import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
+import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.QueueInfoService;
+import org.blank.projectmanagementsystem.service.TaskService;
 import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.DirectExchange;
@@ -34,12 +38,10 @@ import java.util.Map;
 public class NotificationAspect {
 
     private final NotificationService notificationService;
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final TaskService taskService;
 
-    private User getCurrentUser(){
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(username,username).orElse(null);
-    }
+    private boolean showNotificationForTaskComplete = true;
 
     @AfterReturning(
             pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.ProjectServiceImpl.saveProject(..))",
@@ -48,7 +50,7 @@ public class NotificationAspect {
     )
     public void sendNotificationAfterProjectCreation(Project result) throws JsonProcessingException {
         if (result != null) {
-            User user = getCurrentUser();
+            User user = userService.getCurrentUser();
             Notification notification = Notification.builder()
                     .message("Project " + result.getName() + " has been created")
                     .date(LocalDateTime.now())
@@ -78,6 +80,7 @@ public class NotificationAspect {
         }
     }
 
+
     @AfterReturning(
             pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.IssueServiceImpl.createIssue(..))",
             argNames = "result",
@@ -99,6 +102,27 @@ public class NotificationAspect {
     }
 
     @AfterReturning(
+            pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.IssueServiceImpl.addSolutiontoIssue(..))",
+            argNames = "result",
+            returning = "result"
+    )
+    public void sendNotificationAfterIssueAlreadySolved(Issue result) throws JsonProcessingException {
+        if (result!=null){
+            User user = userService.getCurrentUser();
+            Notification notification = Notification.builder()
+                    .message("Issue " + result.getTitle()+ " has been filled with solutions by " + user.getName())
+                    .date(LocalDateTime.now())
+                    .link("/issues/"+result.getId()+"/details")
+                    .type(NotificationType.TASK)
+                    .recipient(result.getCreatedBy())
+                    .isRead(false)
+                    .build();
+            notificationService.saveNotification(notification);
+            notificationService.sendNotification(notification, result.getCreatedBy().getId());
+        }
+    }
+
+    @AfterReturning(
             pointcut = "execution(* org.blank.projectmanagementsystem.service.impl.TaskServiceImpl.createTask(..))",
             argNames = "result",
             returning = "result"
@@ -116,11 +140,17 @@ public class NotificationAspect {
                     .build();
 
             result.getAssignees().forEach(assignee -> {
-                notification.setRecipient(userRepository.getReferenceById(assignee.getId()));
+                notification.setRecipient(userService.getUserById(assignee.getId()));
                 notificationService.saveNotification(notification);
                 notificationService.sendNotification(notification, assignee.getId());
             });
         }
+    }
+
+
+    @Before("execution(* org.blank.projectmanagementsystem.service.impl.TaskServiceImpl.updateTask(..))&&args(result)")
+    public void decisionForNotificationBeforeTaskComplete(TaskFormInput result) throws JsonProcessingException {
+        showNotificationForTaskComplete = result != null && result.isStatus() && !taskService.getTaskById(result.getId()).isStatus();
     }
 
     @AfterReturning(
@@ -130,12 +160,12 @@ public class NotificationAspect {
     )
     public void sendNotificationAfterTaskCompleted(Task result) throws JsonProcessingException {
         if (result!=null){
-            User user = getCurrentUser();
-            if (result.isStatus()){
+            User user = userService.getCurrentUser();
+            if (result.isStatus()&&showNotificationForTaskComplete){
                 Notification notification = Notification.builder()
                         .message("Task " + result.getName()+ " has been completed with "+result.getActualHours()+" hours by " + user.getName())
                         .date(LocalDateTime.now())
-                        .link("/projects/"+result.getProject().getId()+"/workspace")
+                        .link("/projects/"+result.getProject().getId()+"/"+result.getProject().getName()+"/workspace")
                         .type(NotificationType.TASK)
                         .recipient(result.getProject().getProjectManager())
                         .isRead(false)
@@ -145,5 +175,7 @@ public class NotificationAspect {
             }
         }
     }
+
+
 
 }

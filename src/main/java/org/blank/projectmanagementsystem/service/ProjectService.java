@@ -3,6 +3,7 @@ package org.blank.projectmanagementsystem.service;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectEditViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 
@@ -14,11 +15,13 @@ public interface ProjectService {
     Project saveProject(ProjectFormInput projectFormInput);
     List<ProjectListViewObject> getAllProjects();
     ProjectViewObject getProjectById(Long id);
+    Project getReferenceById(Long id);
     List<User> getProjectMembers(Long projectId);
     List<User> getUsersByOngoingProject();
     Map<String,List<Object>> getUsersAndClientByOngoingProject();
     List<ProjectViewObject> getProjectsByDepartment(Integer departmentId);
     Project getProject(long projectId);
-    Project getProjectByID(Long id);
-    Project updateProject(ProjectFormInput projectFormInput);
+    ProjectEditViewObject getProjectByID(Long id);
+
+    String toggleProjectStatus(Long id);
 }

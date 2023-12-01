@@ -186,7 +186,7 @@
 
     <input type="hidden" id="projectId" th:value="${pId}">
     <!-- End Page Title -->
-    <div class="card vh-100 shadow-none">
+    <div class="card vh-100 shadow-none overflow-y-scroll">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="fs-4"><i class='bx bxs-component'></i> Tasks</span>
@@ -198,7 +198,7 @@
             <div class="tabs">
                 <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
                 <label for="tab1" class="tabs__label">Pending</label>
-                <div class="tabs__content container overflow-y-scroll">
+                <div class="tabs__content container">
                     <br>
                     <!-- Container for Pending Task Cards -->
                     <div id="pendingContainer" class="row"></div>
@@ -252,6 +252,13 @@
 
 <script>
     let currentTab;
+
+    $(document).ready(function () {
+        if ($('#projectId').val()) {
+            $('#projectSelect').val($('#projectId').val()).trigger('change');
+        }
+    });
+
     // Add fade animation to the modal
     $('#taskModal').on('show.bs.modal', function () {
         $(this).find('.modal-dialog').addClass('fade');
@@ -294,18 +301,26 @@
                         text: 'No projects found'
                     }));
                 }
+
                 if (notification && notification.projectId) {
-                    console.log(selectedProject,notification.projectId)
-                    if (parseInt(selectedProject,10) === notification.projectId) {
+                    if (parseInt(selectedProject, 10) === notification.projectId) {
+                        console.log('same',selectedProject,notification.projectId)
                         $('#projectSelect').val(notification.projectId).trigger('change');
                     }
+                }else  if (paramProjectId!==null&&paramProjectId!=='') {
+                    console.log('same',paramProjectId)
+                    $('#projectSelect').val(parseInt(paramProjectId,10)).trigger('change');
                 }
 
-                if(paramProjectId){
-                    $('#projectSelect').val(paramProjectId).trigger('change');
+                if(selectedProject)
+                {
+                    $('#projectSelect').val(selectedProject).trigger('change');
                 }
 
                 getDataAndBuildTaskView();
+
+
+
             },
             error: function (error) {
                 console.log(error);
@@ -317,6 +332,7 @@
 
     function getDataAndBuildTaskView() {
         let projectId = $('#projectSelect').val();
+
         if (projectId === null || projectId === undefined || projectId === '') {
             taskBoard({
                 tasks: []
@@ -345,7 +361,6 @@
 
 
     function notify(notification) {
-
         generateTaskView(notification);
         showToast(notification);
     }

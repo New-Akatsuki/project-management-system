@@ -6,14 +6,14 @@ import org.blank.projectmanagementsystem.domain.viewobject.IssueDetailsViewObjec
 import org.blank.projectmanagementsystem.domain.viewobject.IssueSolutionViewObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject(i.id, i.title, i.issueCategory.name, i.issuePlace.name, i.responsibleParty.name,i.solved,i.createdAt,i.modifyAt) FROM Issue i WHERE i.pic.id = ?1")
     List<AllIssueDisplayViewObject> findByPicId(Long id);
-
-    //get individual column of issue table
     @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject(i.id, i.title, i.issueCategory.name, i.issuePlace.name, i.responsibleParty.name,i.solved,i.createdAt,i.modifyAt) FROM Issue i")
     List<AllIssueDisplayViewObject> getAllIssueDisplayViewObject();
 
@@ -25,7 +25,5 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
     @Query("SELECT new org.blank.projectmanagementsystem.domain.viewobject.AllIssueDisplayViewObject(i.id, i.title, i.issueCategory.name, i.issuePlace.name, i.responsibleParty.name,i.solved,i.createdAt,i.modifyAt) FROM Issue i WHERE i.createdBy.id = ?1")
     List<AllIssueDisplayViewObject> findByCreatedByID(Long id);
-
-
 
 }

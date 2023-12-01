@@ -475,6 +475,8 @@
                 // Display an error message or handle it as needed
             }
         });
+    }).on('input',()=>{
+        $('#editUsername').val($('#editUsername').val().toLowerCase().replace(' ',''));
     });
 </script>
 

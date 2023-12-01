@@ -55,7 +55,6 @@ $('#newPassword').on('input', function () {
     if ($('#newPassword').val() == currentConfirmPassword) {;
         $('#newPasswordError').text("New Password cannot be the same as Current Password!");
     } else if (!pattern.test($('#newPassword').val())) {
-
         $('#newPasswordError').text("New Password must include at least one uppercase letter, one lowercase letter, and one digit, and be at least 8 characters long!");
     }else if ($('#newPassword').val() === '') {
         $('#newPasswordError').text("New Password cannot be blank!");

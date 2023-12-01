@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.Enum.ProjectStatus;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.ProjectFormInput;
+import org.blank.projectmanagementsystem.domain.viewobject.ProjectEditViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectListViewObject;
 import org.blank.projectmanagementsystem.domain.viewobject.ProjectViewObject;
 import org.blank.projectmanagementsystem.mapper.ProjectMapper;
@@ -117,8 +118,7 @@ public class ProjectServiceImpl implements ProjectService {
             case PM ->
                     projectRepository.findAllByProjectManager(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case MEMBER ->
-                    projectRepository.findAllProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
-            default -> throw new IllegalStateException("Invalid user");
+                    projectRepository.findAllOngoingProjectsByUserInMembers(user).stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
         };
     }
 
@@ -126,16 +126,22 @@ public class ProjectServiceImpl implements ProjectService {
     private int countProgress(Long id) {
         int total = 0;
         int done = 0;
-        var tasks = taskRepository.findAllByProjectId(id);
+        var tasks = taskRepository.findAllByProjectId(id).stream().filter(val->val.getParentTask()==null).toList();
         total = tasks.size();
         if (total == 0) return 0;
         done = tasks.stream().filter(Task::isStatus).toList().size();
-        return (done/total)*100;
+        return (int) (((float)done/total)*100);
     }
+
 
     @Override
     public ProjectViewObject getProjectById(Long id) {
         return new ProjectViewObject(projectRepository.getReferenceById(id));
+    }
+
+    @Override
+    public Project getReferenceById(Long id) {
+        return projectRepository.getReferenceById(id);
     }
 
     @Override
@@ -191,13 +197,24 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectByID(Long id) {
-        return projectRepository.findById(id).orElseThrow();
+    public ProjectEditViewObject getProjectByID(Long id) {
+        return new ProjectEditViewObject(projectRepository.getReferenceById(id));
     }
 
     @Override
-    public Project updateProject(ProjectFormInput projectFormInput) {
-        return null;
+    @Transactional
+    public String toggleProjectStatus(Long id) {
+        var project = projectRepository.getReferenceById(id);
+        if(project.getStatus()==ProjectStatus.PENDING){
+            if (countProgress(id) != 100) {
+                project.setStatus(ProjectStatus.ONGOING);
+            } else {
+                project.setStatus(ProjectStatus.FINISHED);
+            }
+        }else {
+            project.setStatus(ProjectStatus.PENDING);
+        }
+        return project.getStatus().name();
     }
 
     private User getCurrentUser() {

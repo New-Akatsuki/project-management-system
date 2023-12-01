@@ -188,7 +188,6 @@
             build_subtask();
             enableDragAndDrop();
         }
-
         /* ===========================================================
         *  Build Sections UI Function
         * ============================================================*/
@@ -198,7 +197,7 @@
                     <div id="${item.id}-phase" class="${classes.kb_section_class}">
                         <div class="kb-section-header px-board border-highlight-left">
                             <span class="kb-section-header-name display-6 fs-5 fw-bold">${item.name}</span>
-                            <div class="d-flex gap1">
+                            <div class="d-flex gap-1">
                                 <button class="kb-section-header-btn d-flex align-items-center pt-1" id="${item.id}-btn"><i class='bx bx-plus fs-4'></i></button>
                                 <div>
                                       <button class="kb-section-header-btn d-flex align-items-center pt-1 px-0 mx-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -425,14 +424,16 @@
                     taskData.phase = parseInt(newSectionId.split('-')[0], 10);
                     taskData.parent = null;
                     taskData.assignees = taskData.assignees.map(val => parseInt(val.id, 10));
+                    let prevPhaseName = settings.phases.filter(val => val.id === parseInt(originalSectionId.split('-')[0], 10))[0].name;
+                    let newPhaseName = settings.phases.filter(val => val.id === parseInt(newSectionId.split('-')[0], 10))[0].name;
                     updateTask(taskData,false,{
                         title: 'Successfully Moved!',
                         body: '<span class="fw-bolder text-danger">'+taskData.name+'</span> is moved from <span class="fw-bolder text-danger">'+
-                            settings.phases.filter(val => val.id === parseInt(originalSectionId.split('-')[0], 10))[0].name+
-                            '</span> Phase to <span class="fw-bolder text-danger">'+settings.phases.filter(val => val.id === parseInt(newSectionId.split('-')[0], 10))[0].name+'</span> Phase.',
+                            prevPhaseName+
+                            '</span> Phase to <span class="fw-bolder text-danger">'+newPhaseName+'</span> Phase.',
                         icon:'bx bx-check-circle',
                         color:'text-success'
-                    })
+                    },prevPhaseName!==newPhaseName)
 
                 },
             }).disableSelection();
@@ -506,7 +507,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="phaseName">Phase Name:</label>
                             <input type="text" id="${phaseData.title.toLowerCase()}PhaseName" class="form-control" placeholder="Enter Phase Name">
                         </div>
                         <div id="deleteBtnPlaceInEditPhaseModal" class="modal-footer d-flex flex-row-reverse justify-content-between">
@@ -733,7 +733,7 @@
         /* ===========================================================
         *  update Task to Database
         * ============================================================*/
-        function updateTask(task, refresh = true,toastData) {
+        function updateTask(task, refresh = true,toastData,showToast=true) {
 
             $.ajax({
                 url: '/update-task',
@@ -797,13 +797,16 @@
                         $('#taskViewModal').offcanvas('show');
                     }
                     currentTaskId = null
-                    buildToast(toastData||{
-                        title: 'Successfully Updated!',
-                        body: 'Task '+data.name+' is successfully updated.',
-                        icon:'bx bx-check-circle',
-                        color:'text-success'
-                    });
-                    $('#liveToast').toast('show');
+                    if(showToast){
+                        buildToast(toastData||{
+                            title: 'Successfully Updated!',
+                            body: 'Task '+data.name+' is successfully updated.',
+                            icon:'bx bx-check-circle',
+                            color:'text-success'
+                        });
+                        $('#liveToast').toast('show');
+                    }
+
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, e.g., display them in the console or an alert
@@ -911,7 +914,7 @@
                             <div class="row" style="padding:10px">
                               <div class="col-6">
                                 <label for="planHour">Plan Hour :</label>
-                                <input type="number" id="planHour" class="inputmodalbox"
+                                <input type="number" id="planHour" class="inputmodalbox" min="1" autocomplete="off" step="0.5"
                                 placeholder="Enter plan hour" value="${item.plan_hours}" disabled>
                               </div>
                               <div class="col-6">
@@ -959,7 +962,7 @@
         function buildAddTaskModal(minDate = null, maxDate = null) {
             $('#exampleModal').remove();
             const addTaskModal = `
-              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <form id="addTaskForm" autocomplete="off">
                         <div class="modal-content">
@@ -990,7 +993,7 @@
                                         </div>
                                         <div class="form-group mb-0 flex-3 d-flex flex-column">
                                             <label for="task-plan-hours" class="form-label">Plan Hours:</label>
-                                            <input type="number" step="0.1" min="0" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
+                                            <input type="number" step="0.5" min="1" id="task-plan-hours" placeholder="Enter plan hours" class="form-control mb-0" required>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-2">

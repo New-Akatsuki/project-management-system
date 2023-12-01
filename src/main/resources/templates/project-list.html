@@ -213,15 +213,7 @@
 <script>
     $(document).ready(function () {
 
-        // const projectList = [
-        //     { name: 'Project 1 dfjskfjasklfjsdklfjsklfsdsdfksfsdklkffsd dfasfsdkfasjkfjsd jhghjkjhkjhgghhfhfgfghfth', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'ONGOING', progress: 90 },
-        //     { name: 'Project 2', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'PENDING', progress: 0 },
-        //     { name: 'Project 3', department: 'IT', endDate: '2023-12-01', client: 'Client A', status: 'COMPLETED', progress: 100 },
-        //     // ... other projects
-        // ];
-        // getSuccess();
 
-        let projectList = [];
         // Make an AJAX request to fetch data from the REST API endpoint
         $.ajax({
             url: '/get-projects', // Replace with your actual API endpoint
@@ -229,15 +221,15 @@
             dataType: 'json',
             success: function (data) {
                 console.log('All project list:', data);
-                projectList = data;
-                getSuccess();
+                getSuccess(data);
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
             }
         });
 
-        function getSuccess() {
+        function getSuccess(data=[]) {
+            let projectList = data;
             const fuseOptions = {
                 keys: ['name', 'department', 'client', 'status'],
                 threshold: 0.3,
@@ -251,23 +243,31 @@
             const issueSearchInput = $('#issueSearch');
 
             function performFuzzySearch(searchTerm) {
-                if (searchTerm.trim() === '') {
-                    // If search term is empty, render the entire project list
+                if (searchTerm === '') {
                     renderProjectList(projectList);
                     initializePagination(projectList);
                 } else {
-                    const results = fuse.search(searchTerm.toLowerCase());
+                    const newFuse = new Fuse(projectList, {
+                        keys: ['name', 'department', 'client', 'status'],
+                        threshold: 0.3,
+                    });
+
+                    const results = newFuse.search(searchTerm.toLowerCase());
+                    projectListContainer.empty(); // Clear previous results
                     renderProjectList(results);
                     initializePagination(results);
                 }
             }
 
+
             function renderProjectCard(project) {
-                const {name, department, endDate, client, status, id} = project;
+                console.log('project', typeof project,project)
+                const {item} = project;
+                const {name, department, endDate, client, status, id,progress} = item||project;
                 const userRole = $('#userRole').val();
                 const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
                 const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
-                const badgeColorClass = status === 'COMPLETED'
+                const badgeColorClass = status === 'FINISHED'
                     ? 'badge-gray'
                     : status === 'PENDING'
                         ? 'badge-red'
@@ -290,8 +290,8 @@
                     <p class="card-text"><span><i class="bi bi-person"></i>&nbsp&nbsp${client}</span></p>
                   </div>
                   <div>
-                  <div class="circle-progress" data-progress="${project.progress / 100}">
-                    <div class="progress-number">${project.progress}%</div>
+                  <div class="circle-progress" data-progress="${progress/100}">
+                    <div class="progress-number">${progress}%</div>
                   </div>
                   </div>
                 </div>
@@ -309,8 +309,7 @@
             function renderProjectList(projectList) {
                 const userRole = $('#userRole').val();
                 projectList.sort((a, b) => {
-                    // Compare by status first (ONGOING, PENDING, COMPLETED)
-                    const statusOrder = {ONGOING: 1, PENDING: 2, COMPLETED: 3};
+                    const statusOrder = {ONGOING: 1, PENDING: 2, FINISHED: 3};
                     const statusComparison = statusOrder[a.status] - statusOrder[b.status];
 
                     // If status is different, return the status comparison

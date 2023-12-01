@@ -29,10 +29,16 @@ public class UserAPI {
     private final DepartmentService departmentService;
     private final SessionRegistry sessionRegistry;
 
-    @PreAuthorize("hasAnyAuthority('PMO', 'PM','DH')")
+    @PreAuthorize("hasAnyAuthority('PMO','PM','DH')")
     @GetMapping("/get-users")
     public ResponseEntity<List<UserViewObject>> getUserList() {
         List<UserViewObject> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/get-active-user")
+    public ResponseEntity<List<UserViewObject>> getActiveUsers() {
+        List<UserViewObject> users = userService.getAllUsers().stream().filter(UserViewObject::isActive).toList();
         return ResponseEntity.ok(users);
     }
 
@@ -61,7 +67,6 @@ public class UserAPI {
     }
     private void logoutUser(String username) {
         List<Object> loggedUsers = sessionRegistry.getAllPrincipals();
-        log.info("\n\n\n\n\n\n ============================\n\nall principals : {}\n\n==========================\n\n\n\n\n\n", loggedUsers);
         for (Object principal : loggedUsers) {
             if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;

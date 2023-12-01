@@ -152,7 +152,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','DH','MEMBER')">
+                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','MEMBER')">
                     <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
                 </a>
                 <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">
@@ -244,10 +244,35 @@
             url: '/get-all-issue',
             type: 'GET',
             success: function (data) {
-                // Sort data by the latest created date
+                // Define a priority order for statuses
+                // Sort data by solved status (true comes before false) and then by the latest created date
                 data.sort(function (a, b) {
-                    return new Date(b.createdAt) - new Date(a.createdAt);
+                    const solvedA = a.solved;
+                    const solvedB = b.solved;
+
+                    // Compare solved using priority (true comes before false)
+                    const solvedComparison = solvedB - solvedA;
+
+                    // If solved status is different, return the solved comparison
+                    if (solvedComparison !== 0) {
+                        return solvedComparison;
+                    }
+
+                    // If solved status is the same, compare by created date
+                    const dateComparison = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+
+                    // If date is different, return the date comparison
+                    if (dateComparison !== 0) {
+                        return dateComparison;
+                    }
+
+                    // If solved status and date are the same, maintain the existing order
+                    return 0;
                 });
+
+                console.log(data);
+
+
                 // Store all issues for searching
                 allIssues = data;
                 initializePagination(data);
@@ -257,6 +282,7 @@
                 console.log(data);
             }
         });
+
 
         // Add an event listener for the select box
         $('#filterSelect').on('change', function () {

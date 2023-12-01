@@ -32,7 +32,6 @@ import java.util.Map;
 public class IssueAPI {
     private final IssueService issueService;
     private final ProjectService projectService;
-    private final ReportService reportService;
 
     @GetMapping("/get-category")
     public ResponseEntity<List<IssueCategory>> getIssueCategory() {
@@ -117,59 +116,4 @@ public class IssueAPI {
         return ResponseEntity.ok(allIssuesViewObject);
     }
 
-    @GetMapping("/export-issue-pdf")
-    public ResponseEntity<byte[]> export(@RequestParam Long issueId) {
-        try {
-            IssueReportDto issueReportDto = new IssueReportDto(issueService.getIssueById(issueId));
-            Map<String, Object> issueParam = new HashMap<>();
-            issueParam.put("issue", issueReportDto);
-
-            byte[] pdfBytes = reportService.generatePdf(issueParam, "IssueReport");
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("attachment", "issue-report.pdf");
-
-            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/convert-to-pdf")
-    public ResponseEntity<byte[]> convertToPdf(@RequestBody HtmlRequest htmlRequest) {
-        try {
-            // Get the HTML content from the request
-            String html = htmlRequest.getHtml();
-
-            // Call your PDF conversion service (similar to the previous example)
-            byte[] pdfBytes = reportService.convertHtmlToPdf(html);// Call your PDF conversion logic here
-
-            // Respond with the PDF
-            return ResponseEntity
-                    .ok()
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .header("Content-Disposition", "attachment; filename=converted_page.pdf")
-                    .body(pdfBytes);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity
-                    .status(500)
-                    .body(null);
-        }
-    }
-
-    // Define a simple DTO for receiving HTML content in the request
-    public static class HtmlRequest {
-        private String html;
-
-        public String getHtml() {
-            return html;
-        }
-
-        public void setHtml(String html) {
-            this.html = html;
-        }
-    }
 }

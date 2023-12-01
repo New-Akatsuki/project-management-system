@@ -122,8 +122,7 @@
     <div class="card" style="border-radius: 18px; margin: 20px 28px">
         <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
             <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Create Issue</h2>
-            <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
-                  id="create-issue">
+            <form>
                 <div class="container d-flex flex-column gap-2">
 
                     <div class="flex-1 mb-2">
@@ -213,7 +212,7 @@
                         <span class="text-danger error-message" id="rootCauseError">Root cause must not be empty!</span>
                     </div>
                     <div class="align-self-end">
-                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="location.href='/issues';">
+                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="goBack()">
                             <i class="bi bi-backspace"></i>&nbsp;Back
                         </a>
                         <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
@@ -327,8 +326,8 @@
                         <h2 style="font-size: 2rem;">Success!</h2>
                         <p>Issue creation was successful.</p>
                     </div>
-                    <a class="btn btn-sm btn-gray rounded align-items-center" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    <a class="btn btn-sm btn-success rounded align-items-center" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        Ok
                     </a>
                 </div>
             </div>
@@ -346,17 +345,6 @@
 <script th:src="@{/js/validation.js}"></script>
 <script>
     // Function to toggle the toolbar
-    function clean() {
-        $('#title').val("");
-        quillContent.root.innerHTML = "";
-        quillDirCause.root.innerHTML = "";
-        quillRootCause.root.innerHTML = "";
-        $('#issue_category').val("default").trigger('change');
-        $('#issue_place').val("default").trigger('change');
-        $('#issue-pic').val("default").trigger('change');
-        $('#res-party').val("default").trigger('change');
-    }
-
     let quillContent = new Quill("#content", aa);
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
@@ -370,6 +358,17 @@
         toggleToolbar(1, 'dir-cause');
         toggleToolbar(2, 'root-cause');
     })
+
+    function clean() {
+        $('#title').val("");
+        quillContent.root.innerHTML = "";
+        quillDirCause.root.innerHTML = "";
+        quillRootCause.root.innerHTML = "";
+        $('#issue_category').val("default").trigger('change');
+        $('#issue_place').val("default").trigger('change');
+        $('#issue-pic').val("default").trigger('change');
+        $('#res-party').val("default").trigger('change');
+    }
 </script>
 
 <script>
@@ -400,9 +399,22 @@
         });
     }
 
-    function updateSelect(selector, option) {
+    function updateSelect(selector, option,modalId="") {
         let select = $(selector);
         select.append('<option value="' + option.id + '">' + option.name + '</option>');
+        if(modalId==="categoryModal"){
+            $("#issue_category").val(option.id)
+            console.log("ca")
+        }if(modalId==="placeModal")
+        {
+            $("#issue_place").val(option.id)
+            console.log("pla")
+
+        }else{
+            $("#res-party").val(option.id)
+            console.log("res")
+
+        }
     }
 
     function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId, modalSameError) {
@@ -432,9 +444,12 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (responseData) {
-                    $('#' + modalId).modal('hide');
-                    updateSelect(selectBoxClass, responseData);
+                    updateSelect(selectBoxClass, responseData,modalId);
+                    console.log('respData',responseData)
+
                     console.log(responseData);
+
+                    $('#' + modalId).modal('hide');
                 },
                 error: function (data) {
                     console.log(data.responseText); // Log only the error message
@@ -700,6 +715,11 @@
         modalBox.on('hidden.bs.modal', function () {
             window.location.href = "/issues";
         });
+    }
+</script>
+<script>
+    function goBack() {
+        window.history.back();
     }
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>

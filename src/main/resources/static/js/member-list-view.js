@@ -1,6 +1,5 @@
 let userList = [];
 $(document).ready(function () {
-    $('.text-danger').hide();
     $.ajax({
         url: '/get-users',
         method: 'GET',
@@ -16,6 +15,7 @@ $(document).ready(function () {
 });
 
 function renderMemberListTable(items) {
+    console.log("userList : ", userList);
     // Check if user list table is already initialized; if so, refresh the table with new data
     if ($.fn.DataTable.isDataTable('#user-list-table')) {
         $('#user-list-table').DataTable().destroy();
@@ -32,18 +32,21 @@ function renderMemberListTable(items) {
             {
                 data: 'name',
                 render: function (data, type, row) {
-                    return  data.length > 15 ? data.substring(0, 15) + '...' : data;
+                    return data.length > 15 ? data.substring(0, 15) + '...' : data;
                 }
             },
-            {data: 'email',
+            {
+                data: 'email',
                 render: function (data, type, row) {
-                    return  data.length > 15 ? data.substring(0, 15) + '...' : data;
+                    return data.length > 15 ? data.substring(0, 15) + '...' : data;
                 }
             },
-            {data: 'department',
+            {
+                data: 'department',
                 render: function (data, type, row) {
-                    return  data.length > 7 ? data.substring(0, 7) + '...' : data;
-                }},
+                    return data.length > 7 ? data.substring(0, 7) + '...' : data;
+                }
+            },
             {data: 'role'},
             {
                 data: 'active',
@@ -88,48 +91,20 @@ function addNewMember() {
             userList.push(data)
             console.log(userList);
             renderMemberListTable(userList);
-            resetInput();
         },
         error: function (error) {
             console.log('Error adding new member:', error);
+            $('#addMemberError').text('This user already exists!');
         }
     });
 }
 
-function resetInput() {
-    $("#name").removeClass("is-valid is-invalid");
-    $("#email").removeClass("is-valid is-invalid");
-    $("#newUserRole").removeClass("is-valid is-invalid");
-    $("#department").removeClass("is-valid is-invalid");
-    //remove validation error of form
-    $("#name_error").removeClass("is-invalid");
-    $("#email_error").removeClass("is-invalid");
-    $("#newUserRole_error").removeClass("is-invalid");
-    $("#department_error").removeClass("is-invalid");
-    $("#addNewMemberForm").removeClass("was-validated").trigger('reset');
-}
-
-function resetEditInput() {
-    $("#editName, #editEmail, #editUserRole, #editDepartment").val('').removeClass("is-valid is-invalid");
-    $("#editName, #editEmail, #editUserRole, #editDepartment").each(function() {
-        this.setCustomValidity("");
-    });
-
-    //remove validation error of form
-    $("#editName_error").removeClass("is-invalid");
-    $("#editEmail_error").removeClass("is-invalid");
-    $("#editUserRole_error").removeClass("is-invalid");
-    $("#editDepartment_error").removeClass("is-invalid");
-    $("#addEditMemberForm").removeClass("was-validated");
-}
-
-<!--Build Toggle Member Btn-->
 function toggleMemberStatus(id, newStatus) {
     //Find the member in memberList
     const member = userList.find(user => user.id === id);
-    if(!member){
-    console.log('Member not found for ID:', id);
-    return;
+    if (!member) {
+        console.log('Member not found for ID:', id);
+        return;
     }
 
     // Show Bootstrap modal for confirmation
@@ -147,7 +122,7 @@ function toggleMemberStatus(id, newStatus) {
         // Close the modal
         $('#confirmationMemberModal').modal('hide');
         //Determine the new active status (toggle it)
-         const newActiveStatus = !member.active;
+        const newActiveStatus = !member.active;
 
         // Make the AJAX request
         $.ajax({
@@ -206,32 +181,14 @@ function editUserRoleAndDepartment() {
         error: function (xhr, error) {
             console.log(xhr.responseText)
             console.log('Error fetching data:', error);
+            $('#editMemberError').text('This user already exists!');
         }
 
     });
 }
 
-
-//For display edit user modal
-function displayEditUserModal(userId) {
-    resetEditInput();
-    const user = userList.find(user => user.id === userId);
-    console.log("Edit Modal User  ", user)
-    // Populate modal fields with user data
-    $('#editId').val(user.id);
-    $('#editName').val(user.name);
-    $('#editEmail').val(user.email);
-    $('#editDepartment').val(user.departmentId);
-    $('#editUserRole').val(user.role);
-    $('#userEditModal').modal('show');
-}
-
-
 // For get department
 $(document).ready(function () {
-    const currentRole = $('#currentRole').val();
-    const currentDepartment = $('#currentDepartment').val();
-
     $.ajax({
         url: '/get-department',
         method: 'GET',
@@ -240,13 +197,10 @@ $(document).ready(function () {
             // Clear existing options
             $('#department').empty();
             $('#editDepartment').empty();
-
-                $('#department').append($('<option>', {
-                    value: '',
-                    text: "Select department",
-                }));
-
-
+            $('#department').append($('<option>', {
+                value: '',
+                text: "Select department",
+            }));
             // Append new options
             $.each(data, function (index, value) {
                 $('#department').append($('<option>', {
@@ -261,10 +215,6 @@ $(document).ready(function () {
                     text: value.name
                 }));
             });
-
-
-            // Append new options
-
         },
         error: function (xhr, status, error) {
             // Handle errors
@@ -272,135 +222,128 @@ $(document).ready(function () {
         }
     });
 })
-// For Add Member
-let nameInput = $("#name");
-let emailInput = $("#email");
 
-let nameError = $("#nameError");
-let emailError = $("#emailError");
-let departmentInput = $('#department')
-let departmentError = $('#departmentError')
-let roleInput = $('#newUserRole')
-let roleError = $('#roleError')
 
-function validateAndAddMember() {
-    //Validation
-    let isValid = true;
-    if (nameInput.val().trim() === '') {
-        nameError.show()
-        isValid = false;
-    }
-    if (emailInput.val().trim() === '') {
-        emailError.show()
-        isValid = false;
-    }
-    if (departmentInput.val() == null) {
-        departmentError.show()
-        isValid = false;
-    }
-    if (roleInput.val() == null) {
-        roleError.show()
-        isValid = false;
-    }
-    if (isValid) {
-        addNewMember();
-    }
-
-}
-
-$('#addMemberModalButton').click(function () {
-    $('.text-danger').hide();
-    $("#name").val('')
-    $("#email").val('')
-    $("#newUserRole").val('')
-    $("#department").val('')
+$('#addUserModalBtn').click(function () {
+    $('#addMemberError').text('');
+    $("#name").val('').removeClass('is-invalid').removeClass('is-valid');
+    $("#email").val('').removeClass('is-invalid').removeClass('is-valid');
+    $("#newUserRole").val('').removeClass('is-invalid').removeClass('is-valid');
+    $("#department").val('').removeClass('is-invalid').removeClass('is-valid');
     $('#addMemberModal').modal('show');
 })
 
-nameInput.on('input', () => {
-    toggleError(nameError, nameInput)
+function emailValidation(emailId, emailErrorId) {
+    emailId.on('input', function () {
+        let email = emailId.val();
+        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailId.val() === '') {
+            emailId.addClass('is-invalid');
+            emailErrorId.text('Email is required');
+        } else if (!email.match(emailPattern)) {
+            emailId.addClass('is-invalid');
+            emailErrorId.text('Email must be in email pattern. eg., abc@gmail.com');
+        } else {
+            emailId.removeClass('is-invalid').addClass('is-valid');
+            emailErrorId.text(''); // Clear the error message if the input is valid
+        }
+    });
+}
+
+$('#addNewMemberForm').submit(function (e) {
+    e.preventDefault();
+    let name = $('#name').val();
+    let email = $('#email').val();
+    let department = $('#department').val();
+    let role = $('#newUserRole').val();
+
+    if (name === '' || email === '' || department === '' || role === '') {
+        if (name === '') {
+            $('#name').addClass('is-invalid');
+            $('#nameError').text('Name is required');
+        }
+        if (email === '') {
+            $('#email').addClass('is-invalid');
+            $('#emailError').text('Email is required');
+        }
+        if (department === '') {
+            $('#department').addClass('is-invalid');
+            $('#departmentError').text('Department is required');
+        }
+        if (role === '') {
+            $('#newUserRole').addClass('is-invalid');
+            $('#roleError').text('Role is required');
+        }
+    } else {
+        addNewMember();
+    }
 })
 
-emailInput.on('input', () => {
-    toggleError(emailError, emailInput)
-})
+function errorHideOnInteraction(inputId, errorId, sameErrorId) {
+    inputId.on('input', function () {
+        inputId.removeClass('is-invalid').removeClass('is-valid');
+        errorId.text('');
+        sameErrorId.text('');
+    });
+    inputId.on('change', function () {
+        inputId.removeClass('is-invalid').removeClass('is-valid');
+        errorId.text('');
+    });
+}
 
-departmentInput.on('change', function () {
-    departmentError.hide();
-})
-roleInput.on('change', function () {
-    roleError.hide();
-})
+emailValidation($('#email'), $('#emailError'));
+emailValidation($('#editEmail'), $('#editEmailError'));
+errorHideOnInteraction($('#name'), $('#nameError'), $('#addMemberError'));
+errorHideOnInteraction($('#email'), $('#emailError'), $('#addMemberError'));
+errorHideOnInteraction($('#newUserRole'), $('#roleError'), $('#addMemberError'));
+errorHideOnInteraction($('#department'), $('#departmentError'), $('#addMemberError'));
+errorHideOnInteraction($('#editName'), $('#editNameError'), $('#editMemberError'));
+errorHideOnInteraction($('#editEmail'), $('#editEmailError'), $('#editMemberError'));
+errorHideOnInteraction($('#editUserRole'), $('#editRoleError'), $('#editMemberError'));
+errorHideOnInteraction($('#editDepartment'), $('#editDepartmentError'), $('#editMemberError'));
 
+//For display edit user modal
+function displayEditUserModal(userId) {
+    const user = userList.find(user => user.id === userId);
+    console.log("Edit Modal User  ", user)
+    // Populate modal fields with user data
+    $('#editMemberError').text('');
+    $('#editId').val(user.id);
+    $('#editName').val(user.name).removeClass('is-invalid').removeClass('is-valid');
+    $('#editEmail').val(user.email).removeClass('is-invalid').removeClass('is-valid');
+    $('#editDepartment').val(user.departmentId).removeClass('is-invalid').removeClass('is-valid');
+    $('#editUserRole').val(user.role).removeClass('is-invalid').removeClass('is-valid');
+    $('#userEditModal').modal('show');
+}
 
-//For Edit Member
+$('#editMemberForm').submit(function (e) {
+    e.preventDefault();
+    let name = $('#editName').val();
+    let email = $('#editEmail').val();
+    let department = $('#editDepartment').val();
+    let role = $('#editUserRole').val();
 
-let editNameInput = $("#editName");
-let editEmailInput = $("#editEmail");
-let editDepartmentInput = $('#editDepartment');
-let editRoleInput = $('#editUserRole');
-let editNameError = $("#editNameError");
-let editEmailError = $("#editEmailError");
-let editDepartmentError = $('#editDepartmentError');
-let editRoleError = $('#editRoleError');
-
-function validateAndEditMember() {
-    let isValid = true;
-    if (editNameInput.val().trim() === '') {
-        editNameError.show();
-        isValid = false;
-    }
-    if (editEmailInput.val().trim() === '') {
-        editEmailError.show();
-        isValid = false;
-    }
-    if (editDepartmentInput.val() == null) {
-        editDepartmentError.show();
-        isValid = false;
-    }
-    if (editRoleInput.val() == null) {
-        editRoleError.show();
-        isValid = false;
-    }
-    if (isValid) {
+    if (name === '' || email === '' || department === '' || role === '') {
+        if (name === '') {
+            $('#editName').addClass('is-invalid');
+            $('#editNameError').text('Name is required');
+        }
+        if (email === '') {
+            $('#editEmail').addClass('is-invalid');
+            $('#editEmailError').text('Email is required');
+        }
+        if (department === '') {
+            $('#editDepartment').addClass('is-invalid');
+            $('#editDepartmentError').text('Department is required');
+        }
+        if (role === '') {
+            $('#editUserRole').addClass('is-invalid');
+            $('#editRoleError').text('Role is required');
+        }
+    } else {
         editUserRoleAndDepartment();
     }
-}
-
-$('#editMemberModalButton').click(function () {
-    $('.edit-text-danger').hide();
-    $("#editName").val('');
-    $("#editEmail").val('');
-    $("#editUserRole").val('');
-    $("#editDepartment").val('');
-    $('#editMemberModal').modal('show');
-})
-
-editNameInput.on('input', () => {
-    toggleError(editNameError, editNameInput);
-})
-
-editEmailInput.on('input', () => {
-    toggleError(editEmailError, editEmailInput);
-})
-
-editDepartmentInput.on('change', function () {
-    editDepartmentError.hide();
-})
-
-editRoleInput.on('change', function () {
-    editRoleError.hide();
-})
-
-function toggleError(error, input) {
-    if (error && input) {
-        error.toggleClass('d-none', input.val().trim() !== '');
-    }
-}
-
-
-
-
+});
 
 
 

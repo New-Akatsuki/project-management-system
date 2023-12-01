@@ -1,11 +1,17 @@
 package org.blank.projectmanagementsystem.domain.formInput;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.IssueCategory;
 import org.blank.projectmanagementsystem.domain.entity.IssuePlace;
 import org.blank.projectmanagementsystem.domain.entity.User;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class IssueFormInput {
     private Long id;
 

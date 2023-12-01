@@ -111,14 +111,12 @@
     <div class="card rounded-card" style="margin: 20px 28px;">
         <!--Outer card body -->
         <div class="card-body" style="padding: 15px 40px 0 40px; margin-top: 10px">
-
                 <div class="d-flex justify-content-between align-items-center" style="padding-bottom: 25px">
                     <h3 style="color: black;"><span id="title"></span></h3>
-
                     <div class="d-flex gap-2">
-                        <a type="button" class="btn btn-danger" id="exportPdfBtnId">
-                            <i class="ri-file-pdf-2-fill"></i>
-                        </a>
+<!--                        <a type="button" class="btn btn-danger" id="exportPdfBtnId">-->
+<!--                            <i class="ri-file-pdf-2-fill"></i>-->
+<!--                        </a>-->
                         <a class="icon-add-btn d-none" id="linkIssueEditPage" onclick="linkIssueEditPage()">
                             <i class='bx bx-edit'></i>
                         </a>
@@ -238,7 +236,7 @@
                     </button>
                     <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px"
                             id="submitButton">
-                        <i class="bi bi-save"></i>&nbsp;Update
+                        <i class="bi bi-save"></i>&nbsp;Solve
                     </button>
                 </div>
 
@@ -520,36 +518,36 @@
     });
 </script>
 
-<script>
-    document.getElementById('exportPdfBtnId').addEventListener('click', function() {
-        // Get the HTML content of the current page
-        let htmlContent = document.documentElement.outerHTML;
+<!--<script>-->
+<!--    document.getElementById('exportPdfBtnId').addEventListener('click', function() {-->
+<!--        // Get the HTML content of the current page-->
+<!--        let htmlContent = document.documentElement.outerHTML;-->
 
-        // Send the HTML content to the Spring Boot backend
-        fetch('/convert-to-pdf', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ html: htmlContent }),
-        })
-            .then(response => response.blob())
-            .then(blob => {
-                // Create a download link for the PDF
-                let a = document.createElement('a');
-                a.href = window.URL.createObjectURL(blob);
-                a.download = 'converted_page.pdf';
+<!--        // Send the HTML content to the Spring Boot backend-->
+<!--        fetch('/convert-to-pdf', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json',-->
+<!--            },-->
+<!--            body: JSON.stringify({ html: htmlContent }),-->
+<!--        })-->
+<!--            .then(response => response.blob())-->
+<!--            .then(blob => {-->
+<!--                // Create a download link for the PDF-->
+<!--                let a = document.createElement('a');-->
+<!--                a.href = window.URL.createObjectURL(blob);-->
+<!--                a.download = 'converted_page.pdf';-->
 
-                // Append the link to the document and trigger a click
-                document.body.appendChild(a);
-                a.click();
+<!--                // Append the link to the document and trigger a click-->
+<!--                document.body.appendChild(a);-->
+<!--                a.click();-->
 
-                // Remove the link from the document
-                document.body.removeChild(a);
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
+<!--                // Remove the link from the document-->
+<!--                document.body.removeChild(a);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error:', error));-->
+<!--    });-->
+<!--</script>-->
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>

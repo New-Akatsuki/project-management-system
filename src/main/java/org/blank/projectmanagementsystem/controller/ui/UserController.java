@@ -38,6 +38,10 @@ public class UserController {
     @GetMapping("/user/profile")
     public String userProfileView(Model model) {
         var user = userService.getCurrentUser();
+
+        if(user.getUsername().contains("@")){
+            user.setUsername("");
+        }
         byte[] photoData = user.getPhotoData();
 
         // Always add the image attributes to the model, even if photoData is null
@@ -62,7 +66,7 @@ public class UserController {
 
         var user = userService.getCurrentUser();
         user.setName(name);
-        user.setUsername(username);
+        user.setUsername(username.toLowerCase().replace(" ",""));
         user.setEmail(email);
         user.setPhone(phone);
         user.setUserRole(userRole);

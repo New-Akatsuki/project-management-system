@@ -60,12 +60,7 @@
     </style>
 
     <style>
-        .modal {
-            --bs-modal-width: 450px;
-            align-items: center;
-            justify-content: center;
-            margin-top: 140px;
-        }
+
 
         .btn-icon {
             height: 40px;
@@ -115,15 +110,14 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
             <li class="breadcrumb-item"><a th:href="@{/issue1}">Issue</a></li>
-            <li class="breadcrumb-item active">Create Issue</li>
+            <li class="breadcrumb-item active">Edit Issue</li>
         </ol>
     </nav>
     <!-- End Page Title -->
     <div class="card" style="border-radius: 18px; margin: 20px 28px">
         <div class="card-body" style="padding: 23px 45px 28px 45px ; border-radius:15px">
             <h2 style="padding: 10px" class="mb-3"><i class="bi bi-pencil-square"></i> Edit Issue</h2>
-            <form th:action="@{/member/create-issue}" method="post" th:object="${issueCreateFormInput}"
-                  id="create-issue">
+            <form>
                 <div class="container d-flex flex-column gap-2">
 
                     <div class="flex-1 mb-2">
@@ -216,12 +210,9 @@
                         <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px;padding: 10px 15px" onclick="goBack()">
                             <i class="bi bi-backspace"></i>&nbsp;Back
                         </a>
-                        <a class="btn btn-sm btn-danger rounded" style="margin-right: 5px;padding: 10px 15px" onclick="clean()">
-                            <i class="bi bi-arrow-clockwise"></i>&nbsp;Reset
-                        </a>
-                        <button type="submit" class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
+                        <a class="btn btn-sm btn-primary rounded" style="padding: 10px 15px" id="submitButton">
                             <i class="bi bi-save"></i>&nbsp;Update
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!--  Hidden Items    -->
@@ -236,7 +227,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
             <div class="modal-content">
                 <div class="d-flex">
                     <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Category</h1>
@@ -262,7 +253,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
             <div class="modal-content">
                 <div class="d-flex">
                     <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Place</h1>
@@ -289,7 +280,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="resPartyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
             <div class="modal-content">
                 <div class="d-flex">
                     <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Responsible Party</h1>
@@ -317,7 +308,7 @@
     </div>
 
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog d-flex align-items-center">
+        <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
             <div class="modal-content">
                 <!-- Removed the modal-header and moved the close button to the modal-body -->
                 <div class="modal-body text-center">
@@ -325,10 +316,10 @@
                     <div>
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Issue update was successful.</p>
+                        <p>Issue edition was successful.</p>
                     </div>
-                    <a class="btn btn-sm btn-gray rounded align-items-center" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle"></i>&nbsp;Close
+                    <a class="btn btn-sm btn-success rounded align-items-center" style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
+                        Ok
                     </a>
                 </div>
             </div>
@@ -343,43 +334,10 @@
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script th:src="@{/js/text-editor.js}"></script>
-
+<script th:src="@{/js/validation.js}"></script>
 <script>
-
-    function toggleLoadingSpinner(show) {
-        const dimOverlay = $('#dim-overlay');
-        const spinner = $('#loadingSpinner');
-
-        if (show) {
-            dimOverlay.show();
-            spinner.show();
-        } else {
-            dimOverlay.hide();
-            spinner.hide();
-        }
-    }
-    function displaySuccessModal() {
-        let modalBox = $('#successModal')
-        // Show the modal
-        modalBox.modal('show');
-
-        // Handle close event of the modal
-        modalBox.on('hidden.bs.modal', function () {
-            window.location.href = "/issues";
-        });
-    }
+    let issueId = window.location.pathname.split('/').reverse()[1];
     // Function to toggle the toolbar
-    function clean() {
-        $('#title').val("");
-        quillContent.root.innerHTML = "";
-        quillDirCause.root.innerHTML = "";
-        quillRootCause.root.innerHTML = "";
-        $('#issue_category').val("default").trigger('change');
-        $('#issue_place').val("default").trigger('change');
-        $('#issue-pic').val("default").trigger('change');
-        $('#res-party').val("default").trigger('change');
-    }
-
     let quillContent = new Quill("#content", aa);
     let quillDirCause = new Quill("#dir-cause", aa);
     let quillRootCause = new Quill("#root-cause", aa);
@@ -398,14 +356,24 @@
 <script>
     $(document).ready(function () {
         $('.js-example-basic-single').select2();
-        // Use the css method to set the transform property
-        $("#notiArea").css({
-            "transform": "translate(-32px, 40.8px) !important",
-        });
+
     });
 </script>
 
 <script>
+    function toggleLoadingSpinner(show) {
+        const dimOverlay = $('#dim-overlay');
+        const spinner = $('#loadingSpinner');
+
+        if (show) {
+            dimOverlay.show();
+            spinner.show();
+        } else {
+            dimOverlay.hide();
+            spinner.hide();
+        }
+    }
+
     function populateSelect(selector, options) {
         let select = $(selector);
         $.each(options, function (index, value) {
@@ -413,20 +381,35 @@
         });
     }
 
-    function updateSelect(selector, option) {
+    function updateSelect(selector, option,modalId="") {
         let select = $(selector);
         select.append('<option value="' + option.id + '">' + option.name + '</option>');
+        if(modalId==="categoryModal"){
+            $("#issue_category").val(option.id)
+            console.log("ca")
+        }if(modalId==="placeModal")
+        {
+            $("#issue_place").val(option.id)
+            console.log("pla")
+
+        }else{
+            $("#res-party").val(option.id)
+            console.log("res")
+
+        }
     }
 
-    function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId) {
+    function setupModalHandling(input, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId, modalSameError) {
         function toggleError() {
             error.toggleClass('d-none', input.val().trim() !== '');
+            modalSameError.addClass('d-none');
         }
 
         function resetModal() {
             let modalID = $('#' + modalId);
             input.val('');
             error.addClass('d-none');
+            modalSameError.addClass('d-none');
             modalID.modal('show');
             // Unbind previous event handlers
             modalID.off('shown.bs.modal');
@@ -443,13 +426,16 @@
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (responseData) {
-                    $('#' + modalId).modal('hide');
-                    updateSelect(selectBoxClass, responseData);
+                    updateSelect(selectBoxClass, responseData,modalId);
+                    console.log('respData',responseData)
+
                     console.log(responseData);
+
+                    $('#' + modalId).modal('hide');
                 },
                 error: function (data) {
                     console.log(data.responseText); // Log only the error message
-                    alert("Creation failed");
+                    modalSameError.removeClass('d-none');
                 }
             });
         }
@@ -482,8 +468,8 @@
         });
     }
 
-    function initializeModal(button, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId) {
-        setupModalHandling(button, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId);
+    function initializeModal(button, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId, modalSameError) {
+        setupModalHandling(button, error, modalButton, modalSaveButton, getURL, postURL, selectBoxClass, modalId, modalSameError);
     }
 
     // Usage for addCategory button
@@ -495,7 +481,8 @@
         '/get-category',
         '/create-category',
         '.js-example-basic-single.select-box',
-        'categoryModal'
+        'categoryModal',
+        $('#addCategorySameError')
     );
 
     // Usage for addPlace button
@@ -507,7 +494,8 @@
         '/get-place',
         '/create-place',
         '.js-example-basic-single.select-box1',
-        'placeModal'
+        'placeModal',
+        $('#addPlaceSameError')
     );
 
     // Usage for addResParty button
@@ -519,9 +507,20 @@
         '/get-resParty',
         '/create-resParty',
         '.js-example-basic-single.select-box3',
-        'resPartyModal'
+        'resPartyModal',
+        $('#addResPartySameError')
     );
-
+    function formValidation(formId){
+        const form = document.getElementById(formId)
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log("Form submitted");
+        });
+    }
+    formValidation('addCategoryForm');
+    formValidation('addPlaceForm');
+    formValidation('addResPartyForm');
 </script>
 <script>
     $(document).ready(function () {
@@ -551,11 +550,12 @@
 <script>
     // $('.text-danger').hide();
 
-    $('#create-issue').submit(function (e) {
+    $('#submitButton').click(function (e) {
         e.preventDefault();
 
         // Reset errors
         // $('.text-danger').hide();
+
         let issueTitle = $('#title').val();
         let issueCategory = parseInt($('#issue_category').val());
         let issuePlace = parseInt($('#issue_place').val());
@@ -656,6 +656,7 @@
             error.hide();
         });
     }
+
     // Event listeners for input fields
     hideErrorOnInteraction($('#title'), $('#titleError'));
     hideErrorOnInteraction($('#issue_category'), $('#categoryError'));
@@ -686,9 +687,21 @@
         hideAllErrorMessages();
     });
 </script>
+<script>
+    function displaySuccessModal() {
+        let modalBox = $('#successModal')
+        // Show the modal
+        modalBox.modal('show');
+
+        // Handle close event of the modal
+        modalBox.on('hidden.bs.modal', function () {
+            window.location.href = "/issues";
+        });
+    }
+</script>
 
 <script>
-    var issueId = window.location.pathname.split('/').reverse()[1];
+
     $(document).ready(function () {
         $.ajax({
             url: "/get-issue-details/" + issueId,

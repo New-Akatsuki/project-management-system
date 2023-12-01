@@ -526,7 +526,7 @@ input[type="checkbox"] {
 
 .move-top{
     position: absolute;
-    top: 85px;
+    top: 78px;
     left: 270px;
     z-index: 1;
     animation: floatOutSubtask;
