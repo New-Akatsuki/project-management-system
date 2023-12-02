@@ -32,6 +32,7 @@ $(document).ready(function () {
         }
 
         return $('#client').DataTable({
+            lengthMenu: [5, 10],
             data: items,
             columns: [
                 {
@@ -76,6 +77,7 @@ $(document).ready(function () {
         }
 
         return $('#deliverable').DataTable({
+            lengthMenu: [5, 10],
             data: items,
             columns: [
                 {
@@ -120,6 +122,7 @@ $(document).ready(function () {
         }
 
         return $('#architecture').DataTable({
+            lengthMenu: [5, 10],
             data: items,
             columns: [
                 {
@@ -165,6 +168,7 @@ $(document).ready(function () {
         }
 
         return $('#systemOutline').DataTable({
+            lengthMenu: [5, 10],
             data: items,
             columns: [
                 {
