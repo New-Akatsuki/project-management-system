@@ -176,6 +176,15 @@ $('#so').select2({
 });
 
 $('.text-danger').hide();
+$('#duration').on('input', function () {
+    let duration = parseInt($('#duration').val());
+    if(duration%6!==0) {
+        $('#durationError').text("Duration should be a multiple of 6");
+    }else{
+        $('#durationError').text("");
+    }
+});
+
 const projectId = $('#projectId').val();
 $('#create-project').submit(function (e) {
     console.log("Submit button clicked")
@@ -240,7 +249,9 @@ $('#create-project').submit(function (e) {
     if (errors.length > 0) {
         return false;
     }
-
+    if ($('#durationError').text() !== "") {
+        return false;
+    }
     // If no errors, proceed with the AJAX request
     const projObj = {
         id: projectId,

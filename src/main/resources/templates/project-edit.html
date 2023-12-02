@@ -199,6 +199,7 @@
                             <label for="duration" class="form-label text-black">Duration (Month)</label>
                             <input class="form-control" type="number" id="duration"
                                    placeholder="Enter Duration" autocomplete="off" min="6" step="6"/>
+                            <span id="durationError" style="color: red"></span>
                         </div>
                         <div class="d-flex flex-column w-100 p-0">
                             <label for="end-date" class="form-label d-block text-black">End Date</label>
@@ -488,9 +489,9 @@
                     <div>
                         <i class="bi bi-check2-circle" style="font-size: 3rem; color: #28a745;"></i>
                         <h2 style="font-size: 2rem;">Success!</h2>
-                        <p>Project creation was successful.</p>
+                        <p>Project update was successful.</p>
                     </div>
-                    <a class="btn btn-sm btn-gray rounded align-items-center"
+                    <a class="btn btn-sm btn-success rounded align-items-center"
                        style="margin-right: 5px; padding: 10px 15px" data-bs-dismiss="modal">
                         Ok
                     </a>

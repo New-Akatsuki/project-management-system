@@ -7,46 +7,36 @@
     <link th:href="@{/images/DAT.png}" rel="icon">
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-    <!-- Bootstrap CSS for modal box -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet"
-    />
+            rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Favicons -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
     <link
             th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
             rel="stylesheet"
     />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
-            integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    />
-    <!--  jQuery cdn link -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Hope Ui Design System Css -->
     <link rel="stylesheet" href="/css/hope.css">
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
     <link rel="stylesheet" href="/css/libs.min.css">
-    <!--    icon-->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
-    <!--    selectbox-->
-    <link rel="stylesheet" href="/css/multiple-select.css">
-    <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .imgContainer {
             width: 125px;
@@ -98,22 +88,19 @@
             display: none;
         }
     </style>
-
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>Profile</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">Users</li>
-                <li class="breadcrumb-item active">Profile</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+    <div class="container-fluid  bg-white p-3 rounded-2 mb-3 shadow display-6 fs-3 fw-bold text-center">
+        <i class="bi bi-person"></i>&nbspUser Profile
+    </div>
     <section class="section profile">
         <div class="row">
             <div class="col-xl-4">
@@ -374,18 +361,16 @@
     <div id="toastPlace"></div>
     <div class="modal-overlay" id="modalOverlay"></div>
 </main><!-- End #main -->
+
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
-<!-- Template Main JS File -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="/js/main.js"></script>
 <script th:src="@{/js/form-wizard.js}"></script>
-
-<script th:src="@{/js/single-select.js}"></script>
-
 <script src="/js/ch-pwd.js"></script>
-
-
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 <script>
 
     function displayPhoto() {
@@ -447,9 +432,6 @@
         }
     }
 </script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="/js/notification.js"></script>
-<script src="/js/init-notification.js"></script>
 <script>
     function notify(notification) {
         showToast(notification);

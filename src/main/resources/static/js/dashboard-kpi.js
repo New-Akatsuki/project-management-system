@@ -11,7 +11,7 @@ function calculateAllKPIs(id) {
     let projectId = id;
     let reviewerType = $('#reviewerType').val();
     console.log('Reviewer Type:', reviewerType,projectId); // Log the reviewerType value
-
+if(projectId){
     if(myChart){
         myChart.destroy();
     }
@@ -32,7 +32,7 @@ function calculateAllKPIs(id) {
             console.error(xhr.responseText);
         }
     });
-
+}
 }
 
 function updateChart(results) {
@@ -46,7 +46,7 @@ function updateChart(results) {
     }
 
     myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
             datasets: [

@@ -1,4 +1,4 @@
-package org.blank.projectmanagementsystem.Service;
+package org.blank.projectmanagementsystem.service;
 import org.blank.projectmanagementsystem.domain.entity.Client;
 import org.blank.projectmanagementsystem.repository.ClientRepository;
 import org.blank.projectmanagementsystem.service.impl.ClientServiceImpl;

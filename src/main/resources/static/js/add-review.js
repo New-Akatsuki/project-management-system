@@ -1,23 +1,22 @@
-
-function prepareModal2(action){
+function prepareModal2(action) {
     $('#basicDesignReviewCount').val('');
     $('#detailedDesignReviewCount').val('');
     $('#codeLineReviewCount').val('');
     $('#unitTestReviewCount').val('');
     $('#integrationTestReviewCount').val('');
 
-    if(action === 'add'){
+    if (action === 'add') {
         $('#exampleModal').modal('show');
-    }else if(action === 'update'){
+    } else if (action === 'update') {
         fetchExistingReview();
         $('#exampleModal').modal('show');
     }
 }
 
 
-function fetchExistingReview(){
+function fetchExistingReview() {
     let projectId = $('#projectId').val();
-    let reviewerType = $('#reviewerType').val()||"INTERNAL";
+    let reviewerType = $('#reviewerType').val() || "INTERNAL";
 
     // Check if a project is selected
     if (!projectId || projectId === '#') {
@@ -67,16 +66,18 @@ function fetchExistingReview(){
         }
     });
 }
+
 // Function to add review data
 function addOrUpdateReview() {
-    let projectId =$('#projectId').val();
+    let projectId = $('#projectId').val();
 
-    if(!projectId || projectId ==='#'){
+    if (!projectId || projectId === '#') {
         alert('Please select a project');
         return;
     }
 
     let addReviews = [];
+
     function isDevelopmentPhaseAndReviewerTypeExists(developmentPhase, reviewerType) {
         return addReviews.some(function (review) {
             return review.developmentPhase === developmentPhase && review.reviewerType === reviewerType;
@@ -84,31 +85,77 @@ function addOrUpdateReview() {
     }
 
     let basicDesignReviewCount = $('#basicDesignReviewCount').val();
-    if (basicDesignReviewCount !==null && basicDesignReviewCount !=='' && !isDevelopmentPhaseAndReviewerTypeExists('BASIC_DESIGN', $('#reviewerType').val())) {
-        addReviews.push({id:null, projectId:projectId, reviewerType:$('#reviewerType').val(), developmentPhase:'BASIC_DESIGN', count:basicDesignReviewCount});
+    if (basicDesignReviewCount < 0) {
+        basicDesignReviewCount = 0;
+    }
+    if (basicDesignReviewCount !== null && basicDesignReviewCount !== '' && !isDevelopmentPhaseAndReviewerTypeExists('BASIC_DESIGN', $('#reviewerType').val())) {
+        addReviews.push({
+            id: null,
+            projectId: projectId,
+            reviewerType: $('#reviewerType').val(),
+            developmentPhase: 'BASIC_DESIGN',
+            count: basicDesignReviewCount
+        });
     }
 
     let detailedDesignReviewCount = $('#detailedDesignReviewCount').val();
-    if (detailedDesignReviewCount !==null && detailedDesignReviewCount !=='' && !isDevelopmentPhaseAndReviewerTypeExists('DETAILED_DESIGN', $('#reviewerType').val())) {
-        addReviews.push({id:null, projectId:projectId, reviewerType:$('#reviewerType').val(), developmentPhase:'DETAILED_DESIGN', count:detailedDesignReviewCount});
+    if (detailedDesignReviewCount < 0) {
+        detailedDesignReviewCount = 0;
+    }
+    if (detailedDesignReviewCount !== null && detailedDesignReviewCount !== '' && !isDevelopmentPhaseAndReviewerTypeExists('DETAILED_DESIGN', $('#reviewerType').val())) {
+        addReviews.push({
+            id: null,
+            projectId: projectId,
+            reviewerType: $('#reviewerType').val(),
+            developmentPhase: 'DETAILED_DESIGN',
+            count: detailedDesignReviewCount
+        });
     }
 
     let codeLineReviewCount = $('#codeLineReviewCount').val();
-    if (codeLineReviewCount !==null && codeLineReviewCount !=='' && !isDevelopmentPhaseAndReviewerTypeExists('CODING', $('#reviewerType').val())) {
-        addReviews.push({id:null, projectId:projectId, reviewerType:$('#reviewerType').val(), developmentPhase:'CODING', count:codeLineReviewCount});
+    if (codeLineReviewCount < 0) {
+        codeLineReviewCount = 0;
+    }
+    if (codeLineReviewCount !== null && codeLineReviewCount !== '' && !isDevelopmentPhaseAndReviewerTypeExists('CODING', $('#reviewerType').val())) {
+        addReviews.push({
+            id: null,
+            projectId: projectId,
+            reviewerType: $('#reviewerType').val(),
+            developmentPhase: 'CODING',
+            count: codeLineReviewCount
+        });
     }
 
     let unitTestReviewCount = $('#unitTestReviewCount').val();
-    if (unitTestReviewCount !==null && unitTestReviewCount !=='' && !isDevelopmentPhaseAndReviewerTypeExists('UNIT_TESTING', $('#reviewerType').val())) {
-        addReviews.push({id:null, projectId:projectId, reviewerType:$('#reviewerType').val(), developmentPhase:'UNIT_TESTING', count:unitTestReviewCount});
+    if (unitTestReviewCount < 0) {
+        unitTestReviewCount = 0;
+    }
+    if (unitTestReviewCount !== null && unitTestReviewCount !== '' && !isDevelopmentPhaseAndReviewerTypeExists('UNIT_TESTING', $('#reviewerType').val())) {
+        addReviews.push({
+            id: null,
+            projectId: projectId,
+            reviewerType: $('#reviewerType').val(),
+            developmentPhase: 'UNIT_TESTING',
+            count: unitTestReviewCount
+        });
     }
 
     let integrationTestReviewCount = $('#integrationTestReviewCount').val();
-    if (integrationTestReviewCount !==null && integrationTestReviewCount !=='' && !isDevelopmentPhaseAndReviewerTypeExists('INTEGRATION_TESTING', $('#reviewerType').val())) {
-        addReviews.push({id:null, projectId:projectId, reviewerType:$('#reviewerType').val(), developmentPhase:'INTEGRATION_TESTING', count:integrationTestReviewCount});
+    if (integrationTestReviewCount < 0) {
+        integrationTestReviewCount = 0;
+    }
+    if (integrationTestReviewCount !== null && integrationTestReviewCount !== '' && !isDevelopmentPhaseAndReviewerTypeExists('INTEGRATION_TESTING', $('#reviewerType').val())) {
+        addReviews.push({
+            id: null,
+            projectId: projectId,
+            reviewerType: $('#reviewerType').val(),
+            developmentPhase: 'INTEGRATION_TESTING',
+            count: integrationTestReviewCount
+        });
     }
 
-    if(addReviews.length ===0){
+
+    if (addReviews.length === 0) {
         alert('Please enter at least one review count');
         return;
     }
