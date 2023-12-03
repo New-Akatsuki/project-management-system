@@ -1,6 +1,8 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.*;
 
 import java.time.LocalDate;
@@ -35,4 +37,6 @@ public class ProjectEditViewObject{
         this.objective = project.getObjective();
         this.background = project.getBackground();
     }
+
+    public ProjectEditViewObject(){}
 }

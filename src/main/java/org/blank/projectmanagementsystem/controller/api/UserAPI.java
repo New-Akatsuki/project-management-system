@@ -42,7 +42,7 @@ public class UserAPI {
         return ResponseEntity.ok(users);
     }
 
-    private String generateDefaultPassword() {
+    String generateDefaultPassword() {
         return String.valueOf((int) (Math.random() * 1000000));
     }
 

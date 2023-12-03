@@ -1,6 +1,8 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.*;
 import org.springframework.cglib.core.Local;
 
@@ -29,4 +31,6 @@ public class ProjectListViewObject {
         status = project.getStatus().name();
         this.progress = progress;
     }
+
+    public ProjectListViewObject(){}
 }

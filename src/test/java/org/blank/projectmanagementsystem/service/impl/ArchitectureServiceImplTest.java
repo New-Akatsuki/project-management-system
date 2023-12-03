@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 public class ArchitectureServiceImplTest {
     @Mock
@@ -94,7 +95,48 @@ public class ArchitectureServiceImplTest {
 
         // Verify that the retrieved architecture has the same id as the mocked architecture
         assertEquals(id,retrievedArchitecture.getId());
-    }}
+    }
+    @Test
+    void testGetArchitecturesByStatusTrue() {
+        // Arrange
+        List<Architecture> mockArchitectures = new ArrayList<>();
+        // Add mocked architectures as needed
+
+        // Mock the behavior of architectureRepository
+        when(architectureRepository.findByStatusIsTrue()).thenReturn(mockArchitectures);
+
+        // Act
+        List<Architecture> resultArchitectures = architectureService.getArchitecturesByStatusTrue();
+
+        // Assert
+        assertEquals(mockArchitectures, resultArchitectures);
+
+        // Verify that the method was called
+        verify(architectureRepository, times(1)).findByStatusIsTrue();
+    }
+
+    @Test
+    void testUpdateArchitectureWhenIdNotExists() {
+        // Arrange
+        Long id = 1L;  // Replace with the desired id
+        Architecture architecture = new Architecture();  // Replace with a valid architecture
+
+        // Mock the behavior of architectureRepository
+        when(architectureRepository.existsById(id)).thenReturn(false);
+
+        // Act
+        Architecture resultArchitecture = architectureService.updateArchitecture(id, architecture);
+
+        // Assert
+        assertNull(resultArchitecture);
+
+        // Verify that the save method was not called since the ID does not exist
+        verify(architectureRepository, never()).save(architecture);
+    }
+
+}
+
+
 
 
 

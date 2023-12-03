@@ -1,5 +1,6 @@
 package org.blank.projectmanagementsystem.service.impl;
 
+import org.blank.projectmanagementsystem.domain.Enum.Role;
 import org.blank.projectmanagementsystem.domain.entity.Department;
 import org.blank.projectmanagementsystem.domain.entity.User;
 import org.blank.projectmanagementsystem.domain.formInput.AddUserFormInput;
@@ -9,200 +10,339 @@ import org.blank.projectmanagementsystem.service.UserService;
 import org.blank.projectmanagementsystem.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@ContextConfiguration(classes = {UserServiceImpl.class})
+@ExtendWith(SpringExtension.class)
 class UserServiceImplTest {
 
-    @Mock
-    private UserRepository userRepository;
-
-    @Mock
+    @MockBean
     private DepartmentRepository departmentRepository;
 
-    @Mock
+    @MockBean
     private PasswordEncoder passwordEncoder;
 
-    @InjectMocks
-    private UserService userService = new UserServiceImpl(userRepository, departmentRepository, passwordEncoder);
+    @MockBean
+    private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
+    /**
+     * Method under test: {@link UserServiceImpl#save(User)}
+     */
     @Test
-    void testSaveUser() {
-        User user = new User(); // Create a user object for testing
+    void testSave() {
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
 
-        // Mocking repository behavior
-        when(userRepository.save(user)).thenReturn(user);
+        User user = new User();
+        user.setActive(true);
+        user.setDefaultPassword(true);
+        user.setDepartment(department);
+        user.setEmail("jane.doe@example.org");
+        user.setId(1L);
+        user.setName("Name");
+        user.setPassword("iloveyou");
+        user.setPhone("6625550144");
+        user.setRole(Role.PMO);
+        user.setUserRole("User Role");
+        user.setUsername("janedoe");
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user);
 
-        // Test userService.save() method
-        User savedUser = userService.save(user);
+        Department department2 = new Department();
+        department2.setActive(true);
+        department2.setId(1);
+        department2.setName("Name");
 
-        // Verify that the userRepository.save() method was called
-        verify(userRepository, times(1)).save(user);
-
-        // Check if the saved user matches the user returned by the service method
-        assertEquals(user, savedUser);
+        User user2 = new User();
+        user2.setActive(true);
+        user2.setDefaultPassword(true);
+        user2.setDepartment(department2);
+        user2.setEmail("jane.doe@example.org");
+        user2.setId(1L);
+        user2.setName("Name");
+        user2.setPassword("iloveyou");
+        user2.setPhone("6625550144");
+        user2.setRole(Role.PMO);
+        user2.setUserRole("User Role");
+        user2.setUsername("janedoe");
+        User actualSaveResult = userServiceImpl.save(user2);
+        verify(userRepository).save(Mockito.<User>any());
+        assertSame(user, actualSaveResult);
     }
 
+    /**
+     * Method under test: {@link UserServiceImpl#save(User)}
+     */
+    @Test
+    void testSave2() {
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+
+        User user = new User();
+        user.setActive(true);
+        user.setDefaultPassword(true);
+        user.setDepartment(department);
+        user.setEmail("jane.doe@example.org");
+        user.setId(1L);
+        user.setName("Name");
+        user.setPassword("iloveyou");
+        user.setPhone("6625550144");
+        user.setRole(Role.PMO);
+        user.setUserRole("User Role");
+        user.setUsername("janedoe");
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user);
+
+        Department department2 = new Department();
+        department2.setActive(true);
+        department2.setId(1);
+        department2.setName("Name");
+        User user2 = mock(User.class);
+        when(user2.getPassword()).thenReturn("iloveyou");
+        doNothing().when(user2).setActive(anyBoolean());
+        doNothing().when(user2).setDefaultPassword(anyBoolean());
+        doNothing().when(user2).setDepartment(Mockito.<Department>any());
+        doNothing().when(user2).setEmail(Mockito.<String>any());
+        doNothing().when(user2).setId(Mockito.<Long>any());
+        doNothing().when(user2).setName(Mockito.<String>any());
+        doNothing().when(user2).setPassword(Mockito.<String>any());
+        doNothing().when(user2).setPhone(Mockito.<String>any());
+        doNothing().when(user2).setRole(Mockito.<Role>any());
+        doNothing().when(user2).setUserRole(Mockito.<String>any());
+        doNothing().when(user2).setUsername(Mockito.<String>any());
+        user2.setActive(true);
+        user2.setDefaultPassword(true);
+        user2.setDepartment(department2);
+        user2.setEmail("jane.doe@example.org");
+        user2.setId(1L);
+        user2.setName("Name");
+        user2.setPassword("iloveyou");
+        user2.setPhone("6625550144");
+        user2.setRole(Role.PMO);
+        user2.setUserRole("User Role");
+        user2.setUsername("janedoe");
+        User actualSaveResult = userServiceImpl.save(user2);
+        verify(user2).getPassword();
+        verify(user2).setActive(anyBoolean());
+        verify(user2).setDefaultPassword(anyBoolean());
+        verify(user2).setDepartment(Mockito.<Department>any());
+        verify(user2).setEmail(Mockito.<String>any());
+        verify(user2).setId(Mockito.<Long>any());
+        verify(user2).setName(Mockito.<String>any());
+        verify(user2).setPassword(Mockito.<String>any());
+        verify(user2).setPhone(Mockito.<String>any());
+        verify(user2).setRole(Mockito.<Role>any());
+        verify(user2).setUserRole(Mockito.<String>any());
+        verify(user2).setUsername(Mockito.<String>any());
+        verify(userRepository).save(Mockito.<User>any());
+        assertSame(user, actualSaveResult);
+    }
+
+    /**
+     * Method under test: {@link UserServiceImpl#save(User)}
+     */
+    @Test
+    void testSave3() {
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+
+        User user = new User();
+        user.setActive(true);
+        user.setDefaultPassword(true);
+        user.setDepartment(department);
+        user.setEmail("jane.doe@example.org");
+        user.setId(1L);
+        user.setName("Name");
+        user.setPassword("iloveyou");
+        user.setPhone("6625550144");
+        user.setRole(Role.PMO);
+        user.setUserRole("User Role");
+        user.setUsername("janedoe");
+        when(userRepository.save(Mockito.<User>any())).thenReturn(user);
+        when(passwordEncoder.encode(Mockito.<CharSequence>any())).thenReturn("secret");
+
+        Department department2 = new Department();
+        department2.setActive(true);
+        department2.setId(1);
+        department2.setName("Name");
+        User user2 = mock(User.class);
+        when(user2.getPassword()).thenReturn(null);
+        doNothing().when(user2).setActive(anyBoolean());
+        doNothing().when(user2).setDefaultPassword(anyBoolean());
+        doNothing().when(user2).setDepartment(Mockito.<Department>any());
+        doNothing().when(user2).setEmail(Mockito.<String>any());
+        doNothing().when(user2).setId(Mockito.<Long>any());
+        doNothing().when(user2).setName(Mockito.<String>any());
+        doNothing().when(user2).setPassword(Mockito.<String>any());
+        doNothing().when(user2).setPhone(Mockito.<String>any());
+        doNothing().when(user2).setRole(Mockito.<Role>any());
+        doNothing().when(user2).setUserRole(Mockito.<String>any());
+        doNothing().when(user2).setUsername(Mockito.<String>any());
+        user2.setActive(true);
+        user2.setDefaultPassword(true);
+        user2.setDepartment(department2);
+        user2.setEmail("jane.doe@example.org");
+        user2.setId(1L);
+        user2.setName("Name");
+        user2.setPassword("iloveyou");
+        user2.setPhone("6625550144");
+        user2.setRole(Role.PMO);
+        user2.setUserRole("User Role");
+        user2.setUsername("janedoe");
+        User actualSaveResult = userServiceImpl.save(user2);
+        verify(user2).getPassword();
+        verify(user2).setActive(anyBoolean());
+        verify(user2).setDefaultPassword(anyBoolean());
+        verify(user2).setDepartment(Mockito.<Department>any());
+        verify(user2).setEmail(Mockito.<String>any());
+        verify(user2).setId(Mockito.<Long>any());
+        verify(user2).setName(Mockito.<String>any());
+        verify(user2, atLeast(1)).setPassword(Mockito.<String>any());
+        verify(user2).setPhone(Mockito.<String>any());
+        verify(user2).setRole(Mockito.<Role>any());
+        verify(user2).setUserRole(Mockito.<String>any());
+        verify(user2).setUsername(Mockito.<String>any());
+        verify(userRepository).save(Mockito.<User>any());
+        verify(passwordEncoder).encode(Mockito.<CharSequence>any());
+        assertSame(user, actualSaveResult);
+    }
+
+    /**
+     * Method under test: {@link UserServiceImpl#saveDepartment(Department)}
+     */
     @Test
     void testSaveDepartment() {
-        Department department = new Department(); // Create a department object for testing
-
-        // Test userService.saveDepartment() method
-        userService.saveDepartment(department);
-
-        // Verify that the departmentRepository.save() method was called
-        verify(departmentRepository, times(1)).save(department);
-    }
-
-    @Test
-    void testChangePassword(){
-        String currentPassword = "currentPassword";
-        String newPassword = "newPassword";
-        String username = "username";
-        User user = new User();
-        user.setPassword(currentPassword);
-
-        // Mocking repository behavior
-        when(userRepository.findByUsernameOrEmail(username, username)).thenReturn(java.util.Optional.of(user));
-        when(passwordEncoder.matches(currentPassword, user.getPassword())).thenReturn(true);
-
-        // Test userService.changePassword() method
-        userService.changePassword(currentPassword, newPassword);
-
-        // Verify that the userRepository.save() method was called
-        verify(userRepository, times(1)).save(user);
-    }
-    @Test
-    void updatePassword(){
-        String newPassword = "newPassword";
-        String username = "username";
-        User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findByUsernameOrEmail(username, username)).thenReturn(java.util.Optional.of(user));
-
-        // Test userService.updatePassword() method
-        userService.updatePassword(newPassword);
-
-        // Verify that the userRepository.save() method was called
-        verify(userRepository, times(1)).save(user);
-
-    }
-    @Test
-    void checkUserExistOrNotWithUsername(){
-        String username = "username";
-        User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findByUsername(username)).thenReturn(java.util.Optional.of(user));
-
-        // Test userService.checkUserExistOrNotWithUsername() method
-        userService.checkUserExistOrNotWithUsername(username);
-
-        // Verify that the userRepository.findByUsername() method was called
-        verify(userRepository, times(1)).findByUsername(username);
-    }
-    @Test
-    void createMember(){
-        AddUserFormInput addUserFormInput = new AddUserFormInput();
-        String defaultPassword = "defaultPassword";
-        User user = new User();
         Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+        when(departmentRepository.save(Mockito.<Department>any())).thenReturn(department);
 
-        // Mocking repository behavior
-        when(userRepository.save(user)).thenReturn(user);
-        when(departmentRepository.findById(1)).thenReturn(java.util.Optional.of(department));
-
-        // Test userService.createMember() method
-        userService.createMember(addUserFormInput, defaultPassword);
-
-        // Verify that the userRepository.save() method was called
-        verify(userRepository, times(1)).save(user);
+        Department department2 = new Department();
+        department2.setActive(true);
+        department2.setId(1);
+        department2.setName("Name");
+        userServiceImpl.saveDepartment(department2);
+        verify(departmentRepository).save(Mockito.<Department>any());
+        assertEquals("Name", department2.getName());
+        assertEquals(1, department2.getId().intValue());
+        assertTrue(department2.isActive());
     }
+
+    /**
+     * Method under test:  {@link UserServiceImpl#saveDepartment(Department)}
+     */
     @Test
-    void getAllUsers(){
+    void testSaveDepartment2() {
+        when(departmentRepository.save(Mockito.<Department>any())).thenThrow(new RuntimeException("foo"));
+
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+        assertThrows(RuntimeException.class, () -> userServiceImpl.saveDepartment(department));
+        verify(departmentRepository).save(Mockito.<Department>any());
+    }
+
+
+
+    /**
+     * Method under test: {@link UserServiceImpl#getUserById(Long)}
+     */
+    @Test
+    void testGetUserById() {
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+
         User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findAll()).thenReturn(java.util.List.of(user));
-
-        // Test userService.getAllUsers() method
-        userService.getAllUsers();
-
-        // Verify that the userRepository.findAll() method was called
-        verify(userRepository, times(1)).findAll();
+        user.setActive(true);
+        user.setDefaultPassword(true);
+        user.setDepartment(department);
+        user.setEmail("jane.doe@example.org");
+        user.setId(1L);
+        user.setName("Name");
+        user.setPassword("iloveyou");
+        user.setPhone("6625550144");
+        user.setRole(Role.PMO);
+        user.setUserRole("User Role");
+        user.setUsername("janedoe");
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        User actualUserById = userServiceImpl.getUserById(1L);
+        verify(userRepository).findById(Mockito.<Long>any());
+        assertSame(user, actualUserById);
     }
 
+    /**
+     * Method under test:  {@link UserServiceImpl#getUserById(Long)}
+     */
     @Test
-    void getUserById(){
-    User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
-
-        // Test userService.getUserById() method
-        userService.getUserById(1L);
-
-        // Verify that the userRepository.findById() method was called
-        verify(userRepository, times(1)).findById(1L);
-
+    void testGetUserById2() {
+        when(userRepository.findById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+        assertThrows(RuntimeException.class, () -> userServiceImpl.getUserById(1L));
+        verify(userRepository).findById(Mockito.<Long>any());
     }
+
+
+    /**
+     * Method under test: {@link UserServiceImpl#getEmail(String)}
+     */
     @Test
-    void getCurrentUser(){
+    void testGetEmail() {
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
+
         User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(user));
-
-        // Test userService.getCurrentUser() method
-        userService.getCurrentUser();
-
-        // Verify that the userRepository.findById() method was called
-        verify(userRepository, times(1)).findById(1L);
+        user.setActive(true);
+        user.setDefaultPassword(true);
+        user.setDepartment(department);
+        user.setEmail("jane.doe@example.org");
+        user.setId(1L);
+        user.setName("Name");
+        user.setPassword("iloveyou");
+        user.setPhone("6625550144");
+        user.setRole(Role.PMO);
+        user.setUserRole("User Role");
+        user.setUsername("janedoe");
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        Optional<User> actualEmail = userServiceImpl.getEmail("jane.doe@example.org");
+        verify(userRepository).findByEmail(Mockito.<String>any());
+        assertTrue(actualEmail.isPresent());
+        assertSame(ofResult, actualEmail);
     }
+
+    /**
+     * Method under test:  {@link UserServiceImpl#getEmail(String)}
+     */
     @Test
-    void checkCurrentPassword(){
-        String currentPassword = "currentPassword";
-        String username = "username";
-        User user = new User();
-        user.setPassword(currentPassword);
-
-        // Mocking repository behavior
-        when(userRepository.findByUsernameOrEmail(username, username)).thenReturn(java.util.Optional.of(user));
-        when(passwordEncoder.matches(currentPassword, user.getPassword())).thenReturn(true);
-
-        // Test userService.checkCurrentPassword() method
-        userService.checkCurrentPassword(currentPassword);
-
-        // Verify that the userRepository.findByUsernameOrEmail() method was called
-        verify(userRepository, times(1)).findByUsernameOrEmail(username, username);
+    void testGetEmail2() {
+        when(userRepository.findByEmail(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+        assertThrows(RuntimeException.class, () -> userServiceImpl.getEmail("jane.doe@example.org"));
+        verify(userRepository).findByEmail(Mockito.<String>any());
     }
-
-    @Test
-    void getEmail(){
-        String email = "email";
-        User user = new User();
-
-        // Mocking repository behavior
-        when(userRepository.findByEmail(email)).thenReturn(java.util.Optional.of(user));
-
-        // Test userService.getEmail() method
-        userService.getEmail(email);
-
-        // Verify that the userRepository.findByEmail() method was called
-        verify(userRepository, times(1)).findByEmail(email);
-    }
-
-
-
 }
