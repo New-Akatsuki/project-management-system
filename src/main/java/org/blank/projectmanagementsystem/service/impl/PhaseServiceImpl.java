@@ -1,6 +1,7 @@
 package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.blank.projectmanagementsystem.domain.entity.Phase;
 import org.blank.projectmanagementsystem.domain.entity.Project;
 import org.blank.projectmanagementsystem.domain.entity.Task;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository phaseRepository;
@@ -35,9 +37,9 @@ public class PhaseServiceImpl implements PhaseService {
                 .name(phaseDto.getName())
                 .project(project)
                 .build();
-        phaseRepository.save(phase);
+        Phase rsPhase = phaseRepository.save(phase);
         return PhaseDto.builder()
-                .id(phase.getId())
+                .id(rsPhase.getId())
                 .name(phase.getName())
                 .projectId(phase.getProject().getId())
                 .build();

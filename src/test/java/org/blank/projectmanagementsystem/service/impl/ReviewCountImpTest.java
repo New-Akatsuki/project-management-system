@@ -12,6 +12,9 @@ import org.blank.projectmanagementsystem.service.AmountService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,12 +37,12 @@ public class ReviewCountImpTest {
     @Test
     void testSaveOrUpdate_ExistingReviewCount() {
         // Mock data and dependencies
-        ReviewDto reviewDto = new ReviewDto();
+        ReviewDto reviewDto = new ReviewDto(1L,1L,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,  5);
         Project project = new Project();
         project.setId(1L);
         when(projectRepository.findById(reviewDto.getProjectId())).thenReturn(Optional.of(project));
 
-        ReviewCount existingReviewCount = new ReviewCount();
+        ReviewCount existingReviewCount = new ReviewCount(1L,2,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,project);
         when(reviewCountRepository.findByProjectIdAndDevelopmentPhaseAndReviewerType(
                 reviewDto.getProjectId(), reviewDto.getDevelopmentPhase(), reviewDto.getReviewerType()))
                 .thenReturn(existingReviewCount);
@@ -57,7 +60,7 @@ public class ReviewCountImpTest {
     @Test
     void testSaveOrUpdate_NewReviewCount() {
         // Mock data and dependencies
-        ReviewDto reviewDto = new ReviewDto();
+        ReviewDto reviewDto = new ReviewDto(1L,1L,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,  5);
         Project project = new Project();
         project.setId(1L);
         when(projectRepository.findById(reviewDto.getProjectId())).thenReturn(Optional.of(project));
@@ -66,7 +69,7 @@ public class ReviewCountImpTest {
                 reviewDto.getProjectId(), reviewDto.getDevelopmentPhase(), reviewDto.getReviewerType()))
                 .thenReturn(null);
 
-        ReviewCount newReviewCount = new ReviewCount();
+        ReviewCount newReviewCount = new ReviewCount(1L,2,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,project);
         when(reviewCountRepository.save(any(ReviewCount.class))).thenReturn(newReviewCount);
 
         // Perform the operation
@@ -78,7 +81,28 @@ public class ReviewCountImpTest {
 
     }
 
+    @Test
+    void testCalculateBasicDesignKpi() {
+        // Mock data and dependencies
+        Project project = new Project();
+        project.setId(1L);
+        when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
 
+        ReviewCount reviewCount = new ReviewCount(1L,2,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,project);
+        when(reviewCountRepository.findByProjectIdAndDevelopmentPhaseAndReviewerType(
+                1L, DevelopmentPhase.BASIC_DESIGN, ReviewerType.INTERNAL))
+                .thenReturn(reviewCount);
+
+        Amount amount = new Amount();
+
+        // Perform the operation
+        double kpi = reviewCountService.calculateBasicDesignKpi(1L, DevelopmentPhase.BASIC_DESIGN, ReviewerType.INTERNAL);
+
+        assertEquals(200, kpi);
+        // Add more assertions if needed
+
+
+    }
 
     @Test
     void testFindByProjectIdAndDevelopmentPhaseAndReviewerType() {
@@ -87,7 +111,7 @@ public class ReviewCountImpTest {
         project.setId(1L);
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
 
-        ReviewCount reviewCount = new ReviewCount();
+        ReviewCount reviewCount = new ReviewCount(1L,2,ReviewerType.INTERNAL, DevelopmentPhase.BASIC_DESIGN,project);
         when(reviewCountRepository.findByProjectIdAndDevelopmentPhaseAndReviewerType(
                 1L, DevelopmentPhase.BASIC_DESIGN, ReviewerType.INTERNAL))
                 .thenReturn(reviewCount);

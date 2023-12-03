@@ -114,6 +114,7 @@ public class TaskServiceTest {
                 .phase(Phase.builder().id(1L).project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build()).build())
                 .group(TaskGroup.A)
                 .type(TaskType.TASK)
+                .parentTask(Task.builder().id(1L).build())
                 .project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build())
                 .build();
 
@@ -135,14 +136,38 @@ public class TaskServiceTest {
     @Test
     void testUpdateTask() {
         // Mocking data
-        TaskFormInput taskFormInput = new TaskFormInput();
-        Task mappedTask = new Task();
-        Task modifiedTask = new Task();
-        Task savedTask = new Task();
+        Task t = Task.builder()
+                .id(1L)
+                .startDate(LocalDate.now())
+                .dueDate(LocalDate.now())
+                .priority(Priority.HIGH)
+                .phase(Phase.builder().id(1L).project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build()).build())
+                .group(TaskGroup.A)
+                .type(TaskType.TASK)
+                .parentTask(Task.builder()
+                        .id(1L)
+                        .status(false)
+                        .actualDueDate(LocalDate.now())
+                        .actualHours(0.0f)
+                        .build()
+                )
+                .project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build())
+                .status(true)
+                .build();
+
+        TaskFormInput taskFormInput = TaskFormInput.builder()
+                .id(1L)
+                .priority("high")
+                .type("task")
+                .phase(1L)
+                .status(true)
+                .parent(1L)
+                .build();
 
         // Mocking behavior
-        when(taskMapper.mapToTask(taskFormInput)).thenReturn(mappedTask);
-        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+        when(phaseRepository.getReferenceById(any())).thenReturn(Phase.builder().id(1L).project(Project.builder().status(ProjectStatus.ONGOING).build()).build());
+
+        when(taskRepository.save(any(Task.class))).thenReturn(t);
         // Mock any other dependencies or behaviors as needed
 
         // Call the method to be tested
@@ -150,11 +175,98 @@ public class TaskServiceTest {
 
         // Assertions
         assertNotNull(resultTask);
-        // Add more assertions based on your specific logic
-
-        // Verify that certain methods were called
-        verify(taskMapper, times(1)).mapToTask(taskFormInput);
         verify(taskRepository, times(1)).save(any(Task.class));
-        // Verify any other method calls as needed
+    }
+    @Test
+    void testUpdateTaskReturnNull() {
+        // Mocking data
+        Task tp = Task.builder()
+                .id(2L)
+                .startDate(LocalDate.now())
+                .dueDate(LocalDate.now())
+                .priority(Priority.HIGH)
+                .phase(Phase.builder().id(1L).project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build()).build())
+                .group(TaskGroup.A)
+                .type(TaskType.TASK)
+                .project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build())
+                .build();
+        Task t = Task.builder()
+                .id(1L)
+                .startDate(LocalDate.now())
+                .dueDate(LocalDate.now())
+                .priority(Priority.HIGH)
+                .phase(Phase.builder().id(1L).project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build()).build())
+                .group(TaskGroup.A)
+                .type(TaskType.TASK)
+                .parentTask(tp)
+                .project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build())
+                .build();
+
+        TaskFormInput taskFormInput = TaskFormInput.builder()
+                .id(1L)
+                .priority("high")
+                .type("task")
+                .phase(1L)
+                .build();
+
+        // Mocking behavior
+        when(phaseRepository.getReferenceById(any())).thenReturn(Phase.builder().id(1L).project(Project.builder().status(ProjectStatus.PENDING).build()).build());
+
+        // Mock any other dependencies or behaviors as needed
+
+        // Call the method to be tested
+        Task resultTask = taskService.updateTask(taskFormInput);
+
+        // Assertions
+        assertNull(resultTask);
+
+    }
+
+    @Test
+    void testUpdateTaskResetDateIfnotIntersetParentDate() {
+        // Mocking data
+        Task t = Task.builder()
+                .id(1L)
+                .startDate(LocalDate.now())
+                .dueDate(LocalDate.now())
+                .priority(Priority.HIGH)
+                .phase(Phase.builder().id(1L).project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build()).build())
+                .group(TaskGroup.A)
+                .type(TaskType.TASK)
+                .parentTask(Task.builder()
+                        .id(1L)
+                        .status(false)
+                        .actualDueDate(LocalDate.now())
+                        .actualHours(0.0f)
+                        .build()
+                )
+                .project(Project.builder().id(1L).status(ProjectStatus.ONGOING).build())
+                .status(true)
+                .build();
+
+        TaskFormInput taskFormInput = TaskFormInput.builder()
+                .id(1L)
+                .priority("high")
+                .type("task")
+                .phase(1L)
+                .start_date(LocalDate.now())
+                .end_date(LocalDate.now())
+                .status(true)
+                .parent(1L)
+                .build();
+
+        // Mocking behavior
+        when(phaseRepository.getReferenceById(any())).thenReturn(Phase.builder().id(1L).project(Project.builder().status(ProjectStatus.ONGOING).build()).build());
+
+        when(taskRepository.findAllByParentTask(t)).thenReturn(List.of(t));
+        when(taskRepository.save(any(Task.class))).thenReturn(t);
+        // Mock any other dependencies or behaviors as needed
+
+        // Call the method to be tested
+        Task resultTask = taskService.updateTask(taskFormInput);
+
+        // Assertions
+        assertNotNull(resultTask);
+        verify(taskRepository, times(1)).save(any(Task.class));
     }
 }

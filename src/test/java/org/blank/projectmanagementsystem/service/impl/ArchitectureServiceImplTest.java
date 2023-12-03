@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 public class ArchitectureServiceImplTest {
     @Mock
@@ -26,7 +27,6 @@ public class ArchitectureServiceImplTest {
     @BeforeEach
     void setUp(){
         MockitoAnnotations.initMocks(this);
-
     }
     @Test
     void testGetAllArchitectures(){
@@ -61,10 +61,26 @@ public class ArchitectureServiceImplTest {
 
         // Verify that the updated architecture has the same id as the mocked architecture
         assertEquals(id,updatedArchitecture.getId());
-
-
-
     }
+
+    @Test
+    void testUpdateArchitectureReturnNull(){
+        // Create a mock architecture
+        Long id=1L;
+        Architecture architecture = new Architecture();
+        architecture.setId(id);
+
+        // Mock the behavior of the repository
+        when(architectureRepository.existsById(id)).thenReturn(false);
+        when(architectureRepository.save(architecture)).thenReturn(architecture);
+
+        // Test the updateArchitecture method
+        Architecture updatedArchitecture = architectureService.updateArchitecture(id,architecture);
+
+        // Verify that the updated architecture has the same id as the mocked architecture
+        assertNull(updatedArchitecture);
+    }
+
     @Test
     void testSaveArchitecture(){
         // Create a mock architecture
@@ -94,7 +110,32 @@ public class ArchitectureServiceImplTest {
 
         // Verify that the retrieved architecture has the same id as the mocked architecture
         assertEquals(id,retrievedArchitecture.getId());
-    }}
+    }
+
+    @Test
+    public void testGetArchitecturesByStatusTrue() {
+        // Arrange
+        Architecture architecture1 = new Architecture(/* construct your object here */);
+        Architecture architecture2 = new Architecture(/* construct your object here */);
+
+        List<Architecture> expectedArchitectures =List.of(architecture1, architecture2);
+
+        // Mocking the behavior of the repository
+        when(architectureRepository.findByStatusIsTrue()).thenReturn(expectedArchitectures);
+
+        // Act
+        List<Architecture> actualArchitectures = architectureService.getArchitecturesByStatusTrue();
+
+        // Assert
+        // Add assertions based on your specific requirements
+        assertEquals(expectedArchitectures.size(), actualArchitectures.size());
+        assertEquals(expectedArchitectures, actualArchitectures);
+
+        // Verify that the repository method was called
+        verify(architectureRepository, times(1)).findByStatusIsTrue();
+    }
+
+}
 
 
 

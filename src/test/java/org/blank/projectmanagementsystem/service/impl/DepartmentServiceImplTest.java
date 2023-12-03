@@ -62,6 +62,25 @@ import static org.mockito.Mockito.*;
         verify(departmentRepository, times(1)).save(existingDepartment);
     }
 
+     @Test
+     void testUpdateDepartmentReturnNull() {
+         Department department = new Department();
+         department.setId(1);
+         department.setName("New Department");
+
+         Department existingDepartment = new Department();
+         existingDepartment.setId(1);
+         existingDepartment.setName("Existing Department");
+
+         when(departmentRepository.findById(1)).thenReturn(Optional.empty());
+         when(departmentRepository.save(existingDepartment)).thenReturn(existingDepartment);
+
+         Department updatedDepartment = departmentService.updateDepartment(department);
+
+         assertNull(updatedDepartment);
+         verify(departmentRepository, times(1)).findById(1);
+     }
+
     @Test
     void testGetDepartmentById() {
         Department department = new Department();

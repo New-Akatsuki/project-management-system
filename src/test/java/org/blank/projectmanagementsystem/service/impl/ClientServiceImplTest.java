@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ClientServiceImplTest {
     @Mock
@@ -70,5 +70,28 @@ public class ClientServiceImplTest {
 
         // Verify that the retrieved client matches the mock
         assertEquals(id, retrievedClient.getId());
+    }
+
+    @Test
+    public void testGetClientsByStatusTrue() {
+        // Arrange
+        Client client1 = new Client(/* construct your object here */);
+        Client client2 = new Client(/* construct your object here */);
+
+        List<Client> expectedClients = List.of(client1, client2);
+
+        // Mocking the behavior of the repository
+        when(clientRepository.findByStatusIsTrue()).thenReturn(expectedClients);
+
+        // Act
+        List<Client> actualClients = clientService.getClientsByStatusTrue();
+
+        // Assert
+        // Add assertions based on your specific requirements
+        assertEquals(expectedClients.size(), actualClients.size());
+        assertEquals(expectedClients, actualClients);
+
+        // Verify that the repository method was called
+        verify(clientRepository, times(1)).findByStatusIsTrue();
     }
 }

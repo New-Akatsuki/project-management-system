@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class DeliverableServiceImplTest {
     @Mock
@@ -83,6 +83,29 @@ public class DeliverableServiceImplTest {
         List<Deliverable> retrievedDeliverables = deliverableService.getAllDeliverables();
         // Verify that the retrieved list size matches the mocked list size
         assertEquals(deliverables.size(), retrievedDeliverables.size());
+    }
+
+    @Test
+    public void testGetDeliverablesByStatusTrue() {
+        // Arrange
+        Deliverable deliverable1 = new Deliverable(/* construct your object here */);
+        Deliverable deliverable2 = new Deliverable(/* construct your object here */);
+
+        List<Deliverable> expectedDeliverables = List.of(deliverable1, deliverable2);
+
+        // Mocking the behavior of the repository
+        when(deliverableRepository.findByStatusIsTrue()).thenReturn(expectedDeliverables);
+
+        // Act
+        List<Deliverable> actualDeliverables = deliverableService.getDeliverablesByStatusTrue();
+
+        // Assert
+        // Add assertions based on your specific requirements
+        assertEquals(expectedDeliverables.size(), actualDeliverables.size());
+        assertEquals(expectedDeliverables, actualDeliverables);
+
+        // Verify that the repository method was called
+        verify(deliverableRepository, times(1)).findByStatusIsTrue();
     }
 
 
