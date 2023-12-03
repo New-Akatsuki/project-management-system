@@ -1,12 +1,16 @@
 package org.blank.projectmanagementsystem.domain.viewobject;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.blank.projectmanagementsystem.domain.entity.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectEditViewObject{
     private String name;
     private Long clientId;

@@ -1,13 +1,8 @@
 package org.blank.projectmanagementsystem.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.blank.projectmanagementsystem.domain.Enum.Priority;
-import org.blank.projectmanagementsystem.domain.Enum.TaskGroup;
-import org.blank.projectmanagementsystem.domain.Enum.TaskType;
-import org.blank.projectmanagementsystem.domain.entity.Phase;
-import org.blank.projectmanagementsystem.domain.entity.Project;
-import org.blank.projectmanagementsystem.domain.entity.Task;
-import org.blank.projectmanagementsystem.domain.entity.User;
+import org.blank.projectmanagementsystem.domain.Enum.*;
+import org.blank.projectmanagementsystem.domain.entity.*;
 import org.blank.projectmanagementsystem.domain.formInput.TaskFormInput;
 import org.blank.projectmanagementsystem.domain.viewobject.TaskViewObject;
 import org.blank.projectmanagementsystem.dto.PhaseDto;
@@ -18,6 +13,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,10 +22,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,7 +45,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 class TaskAPITest {
-
+    @Autowired
+    private TaskAPI taskAPI;
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -127,30 +129,72 @@ class TaskAPITest {
     }
 
     @Test
-    public void taskApi_getPhaseDataIsOk() throws Exception{
-        when(phaseService.getPhases(1L)).thenReturn(List.of(phaseDto));
-        when(taskService.getTasksByProject(1L)).thenReturn(List.of(taskViewObject));
-        when(projectService.getProjectMembers(1L)).thenReturn(List.of());
-        when(projectService.getProject(1L)).thenReturn(project);
+    void testGetPhaseData() throws Exception {
+        when(taskService.getTasksByProject(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+        when(phaseService.getPhases(anyLong())).thenReturn(new ArrayList<>());
 
-        ResultActions response = mockMvc.perform(get("/get-all-project-data")
-                .contentType(MediaType.APPLICATION_JSON)
-                        .param("id", "1")
-                        .param("name", "Phase 1")
-                        .param("projectId", "1")
-                        .param("id", "1")
-                        .param("name", "Task 1")
-                        .param("phase", "1")
-                        .param("duration", "1")
-                        .param("start_date", "2021-01-01")
-                        .param("end_date", "2021-02-01")
-                        .param("actual_due_date", "2021-02-01")
-                        .param("plan_hours", "50.0")
-                        .param("actual_hours", "55.0"));
+        Client client = new Client();
+        client.setEmail("jane.doe@example.org");
+        client.setId(1L);
+        client.setName("Name");
+        client.setPhoneNumber("6625550144");
+        client.setStatus(true);
 
+        Department department = new Department();
+        department.setActive(true);
+        department.setId(1);
+        department.setName("Name");
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+        Department department2 = new Department();
+        department2.setActive(true);
+        department2.setId(1);
+        department2.setName("Name");
+
+        User projectManager = new User();
+        projectManager.setActive(true);
+        projectManager.setDefaultPassword(true);
+        projectManager.setDepartment(department2);
+        projectManager.setEmail("jane.doe@example.org");
+        projectManager.setId(1L);
+        projectManager.setName("Name");
+        projectManager.setPassword("iloveyou");
+        projectManager.setPhone("6625550144");
+        projectManager.setRole(Role.PMO);
+        projectManager.setUserRole("User Role");
+        projectManager.setUsername("janedoe");
+
+        Project project = new Project();
+        project.setAmounts(new ArrayList<>());
+        project.setArchitectures(new HashSet<>());
+        project.setBackground("Background");
+        project.setClient(client);
+        project.setContractMembers(new HashSet<>());
+        project.setDeliverables(new HashSet<>());
+        project.setDepartment(department);
+        project.setDuration("Duration");
+        project.setEndDate(LocalDate.of(1970, 1, 1));
+        project.setFocMembers(new HashSet<>());
+        project.setId(1L);
+        project.setName("Name");
+        project.setObjective("Objective");
+        project.setProjectManager(projectManager);
+        project.setReviewCounts(new ArrayList<>());
+        project.setStartDate(LocalDate.of(1970, 1, 1));
+        project.setStatus(ProjectStatus.ONGOING);
+        project.setSystemOutlines(new HashSet<>());
+        when(projectService.getProjectMembers(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+        when(projectService.getProject(anyLong())).thenReturn(project);
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/get-all-project-data");
+        MockHttpServletRequestBuilder requestBuilder = getResult.param("projectId", String.valueOf(1L));
+        MockMvcBuilders.standaloneSetup(taskAPI)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "<Map><endDate>1970</endDate><endDate>1</endDate><endDate>1</endDate><startDate>1970</startDate><startDate"
+                                        + ">1</startDate><startDate>1</startDate></Map>"));
     }
 
 

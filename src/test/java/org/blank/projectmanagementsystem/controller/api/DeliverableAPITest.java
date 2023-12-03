@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = DeliverableAPI.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -50,19 +51,28 @@ class DeliverableAPITest {
     }
 
     @Test
-    public void deliverableApi_getDeliverables() throws Exception {
-        when(deliverableService.getAllDeliverables()).thenReturn(List.of(deliverable));
-        ResultActions response = mockMvc.perform(get("/deliverables")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("id", "1")
-                .param("name", "Deliverable 1")
-                .param("status", "true"));
+    public void testGetDeliverables() throws Exception {
+        // Create sample data for testing
+        Deliverable deliverable1 = new Deliverable(1L, "Deliverable 1", true);
+        Deliverable deliverable2 = new Deliverable(2L, "Deliverable 2", true);
+        List<Deliverable> deliverables = List.of(deliverable1, deliverable2);
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", CoreMatchers.is("Deliverable 1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].status", CoreMatchers.is(true)))
-                .andDo(MockMvcResultHandlers.print());
+        // Mock the behavior of the service method
+        when(deliverableService.getDeliverablesByStatusTrue()).thenReturn(deliverables);
+
+        // Perform the GET request
+        ResultActions resultActions = mockMvc.perform(get("/deliverables")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Validate the response
+        resultActions.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[0].name", CoreMatchers.is("Deliverable 1")))
+                .andExpect(jsonPath("$[0].status", CoreMatchers.is(true)))
+                .andExpect(jsonPath("$[1].id", CoreMatchers.is(2)))
+                .andExpect(jsonPath("$[1].name", CoreMatchers.is("Deliverable 2")))
+                .andExpect(jsonPath("$[1].status", CoreMatchers.is(true)));
     }
 
     @Test
@@ -72,10 +82,10 @@ class DeliverableAPITest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(deliverable)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.is(true)))
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
+                .andExpect(jsonPath("$.status", CoreMatchers.is(true)))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -88,11 +98,41 @@ class DeliverableAPITest {
                 .param("name", "Deliverable 1")
                 .param("status", "true"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.is(true)))
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
+                .andExpect(jsonPath("$.status", CoreMatchers.is(true)))
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void testGetDeliverableByIdNotFound() throws Exception {
+        // Set up for a scenario where the deliverable is not found
+        Long nonExistingId = 2L;
+        when(deliverableService.getDeliverableById(nonExistingId)).thenReturn(null);
+
+        // Perform the GET request for a non-existing deliverable
+        ResultActions resultActions = mockMvc.perform(get("/deliverable/{id}", nonExistingId)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Validate the response for a not found scenario
+        resultActions.andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testUpdateDeliverableNotFound() throws Exception {
+        // Set up for a scenario where the deliverable is not found
+        Long nonExistingId = 2L;
+        Deliverable updatedDeliverableRequest = new Deliverable(nonExistingId, "Updated Deliverable", true);
+        when(deliverableService.getDeliverableById(nonExistingId)).thenReturn(null);
+
+        // Perform the PUT request to update deliverable for a non-existing deliverable
+        ResultActions resultActions = mockMvc.perform(put("/deliverable/update")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedDeliverableRequest)));
+
+        // Validate the response for a not found scenario
+        resultActions.andExpect(status().isNotFound());
     }
 
     @Test
@@ -103,10 +143,10 @@ class DeliverableAPITest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(deliverable)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.is(true)))
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
+                .andExpect(jsonPath("$.status", CoreMatchers.is(true)))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -118,10 +158,26 @@ class DeliverableAPITest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("newStatus", "true"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.is(true)))
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$.name", CoreMatchers.is("Deliverable 1")))
+                .andExpect(jsonPath("$.status", CoreMatchers.is(true)))
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void testUpdateDeliverableStatusNotFound() throws Exception {
+        // Set up for a scenario where the deliverable is not found
+        Long nonExistingId = 2L;
+        boolean newStatus = false;
+        when(deliverableService.getDeliverableById(nonExistingId)).thenReturn(null);
+
+        // Perform the PUT request to update deliverable status for a non-existing deliverable
+        ResultActions resultActions = mockMvc.perform(put("/deliverable/status/{id}", nonExistingId)
+                .param("newStatus", String.valueOf(newStatus))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        // Validate the response for a not found scenario
+        resultActions.andExpect(status().isNotFound());
     }
 }
