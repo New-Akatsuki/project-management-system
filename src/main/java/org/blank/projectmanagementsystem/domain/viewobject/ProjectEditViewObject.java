@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class ProjectEditViewObject {
+public class ProjectEditViewObject{
     private String name;
     private Long clientId;
     private List<Long> contractMemberIds;

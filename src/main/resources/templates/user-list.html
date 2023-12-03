@@ -36,54 +36,50 @@
     <!-- Bootstrap CSS for modal box -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        th.sorting{
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
-<main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">member list</li>
-            </ol>
-        </nav>
-    </div>
+<main id="main" class="main" style="padding: 20px">
+
     <!-- End Page Title -->
     <input type="hidden" id="currentRole" th:value="${#authentication.principal.role}"/>
     <input type="hidden" id="currentDepartment" th:value="${#authentication.principal.department}"/>
     <!-- Main Content -->
-    <div class="container-fluid content-inner mt-4 py-0">
-        <div>
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between">
-                        <span class="fs-3 fw-bold">Users</span>
-                        <button id="addUserModalBtn"
-                                class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
-                            <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table table-sm" style="width:100%;" id="user-list-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+    <div class="container-fluid content-inner py-0">
+        <div class="container-fluid d-flex justify-content-between mb-3 bg-white p-3 rounded-2 shadow">
+            <span class="display-6 fs-3 fw-bold"><i class="bi bi-person-gear"></i>&nbspUser Management</span>
+            <button id="addUserModalBtn"
+                    class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
+            </button>
         </div>
+
+            <div class="table-responsive ps-3 pe-3">
+                <table class="display table-sm" style="width:100%;" id="user-list-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
     </div>
     <div id="toastPlace"></div>
     <!-- End Main Content-->
@@ -102,24 +98,24 @@
                     <div class="form-group">
                         <input type="hidden" class="form-control" id="editId">
                         <label for="editName">Name</label>
-                        <input type="text" class="form-control" id="editName"  placeholder="Enter name">
+                        <input type="text" class="form-control" id="editName" placeholder="Enter name">
                         <span class="invalid-feedback" id="editNameError">Name must not be blank!. </span>
                     </div>
                     <div class="form-group">
                         <label for="editEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" 
+                        <input type="email" class="form-control" id="editEmail" name="email"
                                placeholder="Enter email">
                         <span class="invalid-feedback" id="editEmailError">Email must not be blank! </span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="editDepartment"> Department </label>
-                        <select class="form-select" id="editDepartment" name="editDepartment" >
+                        <select class="form-select" id="editDepartment" name="editDepartment">
                         </select>
                         <span class="invalid-feedback" id="editDepartmentError">Department must be selected!</span>
                     </div>
                     <div class="form-group">
                         <label for="editUserRole" class="form-label">Role</label>
-                        <select class="form-select" id="editUserRole" name="editUserRole" >
+                        <select class="form-select" id="editUserRole" name="editUserRole">
                             <option value="PMO" sec:authorize="hasAuthority('PMO')">PMO</option>
                             <option value="SDQC" sec:authorize="hasAuthority('PMO')"> SDQC</option>
                             <option value="DH" sec:authorize="hasAuthority('PMO')">DH</option>
@@ -157,25 +153,25 @@
                     <span class="text-center d-block mx-auto mb-1" id="addMemberError" style="color: red"></span>
                     <div class="form-group">
                         <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name"  autocomplete="off"
+                        <input type="text" class="form-control" id="name" autocomplete="off"
                                placeholder="Enter full name">
                         <span class="invalid-feedback" id="nameError">Enter Member Name.</span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email"  autocomplete="off"
+                        <input type="email" class="form-control" id="email" autocomplete="off"
                                placeholder="Enter email">
                         <span class="invalid-feedback" id="emailError">Email must not be blank.</span>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="department"> Department </label>
-                        <select class="form-select" id="department" name="department" >
+                        <select class="form-select" id="department" name="department">
                         </select>
                         <span class="invalid-feedback" id="departmentError">Department must be selected.</span>
                     </div>
                     <div class="form-group">
                         <label for="newUserRole" class="form-label">Role</label>
-                        <select class="form-select" id="newUserRole" name="role" >
+                        <select class="form-select" id="newUserRole" name="role">
                             <option value="" selected>Select role</option>
                             <option value="PMO" sec:authorize="hasAuthority('PMO')">PMO</option>
                             <option value="SDQC" sec:authorize="hasAuthority('PMO')"> SDQC</option>
@@ -230,10 +226,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-<!--<script src="/js/validation.js"></script>-->
 <script src="/js/member-list-view.js"></script>
 <script src="/js/main.js"></script>
-<!--<script src="/js/contract-info-validation.js"></script>-->
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="/js/notification.js"></script>
 <script src="/js/init-notification.js"></script>

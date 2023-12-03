@@ -14,6 +14,7 @@ import org.blank.projectmanagementsystem.repository.PhaseRepository;
 import org.blank.projectmanagementsystem.repository.TaskRepository;
 import org.blank.projectmanagementsystem.repository.UserRepository;
 import org.blank.projectmanagementsystem.service.TaskService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -29,20 +30,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
     private final PhaseRepository phaseRepository;
+    private final UserService userService;
 
     private final TaskMapper taskMapper = new TaskMapper();
 
-    private User getCurrentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(username, username).orElse(null);
-    }
 
     @Override
     @Transactional(readOnly = true)
     public List<TaskViewObject> getAllTasks() {
-        return taskRepository.findAllByAssigneesId(getCurrentUser().getId())
+        return taskRepository.findAllByAssigneesId(userService.getCurrentUser().getId())
                 .stream().map(taskMapper::mapToTaskViewObject).toList();
     }
 
@@ -143,7 +140,7 @@ public class TaskServiceImpl implements TaskService {
             task.setAssignees(new HashSet<>());
             task.getAssignees().addAll(
                     taskFormInput.getAssignees().stream()
-                            .map(id -> userRepository.findById(id).orElse(null))
+                            .map(userService::getUserById)
                             .collect(Collectors.toSet())
             );
         }
@@ -186,7 +183,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskViewObject> getMemberTaskByProject(Long projectId) {
-        var user = getCurrentUser();
+        var user = userService.getCurrentUser();
         return taskRepository.findAllByProjectIdAndAssigneesContaining(projectId, user)
                 .stream().map(taskMapper::mapToTaskViewObject).toList();
     }

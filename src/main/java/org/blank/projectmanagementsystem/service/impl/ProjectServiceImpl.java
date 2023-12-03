@@ -1,4 +1,4 @@
-    package org.blank.projectmanagementsystem.service.impl;
+package org.blank.projectmanagementsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +12,7 @@ import org.blank.projectmanagementsystem.mapper.ProjectMapper;
 import org.blank.projectmanagementsystem.repository.*;
 import org.blank.projectmanagementsystem.service.NotificationService;
 import org.blank.projectmanagementsystem.service.ProjectService;
+import org.blank.projectmanagementsystem.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final ClientRepository clientRepository;
     private final SystemOutlineRepository systemOutlineRepository;
     private final ArchitectureRepository architectureRepository;
@@ -44,7 +46,6 @@ public class ProjectServiceImpl implements ProjectService {
     public Project saveProject(ProjectFormInput projectFormInput) {
 
         String pmUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = getCurrentUser();
         User projectManager = userRepository.findByUsernameOrEmail(pmUsername,pmUsername).orElseThrow();
 
         //get client data
@@ -103,14 +104,14 @@ public class ProjectServiceImpl implements ProjectService {
         project.setArchitectures(architectures);
         project.setSystemOutlines(systemOutlines);
         project.setDeliverables(deliverables);
-        project.setDepartment(user.getDepartment());
+        project.setDepartment(projectManager.getDepartment());
         project.setStatus(ProjectStatus.ONGOING);
         return projectRepository.save(project);
     }
 
     @Override
     public List<ProjectListViewObject> getAllProjects() {
-        var user = getCurrentUser();
+        var user = userService.getCurrentUser();
         return switch (user.getRole()) {
             case PMO, SDQC -> projectRepository.findAll().stream().map(p->new ProjectListViewObject(p,countProgress(p.getId()))).toList();
             case DH ->
@@ -123,7 +124,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     //count project progress
-    private int countProgress(Long id) {
+    public int countProgress(Long id) {
         int total = 0;
         int done = 0;
         var tasks = taskRepository.findAllByProjectId(id).stream().filter(val->val.getParentTask()==null).toList();
@@ -158,7 +159,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<User> getUsersByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(userService.getCurrentUser(), ProjectStatus.ONGOING);
         List<User> users = new ArrayList<>();
         projects.ifPresent(projectList -> {
             projectList.forEach(project -> {
@@ -170,7 +171,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Map<String, List<Object>> getUsersAndClientByOngoingProject() {
-        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(getCurrentUser(), ProjectStatus.ONGOING);
+        var projects = projectRepository.findAllProjectsByUserInMembersAndStatus(userService.getCurrentUser(), ProjectStatus.ONGOING);
         Map<String, List<Object>> data = new HashMap<>();
         List<Object> users = new ArrayList<>();
         List<Object> clients = new ArrayList<>();
@@ -217,9 +218,5 @@ public class ProjectServiceImpl implements ProjectService {
         return project.getStatus().name();
     }
 
-    private User getCurrentUser() {
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsernameOrEmail(username, username).orElseThrow();
-    }
 
 }

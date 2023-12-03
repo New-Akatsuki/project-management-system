@@ -9,42 +9,41 @@
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-            rel="stylesheet"
-    />
+            rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
-    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
-          rel="stylesheet"
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
     />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
     <link rel="stylesheet" href="/css/hope.css">
-    <link rel="stylesheet" href="/css/modal.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
     <!-- Library / Plugin Css Build -->
-    <!--  <link rel="stylesheet" href="/css/core/libs.min.css">-->
-
+    <link rel="stylesheet" href="/css/libs.min.css">
     <!-- Custom Css -->
     <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-    <!-- Dark Css -->
-    <!--  <link rel="stylesheet" href="/css/dark.min.css">-->
     <!-- Customizer Css -->
     <link rel="stylesheet" href="/css/customizer.min.css">
-
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
     <!-- RTL Css -->
     <link rel="stylesheet" href="/css/rtl.min.css">
-    <!-- Single Select -->
-    <!--  <link rel="stylesheet" href="/css/single-select.css">-->
-
-
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        th.sorting{
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,29 +51,19 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
-<main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">Department</li>
-            </ol>
-        </nav>
-    </div>
-    <!-- End Page Title -->
-
+<main id="main" class="main" style="padding: 20px">
     <!-- Main Content -->
 
-    <div class="container-fluid mt-3 py-0">
+    <div class="container-fluid py-0">
         <div class="container-fluid d-flex justify-content-between mb-4 bg-white p-3 rounded-2 shadow">
-            <span class="display-6 fs-3 fw-bold">Department</span>
-            <button id="addUserModalBtn" class="btn btn-sm btn-primary d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
-                <i class="bx bx-plus fs-4 me-2"></i><span class="fs-6">New</span>
+            <span class="display-6 fs-3 fw-bold"><i class="bi bi-briefcase"></i>&nbspDepartment</span>
+            <button id="addDepartmentButton"
+                    class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
             </button>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive ps-3 pe-3">
             <table id="department-table" class="display table-sm" style="width: 100%;">
                 <thead>
                 <tr>
@@ -93,35 +82,8 @@
 <!-- End #main -->
 
 
-<!--Modal box-->
-<!--Add department-->
-<!--<div class="modal fade" id="addDepartmentModal" tabindex="-1" role="dialog" aria-labelledby="addDepartmentModalLabel"-->
-<!--     aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <form id="addDepartmentForm">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="name">Department Name:</label>-->
-<!--                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter department name" required>-->
-<!--                        <span class="invalid-feedback" id="name_error"></span>-->
-<!--                    </div>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                <button type="submit" class="btn btn-primary">Save</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-
-
 <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Create New Department</h1>
@@ -135,7 +97,7 @@
                             <span class="invalid-feedback" id="name_error"></span>
                         </div>
                     <div class="d-flex justify-content-end mb-1">
-                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px"
+                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
                            data-bs-dismiss="modal">
                             <i class="bi bi-x-circle"></i>&nbsp;Close
                         </a>
@@ -151,33 +113,8 @@
     </div>
 </div>
 
-<!-- Edit Department Modal-->
-<!--<div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="departmentEditModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog d-flex align-items-center">-->
-<!--        <form id="editDepartmentForm">-->
-<!--        <div class="modal-content" style="width: 500px!important;">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title fs-5">Edit Department</h5>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                    <div class="form-group">-->
-<!--                        <input type="hidden" class="form-control" id="editId">-->
-<!--                        <label for="editDepartmentName">Department name:</label>-->
-<!--                        <input type="text" class="form-control" id="editDepartmentName" required>-->
-<!--                        <span class="invalid-feedback" id="editDepartmentName_error"></span>-->
-<!--                    </div>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                <button type="submit" class="btn btn-primary">Update</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-
 <div class="modal fade" id="departmentEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Department</h1>
@@ -192,7 +129,7 @@
                         <span class="invalid-feedback" id="editDepartmentName_error"></span>
                     </div>
                     <div class="d-flex justify-content-end mb-1">
-                        <a class="btn btn-sm btn-gray rounded" style="margin-right: 5px; padding: 10px 15px"
+                        <a class="btn btn-sm btn-secondary rounded" style="margin-right: 5px; padding: 10px 15px"
                            data-bs-dismiss="modal">
                             <i class="bi bi-x-circle"></i>&nbsp;Close
                         </a>
@@ -208,7 +145,7 @@
 </div>
 
 <div class="modal fade" id="confirmationDepartmentModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
@@ -216,12 +153,12 @@
                         style="font-size: 25px; margin-left: auto; margin-right: 5px"></button>
             </div>
             <div style="align-items: center; padding: 15px">
-                <div class="mb-2">
-                    Are you sure you want to <span id="confirmationDepartmentAction"></span> this Department?
+                <div class="mb-3">
+                    Are you sure you want to <span id="confirmationDepartmentAction" class="fw-bold"></span> this Department?
                     <div id="confirmationDepartmentMessage"></div>
                 </div>
                 <div class="d-flex justify-content-end mb-1">
-                    <button type="button" class="btn btn-gray" data-bs-dismiss="modal" style="margin-right: 5px;">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5px;">Cancel</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirmDepartmentButton">Confirm
                     </button>
                 </div>
@@ -229,22 +166,15 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-
-<!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Template Main JS File -->
-<script src="/js/main.js"></script>
-<script src="/js/validation.js"></script>
-<!-- Bootstrap JS and Popper.js for Modal Box -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 <script>
 <!--   For Department Table-->
     let departmentList =[];
@@ -264,10 +194,8 @@
                 console.log('Error: ', error);
             }
         });
-        checkInputValidation('name','Department name',null,null);
-        checkInputValidation('editDepartmentName','Department name',null,null);
-        $('#addDepartmentForm').submit(function (event) {
-            event.preventDefault();
+        $('#addDepartmentForm').submit(function (e) {
+            e.preventDefault();
             addDepartment();
         });
         $('#editDepartmentForm').submit(function (event) {
@@ -301,6 +229,7 @@ function renderDepartmentListTable(items) {
         $('#department-table').DataTable().destroy();
     }
     return $('#department-table').DataTable({
+        lengthMenu: [5, 10, 25, 50],
         data: items,
         columns: [
             {
@@ -314,7 +243,7 @@ function renderDepartmentListTable(items) {
                 data: 'active',
                 render: function (data, type, row) {
                     return `
-                       <span class="badge rounded-pill text-bg-${data?'success':'danger'}" style="width: 60px">${data?'opened':'closed'}</span>
+                       <span class="badge rounded-pill text-bg-${data?'success':'danger'}" style="width: 60px">${data?'enable':'disable'}</span>
                     `;
                 }
             },
@@ -323,7 +252,7 @@ function renderDepartmentListTable(items) {
                 render: function (data, type, row) {
                     return `
                         <button class="btn btn-sm btn-primary mx-2" onclick="displayEditDepartmentModal(${row.id})">Edit</button>
-                        <button type="button" onclick="toggleDepartment(${row.id}, ${!data})" class="btn btn-sm btn-${data ? 'gray' : 'success'}" style="width:90px;margin-right: 5px">${data ? 'Close' : 'Open'}</button>
+                        <button type="button" onclick="toggleDepartment(${row.id}, ${!data})" class="btn btn-sm btn-secondary" style="width:90px;margin-right: 5px">${data ? 'Disable' : 'Enable'}</button>
                         `;
                 }
             },
@@ -346,7 +275,6 @@ function toggleDepartment(id, newStatus) {
 
     // Set event listener for modal confirm button
     $('#confirmDepartmentButton').on('click', function (event) {
-
         // Prevent form submission and page refresh
         event.preventDefault();
         // Close the modal
@@ -361,7 +289,15 @@ function toggleDepartment(id, newStatus) {
             success: function (data) {
                 // Handle success response, update UI if necessary
                 console.log('Member status updated successfully:', data);
-                location.reload();
+                // Update the memberList with the updated member
+                departmentList = departmentList.map(department => {
+                    if (department.id === data.id) {
+                        return data;
+                    }
+                    return department;
+                })
+                // Re-render the table
+                renderDepartmentListTable(departmentList);
             },
             error: function (error) {
                 // Handle error response
@@ -385,9 +321,10 @@ function toggleDepartment(id, newStatus) {
             data: JSON.stringify(addDepartment),
             dataType: 'json',
             success: function (data) {
-                // departmentList.push(data)
+                $('#addDepartmentModal').modal('hide');
+                departmentList.push(data)
                 console.log(departmentList);
-                location.reload();
+                renderDepartmentListTable(departmentList);
                 // renderDepartmentListTable(departmentList);
             },
             error: function (error) {
@@ -400,15 +337,16 @@ function toggleDepartment(id, newStatus) {
 
     //For Display Edit Department Modal
     function displayEditDepartmentModal(id) {
+    $('#editDepartmentName_error').text('');
     const department = departmentList.find(department => department.id === id);
     console.log("Department Edit ", department);
     // Check if department is found
     if (department) {
         //populate modal fields with department data
         $('#editId').val(department.id);
-        $('#editDepartmentName').val(department.name);
         //show the modal
         $("#departmentEditModal").modal('show');
+        $('#editDepartmentName').val(department.name).removeClass("is-invalid").removeClass("is-valid");
     } else {
         console.log("Department not found for ID:", id);
         $('#editDepartmentName').removeClass("is-valid").addClass("is-invalid");
@@ -434,7 +372,16 @@ function editDepartment() {
         contentType: 'application/json', // Corrected contentType value
         success: function (data) {
             console.log('Data received:', data);
-            location.reload();
+            $('#departmentEditModal').modal('hide');
+            // Update the departmentList with the updated department
+            departmentList = departmentList.map(department => {
+                if (department.id === data.id) {
+                    return data;
+                }
+                return department;
+            })
+            // Re-render the table
+            renderDepartmentListTable(departmentList);
         },
         error: function (xhr, error) {
             console.log(xhr.responseText)
@@ -445,6 +392,11 @@ function editDepartment() {
     });
 }
 
+$('#addDepartmentButton').click(function () {
+    $('#name_error').text('');
+    $('#name').val('').removeClass("is-invalid").removeClass("is-valid").focus();
+    $('#addDepartmentModal').modal('show');
+});
 
 </script>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>

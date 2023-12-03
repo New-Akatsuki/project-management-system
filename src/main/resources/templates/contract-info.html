@@ -46,148 +46,125 @@
             width: 100% !important;
         }
     </style>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+
+        th.sorting{
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
-<main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">ContractInfo</li>
-            </ol>
-        </nav>
-    </div>
-    <!-- End Page Title -->
+<main id="main" class="main" style="padding: 20px">
     <!-- Main Content -->
-    <div class="container-fluid content-inner mt-4 py-0">
-        <div>
-            <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="text-dark mb-0">
-                                Clients
-                            </h3>
+    <div class="container-fluid content-inner py-0">
+        <div class="row">
+            <div class="col-sm-12 col-lg-12 mb-3">
+                <div class="container-fluid d-flex justify-content-between mb-3 bg-white p-3 rounded-2 shadow">
+                    <span class="display-6 fs-3 fw-bold">Clients</span>
+                    <button id="addClientButton"
+                            class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                        <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
+                    </button>
+                </div>
+                <div class="table-responsive ps-3 pe-3">
+                    <table class="display table-sm" style="width:100%;" id="client">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
 
-                            <a id="addClientButton" class="icon-add-btn">
-                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
-                            </a>
+            <div class="col-sm-12 col-lg-12 mb-3">
 
-                        </div>
-
-                        <div class="card-body">
-                            <table class="table table-sm" style="width:100%;" id="client">
-                                <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                            </table>
-
-                        </div>
-                    </div>
+                <div class="container-fluid d-flex justify-content-between mb-3 bg-white p-3 rounded-2 shadow">
+                    <span class="display-6 fs-3 fw-bold">Deliverables Methods</span>
+                    <button id="addDeliverablesButton"
+                            class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                        <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
+                    </button>
                 </div>
 
-                <div class="col-sm-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="mb-0 text-dark">
-                                Deliverables Methods
-                            </h3>
-                            <a id="addDeliverablesButton" class="icon-add-btn">
-                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
-                            </a>
-                        </div>
+                <div class="table-responsive ps-3 pe-3">
+                    <table class="display table-sm" style="width:100%;" id="deliverable">
+                        <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
 
-                        <div class="card-body">
-                            <table class="table table-sm" style="width:100%;" id="deliverable">
-                                <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
+                    </table>
 
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="mb-0 text-dark">
-                                Architecture Outlines
-                            </h3>
-
-
-                            <a id="addArchitectureButton" class="icon-add-btn">
-                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
-                            </a>
-                        </div>
-
-                        <div class="card-body">
-                            <table class="table table-sm" style="width:100%;" id="architecture">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-
-
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3 class="mb-0 text-dark">
-                                System Outlines
-                            </h3>
-
-                            <a id="addSystemOutlineButton" class="icon-add-btn">
-                                <i class='bx bx-plus fs-5 m-0 p-0'></i>
-                            </a>
-                        </div>
-
-                        <div class="card-body">
-
-                            <table class="table table-sm" style="width:100%;"
-                                   id="systemOutline">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                            </table>
-
-                        </div>
-                    </div>
                 </div>
 
             </div>
+
+            <div class="col-sm-12 col-lg-12 mb-3">
+
+                    <div class="container-fluid d-flex justify-content-between mb-3 bg-white p-3 rounded-2 shadow">
+                        <span class="display-6 fs-3 fw-bold">Architecture Outlines</span>
+                        <button id="addArchitectureButton"
+                                class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                            <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
+                        </button>
+                    </div>
+                <div class="table-responsive ps-3 pe-3">
+                        <table class="display table-sm" style="width:100%;" id="architecture">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+            </div>
+
+            <div class="col-sm-12 col-lg-12 mb-3">
+                <div class="container-fluid d-flex justify-content-between mb-3 bg-white p-3 rounded-2 shadow">
+                    <span class="display-6 fs-3 fw-bold">System Outlines</span>
+                    <button id="addSystemOutlineButton"
+                            class="btn btn-sm rounded-2 btn-primary d-flex justify-content-center align-items-center">
+                        <i class="bi bi-plus-circle"></i>&nbsp<span class="fs-6">New</span>
+                    </button>
+                </div>
+
+                <div class="table-responsive ps-3 pe-3">
+
+                        <table class="display table-sm" style="width:100%;"
+                               id="systemOutline">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+            </div>
+
         </div>
     </div>
     <!-- End Main Content-->
@@ -203,7 +180,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div class="modal fade" id="addDeliverablesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Deliverable</h1>
@@ -233,7 +210,7 @@
     </div>
 </div>
 <div class="modal fade" id="editDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Update Deliverable</h1>
@@ -264,7 +241,7 @@
     </div>
 </div>
 <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Client</h1>
@@ -309,7 +286,7 @@
 </div>
 <div class="modal fade" id="editClientModal" tabindex="-1" role="dialog" aria-labelledby="editClientModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Client</h1>
@@ -357,7 +334,7 @@
 </div>
 <div class="modal fade" id="confirmationClientModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
@@ -384,7 +361,7 @@
 
 <div class="modal fade" id="confirmationDeliverableModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation</h1>
@@ -411,7 +388,7 @@
 
 <div class="modal fade" id="confirmationArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
@@ -438,7 +415,7 @@
 
 <div class="modal fade" id="confirmationSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Confirmation!</h1>
@@ -464,7 +441,7 @@
 </div>
 
 <div class="modal fade" id="addSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add System Outline</h1>
@@ -496,7 +473,7 @@
 
 <div class="modal fade" id="editSystemOutlineModal" tabindex="-1" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit System Outline</h1>
@@ -529,7 +506,7 @@
 </div>
 
 <div class="modal fade" id="addArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Add New Architecture Outline</h1>
@@ -585,7 +562,7 @@
     </div>
 </div>
 <div class="modal fade" id="editArchitectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog d-flex align-items-center">
+    <div class="modal-dialog modal-dialog-centered d-flex align-items-center">
         <div class="modal-content">
             <div class="d-flex">
                 <h1 class="modal-title fs-5" style="padding: 15px 15px 0 15px;">Edit Architecture Outline</h1>

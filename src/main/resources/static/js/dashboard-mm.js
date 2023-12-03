@@ -305,7 +305,8 @@ function updateCharts() {
                 $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
                     const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
                     const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
-                    projectLabels.push(project.name);
+                    const truncatedTitle = project.name.length > 10 ? project.name.substring(0, 10) + '...' : project.name;
+                    projectLabels.push(truncatedTitle);
                     planManMonths.push(projectPlanManMonth);
                     actualManMonths.push(projectActualManMonth);
 
@@ -356,7 +357,8 @@ function updateCharts() {
                             $.get(`/api/get-tasks?projectId=${projectId}&month=${selectedMonth}&year=${selectedYear}`, function (tasks) {
                                 const projectPlanManMonth = calculatePlanManMonthForTasks(tasks, selectedMonth, selectedYear);
                                 const projectActualManMonth = calculateActualManMonthForTasks(tasks, selectedMonth, selectedYear);
-                                projectLabels.push(project.name);
+                                const truncatedTitle = project.name.length > 20 ? project.name.substring(0, 20) + '...' : project.name;
+                                projectLabels.push(truncatedTitle);
                                 projectPlanManMonths.push(projectPlanManMonth);
                                 projectActualManMonths.push(projectActualManMonth);
 

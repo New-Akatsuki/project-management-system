@@ -31,9 +31,9 @@ public class MailServiceImpl implements MailService {
             helper.setFrom(fromEmail);
             helper.setTo(user.getEmail());
             helper.setSubject("Welcome to Dir-Ace Technology");
-            helper.setText( "Dear " + user.getName() + ",\n\n" +
+            helper.setText("Dear " + user.getName() + ",\n\n" +
                     "Your account has been created successfully.\n\n" +
-                    "Here is your default password: "  + defaultPassword+ "\n\n" +
+                    "Here is your default password: " + defaultPassword + "\n\n" +
                     "Please change your password as soon as you log in for the first time.\n\n" +
                     "Best Regards,\n\n" +
                     "The HR Team", true);

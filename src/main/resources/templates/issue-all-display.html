@@ -10,34 +10,36 @@
     <meta content="" name="keywords"/>
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"/>
-    <!-- Bootstrap CSS -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Favicons -->
-    <link th:href="@{/images/DAT.png}" rel="icon"/>
-    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon"/>
-    <!-- Bootstrap Icons -->
-    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
-    <!-- Boxicons CSS -->
+    <link th:href="@{/images/DAT.png}" rel="icon">
+    <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
-    <!-- Remixicon CSS -->
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-    <link href="/css/pagination.css" rel="stylesheet"/>
-    <!-- Hope Ui Design System Css -->
-    <link rel="stylesheet" href="/css/hope.css"/>
-    <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="/css/libs.min.css"/>
-    <!--    icon-->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"/>
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0"/>
-    <!-- Customizer Css -->
-    <link rel="stylesheet" href="/css/customizer.min.css"/>
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="/css/rtl.min.css"/>
+    <link rel="stylesheet" href="/css/hope.css">
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/css/pagination.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/select2.css">
     <style>
         .issue-card {
@@ -99,6 +101,7 @@
         }
 
         .custom-select {
+            padding: 0;
             width: 100%;
             height: 30px;
             cursor: pointer;
@@ -129,30 +132,27 @@
             width: 30px;
         }
     </style>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <!-- ======= Header ======= -->
 <div th:replace="~{fragments/header :: header}"></div>
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 <!-- Start #main -->
-<main id="main" class="main">
-    <div class="page-title">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active">Issue</li>
-            </ol>
-        </nav>
-    </div>
+<main id="main" class="main" style="padding: 20px">
     <!-- End Page Title -->
-    <div class="container" style="padding: 15px;">
-        <div class="row">
-            <div class="col-md-6">
-                <h3><i class="bi bi-exclamation-square"></i>&nbspIssue Page</h3>
+    <div class="container" style="padding:0 15px;">
+        <div class="container-fluid d-flex bg-white p-3 rounded-2 shadow">
+            <div class="col-md-6 display-6 fs-3 fw-bold p-0">
+                <i class="bi bi-exclamation-circle"></i>&nbspIssues
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-6 text-end p-0">
                 <!-- Move the "Create Issue" button to the right -->
-                <a class="btn btn-sm btn-primary rounded" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','MEMBER')">
+                <a class="btn btn-sm btn-primary rounded d-none" style="margin-right: 10px;" th:href="@{/issues/new}" id="createIssueButton" sec:authorize="hasAnyAuthority('PM','MEMBER')">
                     <i class="bi bi-plus-circle"></i>&nbsp;Create Issue
                 </a>
                 <a class="btn btn-sm btn-secondary rounded" style="margin-right: 10px;" th:href="@{/issues/my-issues}">
@@ -164,8 +164,7 @@
             </div>
         </div>
         <!-- Search Box -->
-        <div class="search-box mb-3">
-            <label for="issueSearch"></label>
+        <div class="search-box mb-3 mt-3">
             <div class="input-group" style="position: relative">
                 <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
                     <i class="bi bi-search"></i>&nbsp;
@@ -210,18 +209,16 @@
 
     <div id="toastPlace"></div>
 </main>
-<!-- End #main -->
-<!--&lt;!&ndash; jQuery &ndash;&gt;-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- Bootstrap and Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/js/main.js"></script>
 <script src="/js/pagination.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.6.1/fuse.min.js"></script>
-
-<script src="/js/main.js"></script>
-
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 <script>
     let itemsPerPage = 5; // Set the number of items per page
     let issueContainer = $('#issueContainer');
@@ -499,9 +496,6 @@
         }
     });
 </script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="/js/notification.js"></script>
-<script src="/js/init-notification.js"></script>
 <script>
     function notify(notification) {
         showToast(notification);

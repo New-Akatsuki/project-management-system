@@ -21,6 +21,7 @@ function renderMemberListTable(items) {
         $('#user-list-table').DataTable().destroy();
     }
     return $('#user-list-table').DataTable({
+        lengthMenu: [5, 10, 25, 50],
         data: items,
         columns: [
             {

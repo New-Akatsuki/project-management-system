@@ -549,6 +549,7 @@
                 success: function (data) {
                     resetPhaseModal(addPhaseModalData)
                     settings.phases.push(data)
+                    console.log("data pahse",data)
                     render()
                     $.fn.refreshGantt();
                     buildToast({

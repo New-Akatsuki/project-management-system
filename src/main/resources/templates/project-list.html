@@ -5,50 +5,37 @@
     <title>DIR-ACE TECHNOLOGY</title>
     <meta content="" name="description"/>
     <meta content="" name="keywords"/>
-
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet"/>
-
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet"/>
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-
     <!-- Favicons -->
     <link th:href="@{/images/DAT.png}" rel="icon">
     <link th:href="@{/images/apple-touch-icon.png}" rel="apple-touch-icon">
-
-    <link th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet"/>
+    <link
+            th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}"
+            rel="stylesheet"
+    />
     <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
     <link href="/vendor/remixicon/remixicon.css" rel="stylesheet"/>
-
-    <!-- Hope Ui Design System Css -->
-    <link href="/css/pagination.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/hope.css">
-    <!-- Library / Plugin Css Build -->
-    <link rel="stylesheet" href="/css/libs.min.css">
-
-    <!--    icon-->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
-    <!-- Custom Css -->
-    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
-
-    <!-- Customizer Css -->
-    <link rel="stylesheet" href="/css/customizer.min.css">
-
-    <!-- RTL Css -->
-    <link rel="stylesheet" href="/css/rtl.min.css">
-
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet"/>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <!-- DataTables JS -->
-    <script type="text/javascript" charset="utf8"
-            src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-
+    <!-- Library / Plugin Css Build -->
+    <link rel="stylesheet" href="/css/libs.min.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/css/custom.min.css?v=4.0.0">
+    <!-- Customizer Css -->
+    <link rel="stylesheet" href="/css/customizer.min.css">
+    <!-- Modal Css -->
+    <link rel="stylesheet" href="/css/modal.css">
+    <!-- RTL Css -->
+    <link rel="stylesheet" href="/css/rtl.min.css">
+    <!-- Bootstrap CSS for modal box -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/pagination.css" rel="stylesheet"/>
     <style>
         /* Add your custom styles here */
         body {
@@ -140,12 +127,12 @@
         }
     </style>
     <!-- ... (previous HTML code) ... -->
-<style>
-    .circle-progress {
-        width: 80px;
-        height: 80px;
-    }
-</style>
+    <style>
+        .circle-progress {
+            width: 80px;
+            height: 80px;
+        }
+    </style>
     <style>
         .circle-progress {
             position: relative;
@@ -159,6 +146,10 @@
             font-size: 18px; /* Adjust the font size as needed */
             color: #333; /* Adjust the color as needed */
         }
+
+        body {
+            background: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -167,49 +158,42 @@
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/sidebar :: #sidebar"></div>
 
-<main id="main" class="main">
+<main id="main" class="main" style="padding: 20px">
 
     <input type="hidden" th:value="${#authentication.principal.role}" id="userRole">
 
-    <h4><i class="bi bi-journals"></i>&nbspProject List View</h4>
-
-    <div class="search-box mb-3">
-        <label for="issueSearch"></label>
-        <div class="input-group" style="position: relative">
-                <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
-        <i class="bi bi-search"></i>&nbsp;
-    </span>
-            <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search"
-                   style="padding-left: 40px ">
+    <div class="container" style="padding:0 15px;">
+        <div class="container-fluid  bg-white p-3 rounded-2 mb-3 shadow display-6 fs-3 fw-bold text-center">
+            <i class="bi bi-journals"></i>&nbspProjects
         </div>
+        <div class="search-box mb-3 ">
+            <div class="input-group" style="position: relative">
+                <span class="input-placeHolder z-3" style="font-size: 17px; position: absolute;top: 8px; left: 15px;">
+                    <i class="bi bi-search"></i>&nbsp;
+                </span>
+                <input type="text" id="issueSearch" class="form-control z-0" placeholder="Search"
+                       style="padding-left: 40px ">
+            </div>
+        </div>
+        <!-- End Page Title -->
+        <div class="project-list-container row">
+        </div>
+        <div id="pagination-container"></div>
     </div>
-    <!-- End Page Title -->
-    <div class="project-list-container row">
-    </div>
-    <div id="pagination-container"></div>
     <!-- End Main Content-->
     <div id="toastPlace"></div>
 </main>
 <!-- End #main -->
-
-<!-- Bootstrap JS and Popper.js for Modal Box -->
-
-<!-- jQuery -->
-<script src="/js/jquery-3.6.4.min.js"></script>
-<!-- DataTables JS -->
-<script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.js"></script>
-
-<!-- Bootstrap JS and Popper.js for Modal Box -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
-<!-- Vendor JS Files -->
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
 <script src="/js/pagination.js"></script>
-<!-- Template Main JS File -->
 <script src="/js/main.js"></script>
-<!-- Include Fuse.js -->
 <script src="/js/fuse.min.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="/js/notification.js"></script>
+<script src="/js/init-notification.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -221,6 +205,18 @@
             dataType: 'json',
             success: function (data) {
                 console.log('All project list:', data);
+                data.sort((a, b) => {
+                    const statusOrder = {ONGOING: 1, PENDING: 2, FINISHED: 3};
+                    const statusComparison = statusOrder[a.status] - statusOrder[b.status];
+
+                    // If status is different, return the status comparison
+                    if (statusComparison !== 0) {
+                        return statusComparison;
+                    }
+
+                    // If status is the same, compare by due date
+                    return new Date(a.endDate) - new Date(b.endDate);
+                });
                 getSuccess(data);
             },
             error: function (error) {
@@ -228,7 +224,7 @@
             }
         });
 
-        function getSuccess(data=[]) {
+        function getSuccess(data = []) {
             let projectList = data;
             const fuseOptions = {
                 keys: ['name', 'department', 'client', 'status'],
@@ -261,11 +257,11 @@
 
 
             function renderProjectCard(project) {
-                console.log('project', typeof project,project)
+                console.log('project', typeof project, project)
                 const {item} = project;
-                const {name, department, endDate, client, status, id,progress} = item||project;
+                const {name, department, endDate, client, status, id, progress} = item || project;
                 const userRole = $('#userRole').val();
-                const truncatedTitle = name.length > 32 ? name.substring(0, 32) + '...' : name;
+                const truncatedTitle = name.length > 20 ? name.substring(0, 20) + '...' : name;
                 const nextLink = userRole === 'PM' ? `/projects/${id}/${name}/workspace` : `/projects/${id}/${name}/details`;
                 const badgeColorClass = status === 'FINISHED'
                     ? 'badge-gray'
@@ -281,16 +277,16 @@
                 return `
         <div class="col-md-4">
           <a href="${nextLink}" class="card-link">
-            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 200px">
+            <div class="card project-card" style="border-top: 3px solid ${borderTopColor}; height: 190px">
               <div class="card-body">
-                <div class="d-flex justify-content-between container mt-4">
+                <div class="d-flex justify-content-between container mt-3 mb-3">
                   <div class="mt-2">
                     <p class="card-text"><span><i class="bi bi-briefcase"></i>&nbsp&nbsp${department}</span></p>
                     <p class="card-text"><span><i class="bi bi-hourglass-bottom"></i>&nbsp&nbsp${endDate}</span></p>
                     <p class="card-text"><span><i class="bi bi-person"></i>&nbsp&nbsp${client}</span></p>
                   </div>
                   <div>
-                  <div class="circle-progress" data-progress="${progress/100}">
+                  <div class="circle-progress" data-progress="${progress / 100}">
                     <div class="progress-number">${progress}%</div>
                   </div>
                   </div>
@@ -306,26 +302,16 @@
 
       `;
             }
+
             function renderProjectList(projectList) {
                 const userRole = $('#userRole').val();
-                projectList.sort((a, b) => {
-                    const statusOrder = {ONGOING: 1, PENDING: 2, FINISHED: 3};
-                    const statusComparison = statusOrder[a.status] - statusOrder[b.status];
 
-                    // If status is different, return the status comparison
-                    if (statusComparison !== 0) {
-                        return statusComparison;
-                    }
-
-                    // If status is the same, compare by due date
-                    return new Date(a.endDate) - new Date(b.endDate);
-                });
                 projectListContainer.empty();
                 if (userRole === 'PM') {
                     const linkCard = `
                     <div class="col-md-4">
                       <a href="/projects/new" class="card-link">
-                        <div class="card project-card" style="height: 200px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
+                        <div class="card project-card" style="height: 190px; border: 2px dashed rgba(0,0,0,0.54); position: relative; text-align: center; background: none;">
                           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                             <span style="font-size: 50px; color: rgba(0,0,0,0.54);"><i class="bi bi-plus-circle-dotted"></i></span>
                             <p style="margin-top: 10px; color: rgba(0,0,0,0.54);">Create New Project</p>
@@ -347,7 +333,7 @@
                         startAngle: -Math.PI / 4 * 2,
                         value: progress,  // Update to use the 'progress' attribute directly
                         size: 80,
-                        fill: { gradient: ['#3498db', '#7b89fa'] }
+                        fill: {gradient: ['#3498db', '#7b89fa']}
                     });
                 });
                 if (userRole !== 'PM' && projectList.length === 0) {
@@ -380,9 +366,7 @@
         }
     });
 </script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="/js/notification.js"></script>
-<script src="/js/init-notification.js"></script>
+
 <script>
     function notify(notification) {
         showToast(notification);

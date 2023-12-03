@@ -74,6 +74,9 @@
             height: 50vh;
             text-align: center;
         }
+        body {
+            background: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -83,14 +86,6 @@
 <div th:replace="~{fragments/sidebar :: #sidebar}"></div>
 
 <main id="main" class="main">
-    <!-- Breadcrumb part-->
-    <div class="pagetitle">
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active">Notifications</li>
-            </ol>
-        </nav>
-    </div>
     <!-- End Page Title -->
 
     <!-- Main Content -->
@@ -187,7 +182,7 @@
                 <a href="${link}" class="list-group-item list-group-item-action notification ${dotClass} p-3" style="margin-bottom: 10px; border-radius:5px;">
                     <div class="d-flex w-100 gap-3">
                         <div class="w-100 d-flex gap-2">
-                            <label><input class="form-check-input me-1" type="checkbox" value="${id}"></label>
+                            <label><input class="form-check-input me-1" style="font-size: 20px;" type="checkbox" value="${id}"></label>
                             <div class="w-100 d-flex flex-column gap-3">
                                 <p class="mb-1 fw-bold">${message}</p>
                                 <div class="d-flex justify-content-between align-items-end">
@@ -221,11 +216,11 @@
 
         // Add a checkbox at the top to check all checkboxes
         notificationList.append(`
-                <div class="d-flex w-100 gap-3 m-3">
+                <div class="d-flex w-100 gap-3 ms-3 me-3 mb-3">
                     <div class="w-100 d-flex gap-2 align-items-center">
-                        <label><input id="checkAll" style="font-size: 14px;" class="form-check-input me-1" type="checkbox" onclick="checkAll()"></label>
-                        <div class="w-100">
-                            <h5 class="mb-1">Select all</h5>
+                        <div class="w-100 d-flex">
+                        <input id="checkAll" style="font-size: 20px;" class="form-check-input me-2" type="checkbox" onclick="checkAll()">
+                         <h5>Select all</h5>
                         </div>
                         <div class="bin-icon" style="padding-right: 20px">
                             <!-- Add your bin icon here -->

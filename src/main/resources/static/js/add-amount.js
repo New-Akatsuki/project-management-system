@@ -83,30 +83,45 @@ function addOrUpdateAmount() {
 
     // Add BASIC DESIGN amount if it's not null and doesn't already exist
     let basicDesignScreenCount = $('#basicDesignScreenCount').val();
+    if (basicDesignScreenCount < 0){
+        basicDesignScreenCount = 0;
+    }
     if (basicDesignScreenCount !== null && basicDesignScreenCount !== '' && !isDevelopmentPhaseExists('BASIC_DESIGN')) {
         addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'BASIC_DESIGN', amount: basicDesignScreenCount });
     }
 
     // Add DETAILED DESIGN amount if it's not null and doesn't already exist
     let detailedDesignScreenCount = $('#detailedDesignScreenCount').val();
+if (detailedDesignScreenCount < 0){
+        detailedDesignScreenCount = 0;
+}
     if (detailedDesignScreenCount !== null && detailedDesignScreenCount !== '' && !isDevelopmentPhaseExists('DETAILED_DESIGN')) {
         addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'DETAILED_DESIGN', amount: detailedDesignScreenCount });
     }
 
     // Add CODING amount if it's not null and doesn't already exist
     let codeLineCount = $('#codeLineCount').val();
+    if (codeLineCount < 0){
+        codeLineCount = 0;
+    }
     if (codeLineCount !== null && codeLineCount !== '' && !isDevelopmentPhaseExists('CODING')) {
         addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'CODING', amount: codeLineCount });
     }
 
     // Add UNIT TESTING amount if it's not null and doesn't already exist
     let unitTestCount = $('#unitTestCount').val();
+    if (unitTestCount < 0){
+        unitTestCount = 0;
+    }
     if (unitTestCount !== null && unitTestCount !== '' && !isDevelopmentPhaseExists('UNIT_TESTING')) {
         addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'UNIT_TESTING', amount: unitTestCount });
     }
 
     // Add INTEGRATION TESTING amount if it's not null and doesn't already exist
     let integrationTestCount = $('#integrationTestCount').val();
+    if (integrationTestCount < 0){
+        integrationTestCount = 0;
+    }
     if (integrationTestCount !== null && integrationTestCount !== '' && !isDevelopmentPhaseExists('INTEGRATION_TESTING')) {
         addAmounts.push({ id: null, projectId: projectId, developmentPhase: 'INTEGRATION_TESTING', amount: integrationTestCount });
     }

@@ -72,8 +72,6 @@ public class NotificationServiceImpl implements NotificationService {
             log.error("Cause: {}", e.getCause());
             log.error("Filled Stack Trace: ", e.fillInStackTrace());
         }
-
-
     }
 
     @Override
@@ -90,7 +88,6 @@ public class NotificationServiceImpl implements NotificationService {
     public void setNotificationIsRead(Long id) {
         Notification notification= notificationRepo.getReferenceById(id);
         notification.setIsRead(true);
-        log.info("hhh {}",notification);
         notificationRepo.save(notification);
     }
 }
