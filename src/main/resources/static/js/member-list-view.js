@@ -195,6 +195,7 @@ $(document).ready(function () {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
+            data = data.filter(val=> val.active);
             // Clear existing options
             $('#department').empty();
             $('#editDepartment').empty();
